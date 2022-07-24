@@ -1,4 +1,5 @@
 ﻿using LevelModel.Models;
+using LevelModel.Models.Components;
 using System.Diagnostics;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -125,6 +126,24 @@ namespace BlockEditor.Models
         public MyPoint? GetStartPosition()
         {
             return _uniqueBlocks?.Player1?.Position;
+        }
+
+        public static Blocks GetDefault()
+        {
+            var blocks = new Blocks();
+
+            var pos = new MyPoint(444, 335);
+
+            for (int i = Block.START_BLOCK_P1; i <= Block.START_BLOCK_P4; i++)
+            {
+                if(!BlockImages.Images.TryGetValue(i, out var image))
+                    continue;
+
+                blocks.Add(pos, image);
+                pos = new MyPoint(pos.X + 1, pos.Y);
+            }
+
+            return blocks;
         }
 
     }

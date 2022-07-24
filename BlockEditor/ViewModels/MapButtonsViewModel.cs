@@ -100,7 +100,22 @@ namespace BlockEditor.ViewModels
 
         private void NewExecute(object obj)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var text   = "Are you sure you want to clear this level?" + Environment.NewLine + "All unsaved data will be lost.";
+                var result = MessageBox.Show(text, "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if(result != MessageBoxResult.Yes)
+                    return;
+
+                Mouse.OverrideCursor = Cursors.Wait;
+
+                OnLoadMap?.Invoke(Blocks.GetDefault());
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
+            }
         }
 
         private void TestExecute(object obj)

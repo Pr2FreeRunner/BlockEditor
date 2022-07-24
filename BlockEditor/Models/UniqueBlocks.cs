@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using LevelModel.Models.Components;
+using System.Collections.Generic;
 
 namespace BlockEditor.Models
 {
@@ -22,10 +23,10 @@ namespace BlockEditor.Models
 
         public UniqueBlocks()
         {
-            Player1 = new UniqueBlock(111); 
-            Player2 = new UniqueBlock(112);
-            Player3 = new UniqueBlock(113);
-            Player4 = new UniqueBlock(114);
+            Player1 = new UniqueBlock(Block.START_BLOCK_P1); 
+            Player2 = new UniqueBlock(Block.START_BLOCK_P2);
+            Player3 = new UniqueBlock(Block.START_BLOCK_P3);
+            Player4 = new UniqueBlock(Block.START_BLOCK_P4);
         }
 
         public IEnumerable<UniqueBlock> GetBlocks()
