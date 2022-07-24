@@ -41,9 +41,10 @@
        
         
         <views:BlocksControl Grid.Column="2" Grid.Row="0" Grid.RowSpan="99" x:Name="BlocksControl" VerticalAlignment="Center" />
-        <views:MapButtons Grid.Column="0"  
-                          Grid.Row="1"
-                          HorizontalAlignment="Stretch" />
+        <views:MapButtons x:Name="MapButtons"
+            Grid.Column="0"  
+            Grid.Row="1"
+            HorizontalAlignment="Stretch" />
 
 
     </Grid>

@@ -12,6 +12,9 @@ namespace BlockEditor.Views
             InitializeComponent();
             this.DataContext = _vm = new MapViewModel();
             _vm.SelectedBlock = () => BlocksControl.SelectedBlock;
+
+            MapButtons.ViewModel.OnLoadMap += _vm.LoadMap;
+
         }
 
         private void OnLoaded(object sender, System.Windows.RoutedEventArgs e)

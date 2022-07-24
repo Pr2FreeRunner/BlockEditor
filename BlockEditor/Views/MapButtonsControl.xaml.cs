@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlockEditor.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -18,9 +19,13 @@ namespace BlockEditor.Views
     /// </summary>
     public partial class MapButtons : UserControl
     {
+        public MapButtonsViewModel ViewModel { get; }
+
         public MapButtons()
         {
-            InitializeComponent();      
+            InitializeComponent();
+
+            this.DataContext = ViewModel= new MapButtonsViewModel();
         }
     }
 }

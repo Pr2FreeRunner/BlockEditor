@@ -11,10 +11,24 @@ namespace BlockEditor.Models
     {
 
         private System.Timers.Timer _timer;
-        private const int FPS = 27;
+        public const int FPS = 27;
         private bool _updating;
 
-        public bool Pause { get; set; }
+        private bool _pause;
+        private readonly object _pauseLock = new object();
+
+        public bool Pause
+        {
+            get { return _pause; }
+            set
+            {
+                lock (_pauseLock)
+                {
+                    _pause = value;
+                }
+            }
+        }
+
 
         public event Action OnFrame;
 

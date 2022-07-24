@@ -1,14 +1,8 @@
 ﻿using BlockEditor.Models;
-using Microsoft.Win32.SafeHandles;
-using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace BlockEditor.Views
 {
@@ -23,62 +17,18 @@ namespace BlockEditor.Views
         {
             InitializeComponent();
 
-            AddBlocks(GetFiles());
+            AddBlocks();
         }
 
-        private string[] GetFiles()
+
+        private void AddBlocks()
         {
-            try
+            foreach (var image in BlockImages.Images)
             {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "Resources", "Blocks");
-                return Directory.GetFiles(path);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        private ImageBlock GetImage(string filepath)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(filepath))
-                    return null;
-
-                var filename = Path.GetFileNameWithoutExtension(filepath);
-
-                if(!int.TryParse(filename, NumberStyles.Any , CultureInfo.InvariantCulture, out var id))
-                    return null;
-
-                var image = new BitmapImage(new Uri(filepath));
-
-                if(image == null)
-                    return null;
-
-                return new ImageBlock { ID=id, Source=image };
-            }
-            catch
-            {
-                Debugger.Break();
-                return null;
-            }
-        }
-
-        private void AddBlocks(string[] files)
-        {
-            if (files == null)
-                return;
-
-
-            foreach (var file in files)
-            {
-                var block = GetImage(file);
-
-                if (block == null)
+                if (image.Value == null)
                     continue;
 
-                BlockContainer.Children.Add(CreateBorder(block));
+                BlockContainer.Children.Add(CreateBorder(image.Value));
             }
         }
 

@@ -36,7 +36,7 @@ namespace BlockEditor.ViewModels
         public Func<ImageBlock> SelectedBlock { get; set; }
 
         private GameEngine _engine { get; }
-        private Blocks _blocks { get;  }
+        private Blocks _blocks { get; set; }
         private MyPoint _camera { get; set; }
         private MyPoint _mapSize;
 
@@ -175,9 +175,13 @@ namespace BlockEditor.ViewModels
             if(p == null)
                 return;
 
+            var x = p.Value.X * _blocks.BlockWidth  - (_mapSize.X / 2);
+            var y = p.Value.Y * _blocks.BlockHeight - (_mapSize.Y / 2);
+            var point = new MyPoint(x, y);
+
             Application.Current?.Dispatcher?.Invoke(DispatcherPriority.Render, new ThreadStart(delegate
             {
-                _camera = p.Value;
+                _camera = point;
             }));
         }
 
@@ -222,9 +226,18 @@ namespace BlockEditor.ViewModels
         public void Map_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             _mapSize.X = (int)e.NewSize.Width;
-            _mapSize.Y = (int)e.NewSize.Width;
+            _mapSize.Y = (int)e.NewSize.Height;
         }
 
+        internal void LoadMap(Blocks blocks)
+        {
+            _engine.Pause = true;
+            Thread.Sleep(GameEngine.FPS * 5); // make sure engine has been stopped
 
+            _blocks = blocks;
+            GoToStartPosition();
+
+            _engine.Pause = false;
+        }
     }
 }
