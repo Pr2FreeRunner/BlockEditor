@@ -37,7 +37,6 @@ namespace BlockEditor.ViewModels
 
         private void SaveExecute(object obj)
         {
-            throw new NotImplementedException();
         }
 
         private void LoadExecute(object obj)
@@ -120,7 +119,6 @@ namespace BlockEditor.ViewModels
 
         private void TestExecute(object obj)
         {
-            throw new NotImplementedException();
         }
     }
 }
