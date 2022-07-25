@@ -18,7 +18,7 @@
 
     <Color x:Key="StandardBackgroundLight">#D5EAF1</Color>
 
-    <Style x:Key="MyButton" TargetType="{x:Type Button}">
+    <Style TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource StandardBackground}" />
         <Setter Property="Foreground" Value="{StaticResource StandardForeground}" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -57,7 +57,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="InputTextbox" TargetType="{x:Type TextBox}">
+    <Style TargetType="{x:Type TextBox}">
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />

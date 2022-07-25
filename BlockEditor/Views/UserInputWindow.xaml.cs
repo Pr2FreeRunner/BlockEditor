@@ -35,14 +35,25 @@ namespace BlockEditor.Views
 
         public static string Show(string question, string title, string defaultValue = "")
         {
-            var inst = new UserInputWindow(question, title, defaultValue);
+            var current = Mouse.OverrideCursor;
 
-            inst.ShowDialog();
+            try 
+            { 
+                Mouse.OverrideCursor = null;
 
-            if (inst.DialogResult == true)
-                return inst.ResponseText;
+                var inst = new UserInputWindow(question, title, defaultValue);
 
-            return string.Empty;
+                inst.ShowDialog();
+
+                if (inst.DialogResult == true)
+                    return inst.ResponseText;
+
+                return string.Empty;
+            }
+            finally
+            {
+                Mouse.OverrideCursor = current;
+            }
         }
 
         public string ResponseText

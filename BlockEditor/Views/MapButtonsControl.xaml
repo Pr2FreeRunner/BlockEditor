@@ -22,11 +22,13 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Style="{StaticResource MyButton}" Grid.Column="0" Margin="10,6,10,6" Content="Save" FontWeight="SemiBold" FontSize="15" FontFamily="Segoe UI" Command="{Binding SaveCommand }"/>
-            <Button Style="{StaticResource MyButton}" Grid.Column="1" Margin="10,6,10,6" Content="Load" FontWeight="SemiBold" FontSize="15" FontFamily="Segoe UI" Command="{Binding LoadCommand }"/>
-            <Button Style="{StaticResource MyButton}" Grid.Column="2" Margin="10,6,10,6" Content="Test" FontWeight="SemiBold" FontSize="15" FontFamily="Segoe UI" Command="{Binding TestCommand }"/>
-            <Button Style="{StaticResource MyButton}" Grid.Column="3" Margin="10,6,10,6" Content="New"  FontWeight="SemiBold" FontSize="15" FontFamily="Segoe UI" Command="{Binding NewCommand }"/>
+            <Button Grid.Column="0" Margin="10,6,10,6" Content="Account" FontWeight="SemiBold" FontSize="15" FontFamily="Segoe UI" Command="{Binding LoginCommand }"/>
+            <Button Grid.Column="1" Margin="10,6,10,6" Content="Save"    FontWeight="SemiBold" FontSize="15" FontFamily="Segoe UI" Command="{Binding SaveCommand }"/>
+            <Button Grid.Column="2" Margin="10,6,10,6" Content="Load"    FontWeight="SemiBold" FontSize="15" FontFamily="Segoe UI" Command="{Binding LoadCommand }"/>
+            <Button Grid.Column="3" Margin="10,6,10,6" Content="Test"    FontWeight="SemiBold" FontSize="15" FontFamily="Segoe UI" Command="{Binding TestCommand }"/>
+            <Button Grid.Column="4" Margin="10,6,10,6" Content="New"     FontWeight="SemiBold" FontSize="15" FontFamily="Segoe UI" Command="{Binding NewCommand }"/>
         </Grid>
     </Border>
 

@@ -1,5 +1,7 @@
 ﻿using LevelModel.DTO;
+using System;
 using System.Windows;
+using System.Windows.Input;
 using static LevelModel.DTO.Message;
 
 namespace BlockEditor.Helpers
@@ -7,20 +9,37 @@ namespace BlockEditor.Helpers
     public static class MessageUtil
     {
 
+        public static void UseDefoutMouse(Action a)
+        {
+            if(a  == null)
+                return;
+
+            var current = Mouse.OverrideCursor;
+
+            try
+            {
+                Mouse.OverrideCursor = null;
+                a?.Invoke();
+            }
+            finally
+            {
+                Mouse.OverrideCursor = current;
+            }
+        }
+
         public static void ShowError(string msg)
         {
-            MessageBox.Show(msg, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            UseDefoutMouse(() => MessageBox.Show(msg, "Error", MessageBoxButton.OK, MessageBoxImage.Error));
         }
 
         public static void ShowInfo(string msg)
         {
-            MessageBox.Show(msg, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            UseDefoutMouse(() => MessageBox.Show(msg, "Info", MessageBoxButton.OK, MessageBoxImage.Information));
         }
 
         public static void ShowWarning(string msg)
         {
-            MessageBox.Show(msg, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-
+            UseDefoutMouse(() => MessageBox.Show(msg, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning));
         }
 
         public static void ShowMessage(Message msg)

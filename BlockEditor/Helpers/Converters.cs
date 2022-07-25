@@ -8,7 +8,7 @@ using System.Text;
 
 namespace BlockEditor.Helpers
 {
-    public static class Converters
+    public static class MyConverters
     {
 
         public static bool TryParse(string input, out int result)

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using BlockEditor.Helpers;
@@ -23,8 +21,7 @@ namespace BlockEditor.ViewModels
         public RelayCommand SaveCommand { get; set; }
         public RelayCommand NewCommand { get; set; }
         public RelayCommand TestCommand { get; set; }
-
-
+        public RelayCommand LoginCommand { get; set; }
 
 
         public MapButtonsViewModel()
@@ -33,6 +30,13 @@ namespace BlockEditor.ViewModels
             SaveCommand = new RelayCommand(SaveExecute);
             NewCommand = new RelayCommand(NewExecute);
             TestCommand = new RelayCommand(TestExecute);
+            LoginCommand = new RelayCommand(LoginExecute);
+
+        }
+
+        private void LoginExecute(object obj)
+        {
+            new LoginWindow().ShowDialog();
         }
 
         private void SaveExecute(object obj)
@@ -49,13 +53,13 @@ namespace BlockEditor.ViewModels
                 if (string.IsNullOrWhiteSpace(input))
                     return;
 
-                if (!Converters.TryParse(input, out var id))
+                if (!MyConverters.TryParse(input, out var id))
                 {
                     MessageUtil.ShowError("Invalid Level ID");
                     return;
                 }
 
-                var data = new PR2Accessor().Download(id);
+                var data = PR2Accessor.Download(id);
 
                 if (string.IsNullOrWhiteSpace(data))
                 {
@@ -64,7 +68,7 @@ namespace BlockEditor.ViewModels
                     return;
                 }
 
-                var levelInfo = new PR2Parser().ParseLevel(data);
+                var levelInfo = PR2Parser.Level(data);
 
                 if (levelInfo == null)
                 {
@@ -78,7 +82,7 @@ namespace BlockEditor.ViewModels
                     return;
                 }
 
-                var blocks = Converters.ToBlocks(levelInfo.Level);
+                var blocks = MyConverters.ToBlocks(levelInfo.Level);
 
                 OnLoadMap?.Invoke(blocks);
             }
