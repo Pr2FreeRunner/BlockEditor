@@ -30,18 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Dependencies\TAS\Newtonsoft.Json.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\Newtonsoft.Json.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\PR2 Speedrun Tools.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\PR2 Speedrun Tools.exe.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Resources\Blocks\100.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
