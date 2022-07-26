@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <Folder Include="Dependencies\Multi-Tool\" />
+    <Folder Include="Dependencies\TAS\" />
     <Folder Include="Resources\Blocks\" />
   </ItemGroup>
 
@@ -43,10 +44,10 @@
     <None Update="Dependencies\TAS\Newtonsoft.Json.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Dependencies\TAS\TAS.config">
+    <None Update="Dependencies\TAS\PR2 Speedrun Tools.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Dependencies\TAS\TAS.exe">
+    <None Update="Dependencies\TAS\PR2 Speedrun Tools.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\Blocks\100.bmp">
