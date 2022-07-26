@@ -22,6 +22,9 @@ namespace BlockEditor.Models
         {
             try
             {
+                if(Images != null)
+                    return new string[0];
+
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "Resources", "Blocks");
                 return Directory.GetFiles(path);
             }

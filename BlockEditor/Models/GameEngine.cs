@@ -7,7 +7,7 @@ using System.Windows.Threading;
 
 namespace BlockEditor.Models
 {
-    class GameEngine
+    public class GameEngine
     {
 
         private System.Timers.Timer _timer;
@@ -53,7 +53,7 @@ namespace BlockEditor.Models
 
         private void OnElapsed(object sender, ElapsedEventArgs e)
         {
-            if (_updating)
+            if (_updating || Pause)
             {
                 return;
             }

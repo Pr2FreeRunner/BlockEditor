@@ -16,7 +16,7 @@ using System.Windows.Threading;
 namespace BlockEditor.ViewModels
 {
 
-    class MapViewModel : NotificationObject
+    public class MapViewModel : NotificationObject
     {
 
         private Brush _background;
@@ -36,7 +36,8 @@ namespace BlockEditor.ViewModels
 
         public Func<ImageBlock> SelectedBlock { get; set; }
 
-        private GameEngine _engine { get; }
+        public GameEngine Engine { get; }
+
         public Map Map { get; private set; }
 
         private MyPoint _camera { get; set; }
@@ -45,8 +46,8 @@ namespace BlockEditor.ViewModels
         public MapViewModel()
         {
             Map = new Map();
-            _engine = new GameEngine();
-            _engine.OnFrame += OnFrame;
+            Engine = new GameEngine();
+            Engine.OnFrame += OnFrame;
             Background = new SolidColorBrush(Color.FromRgb(0,0,0));
         }
 
@@ -221,7 +222,7 @@ namespace BlockEditor.ViewModels
 
         public void OnLoaded(object sender, RoutedEventArgs e)
         {
-            _engine.Start();
+            Engine.Start();
         }
 
         public void Map_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -235,14 +236,14 @@ namespace BlockEditor.ViewModels
             if(map == null)
                 return;
 
-            _engine.Pause = true;
+            Engine.Pause = true;
             Thread.Sleep(GameEngine.FPS * 5); // make sure engine has been stopped
 
             Map = map;
             GoToStartPosition();
 
-            _engine.Pause = false;
+            Engine.Pause = false;
         }
-       
+
     }
 }
