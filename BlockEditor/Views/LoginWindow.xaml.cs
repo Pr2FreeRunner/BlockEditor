@@ -43,6 +43,8 @@ namespace BlockEditor.Views
 
                 var success = CurrentUser.Login(UserName, Password, out var errorMsg);
 
+                UpdateButton();
+
                 if (success)
                 {
                     DialogResult = true;
@@ -52,6 +54,7 @@ namespace BlockEditor.Views
                 {
                     ErrorTextbox.Text = errorMsg;
                 }
+
             }
             finally
             {

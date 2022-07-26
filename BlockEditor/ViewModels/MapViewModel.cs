@@ -1,6 +1,7 @@
 ﻿using BlockEditor.Helpers;
 using BlockEditor.Models;
 using BlockEditor.Views;
+using DataAccess.DataStructures;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -36,16 +37,16 @@ namespace BlockEditor.ViewModels
         public Func<ImageBlock> SelectedBlock { get; set; }
 
         private GameEngine _engine { get; }
-        private Blocks _blocks { get; set; }
+        private Map _map { get; set; }
         private MyPoint _camera { get; set; }
         private MyPoint _mapSize;
 
         public MapViewModel()
         {
-            _blocks = new Blocks();
+            _map = new Map();
             _engine = new GameEngine();
             _engine.OnFrame += OnFrame;
-            _camera = new MyPoint(450 * _blocks.BlockWidth, 340 * _blocks.BlockHeight);
+            _camera = new MyPoint(450 * _map.Blocks.BlockWidth, 340 * _map.Blocks.BlockHeight);
             Background = new SolidColorBrush(Color.FromRgb(0,0,0));
         }
 
@@ -79,11 +80,11 @@ namespace BlockEditor.ViewModels
             if (currentY < 0)
                 currentY = 0;
 
-            var maxWidth = Blocks.SIZE * _blocks.BlockWidth;
+            var maxWidth = Blocks.SIZE * _map.Blocks.BlockWidth;
             if (currentX > maxWidth)
                 currentX = maxWidth;
 
-            var maxHeight = Blocks.SIZE * _blocks.BlockWidth;
+            var maxHeight = Blocks.SIZE * _map.Blocks.BlockWidth;
             if (currentY > maxHeight)
                 currentY = maxHeight;
 
@@ -95,11 +96,11 @@ namespace BlockEditor.ViewModels
             var width = _mapSize.X;
             var height = _mapSize.Y;
 
-            var minBlockX = _camera.X / _blocks.BlockWidth;
-            var minBlockY = _camera.Y / _blocks.BlockHeight;
+            var minBlockX = _camera.X / _map.Blocks.BlockWidth;
+            var minBlockY = _camera.Y / _map.Blocks.BlockHeight;
 
-            var blockCountX = width / _blocks.BlockWidth;
-            var blockCountY = height / _blocks.BlockHeight;
+            var blockCountX = width / _map.Blocks.BlockWidth;
+            var blockCountY = height / _map.Blocks.BlockHeight;
 
             var blocks = new ObservableCollection<UIElement>();
 
@@ -107,13 +108,13 @@ namespace BlockEditor.ViewModels
             {
                 for (int x = minBlockX; x < minBlockX + blockCountX; x++)
                 {
-                    var block = _blocks.Get(x, y);
+                    var block = _map.Blocks.Get(x, y);
 
                     if (block == null)
                         continue;
 
-                    Canvas.SetLeft(block, x * _blocks.BlockWidth - _camera.X);
-                    Canvas.SetTop(block, y * _blocks.BlockHeight - _camera.Y);
+                    Canvas.SetLeft(block, x * _map.Blocks.BlockWidth - _camera.X);
+                    Canvas.SetTop(block, y * _map.Blocks.BlockHeight - _camera.Y);
                     blocks.Add(block);
                 }
             }
@@ -145,7 +146,7 @@ namespace BlockEditor.ViewModels
             var y = p.Value.Y + _camera.Y;
             var pos = new Point(x, y);
 
-            _blocks.Add(GetMapIndex(pos), selectedBlock);
+            _map.Blocks.Add(GetMapIndex(pos), selectedBlock);
         }
 
         private void DeleteBlock(Point? p)
@@ -157,26 +158,26 @@ namespace BlockEditor.ViewModels
             var y = p.Value.Y + _camera.Y;
             var pos = new Point(x, y);
 
-            _blocks.Delete(GetMapIndex(pos));
+            _map.Blocks.Delete(GetMapIndex(pos));
         }
 
         private MyPoint GetMapIndex(Point p)
         {
-            var x = (int)(p.X / _blocks.BlockWidth);
-            var y = (int)(p.Y / _blocks.BlockHeight);
+            var x = (int)(p.X / _map.Blocks.BlockWidth);
+            var y = (int)(p.Y / _map.Blocks.BlockHeight);
 
             return new MyPoint(x, y);
         }
 
         public void GoToStartPosition()
         {
-            var p = _blocks.GetStartPosition();
+            var p = _map.Blocks.GetStartPosition();
 
             if(p == null)
                 return;
 
-            var x = p.Value.X * _blocks.BlockWidth  - (_mapSize.X / 2);
-            var y = p.Value.Y * _blocks.BlockHeight - (_mapSize.Y / 2);
+            var x = p.Value.X * _map.Blocks.BlockWidth  - (_mapSize.X / 2);
+            var y = p.Value.Y * _map.Blocks.BlockHeight - (_mapSize.Y / 2);
             var point = new MyPoint(x, y);
 
             Application.Current?.Dispatcher?.Invoke(DispatcherPriority.Render, new ThreadStart(delegate
@@ -229,15 +230,26 @@ namespace BlockEditor.ViewModels
             _mapSize.Y = (int)e.NewSize.Height;
         }
 
-        internal void LoadMap(Blocks blocks)
+        internal void LoadMap(Map map)
         {
+            if(map == null)
+                return;
+
             _engine.Pause = true;
             Thread.Sleep(GameEngine.FPS * 5); // make sure engine has been stopped
 
-            _blocks = blocks;
+            _map = map;
             GoToStartPosition();
 
             _engine.Pause = false;
         }
+
+
+        internal void SaveMap()
+        {
+           MapUtil.SaveMap(_map);
+        }
+
+       
     }
 }

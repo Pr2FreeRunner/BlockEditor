@@ -14,7 +14,9 @@ namespace BlockEditor.ViewModels
     public class MapButtonsViewModel : NotificationObject
     {
 
-        public event Action<Blocks> OnLoadMap;
+        public event Action<Map> OnLoadMap;
+        public event Action OnSaveMap;
+
 
 
         public RelayCommand LoadCommand { get; set; }
@@ -27,11 +29,16 @@ namespace BlockEditor.ViewModels
         public MapButtonsViewModel()
         {
             LoadCommand = new RelayCommand(LoadExecute);
-            SaveCommand = new RelayCommand(SaveExecute);
+            SaveCommand = new RelayCommand(SaveExecute, CanSave);
             NewCommand = new RelayCommand(NewExecute);
             TestCommand = new RelayCommand(TestExecute);
             LoginCommand = new RelayCommand(LoginExecute);
 
+        }
+
+        private bool CanSave(object obj)
+        {
+            return CurrentUser.IsLoggedIn();
         }
 
         private void LoginExecute(object obj)
@@ -41,6 +48,7 @@ namespace BlockEditor.ViewModels
 
         private void SaveExecute(object obj)
         {
+            OnSaveMap?.Invoke();
         }
 
         private void LoadExecute(object obj)
@@ -82,9 +90,9 @@ namespace BlockEditor.ViewModels
                     return;
                 }
 
-                var blocks = MyConverters.ToBlocks(levelInfo.Level);
+                var map = new Map(levelInfo.Level);
 
-                OnLoadMap?.Invoke(blocks);
+                OnLoadMap?.Invoke(map);
             }
             catch(WebException ex)
             {
@@ -105,15 +113,15 @@ namespace BlockEditor.ViewModels
         {
             try
             {
-                var text   = "Are you sure you want to clear this level?" + Environment.NewLine + "All unsaved data will be lost.";
-                var result = MessageBox.Show(text, "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var text   = "Are you sure you want to clear this level?" + Environment.NewLine + Environment.NewLine + "All unsaved data will be lost.";
+                var result = UserQuestionWindow.Show(text, "Confirm", false);
 
-                if(result != MessageBoxResult.Yes)
+                if(result != UserQuestionWindow.QuestionResult.Yes)
                     return;
 
                 Mouse.OverrideCursor = Cursors.Wait;
 
-                OnLoadMap?.Invoke(Blocks.GetDefault());
+                OnLoadMap?.Invoke(new Map());
             }
             finally
             {

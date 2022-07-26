@@ -29,16 +29,25 @@ namespace BlockEditor.Helpers
 
         public static void ShowError(string msg)
         {
+            if (string.IsNullOrWhiteSpace(msg))
+                return;
+
             UseDefoutMouse(() => MessageBox.Show(msg, "Error", MessageBoxButton.OK, MessageBoxImage.Error));
         }
 
         public static void ShowInfo(string msg)
         {
+            if(string.IsNullOrWhiteSpace(msg))
+                return;
+
             UseDefoutMouse(() => MessageBox.Show(msg, "Info", MessageBoxButton.OK, MessageBoxImage.Information));
         }
 
         public static void ShowWarning(string msg)
         {
+            if (string.IsNullOrWhiteSpace(msg))
+                return;
+
             UseDefoutMouse(() => MessageBox.Show(msg, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning));
         }
 

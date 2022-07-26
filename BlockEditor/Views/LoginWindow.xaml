@@ -46,7 +46,7 @@
 
         </StackPanel>
 
-        <TextBlock Margin="20,0,20,0" Name="ErrorTextbox" HorizontalAlignment="Center" Foreground="Red" Text="Error" Grid.Row="2" FontWeight="SemiBold"/>
+        <TextBlock Margin="20,0,20,0" MaxWidth="500" TextWrapping="Wrap" Name="ErrorTextbox" HorizontalAlignment="Center" Foreground="Red" Text="Error" Grid.Row="2" FontWeight="SemiBold"/>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,15,20,0">
             <Button Width="100" Height="25" Content="Login" IsDefault="True" Margin="5" Name="BtnOk" Click="btnOk_Click" />

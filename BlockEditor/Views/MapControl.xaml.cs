@@ -14,7 +14,7 @@ namespace BlockEditor.Views
             _vm.SelectedBlock = () => BlocksControl.SelectedBlock;
 
             MapButtons.ViewModel.OnLoadMap += _vm.LoadMap;
-
+            MapButtons.ViewModel.OnSaveMap += _vm.SaveMap;
         }
 
         private void OnLoaded(object sender, System.Windows.RoutedEventArgs e)

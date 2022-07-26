@@ -7,21 +7,52 @@ namespace BlockEditor.Models
 {
     public static class CurrentUser
     {
+
         public static string Name { get; set; }
 
         public static string Token { get; set; }
 
-
+        static CurrentUser()
+        {
+            Load();
+        }
         public static bool IsLoggedIn()
         {
-            return !string.IsNullOrWhiteSpace(Token)
-                && !string.IsNullOrWhiteSpace(Name);
+            return !string.IsNullOrWhiteSpace(Token) && !string.IsNullOrWhiteSpace(Name);
+        }
+
+        private static void Save()
+        {
+            try
+            {
+                Settings.Default["Name"] = Name;
+                Settings.Default["Token"] = Token;
+                Settings.Default.Save();
+            }
+            catch (Exception ex)
+            {
+                MessageUtil.ShowError(ex.Message);
+            }
+        }
+
+        private static void Load()
+        {
+            try
+            {
+                Name = Settings.Default["Name"] as string ?? string.Empty;
+                Token = Settings.Default["Token"] as string ?? string.Empty;
+            }
+            catch (Exception ex)
+            {
+                MessageUtil.ShowError(ex.Message);
+            }
         }
 
         public static void Logout()
         {
             Token = string.Empty;
             Name = string.Empty;
+            Save();
         }
 
         private static string GetBuildVersion()
@@ -50,6 +81,7 @@ namespace BlockEditor.Models
                     errorMsg = string.Empty;
                     Name = username;
                     Token = tokenInfo.Token;
+                    Save();
                 }
                 else
                 {

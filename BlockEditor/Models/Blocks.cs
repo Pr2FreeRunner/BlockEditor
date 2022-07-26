@@ -1,5 +1,6 @@
 ﻿using LevelModel.Models;
 using LevelModel.Models.Components;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -128,22 +129,25 @@ namespace BlockEditor.Models
             return _uniqueBlocks?.Player1?.Position;
         }
 
-        public static Blocks GetDefault()
+        public IEnumerable<SimpleBlock> GetBlocks()
         {
-            var blocks = new Blocks();
+            if(_blocks == null)
+                yield break;
 
-            var pos = new MyPoint(444, 335);
-
-            for (int i = Block.START_BLOCK_P1; i <= Block.START_BLOCK_P4; i++)
+            for (int x = 0; x < SIZE; x++)
             {
-                if(!BlockImages.Images.TryGetValue(i, out var image))
-                    continue;
+                for (int y = 0; y < SIZE; y++)
+                {
+                    var block = _blocks[x, y];
 
-                blocks.Add(pos, image);
-                pos = new MyPoint(pos.X + 1, pos.Y);
+                    if(block == null)
+                        continue;
+
+                    yield return new SimpleBlock(block.ID) { Position = new MyPoint(x, y) };
+                }
             }
 
-            return blocks;
+
         }
 
     }
