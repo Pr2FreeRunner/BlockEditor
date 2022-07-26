@@ -16,6 +16,8 @@ namespace BlockEditor.ViewModels
 
         public event Action<Map> OnLoadMap;
         public event Action OnSaveMap;
+        public event Action OnTestMap;
+
 
 
 
@@ -131,6 +133,7 @@ namespace BlockEditor.ViewModels
 
         private void TestExecute(object obj)
         {
+            OnTestMap?.Invoke();
         }
     }
 }

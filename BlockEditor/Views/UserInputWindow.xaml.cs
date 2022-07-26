@@ -26,6 +26,7 @@ namespace BlockEditor.Views
             txtQuestion.Text = question;
             Title = title;
             txtResponse.Text = defaultValue;
+            UpdateButtons();
         }
 
         void PromptDialog_Loaded(object sender, RoutedEventArgs e)
@@ -73,6 +74,15 @@ namespace BlockEditor.Views
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void UpdateButtons()
+        {
+            btnOk.IsEnabled = !string.IsNullOrWhiteSpace(txtResponse.Text);
+        }
+        private void txtResponse_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateButtons();
         }
     }
 }

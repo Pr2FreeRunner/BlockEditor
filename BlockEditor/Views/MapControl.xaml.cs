@@ -1,4 +1,7 @@
-﻿using BlockEditor.ViewModels;
+﻿using BlockEditor.Helpers;
+using BlockEditor.ViewModels;
+using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace BlockEditor.Views
@@ -14,7 +17,16 @@ namespace BlockEditor.Views
             _vm.SelectedBlock = () => BlocksControl.SelectedBlock;
 
             MapButtons.ViewModel.OnLoadMap += _vm.LoadMap;
-            MapButtons.ViewModel.OnSaveMap += _vm.SaveMap;
+            MapButtons.ViewModel.OnSaveMap += () => MapUtil.Save(_vm.Map);
+            MapButtons.ViewModel.OnTestMap += () => MapUtil.TestInTasTool(_vm.Map);
+
+
+            this.Loaded += windowLoaded;
+        }
+
+        private void windowLoaded(object sender, RoutedEventArgs e)
+        {
+            _vm.GoToStartPosition();
         }
 
         private void OnLoaded(object sender, System.Windows.RoutedEventArgs e)

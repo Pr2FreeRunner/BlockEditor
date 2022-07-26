@@ -21,7 +21,7 @@
 
 
         <TextBlock Text="Question to ask?" Grid.Row="0" Name="txtQuestion" Margin="20, 20, 20, 10"/>
-        <TextBox Height="25" HorizontalAlignment="Stretch" Grid.Row="1" Name="txtResponse" Margin="20, 10, 20, 20"/>
+        <TextBox Height="25" HorizontalAlignment="Stretch" Grid.Row="1" Name="txtResponse" Margin="20, 10, 20, 20" TextChanged="txtResponse_TextChanged"/>
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="20" HorizontalAlignment="Right">
             <Button Width="100" Height="25" Content="Ok" IsDefault="True" Margin="5" Name="btnOk" Click="btnOk_Click" />
             <Button Width="100" Height="25" Content="Cancel" IsCancel="True" Margin="5" Name="btnCancel" Click="btnCancel_Click" />
