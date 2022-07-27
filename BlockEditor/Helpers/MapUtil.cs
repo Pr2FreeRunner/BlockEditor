@@ -26,7 +26,7 @@ namespace BlockEditor.Helpers
                 return;
 
             map.Title = title;
-
+            
             Upload(map);
         }
 

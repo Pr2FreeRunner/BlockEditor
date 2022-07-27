@@ -37,6 +37,7 @@ namespace BlockEditor.Models
         public string ToPr2String(string username, string token, bool overwrite)
         {
             _backend.Blocks = MyConverters.ToPr2Blocks(Blocks);
+            _backend.Published = false;
 
             if (username == null || token == null)
                 throw new ArgumentNullException("user");
