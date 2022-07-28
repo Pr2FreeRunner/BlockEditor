@@ -32,37 +32,32 @@ namespace BlockEditor.Helpers
 
         private static void Upload(Map map)
         {
-            var current = Mouse.OverrideCursor;
-
-            try
+            using(new TempCursor(Cursors.Wait))
             {
-                if (!CurrentUser.IsLoggedIn())
+                try
                 {
-                    MessageUtil.ShowError("Requires user to login.");
-                    return;
+                    if (!CurrentUser.IsLoggedIn())
+                    {
+                        MessageUtil.ShowError("Requires user to login.");
+                        return;
+                    }
+
+                    var data = map.ToPr2String(CurrentUser.Name, CurrentUser.Token, false);
+
+                    var msg = DataAccess.PR2Accessor.Upload(data, (arg) =>
+                    {
+                        AskToOverwrite(arg);
+
+                        if (arg.TryAgain)
+                            arg.NewLevelData = map.ToPr2String(CurrentUser.Name, CurrentUser.Token, true);
+                    });
+
+                    MessageUtil.ShowInfo(msg);
                 }
-
-                Mouse.OverrideCursor = Cursors.Wait;
-
-                var data = map.ToPr2String(CurrentUser.Name, CurrentUser.Token, false);
-
-                var msg = DataAccess.PR2Accessor.Upload(data, (arg) =>
+                catch (Exception ex)
                 {
-                    AskToOverwrite(arg);
-
-                    if (arg.TryAgain)
-                        arg.NewLevelData = map.ToPr2String(CurrentUser.Name, CurrentUser.Token, true);
-                });
-
-                MessageUtil.ShowInfo(msg);
-            }
-            catch (Exception ex)
-            {
-                MessageUtil.ShowError(ex.Message);
-            }
-            finally
-            {
-                Mouse.OverrideCursor = current;
+                    MessageUtil.ShowError(ex.Message);
+                }
             }
         }
 

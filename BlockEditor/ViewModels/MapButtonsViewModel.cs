@@ -53,62 +53,61 @@ namespace BlockEditor.ViewModels
             OnSaveMap?.Invoke();
         }
 
+        private void LoadLevel(int id)
+        {
+            using(new TempCursor(Cursors.Wait))
+            {
+                try
+                {
+                    var data = PR2Accessor.Download(id);
+
+                    if (string.IsNullOrWhiteSpace(data))
+                    {
+                        MessageUtil.ShowError("Failed to download level");
+                        return;
+                    }
+
+                    var levelInfo = PR2Parser.Level(data);
+
+                    if (levelInfo == null)
+                    {
+                        MessageUtil.ShowError("Failed to parse level");
+                        return;
+                    }
+
+                    if (levelInfo.Messages == null || levelInfo.Messages.Any())
+                    {
+                        MessageUtil.ShowMessages(levelInfo.Messages);
+                        return;
+                    }
+
+                    var map = new Map(levelInfo.Level);
+
+                    OnLoadMap?.Invoke(map);
+                }
+                catch (WebException ex)
+                {
+                    var r = ex.Response as HttpWebResponse;
+
+                    if (r != null && r.StatusCode == HttpStatusCode.NotFound)
+                        MessageUtil.ShowInfo("Level not found");
+                    else
+                        throw;
+                }
+            }
+        }
+
         private void LoadExecute(object obj)
         {
-            try
-            {
-                var input = UserInputWindow.Show("Level ID: ", "Input");
-                Mouse.OverrideCursor = Cursors.Wait;
+            var window  = new LoadMapWindow();
+            var success = window.ShowDialog();
 
-                if (string.IsNullOrWhiteSpace(input))
-                    return;
+            if(!success.HasValue || !success.Value)
+                return;
 
-                if (!MyConverters.TryParse(input, out var id))
-                {
-                    MessageUtil.ShowError("Invalid Level ID");
-                    return;
-                }
+            var levelID = window.SelectedLevelID;
 
-                var data = PR2Accessor.Download(id);
-
-                if (string.IsNullOrWhiteSpace(data))
-                {
-
-                    MessageUtil.ShowError("Failed to download level");
-                    return;
-                }
-
-                var levelInfo = PR2Parser.Level(data);
-
-                if (levelInfo == null)
-                {
-                    MessageUtil.ShowError("Failed to parse level");
-                    return;
-                }
-
-                if (levelInfo.Messages == null || levelInfo.Messages.Any())
-                {
-                    MessageUtil.ShowMessages(levelInfo.Messages);
-                    return;
-                }
-
-                var map = new Map(levelInfo.Level);
-
-                OnLoadMap?.Invoke(map);
-            }
-            catch(WebException ex)
-            {
-                var r = ex.Response as HttpWebResponse;
-
-                if (r != null && r.StatusCode == HttpStatusCode.NotFound)
-                    MessageUtil.ShowInfo("Level not found");
-                else
-                    throw;
-            }
-            finally
-            {
-                Mouse.OverrideCursor = null;
-            }
+            LoadLevel(levelID);
         }
 
         private void NewExecute(object obj)

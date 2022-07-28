@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="BlockEditor.Views.SearchResultControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             HorizontalAlignment="Stretch"
+             Height="25"
+             Margin="5"
+        >
+    <Button Name="btnTitle" Content="Trapwork Title" 
+            Click="btnTitle_Click" 
+            VerticalAlignment="Stretch" 
+            HorizontalAlignment="Stretch"
+            Padding="20,0,0,10"/>
+</UserControl>

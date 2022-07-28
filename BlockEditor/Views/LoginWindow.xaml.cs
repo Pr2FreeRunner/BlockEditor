@@ -37,7 +37,7 @@ namespace BlockEditor.Views
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
-            try
+            using(new TempCursor(Cursors.Wait))
             {
                 Mouse.OverrideCursor = Cursors.Wait;
 
@@ -54,11 +54,6 @@ namespace BlockEditor.Views
                 {
                     ErrorTextbox.Text = errorMsg;
                 }
-
-            }
-            finally
-            {
-                Mouse.OverrideCursor = null;
             }
         }
 
