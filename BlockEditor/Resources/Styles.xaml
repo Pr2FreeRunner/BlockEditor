@@ -9,6 +9,7 @@
     </LinearGradientBrush>
 
     <sys:Double x:Key="DefaultFontSize">14</sys:Double>
+    <Color           x:Key="StandardBackgroundLight">#D5EAF1</Color>
     <SolidColorBrush x:Key="StandardForeground" Color="Black" />
     <SolidColorBrush x:Key="StandardBackgroundMouseOver" Color="#97e973" />
     <SolidColorBrush x:Key="StandardBorderBrush" Color="DimGray" />
@@ -16,12 +17,10 @@
     <SolidColorBrush x:Key="StandardForegroundDisable" Color="#898989" />
     <SolidColorBrush x:Key="StandardBorderBrushIsPressed" Color="Gray" />
 
-    <Color x:Key="StandardBackgroundLight">#D5EAF1</Color>
 
     <Style TargetType="{x:Type TextBlock}">
         <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
     </Style>
-
 
     <Style TargetType="{x:Type Label}">
         <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
@@ -94,7 +93,7 @@
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="0" Value="#FFE8EDF9" />
+                                            <EasingColorKeyFrame KeyTime="0" Value="#c4c4c4" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>

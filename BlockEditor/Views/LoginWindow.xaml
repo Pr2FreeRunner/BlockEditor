@@ -10,7 +10,8 @@
         MinWidth="450"
         MinHeight="100"
         WindowStyle="SingleBorderWindow"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Loaded="Window_Loaded">
 
     <Grid Margin="00, 20, 0, 15">
         <Grid.RowDefinitions>

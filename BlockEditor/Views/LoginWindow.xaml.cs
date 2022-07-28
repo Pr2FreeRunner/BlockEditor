@@ -13,13 +13,6 @@ namespace BlockEditor.Views
         private string UserName { get; set; }
         private string Password { get; set; }
 
-        private bool IsOK()
-        {
-            return !string.IsNullOrWhiteSpace(UserName)
-               && !string.IsNullOrWhiteSpace(Password);
-
-        }
-
         public LoginWindow()
         {
             InitializeComponent();
@@ -33,6 +26,12 @@ namespace BlockEditor.Views
 
             CurrentUserPanel.Visibility = CurrentUser.IsLoggedIn() ? Visibility.Visible : Visibility.Collapsed;
             CurrentUserTextbox.Text     = CurrentUser.IsLoggedIn() ? CurrentUser.Name   : string.Empty;
+        }
+
+        private bool IsOK()
+        {
+            return !string.IsNullOrWhiteSpace(UserName)
+               && !string.IsNullOrWhiteSpace(Password);
         }
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
@@ -78,6 +77,11 @@ namespace BlockEditor.Views
         {
             CurrentUser.Logout();
             UpdateButton();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            NameTextbox.Focus();
         }
     }
 }

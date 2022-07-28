@@ -58,7 +58,7 @@ namespace BlockEditor.Models
         private static string GetBuildVersion()
         {
             var buildVersion = "6-jul-2022-v167_1";
-            var text = "What is the current Build-Version for Pr2?" 
+            var text = "What is the current build version for PR2?" 
                 + Environment.NewLine 
                 + Environment.NewLine 
                 + "Note: This can be found on the bottom right of the Credit page.";
@@ -73,7 +73,14 @@ namespace BlockEditor.Models
 
             try
             {
-                var version   = GetBuildVersion();
+                var version = GetBuildVersion();
+
+                if(string.IsNullOrWhiteSpace(version))
+                {
+                    errorMsg = string.Empty;
+                    return false;
+                }
+
                 var tokenInfo = PR2Accessor.GetToken(username, password, version);
 
                 if (tokenInfo.Success)

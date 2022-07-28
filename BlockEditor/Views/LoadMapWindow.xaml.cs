@@ -1,6 +1,7 @@
 ﻿using BlockEditor.Helpers;
 using BlockEditor.Models;
 using DataAccess;
+using Newtonsoft.Json.Linq;
 using Parsers;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace BlockEditor.Views
         private SearchBy _searchBy;
 
         private int _page = 1;
+        private string NOT_FOUND = "404 Not Found";
 
         public LoadMapWindow()
         {
@@ -33,11 +35,14 @@ namespace BlockEditor.Views
 
         private void AddSearchByItems()
         {
-            SearchByComboBox.Items.Clear();
+            Clean();
 
-            foreach (var type in Enum.GetValues(typeof(SearchBy)))
+            foreach (SearchBy type in Enum.GetValues(typeof(SearchBy)))
             {
-                var item = new ComboBoxItem();
+                if(type == SearchBy.MyLevels && CurrentUser.IsLoggedIn() == false)
+                    continue;
+
+                var item     = new ComboBoxItem();
                 item.Content = InsertSpaceBeforeCapitalLetter(type.ToString());
                 SearchByComboBox.Items.Add(item);
             }
@@ -57,18 +62,33 @@ namespace BlockEditor.Views
         private void AddSearchResults(IEnumerable<SearchResult> results)
         {
             if (results == null)
+            {
+                errorText.Content = NOT_FOUND;
                 return;
+            }
 
+            var any = false;
             foreach (var item in results)
             {
                 if (item == null)
                     continue;
+
+                any = true;
+
+                if(item == SearchResult.SLOW_DOWN)
+                {
+                    errorText.Content = "Slow down a bit, yo.";
+                    continue;
+                }
 
                 var control = new SearchResultControl(item);
                 control.OnSelectedLevel += OnSelectedLevel;
 
                 SearchResultPanel.Children.Add(control);
             }
+
+            if (!any)
+                errorText.Content = NOT_FOUND;
         }
 
         private void OnSelectedLevel(int id)
@@ -84,7 +104,7 @@ namespace BlockEditor.Views
             {
                 try
                 {
-                    SearchResultPanel.Children.Clear();
+                    Clean();
                     var search = searchTextbox.Text;
 
                     switch (_searchBy)
@@ -94,7 +114,12 @@ namespace BlockEditor.Views
                             break;
 
                         case SearchBy.ID:
-                            AddSearchResults(SearchByLevelId(search));
+                            var id = GetLevelID(search);
+
+                            if (id == null)
+                                errorText.Content = "Invalid Level ID";
+                            else
+                                AddSearchResults(SearchByLevelId(id.Value));
                             break;
 
                         case SearchBy.MyLevels:
@@ -111,12 +136,38 @@ namespace BlockEditor.Views
             }
         }
 
+        private bool IsSlowDownResponse(string data)
+        {
+            if (string.IsNullOrWhiteSpace(data))
+                return false;
+
+            try
+            {
+                var json = JObject.Parse(data);
+                var success = json?.GetValue("success")?.Value<bool>() ?? false;
+                var msg = json?.GetValue("error")?.Value<string>() ?? string.Empty;
+
+                return !success && msg != null && msg.Contains("Slow down", StringComparison.InvariantCultureIgnoreCase);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private IEnumerable<SearchResult> SearchByUsername(string username)
         {
             if (string.IsNullOrWhiteSpace(username))
                 yield break;
 
             var data = PR2Accessor.Search(username, _page);
+
+            if (IsSlowDownResponse(data))
+            {
+                yield return SearchResult.SLOW_DOWN;
+                yield break;
+            }
+
             var levels = PR2Parser.SearchResult(data);
 
             foreach (var l in levels)
@@ -137,6 +188,13 @@ namespace BlockEditor.Views
             }
 
             var data = PR2Accessor.LoadMyLevels(CurrentUser.Token);
+
+            if (IsSlowDownResponse(data))
+            {
+                yield return SearchResult.SLOW_DOWN;
+                yield break;
+            }
+
             var levels = PR2Parser.LoadResult(data);
 
             foreach (var l in levels)
@@ -148,55 +206,63 @@ namespace BlockEditor.Views
             }
         }
 
-        private IEnumerable<SearchResult> SearchByLevelId(string levelID)
+        private int? GetLevelID(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return null;
+
+            if (!MyConverters.TryParse(input, out var id))
+                return null;
+
+            return id;
+        }
+
+        private IEnumerable<SearchResult> SearchByLevelId(int id)
         {
             SearchResult result = null;
 
             try
             {
-                if (string.IsNullOrWhiteSpace(levelID))
-                    yield break;
-
-                if (!MyConverters.TryParse(levelID, out var id))
-                {
-                    MessageUtil.ShowError("Invalid Level ID");
-                    yield break;
-                }
-
                 var data = PR2Accessor.Download(id);
 
                 if (string.IsNullOrWhiteSpace(data))
-                {
-                    MessageUtil.ShowError("Failed to download level");
                     yield break;
-                }
 
-                var levelInfo = PR2Parser.Level(data);
-
-                if (levelInfo?.Level?.Title == null)
+                if (IsSlowDownResponse(data))
                 {
-                    MessageUtil.ShowError("Failed to parse level");
-                    yield break;
+                    result = SearchResult.SLOW_DOWN;
                 }
-
-                if (levelInfo.Messages == null || levelInfo.Messages.Any())
+                else
                 {
-                    MessageUtil.ShowMessages(levelInfo.Messages);
-                    yield break;
-                }
+                    var levelInfo = PR2Parser.Level(data);
 
-                result = new SearchResult(levelInfo.Level.LevelID, levelInfo.Level.Title);
+                    if (levelInfo?.Level?.Title == null)
+                    {
+                        MessageUtil.ShowError("Failed to parse level");
+                        yield break;
+                    }
+
+                    result = new SearchResult(levelInfo.Level.LevelID, levelInfo.Level.Title);
+                }
             }
             catch (WebException ex)
             {
                 var r = ex.Response as HttpWebResponse;
 
                 if (r != null && r.StatusCode == HttpStatusCode.NotFound)
-                    MessageUtil.ShowInfo("Level not found");
+                    yield break;
+                else
+                    throw;
             }
 
             if (result != null)
                 yield return result;
+        }
+
+        private void Clean()
+        {
+            errorText.Content = string.Empty;
+            SearchResultPanel.Children.Clear();
         }
 
         private void SearchBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -204,7 +270,7 @@ namespace BlockEditor.Views
             try
             {
                 _searchBy = (SearchBy)SearchByComboBox.SelectedIndex;
-                SearchResultPanel.Children.Clear();
+                Clean();
             }
             catch (Exception ex)
             {
@@ -213,7 +279,7 @@ namespace BlockEditor.Views
 
             UpdateButtons();
 
-            if(_searchBy == SearchBy.MyLevels)
+            if (_searchBy == SearchBy.MyLevels)
             {
                 searchTextbox.Text = string.Empty;
                 Search_Click(null, null);
@@ -231,8 +297,8 @@ namespace BlockEditor.Views
             var pageOk = ok && _searchBy == SearchBy.Username;
 
             btnSearch.IsEnabled = ok;
-            btnRightPage.IsEnabled  = pageOk;
-            btnLeftPage.IsEnabled   = pageOk && _page > 1;
+            btnRightPage.IsEnabled = pageOk;
+            btnLeftPage.IsEnabled = pageOk && _page > 1;
             searchTextbox.IsEnabled = _searchBy != SearchBy.MyLevels;
 
             PageText.Text = _page.ToString(CultureInfo.InvariantCulture);
@@ -240,6 +306,7 @@ namespace BlockEditor.Views
 
         private void searchTextbox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            errorText.Content = string.Empty;
             UpdateButtons();
         }
 

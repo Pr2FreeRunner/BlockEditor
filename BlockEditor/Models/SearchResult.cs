@@ -11,5 +11,6 @@
             Title = title;
         }
 
+        public static readonly SearchResult SLOW_DOWN = new SearchResult(int.MinValue, string.Empty);
     }
 }

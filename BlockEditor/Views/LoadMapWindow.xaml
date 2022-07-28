@@ -27,7 +27,16 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" Content="Search:" VerticalAlignment="Bottom" Margin="0"/>
+            <Grid Grid.Row="0" Grid.Column="0"  Margin="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" Content="Search:" VerticalAlignment="Bottom" Margin="0" Foreground="Green" FontWeight="SemiBold"/>
+                <Label Grid.Column="1" Content="Error" Name="errorText" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Red"/>
+
+            </Grid>
             <ComboBox Grid.Row="0" Name="SearchByComboBox" Grid.Column="1" SelectedIndex="0" Margin="5,5,5,5" SelectionChanged="SearchBy_SelectionChanged"/>
 
             <TextBox Name="searchTextbox" Grid.Row="1" Grid.Column="0" Margin="5,0,0,0" HorizontalAlignment="Stretch" TextChanged="searchTextbox_TextChanged"/>
