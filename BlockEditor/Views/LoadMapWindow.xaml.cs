@@ -204,6 +204,7 @@ namespace BlockEditor.Views
             try
             {
                 _searchBy = (SearchBy)SearchByComboBox.SelectedIndex;
+                SearchResultPanel.Children.Clear();
             }
             catch (Exception ex)
             {
@@ -211,6 +212,12 @@ namespace BlockEditor.Views
             }
 
             UpdateButtons();
+
+            if(_searchBy == SearchBy.MyLevels)
+            {
+                searchTextbox.Text = string.Empty;
+                Search_Click(null, null);
+            }
         }
 
         private bool IsOKToSearch()
@@ -224,8 +231,9 @@ namespace BlockEditor.Views
             var pageOk = ok && _searchBy == SearchBy.Username;
 
             btnSearch.IsEnabled = ok;
-            btnRightPage.IsEnabled = pageOk;
-            btnLeftPage.IsEnabled = pageOk && _page > 1;
+            btnRightPage.IsEnabled  = pageOk;
+            btnLeftPage.IsEnabled   = pageOk && _page > 1;
+            searchTextbox.IsEnabled = _searchBy != SearchBy.MyLevels;
 
             PageText.Text = _page.ToString(CultureInfo.InvariantCulture);
         }
