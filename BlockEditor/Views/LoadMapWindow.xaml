@@ -47,9 +47,9 @@
                 HorizontalAlignment="Center" 
                 Margin="15" Padding="5">
             <StackPanel Orientation="Horizontal">
-                <Button Width="30" Height="30" Content="&#9664;" Click="OnPreviousPage"/>
-                <Label Content="1" FontWeight="SemiBold" FontSize="15" Name="PageLabel" Margin="10,0,10,0"/>
-                <Button Width="30" Height="30" Content="&#9654;" Click="OnNextPage"/>
+                <Button Name="btnLeftPage" Width="30" Height="30" Content="&#9664;" Click="OnPreviousPage"/>
+                <TextBlock Text="1" FontWeight="SemiBold" FontSize="15" Name="PageText" Margin="15,0,15,0" VerticalAlignment="Center"/>
+                <Button Name="btnRightPage" Width="30" Height="30" Content="&#9654;" Click="OnNextPage"/>
             </StackPanel>
         </Border>
     </Grid>

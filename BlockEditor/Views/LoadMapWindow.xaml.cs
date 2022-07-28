@@ -4,6 +4,7 @@ using DataAccess;
 using Parsers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Windows;
@@ -45,10 +46,10 @@ namespace BlockEditor.Views
 
         private string InsertSpaceBeforeCapitalLetter(string input)
         {
-            if(string.IsNullOrWhiteSpace(input))
+            if (string.IsNullOrWhiteSpace(input))
                 return string.Empty;
 
-            if(string.Equals("ID", input, StringComparison.InvariantCultureIgnoreCase))
+            if (string.Equals("ID", input, StringComparison.InvariantCultureIgnoreCase))
                 return input;
 
             return string.Concat(input.ToString().Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
@@ -80,42 +81,48 @@ namespace BlockEditor.Views
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            using(new TempCursor(Cursors.Wait)) 
-            { 
-
-                SearchResultPanel.Children.Clear();
-                var search = searchTextbox.Text;
-
-                switch (_searchBy)
+            using (new TempCursor(Cursors.Wait))
+            {
+                try
                 {
-                    case SearchBy.Username:
-                        AddSearchResults(SearchByUsername(search));
-                        break;
+                    SearchResultPanel.Children.Clear();
+                    var search = searchTextbox.Text;
 
-                    case SearchBy.ID:
-                        AddSearchResults(SearchByLevelId(search));
-                        break;
+                    switch (_searchBy)
+                    {
+                        case SearchBy.Username:
+                            AddSearchResults(SearchByUsername(search));
+                            break;
 
-                    case SearchBy.MyLevels:
-                        AddSearchResults(SearchMyLevels());
-                        break;
+                        case SearchBy.ID:
+                            AddSearchResults(SearchByLevelId(search));
+                            break;
 
-                    default: throw new Exception("Something is wrong...");
+                        case SearchBy.MyLevels:
+                            AddSearchResults(SearchMyLevels());
+                            break;
+
+                        default: throw new Exception("Something is wrong...");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageUtil.ShowError(ex.Message);
                 }
             }
         }
 
         private IEnumerable<SearchResult> SearchByUsername(string username)
         {
-            if(string.IsNullOrWhiteSpace(username))
+            if (string.IsNullOrWhiteSpace(username))
                 yield break;
 
-            var data   = PR2Accessor.Search(username, _page);
+            var data = PR2Accessor.Search(username, _page);
             var levels = PR2Parser.SearchResult(data);
 
             foreach (var l in levels)
             {
-                if(l == null)
+                if (l == null)
                     continue;
 
                 yield return new SearchResult(l.LevelID, l.Title);
@@ -124,7 +131,7 @@ namespace BlockEditor.Views
 
         private IEnumerable<SearchResult> SearchMyLevels()
         {
-            if(!CurrentUser.IsLoggedIn())
+            if (!CurrentUser.IsLoggedIn())
             {
                 MessageUtil.ShowError("Requires user to login");
                 yield break;
@@ -189,7 +196,7 @@ namespace BlockEditor.Views
                     MessageUtil.ShowInfo("Level not found");
             }
 
-            if(result != null)
+            if (result != null)
                 yield return result;
         }
 
@@ -214,7 +221,14 @@ namespace BlockEditor.Views
 
         private void UpdateButtons()
         {
-            btnSearch.IsEnabled = IsOKToSearch();
+            var ok = IsOKToSearch();
+            var pageOk = ok && _searchBy == SearchBy.Username;
+
+            btnSearch.IsEnabled = ok;
+            btnRightPage.IsEnabled = pageOk;
+            btnLeftPage.IsEnabled = pageOk && _page > 1;
+
+            PageText.Text = _page.ToString(CultureInfo.InvariantCulture);
         }
 
         private void searchTextbox_TextChanged(object sender, TextChangedEventArgs e)
@@ -224,11 +238,11 @@ namespace BlockEditor.Views
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if(!IsOKToSearch())
+            if (!IsOKToSearch())
                 return;
 
-            if(e.Key == Key.Enter)
-                Search_Click(null , null);
+            if (e.Key == Key.Enter)
+                Search_Click(null, null);
 
             UpdateButtons();
         }
@@ -240,12 +254,35 @@ namespace BlockEditor.Views
 
         private void OnPreviousPage(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                _page--;
+
+                Search_Click(null, null);
+
+                UpdateButtons();
+            }
+            catch (Exception ex)
+            {
+                MessageUtil.ShowError(ex.Message);
+            }
 
         }
 
         private void OnNextPage(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                _page++;
 
+                Search_Click(null, null);
+
+                UpdateButtons();
+            }
+            catch (Exception ex)
+            {
+                MessageUtil.ShowError(ex.Message);
+            }
         }
     }
 }
