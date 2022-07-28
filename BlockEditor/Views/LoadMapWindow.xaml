@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen"
         PreviewKeyDown="Window_PreviewKeyDown"
         Loaded="Window_Loaded">
-    <Grid Margin="20" Width="450">
+    <Grid Margin="20,20,20,5" Width="450">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -34,7 +34,7 @@
             <Button Name="btnSearch" Grid.Row="1" Grid.Column="1" Margin="5,0,5,0"  Width="100" Content="Search" Click="Search_Click"/>
         </Grid>
 
-        <Border Grid.Row="1" Background="{StaticResource StandardBackground}" CornerRadius="20" Margin="0,20,0,0" Padding="5" MaxHeight="420">
+        <Border Grid.Row="1" Background="{StaticResource StandardBackground}" CornerRadius="20" Margin="0,20,0,0" Padding="5" MaxHeight="395">
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Center" HorizontalAlignment="Stretch">
                 <StackPanel CanVerticallyScroll="True" Name="SearchResultPanel" HorizontalAlignment="Stretch" Orientation="Vertical" MinHeight="210"/>
             </ScrollViewer>
@@ -45,10 +45,10 @@
                 Background="{StaticResource StandardBackground}"
                 VerticalAlignment="Center" 
                 HorizontalAlignment="Center" 
-                Margin="15" Padding="5">
+                Margin="15,15,15,10" Padding="12">
             <StackPanel Orientation="Horizontal">
                 <Button Name="btnLeftPage" Width="30" Height="30" Content="&#9664;" Click="OnPreviousPage"/>
-                <TextBlock Text="1" FontWeight="SemiBold" FontSize="15" Name="PageText" Margin="15,0,15,0" VerticalAlignment="Center"/>
+                <TextBlock Text="1" FontWeight="SemiBold" FontSize="16" Name="PageText" Margin="15,0,15,0" VerticalAlignment="Center"/>
                 <Button Name="btnRightPage" Width="30" Height="30" Content="&#9654;" Click="OnNextPage"/>
             </StackPanel>
         </Border>

@@ -14,7 +14,6 @@ using System.Windows.Input;
 namespace BlockEditor.Views
 {
 
-
     public partial class LoadMapWindow : Window
     {
         private enum SearchBy { Username, ID, MyLevels }
