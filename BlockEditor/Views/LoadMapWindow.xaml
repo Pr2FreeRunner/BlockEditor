@@ -37,10 +37,10 @@
                 <Label Grid.Column="1" Content="Error" Name="errorText" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Red"/>
 
             </Grid>
-            <ComboBox Grid.Row="0" Name="SearchByComboBox" Grid.Column="1" SelectedIndex="0" Margin="5,5,5,5" SelectionChanged="SearchBy_SelectionChanged"/>
+            <ComboBox Grid.Row="0" Name="SearchByComboBox" Grid.Column="1" SelectedIndex="0" Margin="7,5,7,5" SelectionChanged="SearchBy_SelectionChanged"/>
 
             <TextBox Name="searchTextbox" Grid.Row="1" Grid.Column="0" Margin="5,0,0,0" HorizontalAlignment="Stretch" TextChanged="searchTextbox_TextChanged"/>
-            <Button Name="btnSearch" Grid.Row="1" Grid.Column="1" Margin="5,0,5,0"  Width="100" Content="Search" Click="Search_Click"/>
+            <Button Name="btnSearch" Grid.Row="1" Grid.Column="1" Margin="7,0,7,0"  Content="Search" Click="Search_Click"/>
         </Grid>
 
         <Border Grid.Row="1" Background="{StaticResource StandardBackground}" CornerRadius="20" Margin="0,20,0,0" Padding="5" MaxHeight="395">
