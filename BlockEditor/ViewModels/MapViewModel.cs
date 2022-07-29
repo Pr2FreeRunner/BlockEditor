@@ -33,6 +33,10 @@ namespace BlockEditor.ViewModels
             set { RaisePropertyChanged(ref _mapContent, value); }
         }
 
+        internal void OnZoomChanged(double obj)
+        {
+            
+        }
 
         public Func<ImageBlock> SelectedBlock { get; set; }
 

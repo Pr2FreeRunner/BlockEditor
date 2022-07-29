@@ -20,6 +20,7 @@ namespace BlockEditor.Views
             MapButtons.ViewModel.OnSaveMap += () => MapUtil.Save(ViewModel.Map);
             MapButtons.ViewModel.OnTestMap += () => MapUtil.TestInTasTool(ViewModel.Map);
 
+            ZoomControl.ViewModel.OnZoomChanged += ViewModel.OnZoomChanged;
 
             this.Loaded += windowLoaded;
         }
