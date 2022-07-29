@@ -421,7 +421,10 @@ namespace BlockEditor.Views.Windows
                 return;
 
             if (e.Key == Key.Enter)
+            {
                 Search_Click(null, null);
+                e.Handled = true;
+            }
 
             UpdateButtons();
         }
