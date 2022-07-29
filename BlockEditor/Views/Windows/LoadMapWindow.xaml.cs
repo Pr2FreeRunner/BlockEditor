@@ -239,7 +239,7 @@ namespace BlockEditor.Views.Windows
                 if (l == null)
                     continue;
 
-                yield return new SearchResult(l.LevelID, l.Title);
+                yield return new SearchResult(l.LevelID, l.Title, l.UserName);
             }
         }
 
@@ -266,7 +266,7 @@ namespace BlockEditor.Views.Windows
                 if (l == null)
                     continue;
 
-                yield return new SearchResult(l.LevelID, l.Title);
+                yield return new SearchResult(l.LevelID, l.Title, l.UserName);
             }
         }
 
@@ -293,7 +293,7 @@ namespace BlockEditor.Views.Windows
                 if (l == null)
                     continue;
 
-                yield return new SearchResult(l.LevelID, l.Title);
+                yield return new SearchResult(l.LevelID, l.Title , l.UserName);
             }
         }
 

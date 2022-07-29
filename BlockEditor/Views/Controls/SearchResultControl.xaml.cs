@@ -22,6 +22,7 @@ namespace BlockEditor.Views.Controls
 
             _id = result.ID;
             btnTitle.Content = result.Title;
+            btnTitle.ToolTip = "Created By:  " +  (result.CreatedBy ?? string.Empty);
         }
 
         private void btnTitle_Click(object sender, RoutedEventArgs e)
