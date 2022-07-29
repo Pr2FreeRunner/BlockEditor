@@ -21,7 +21,8 @@ namespace BlockEditor.Views.Windows
 
     public partial class LoadMapWindow : Window
     {
-        private enum SearchBy { Username, ID, LocalFile, MyLevels } // my levels must be last
+        // those depending on login must be last
+        private enum SearchBy { Username, ID, LocalFile, Newest, MyLevels } 
 
         public int SelectedLevelID { get; private set; }
         public Level SelectedLevel { get; private set; }
@@ -30,8 +31,8 @@ namespace BlockEditor.Views.Windows
         private SearchBy _searchBy;
 
         private int _page = 1;
+
         private string NOT_FOUND = "404 Not Found";
-        private bool _ignoreNotFound;
 
         public LoadMapWindow()
         {
@@ -47,6 +48,9 @@ namespace BlockEditor.Views.Windows
             foreach (SearchBy type in Enum.GetValues(typeof(SearchBy)))
             {
                 if(type == SearchBy.MyLevels && CurrentUser.IsLoggedIn() == false)
+                    continue;
+
+                if (type == SearchBy.Newest && CurrentUser.IsLoggedIn() == false)
                     continue;
 
                 var item     = new ComboBoxItem();
@@ -70,8 +74,7 @@ namespace BlockEditor.Views.Windows
         {
             if (results == null)
             {
-                errorText.Content = _ignoreNotFound ? errorText.Content : NOT_FOUND;
-                _ignoreNotFound = false;
+                errorText.Content = NOT_FOUND;
                 return;
             }
 
@@ -97,16 +100,19 @@ namespace BlockEditor.Views.Windows
 
             if (!any)
             {
-                errorText.Content = _ignoreNotFound ? errorText.Content : NOT_FOUND;
+                errorText.Content = NOT_FOUND;
             }
-
-            _ignoreNotFound = false;
         }
 
         private void OnSelectedLevel(int id)
         {
             SelectedLevelID = id;
-            DialogResult = true;
+            Close(true);
+        }
+
+        private void Close(bool success)
+        {
+            DialogResult = success;
             Close();
         }
 
@@ -142,6 +148,9 @@ namespace BlockEditor.Views.Windows
                             AddSearchResults(SearchLocalFile());
                             break;
 
+                        case SearchBy.Newest:
+                            AddSearchResults(SearchNewest());
+                            break;
                         default: throw new Exception("Something is wrong...");
                     }
                 }
@@ -150,6 +159,8 @@ namespace BlockEditor.Views.Windows
                     MessageUtil.ShowError(ex.Message);
                 }
             }
+
+            UpdateButtons();
         }
 
         private IEnumerable<SearchResult> SearchLocalFile()
@@ -165,16 +176,17 @@ namespace BlockEditor.Views.Windows
             { 
                 var levelInfo = PR2Parser.Level(data);
 
-                if (levelInfo.Messages.Any())
+                if (levelInfo?.Messages?.Where(m => m != null).Any() == true)
                 {
                     MessageUtil.ShowMessages(levelInfo.Messages);
+                    Close(false);
                     yield break;
                 }
 
                 if (levelInfo?.Level?.Title == null)
                 {
-                    MessageUtil.ShowError("Failed to parse level");
-                    _ignoreNotFound = true;
+                    MessageUtil.ShowError("Failed to parse level.");
+                    Close(false);
                     yield break;
                 }
 
@@ -183,8 +195,8 @@ namespace BlockEditor.Views.Windows
             }
             catch
             {
-                MessageUtil.ShowError("Failed to parse level");
-                _ignoreNotFound = true;
+                MessageUtil.ShowError("Failed to parse level.");
+                Close(false);
             }
         }
 
@@ -213,6 +225,33 @@ namespace BlockEditor.Views.Windows
                 yield break;
 
             var data = PR2Accessor.Search(username, _page);
+
+            if (IsSlowDownResponse(data))
+            {
+                yield return SearchResult.SLOW_DOWN;
+                yield break;
+            }
+
+            var levels = PR2Parser.SearchResult(data);
+
+            foreach (var l in levels)
+            {
+                if (l == null)
+                    continue;
+
+                yield return new SearchResult(l.LevelID, l.Title);
+            }
+        }
+
+        private IEnumerable<SearchResult> SearchNewest()
+        {
+            if (!CurrentUser.IsLoggedIn())
+            {
+                MessageUtil.ShowError("Requires user to login");
+                yield break;
+            }
+
+            var data = PR2Accessor.Newest(_page, CurrentUser.Token);
 
             if (IsSlowDownResponse(data))
             {
@@ -291,14 +330,14 @@ namespace BlockEditor.Views.Windows
                     if (levelInfo.Messages.Any())
                     {
                         MessageUtil.ShowMessages(levelInfo.Messages);
-                        _ignoreNotFound = true;
+                        Close(false);
                         yield break;
                     }
 
                     if (levelInfo?.Level?.Title == null)
                     {
-                        MessageUtil.ShowError("Failed to parse level");
-                        _ignoreNotFound = true;
+                        MessageUtil.ShowError("Failed to parse level.");
+                        Close(false);
                         yield break;
                     }
 
@@ -330,6 +369,7 @@ namespace BlockEditor.Views.Windows
         {
             try
             {
+                _page = 1;
                 _searchBy = (SearchBy)SearchByComboBox.SelectedIndex;
                 Clean();
             }
@@ -340,7 +380,9 @@ namespace BlockEditor.Views.Windows
 
             UpdateButtons();
 
-            if (_searchBy == SearchBy.MyLevels || _searchBy == SearchBy.LocalFile)
+            if (_searchBy == SearchBy.MyLevels 
+                         || _searchBy == SearchBy.LocalFile
+                         || _searchBy == SearchBy.Newest)
             {
                 searchTextbox.Text = string.Empty;
                 Search_Click(null, null);
@@ -349,20 +391,20 @@ namespace BlockEditor.Views.Windows
 
         private bool IsOKToSearch()
         {
-            return !string.IsNullOrWhiteSpace(searchTextbox.Text) 
-                || _searchBy == SearchBy.MyLevels
-                || _searchBy == SearchBy.LocalFile;
+            return !string.IsNullOrWhiteSpace(searchTextbox.Text) || _searchBy == SearchBy.LocalFile;
         }
 
         private void UpdateButtons()
         {
-            var ok = IsOKToSearch();
-            var pageOk = ok && _searchBy == SearchBy.Username;
+            var ok     = IsOKToSearch();
+            var pageOk = (ok && _searchBy == SearchBy.Username) ||  _searchBy == SearchBy.Newest;
 
             btnSearch.IsEnabled = ok;
             btnRightPage.IsEnabled = pageOk;
-            btnLeftPage.IsEnabled = pageOk && _page > 1;
-            searchTextbox.IsEnabled = _searchBy != SearchBy.MyLevels && _searchBy != SearchBy.LocalFile;
+            btnLeftPage.IsEnabled  = pageOk && _page > 1;
+            searchTextbox.IsEnabled = _searchBy != SearchBy.MyLevels 
+                                    && _searchBy != SearchBy.LocalFile
+                                    && _searchBy != SearchBy.Newest;
 
             PageText.Text = _page.ToString(CultureInfo.InvariantCulture);
         }
@@ -431,5 +473,6 @@ namespace BlockEditor.Views.Windows
             
             return string.Empty;
         }
+
     }
 }

@@ -60,6 +60,9 @@ namespace BlockEditor.Helpers
                             arg.NewLevelData = map.ToPr2String(CurrentUser.Name, CurrentUser.Token, publish, true);
                     });
 
+                    if(msg != null && msg.Contains("message=", StringComparison.InvariantCultureIgnoreCase))
+                        msg = msg.Replace("message=", "");
+
                     MessageUtil.ShowInfo(msg);
                 }
                 catch (Exception ex)
@@ -82,7 +85,7 @@ namespace BlockEditor.Helpers
 
                     File.WriteAllText(filepath, data);
 
-                    MessageUtil.ShowInfo("The level was saved");
+                    MessageUtil.ShowInfo("The save was successful.");
                 }
                 catch (Exception ex)
                 {

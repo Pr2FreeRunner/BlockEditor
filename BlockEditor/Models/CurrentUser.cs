@@ -69,7 +69,7 @@ namespace BlockEditor.Models
 
         public static bool Login(string username, string password, out string errorMsg)
         {
-            var fallbackError = "Failed to login";
+            var fallbackError = "Failed to login.";
             Logout();
 
             try

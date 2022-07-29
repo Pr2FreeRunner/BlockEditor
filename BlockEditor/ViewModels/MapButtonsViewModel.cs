@@ -66,7 +66,7 @@ namespace BlockEditor.ViewModels
 
                     if (string.IsNullOrWhiteSpace(data))
                     {
-                        MessageUtil.ShowError("Failed to download level");
+                        MessageUtil.ShowError("Failed to download level.");
                         return;
                     }
 
@@ -74,7 +74,7 @@ namespace BlockEditor.ViewModels
 
                     if (levelInfo == null)
                     {
-                        MessageUtil.ShowError("Failed to parse level");
+                        MessageUtil.ShowError("Failed to parse level.");
                         return;
                     }
 
@@ -91,7 +91,7 @@ namespace BlockEditor.ViewModels
                     var r = ex.Response as HttpWebResponse;
 
                     if (r != null && r.StatusCode == HttpStatusCode.NotFound)
-                        MessageUtil.ShowInfo("Level not found");
+                        MessageUtil.ShowInfo("Level not found.");
                     else
                         throw;
                 }

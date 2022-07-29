@@ -1,8 +1,6 @@
-﻿using BlockEditor.Models;
+﻿using BlockEditor.Views.Windows;
 using LevelModel.DTO;
-using System;
-using System.Windows;
-using System.Windows.Input;
+
 using static LevelModel.DTO.Message;
 
 namespace BlockEditor.Helpers
@@ -15,8 +13,7 @@ namespace BlockEditor.Helpers
             if (string.IsNullOrWhiteSpace(msg))
                 return;
 
-            using(new TempCursor(null))
-                MessageBox.Show(msg, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageWindow.Show(msg, MessageWindow.MessageWindowType.Error);
         }
 
         public static void ShowInfo(string msg)
@@ -24,8 +21,7 @@ namespace BlockEditor.Helpers
             if(string.IsNullOrWhiteSpace(msg))
                 return;
 
-            using (new TempCursor(null))
-                MessageBox.Show(msg, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageWindow.Show(msg, MessageWindow.MessageWindowType.Info);
         }
 
         public static void ShowWarning(string msg)
@@ -33,8 +29,7 @@ namespace BlockEditor.Helpers
             if (string.IsNullOrWhiteSpace(msg))
                 return;
 
-            using (new TempCursor(null))
-                MessageBox.Show(msg, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageWindow.Show(msg, MessageWindow.MessageWindowType.Warning);
         }
 
         public static void ShowMessage(Message msg)
