@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Media.Imaging;
 using BlockEditor.Helpers;
@@ -10,11 +9,13 @@ namespace BlockEditor.Models
 {
     public static class BlockImages {
 
-        public static Dictionary<int, ImageBlock> Images;
+        private static Dictionary<int, ImageBlock> _images;
+        public const int _unknownID = 99;
+        private static ImageBlock _unknownBlock;
 
         public static void Init()
         {
-            Images = new Dictionary<int, ImageBlock>();
+            _images = new Dictionary<int, ImageBlock>();
 
             LoadImages();
         }
@@ -59,6 +60,31 @@ namespace BlockEditor.Models
             }
         }
 
+        public static ImageBlock GetImageBlock(int id)
+        {
+            if(_images == null)
+                return null;
+
+            if(_images.TryGetValue(id, out var image))
+                return image;
+
+            return _unknownBlock;
+        }
+
+        public static IEnumerable<ImageBlock> GetImageBlocks()
+        {
+            if (_images == null)
+                yield break;
+
+            foreach (var i in _images)
+            {
+                if(i.Value == null)
+                    continue;
+
+                yield return i.Value;
+            } 
+        }
+
         private static void LoadImages()
         {
             var files = GetFiles();
@@ -74,7 +100,10 @@ namespace BlockEditor.Models
                 if (image == null)
                     continue;
 
-                Images.Add(image.ID, image);
+                if(image.ID == _unknownID)
+                    _unknownBlock = image;
+                else
+                    _images.Add(image.ID, image);
             }
         }
 

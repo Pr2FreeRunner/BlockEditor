@@ -153,6 +153,9 @@
     <None Update="Resources\Blocks\132.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\Blocks\99.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\Blocks\Brick.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

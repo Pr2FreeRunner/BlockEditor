@@ -24,12 +24,12 @@ namespace BlockEditor.Views.Controls
 
         private void AddBlocks()
         {
-            foreach (var image in BlockImages.Images)
+            foreach (var image in BlockImages.GetImageBlocks())
             {
-                if (image.Value == null)
+                if (image == null)
                     continue;
 
-                BlockContainer.Children.Add(CreateBorder(image.Value));
+                BlockContainer.Children.Add(CreateBorder(image));
             }
         }
 

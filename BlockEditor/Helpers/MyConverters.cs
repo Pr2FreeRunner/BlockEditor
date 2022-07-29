@@ -34,10 +34,7 @@ namespace BlockEditor.Helpers
 
                 var pos = new MyPoint(posX, posY);
 
-                if (BlockImages.Images.TryGetValue(b.Id, out var image))
-                    blocks.Add(pos, image);
-                else
-                    Debugger.Break();
+                blocks.Add(pos, BlockImages.GetImageBlock(b.Id));
             }
 
             return blocks;
