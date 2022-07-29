@@ -2,6 +2,7 @@
 using DataAccess;
 using BlockEditor.Helpers;
 using BlockEditor.Views;
+using BlockEditor.Views.Windows;
 
 namespace BlockEditor.Models
 {

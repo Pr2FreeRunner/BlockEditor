@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace BlockEditor.Views
+namespace BlockEditor.Views.Controls
 {
     public partial class BlocksControl : UserControl
     {
@@ -12,6 +12,7 @@ namespace BlockEditor.Views
         public ImageBlock SelectedBlock { get; private set; }
 
         private Border _selectedBorder { get; set; }
+
 
         public BlocksControl()
         {

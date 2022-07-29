@@ -15,7 +15,6 @@ using System.Windows.Threading;
 
 namespace BlockEditor.ViewModels
 {
-
     public class MapViewModel : NotificationObject
     {
 
@@ -33,18 +32,12 @@ namespace BlockEditor.ViewModels
             set { RaisePropertyChanged(ref _mapContent, value); }
         }
 
-        internal void OnZoomChanged(double obj)
-        {
-            
-        }
-
         public Func<ImageBlock> SelectedBlock { get; set; }
 
         public GameEngine Engine { get; }
-        public RelayCommand ZoomCommand { get; set; }
         public Map Map { get; private set; }
 
-        private MyPoint _camera { get; set; }
+        private Camera _camera { get; set; }
         private MyPoint _mapSize;
 
         public MapViewModel()
@@ -53,63 +46,12 @@ namespace BlockEditor.ViewModels
             Engine = new GameEngine();
             Engine.OnFrame += OnFrame;
             Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
-            ZoomCommand = new RelayCommand(OnZoomChanged);
-        }
-
-        private void OnZoomChanged(object obj)
-        {
-            if (!(obj is string zoom))
-                return;
-
-            if (string.Equals("+", zoom, StringComparison.CurrentCultureIgnoreCase))
-            {
-
-            }
-            else if (string.Equals("+", zoom, StringComparison.CurrentCultureIgnoreCase))
-            {
-
-            }
         }
 
         private void OnFrame()
         {
             DrawBlocks();
-            MoveCamera();
-        }
-
-        private void MoveCamera()
-        {
-            var currentX = _camera.X;
-            var currentY = _camera.Y;
-            var moveStrength = 20;
-
-            if (Keyboard.IsKeyDown(Key.Up))
-                currentY -= moveStrength;
-
-            if (Keyboard.IsKeyDown(Key.Down))
-                currentY += moveStrength;
-
-            if (Keyboard.IsKeyDown(Key.Right))
-                currentX += moveStrength;
-
-            if (Keyboard.IsKeyDown(Key.Left))
-                currentX -= moveStrength;
-
-            if (currentX < 0)
-                currentX = 0;
-
-            if (currentY < 0)
-                currentY = 0;
-
-            var maxWidth = Blocks.SIZE * Map.Blocks.BlockWidth;
-            if (currentX > maxWidth)
-                currentX = maxWidth;
-
-            var maxHeight = Blocks.SIZE * Map.Blocks.BlockWidth;
-            if (currentY > maxHeight)
-                currentY = maxHeight;
-
-            _camera = new MyPoint(currentX, currentY); // need to make thread safe?
+            _camera = _camera.Move(Map.Blocks.BlockWidth, Map.Blocks.BlockHeight);
         }
 
         private void DrawBlocks()
@@ -117,8 +59,8 @@ namespace BlockEditor.ViewModels
             var width = _mapSize.X;
             var height = _mapSize.Y;
 
-            var minBlockX = _camera.X / Map.Blocks.BlockWidth;
-            var minBlockY = _camera.Y / Map.Blocks.BlockHeight;
+            var minBlockX = _camera.Position.X / Map.Blocks.BlockWidth;
+            var minBlockY = _camera.Position.Y / Map.Blocks.BlockHeight;
 
             var blockCountX = width / Map.Blocks.BlockWidth;
             var blockCountY = height / Map.Blocks.BlockHeight;
@@ -134,8 +76,8 @@ namespace BlockEditor.ViewModels
                     if (block == null)
                         continue;
 
-                    Canvas.SetLeft(block, x * Map.Blocks.BlockWidth - _camera.X);
-                    Canvas.SetTop(block, y * Map.Blocks.BlockHeight - _camera.Y);
+                    Canvas.SetLeft(block, x * Map.Blocks.BlockWidth - _camera.Position.X);
+                    Canvas.SetTop(block, y * Map.Blocks.BlockHeight - _camera.Position.Y);
                     blocks.Add(block);
                 }
             }
@@ -160,34 +102,26 @@ namespace BlockEditor.ViewModels
         {
             var selectedBlock = SelectedBlock?.Invoke();
 
-            if (p == null || selectedBlock == null)
+            if (p == null || selectedBlock == null || Map == null)
                 return;
 
-            var x = p.Value.X + _camera.X;
-            var y = p.Value.Y + _camera.Y;
+            var x = p.Value.X + _camera.Position.X;
+            var y = p.Value.Y + _camera.Position.Y;
             var pos = new Point(x, y);
 
-            Map.Blocks.Add(GetMapIndex(pos), selectedBlock);
+            Map.Blocks.Add(Map.GetMapIndex(pos), selectedBlock);
         }
 
         private void DeleteBlock(Point? p)
         {
-            if (p == null)
+            if (p == null || Map == null)
                 return;
 
-            var x = p.Value.X + _camera.X;
-            var y = p.Value.Y + _camera.Y;
+            var x = p.Value.X + _camera.Position.X;
+            var y = p.Value.Y + _camera.Position.Y;
             var pos = new Point(x, y);
 
-            Map.Blocks.Delete(GetMapIndex(pos));
-        }
-
-        private MyPoint GetMapIndex(Point p)
-        {
-            var x = (int)(p.X / Map.Blocks.BlockWidth);
-            var y = (int)(p.Y / Map.Blocks.BlockHeight);
-
-            return new MyPoint(x, y);
+            Map.Blocks.Delete(Map.GetMapIndex(pos));
         }
 
         public void GoToStartPosition()
@@ -203,9 +137,11 @@ namespace BlockEditor.ViewModels
 
             Application.Current?.Dispatcher?.Invoke(DispatcherPriority.Render, new ThreadStart(delegate
             {
-                _camera = point;
+                _camera = new Camera(point);
             }));
         }
+
+        #region Events
 
         public void Map_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -239,19 +175,24 @@ namespace BlockEditor.ViewModels
                 AddBlock(p.Value);
             }
         }
-
-        public void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            Engine.Start();
-        }
-
+    
         public void Map_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             _mapSize.X = (int)e.NewSize.Width;
             _mapSize.Y = (int)e.NewSize.Height;
         }
+       
+        public void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            Engine.Start();
+        }
 
-        internal void LoadMap(Map map)
+        internal void OnZoomChanged(double obj)
+        {
+
+        }
+
+        internal void OnLoadMap(Map map)
         {
             if (map == null)
                 return;
@@ -264,6 +205,8 @@ namespace BlockEditor.ViewModels
 
             Engine.Pause = false;
         }
+
+        #endregion
 
     }
 }

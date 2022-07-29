@@ -3,7 +3,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace BlockEditor.Views
+namespace BlockEditor.Views.Controls
 {
 
     public partial class SearchResultControl : UserControl

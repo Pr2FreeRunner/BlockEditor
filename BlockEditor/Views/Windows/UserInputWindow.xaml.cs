@@ -10,11 +10,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace BlockEditor.Views
+namespace BlockEditor.Views.Windows
 {
-    /// <summary>
-    /// Interaction logic for UserInputWindow.xaml
-    /// </summary>
+
     public partial class UserInputWindow : Window
     {
 

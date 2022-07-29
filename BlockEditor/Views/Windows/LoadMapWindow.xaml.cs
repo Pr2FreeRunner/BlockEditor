@@ -1,30 +1,37 @@
 ﻿using BlockEditor.Helpers;
 using BlockEditor.Models;
+using BlockEditor.Views.Controls;
 using DataAccess;
+using LevelModel.Models;
+using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using Parsers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace BlockEditor.Views
+namespace BlockEditor.Views.Windows
 {
 
     public partial class LoadMapWindow : Window
     {
-        private enum SearchBy { Username, ID, MyLevels }
+        private enum SearchBy { Username, ID, LocalFile, MyLevels } // my levels must be last
 
         public int SelectedLevelID { get; private set; }
+        public Level SelectedLevel { get; private set; }
+
 
         private SearchBy _searchBy;
 
         private int _page = 1;
         private string NOT_FOUND = "404 Not Found";
+        private bool _ignoreNotFound;
 
         public LoadMapWindow()
         {
@@ -63,7 +70,8 @@ namespace BlockEditor.Views
         {
             if (results == null)
             {
-                errorText.Content = NOT_FOUND;
+                errorText.Content = _ignoreNotFound ? errorText.Content : NOT_FOUND;
+                _ignoreNotFound = false;
                 return;
             }
 
@@ -88,7 +96,11 @@ namespace BlockEditor.Views
             }
 
             if (!any)
-                errorText.Content = NOT_FOUND;
+            {
+                errorText.Content = _ignoreNotFound ? errorText.Content : NOT_FOUND;
+            }
+
+            _ignoreNotFound = false;
         }
 
         private void OnSelectedLevel(int id)
@@ -126,6 +138,10 @@ namespace BlockEditor.Views
                             AddSearchResults(SearchMyLevels());
                             break;
 
+                        case SearchBy.LocalFile:
+                            AddSearchResults(SearchLocalFile());
+                            break;
+
                         default: throw new Exception("Something is wrong...");
                     }
                 }
@@ -133,6 +149,42 @@ namespace BlockEditor.Views
                 {
                     MessageUtil.ShowError(ex.Message);
                 }
+            }
+        }
+
+        private IEnumerable<SearchResult> SearchLocalFile()
+        {
+            var filepath = GetLocalFilepath();
+
+            if (string.IsNullOrWhiteSpace(filepath))
+                yield break;
+
+            var data = File.ReadAllText(filepath);
+
+            try 
+            { 
+                var levelInfo = PR2Parser.Level(data);
+
+                if (levelInfo.Messages.Any())
+                {
+                    MessageUtil.ShowMessages(levelInfo.Messages);
+                    yield break;
+                }
+
+                if (levelInfo?.Level?.Title == null)
+                {
+                    MessageUtil.ShowError("Failed to parse level");
+                    _ignoreNotFound = true;
+                    yield break;
+                }
+
+                SelectedLevel = levelInfo.Level;
+                OnSelectedLevel(levelInfo.Level.LevelID);
+            }
+            catch
+            {
+                MessageUtil.ShowError("Failed to parse level");
+                _ignoreNotFound = true;
             }
         }
 
@@ -236,13 +288,22 @@ namespace BlockEditor.Views
                 {
                     var levelInfo = PR2Parser.Level(data);
 
-                    if (levelInfo?.Level?.Title == null)
+                    if (levelInfo.Messages.Any())
                     {
-                        MessageUtil.ShowError("Failed to parse level");
+                        MessageUtil.ShowMessages(levelInfo.Messages);
+                        _ignoreNotFound = true;
                         yield break;
                     }
 
-                    result = new SearchResult(levelInfo.Level.LevelID, levelInfo.Level.Title);
+                    if (levelInfo?.Level?.Title == null)
+                    {
+                        MessageUtil.ShowError("Failed to parse level");
+                        _ignoreNotFound = true;
+                        yield break;
+                    }
+
+                    SelectedLevel = levelInfo.Level;
+                    OnSelectedLevel(levelInfo.Level.LevelID);
                 }
             }
             catch (WebException ex)
@@ -279,7 +340,7 @@ namespace BlockEditor.Views
 
             UpdateButtons();
 
-            if (_searchBy == SearchBy.MyLevels)
+            if (_searchBy == SearchBy.MyLevels || _searchBy == SearchBy.LocalFile)
             {
                 searchTextbox.Text = string.Empty;
                 Search_Click(null, null);
@@ -288,7 +349,9 @@ namespace BlockEditor.Views
 
         private bool IsOKToSearch()
         {
-            return !string.IsNullOrWhiteSpace(searchTextbox.Text) || _searchBy == SearchBy.MyLevels;
+            return !string.IsNullOrWhiteSpace(searchTextbox.Text) 
+                || _searchBy == SearchBy.MyLevels
+                || _searchBy == SearchBy.LocalFile;
         }
 
         private void UpdateButtons()
@@ -299,7 +362,7 @@ namespace BlockEditor.Views
             btnSearch.IsEnabled = ok;
             btnRightPage.IsEnabled = pageOk;
             btnLeftPage.IsEnabled = pageOk && _page > 1;
-            searchTextbox.IsEnabled = _searchBy != SearchBy.MyLevels;
+            searchTextbox.IsEnabled = _searchBy != SearchBy.MyLevels && _searchBy != SearchBy.LocalFile;
 
             PageText.Text = _page.ToString(CultureInfo.InvariantCulture);
         }
@@ -357,6 +420,16 @@ namespace BlockEditor.Views
             {
                 MessageUtil.ShowError(ex.Message);
             }
+        }
+
+        private string GetLocalFilepath()
+        {
+            var openFileDialog = new OpenFileDialog();
+
+            if (openFileDialog.ShowDialog() == true)
+                return openFileDialog.FileName;
+            
+            return string.Empty;
         }
     }
 }

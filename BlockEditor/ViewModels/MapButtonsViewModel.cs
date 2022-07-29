@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
-using System.Windows;
 using System.Windows.Input;
 using BlockEditor.Helpers;
 using BlockEditor.Models;
-using BlockEditor.Views;
+using BlockEditor.Views.Windows;
 using DataAccess;
+using LevelModel.Models;
 using Parsers;
 
 namespace BlockEditor.ViewModels
@@ -19,8 +19,6 @@ namespace BlockEditor.ViewModels
         public event Action OnTestMap;
 
 
-
-
         public RelayCommand LoadCommand { get; set; }
         public RelayCommand SaveCommand { get; set; }
         public RelayCommand NewCommand { get; set; }
@@ -31,16 +29,11 @@ namespace BlockEditor.ViewModels
         public MapButtonsViewModel()
         {
             LoadCommand = new RelayCommand(LoadExecute);
-            SaveCommand = new RelayCommand(SaveExecute, CanSave);
+            SaveCommand = new RelayCommand(SaveExecute);
             NewCommand = new RelayCommand(NewExecute);
             TestCommand = new RelayCommand(TestExecute);
             LoginCommand = new RelayCommand(LoginExecute);
 
-        }
-
-        private bool CanSave(object obj)
-        {
-            return CurrentUser.IsLoggedIn();
         }
 
         private void LoginExecute(object obj)
@@ -51,6 +44,16 @@ namespace BlockEditor.ViewModels
         private void SaveExecute(object obj)
         {
             OnSaveMap?.Invoke();
+        }
+
+        private void LoadLevel(Level level)
+        {
+            if(level == null)
+                return;
+
+            var map = new Map(level);
+
+            OnLoadMap?.Invoke(map);
         }
 
         private void LoadLevel(int id)
@@ -81,9 +84,7 @@ namespace BlockEditor.ViewModels
                         return;
                     }
 
-                    var map = new Map(levelInfo.Level);
-
-                    OnLoadMap?.Invoke(map);
+                    LoadLevel(levelInfo.Level);
                 }
                 catch (WebException ex)
                 {
@@ -105,9 +106,10 @@ namespace BlockEditor.ViewModels
             if(!success.HasValue || !success.Value)
                 return;
 
-            var levelID = window.SelectedLevelID;
-
-            LoadLevel(levelID);
+            if(window.SelectedLevel == null)
+                LoadLevel(window.SelectedLevelID);
+            else
+                LoadLevel(window.SelectedLevel);
         }
 
         private void NewExecute(object obj)

@@ -360,7 +360,7 @@
     <!--Control colors.-->
     <Color x:Key="WindowColor">#25c500</Color>
     <Color x:Key="ContentAreaColorLight">#25c500</Color>
-    <Color x:Key="ContentAreaColorDark">#97e973"</Color>
+    <Color x:Key="ContentAreaColorDark">#97e973</Color>
 
     <Color x:Key="DisabledControlLightColor">#FF888888</Color>
     <Color x:Key="DisabledControlDarkColor">#FF888888</Color>

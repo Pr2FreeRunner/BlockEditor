@@ -1,5 +1,6 @@
 ﻿using BlockEditor.Models;
 using BlockEditor.Views;
+using BlockEditor.Views.Windows;
 using DataAccess.DataStructures;
 using System;
 using System.Collections.Generic;
@@ -20,17 +21,24 @@ namespace BlockEditor.Helpers
             if (map == null)
                 return;
 
-            var title = UserInputWindow.Show("Title of the level?", "Save", map.Title ?? string.Empty);
+            var save    = new WindowSaveMap(map);
+            var success = save.ShowDialog();
 
-            if (string.IsNullOrWhiteSpace(title))
+            if(success != true)
                 return;
 
-            map.Title = title;
-            
-            Upload(map);
+            if (!string.IsNullOrWhiteSpace(save.LocalFilepath))
+            {
+                SaveLocalFile(save.LocalFilepath, map);
+            }
+            else
+            {
+                map.Title = save.MapTitle;
+                Upload(map, save.Publish);
+            }
         }
 
-        private static void Upload(Map map)
+        private static void Upload(Map map, bool publish)
         {
             using(new TempCursor(Cursors.Wait))
             {
@@ -42,17 +50,39 @@ namespace BlockEditor.Helpers
                         return;
                     }
 
-                    var data = map.ToPr2String(CurrentUser.Name, CurrentUser.Token, false);
+                    var data = map.ToPr2String(CurrentUser.Name, CurrentUser.Token, publish, false);
 
                     var msg = DataAccess.PR2Accessor.Upload(data, (arg) =>
                     {
                         AskToOverwrite(arg);
 
                         if (arg.TryAgain)
-                            arg.NewLevelData = map.ToPr2String(CurrentUser.Name, CurrentUser.Token, true);
+                            arg.NewLevelData = map.ToPr2String(CurrentUser.Name, CurrentUser.Token, publish, true);
                     });
 
                     MessageUtil.ShowInfo(msg);
+                }
+                catch (Exception ex)
+                {
+                    MessageUtil.ShowError(ex.Message);
+                }
+            }
+        }
+
+
+        private static void SaveLocalFile(string filepath, Map map)
+        {
+            using (new TempCursor(Cursors.Wait))
+            {
+                try
+                {
+                    map.Title = Path.GetFileNameWithoutExtension(filepath);
+
+                    var data = map.ToPr2String(string.Empty, string.Empty, false);
+
+                    File.WriteAllText(filepath, data);
+
+                    MessageUtil.ShowInfo("The level was saved");
                 }
                 catch (Exception ex)
                 {

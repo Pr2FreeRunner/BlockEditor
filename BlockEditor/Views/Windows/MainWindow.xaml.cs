@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace BlockEditor.Views
+namespace BlockEditor.Views.Windows
 {
     public partial class MainWindow : Window
     {

@@ -34,10 +34,10 @@ namespace BlockEditor.Models
             Blocks = MyConverters.ToBlocks(_backend.Blocks);
         }
 
-        public string ToPr2String(string username, string token, bool overwrite)
+        public string ToPr2String(string username, string token, bool publish = false, bool overwrite = false)
         {
             _backend.Blocks = MyConverters.ToPr2Blocks(Blocks);
-            _backend.Published = false;
+            _backend.Published = publish;
 
             if (username == null || token == null)
                 throw new ArgumentNullException("user");
@@ -61,6 +61,14 @@ namespace BlockEditor.Models
             var levelInfo = Parsers.PR2Parser.Level(data);
 
             return levelInfo.Level;
+        }
+
+        public MyPoint GetMapIndex(System.Windows.Point p)
+        {
+            var x = (int)(p.X / Blocks.BlockWidth);
+            var y = (int)(p.Y / Blocks.BlockHeight);
+
+            return new MyPoint(x, y);
         }
 
 
