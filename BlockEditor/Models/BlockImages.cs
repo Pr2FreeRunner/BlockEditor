@@ -10,11 +10,12 @@ namespace BlockEditor.Models
 {
     public static class BlockImages {
 
-        public static readonly Dictionary<int, ImageBlock> Images;
+        public static Dictionary<int, ImageBlock> Images;
 
-        static BlockImages() {
+        public static void Init()
+        {
             Images = new Dictionary<int, ImageBlock>();
-            
+
             LoadImages();
         }
 

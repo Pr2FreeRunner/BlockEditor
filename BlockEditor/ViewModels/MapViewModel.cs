@@ -37,7 +37,7 @@ namespace BlockEditor.ViewModels
         public Func<ImageBlock> SelectedBlock { get; set; }
 
         public GameEngine Engine { get; }
-
+        public RelayCommand ZoomCommand { get; set; }
         public Map Map { get; private set; }
 
         private MyPoint _camera { get; set; }
@@ -48,7 +48,23 @@ namespace BlockEditor.ViewModels
             Map = new Map();
             Engine = new GameEngine();
             Engine.OnFrame += OnFrame;
-            Background = new SolidColorBrush(Color.FromRgb(0,0,0));
+            Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+            ZoomCommand = new RelayCommand(OnZoomChanged);
+        }
+
+        private void OnZoomChanged(object obj)
+        {
+            if (!(obj is string zoom))
+                return;
+
+            if (string.Equals("+", zoom, StringComparison.CurrentCultureIgnoreCase))
+            {
+
+            }
+            else if (string.Equals("+", zoom, StringComparison.CurrentCultureIgnoreCase))
+            {
+
+            }
         }
 
         private void OnFrame()
@@ -174,10 +190,10 @@ namespace BlockEditor.ViewModels
         {
             var p = Map.Blocks.GetStartPosition();
 
-            if(p == null)
+            if (p == null)
                 return;
 
-            var x = p.Value.X * Map.Blocks.BlockWidth  - (_mapSize.X / 2);
+            var x = p.Value.X * Map.Blocks.BlockWidth - (_mapSize.X / 2);
             var y = p.Value.Y * Map.Blocks.BlockHeight - (_mapSize.Y / 2);
             var point = new MyPoint(x, y);
 
@@ -233,7 +249,7 @@ namespace BlockEditor.ViewModels
 
         internal void LoadMap(Map map)
         {
-            if(map == null)
+            if (map == null)
                 return;
 
             Engine.Pause = true;
