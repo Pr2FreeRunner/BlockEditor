@@ -28,7 +28,7 @@ namespace BlockEditor.Models
             set
             {
                 _blockSize = value;
-                BlockSizeValue = BlockImages.GetSize(value);
+                BlockSizeValue = value.GetPixelSize();
             }
         }
 

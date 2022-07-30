@@ -65,7 +65,7 @@ namespace BlockEditor.ViewModels
         {
             var width     = _gameImage.Width;
             var height    = _gameImage.Height;
-            var sizeValue = BlockImages.GetSize(size);
+            var sizeValue = size.GetPixelSize();
 
             var minBlockX = _camera.Position.X / sizeValue;
             var minBlockY = _camera.Position.Y / sizeValue;

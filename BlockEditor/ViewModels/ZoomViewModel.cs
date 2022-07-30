@@ -49,8 +49,8 @@ namespace BlockEditor.ViewModels
 
         private string CreateZoomText(BlockSize size)
         {
-            var current = GetSize(size);
-            var normal  = GetSize(BlockSize.Normal);
+            var current = size.GetPixelSize();
+            var normal  = BlockSize.Normal.GetPixelSize();
             var zoom    = (double) current * 100 / normal;
             var zoomInt = (int) zoom;
 
@@ -59,12 +59,12 @@ namespace BlockEditor.ViewModels
 
         private bool ZoomOutCanExecute(object obj)
         {
-            return Zoom > BlockSize.VerySmall;
+            return Zoom > BlockSize.SuperSmall;
         }
 
         private bool ZoomInCanExecute(object obj)
         {
-            return Zoom < BlockSize.VeryBig;
+            return Zoom < BlockSize.SuperBig;
         }
 
         private void ZoomInExecute(object obj)

@@ -16,7 +16,7 @@ namespace BlockEditor.Models
         private static Dictionary<BlockSize, BlockImage> _unknownBlocks;
         public const int _unknownID = 99;
 
-        public enum BlockSize { VerySmall, Small, Normal, Big, VeryBig };
+        public enum BlockSize { SuperSmall, VerySmall, Small, Normal, Big, VeryBig, SuperBig };
 
 
         public const int DEFAULT_SIZE = 40;
@@ -82,7 +82,7 @@ namespace BlockEditor.Models
 
             foreach (var e in GetBlockSizes())
             {
-                var image = Resize(GetSize(e), src);
+                var image = Resize(e.GetPixelSize(), src);
                 var bitmap = ToBitmap(image);
                 var block = new BlockImage { ID = id, Image = image, Bitmap = bitmap };
 
@@ -119,10 +119,12 @@ namespace BlockEditor.Models
             }
         }
 
-        public static int GetSize(BlockSize size)
+        public static int GetPixelSize(this BlockSize size)
         {
             switch (size)
             {
+                case BlockSize.SuperSmall : return 4;
+
                 case BlockSize.VerySmall: return 10;
 
                 case BlockSize.Small: return 20;
@@ -130,6 +132,8 @@ namespace BlockEditor.Models
                 case BlockSize.Big: return 60;
 
                 case BlockSize.VeryBig: return 80;
+
+                case BlockSize.SuperBig: return 100;
 
                 default: return 40;
             }

@@ -38,7 +38,7 @@ namespace BlockEditor.Models
         {
             var currentX  = Position.X;
             var currentY  = Position.Y;
-            var blockSize = BlockImages.GetSize(size);
+            var blockSize = size.GetPixelSize();
 
             if (Keyboard.IsKeyDown(Key.Up))
                 currentY -= MOVE_STRENGTH;
