@@ -182,7 +182,6 @@ namespace BlockEditor.ViewModels
         public void Map_SizeChanged(int width, int height)
         {
             _gameImage = new GameImage(width, height); // thread safe?
-            GoToStartPosition();
         }
 
         public void OnLoaded()

@@ -7,35 +7,29 @@ using BlockEditor.Helpers;
 using System.Drawing;
 using System.Windows.Media;
 
+using static BlockEditor.Models.BlockImages;
+
 namespace BlockEditor.Models
 {
+
+
     public static class BlockImages
     {
+        public enum BlockSize { Zoom10, Zoom25, Zoom50, Zoom75, Zoom100, Zoom125, Zoom150, Zoom200, Zoom250 };
 
         private static Dictionary<BlockSize, Dictionary<int, BlockImage>> _images;
         private static Dictionary<BlockSize, BlockImage> _unknownBlocks;
         public const int _unknownID = 99;
-
-        public enum BlockSize { SuperSmall, VerySmall, Small, Normal, Big, VeryBig, SuperBig };
-
-
-        public const int DEFAULT_SIZE = 40;
 
         public static void Init()
         {
             _images = new Dictionary<BlockSize, Dictionary<int, BlockImage>>();
             _unknownBlocks = new Dictionary<BlockSize, BlockImage>();
 
-            foreach (var size in GetBlockSizes())
+            foreach (var size in BlockSizeUtil.GetAll())
                 _images.Add(size, new Dictionary<int, BlockImage>());
 
             LoadImages();
-        }
-
-        private static IEnumerable<BlockSize> GetBlockSizes()
-        {
-            foreach (var e in Enum.GetValues(typeof(BlockSize)))
-                yield return (BlockSize)e;
         }
 
         private static string[] GetFiles()
@@ -68,7 +62,7 @@ namespace BlockEditor.Models
             }
         }
 
-        private static IEnumerable<Tuple<BlockSize, BlockImage>> GetAllSizedImages(string filepath)
+        private static IEnumerable<Tuple<BlockSize, BlockImage>> GetImages(string filepath)
         {
             var src = GetImage(filepath);
 
@@ -80,7 +74,7 @@ namespace BlockEditor.Models
             if (!int.TryParse(filename, NumberStyles.Any, CultureInfo.InvariantCulture, out var id))
                 yield break;
 
-            foreach (var e in GetBlockSizes())
+            foreach (var e in BlockSizeUtil.GetAll())
             {
                 var image = Resize(e.GetPixelSize(), src);
                 var bitmap = ToBitmap(image);
@@ -119,26 +113,6 @@ namespace BlockEditor.Models
             }
         }
 
-        public static int GetPixelSize(this BlockSize size)
-        {
-            switch (size)
-            {
-                case BlockSize.SuperSmall : return 4;
-
-                case BlockSize.VerySmall: return 10;
-
-                case BlockSize.Small: return 20;
-
-                case BlockSize.Big: return 60;
-
-                case BlockSize.VeryBig: return 80;
-
-                case BlockSize.SuperBig: return 100;
-
-                default: return 40;
-            }
-        }
-
         public static BlockImage GetImageBlock(BlockSize size, int id)
         {
             if (_images == null)
@@ -156,7 +130,7 @@ namespace BlockEditor.Models
             return null;
         }
 
-        public static IEnumerable<BlockImage> GetImageBlocks(BlockSize size)
+        public static IEnumerable<BlockImage> GetAllImageBlocks(BlockSize size)
         {
             if (_images == null)
                 yield break;
@@ -183,7 +157,7 @@ namespace BlockEditor.Models
 
             foreach (var file in files)
             {
-                foreach (var item in GetAllSizedImages(file))
+                foreach (var item in GetImages(file))
                 {
                     if (item == null)
                         continue;
@@ -204,6 +178,45 @@ namespace BlockEditor.Models
                             dic.Add(item.Item2.ID, item.Item2);
                     }
                 }
+            }
+        }
+
+    }
+
+    public static class BlockSizeUtil
+    {
+
+        public const int DEFAULT_BLOCK_SIZE = 40;
+
+        public static IEnumerable<BlockSize> GetAll()
+        {
+            foreach (var e in Enum.GetValues(typeof(BlockSize)))
+                yield return (BlockSize)e;
+        }
+
+        public static int GetPixelSize(this BlockSize size)
+        {
+            switch (size)
+            {
+                case BlockSize.Zoom10: return (int)(DEFAULT_BLOCK_SIZE * 0.10);
+
+                case BlockSize.Zoom25: return (int)(DEFAULT_BLOCK_SIZE * 0.25);
+
+                case BlockSize.Zoom50: return (int)(DEFAULT_BLOCK_SIZE * 0.5);
+
+                case BlockSize.Zoom75: return (int)(DEFAULT_BLOCK_SIZE * 0.75);
+
+                case BlockSize.Zoom100: return (int)(DEFAULT_BLOCK_SIZE * 1.00);
+
+                case BlockSize.Zoom125: return (int)(DEFAULT_BLOCK_SIZE * 1.25);
+
+                case BlockSize.Zoom150: return (int)(DEFAULT_BLOCK_SIZE * 1.50);
+
+                case BlockSize.Zoom200: return (int)(DEFAULT_BLOCK_SIZE * 2.00);
+
+                case BlockSize.Zoom250: return (int)(DEFAULT_BLOCK_SIZE * 2.50);
+
+                default: return DEFAULT_BLOCK_SIZE;
             }
         }
 

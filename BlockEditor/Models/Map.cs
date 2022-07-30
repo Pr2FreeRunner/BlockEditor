@@ -39,7 +39,7 @@ namespace BlockEditor.Models
 
         public Map()
         {
-            BlockSize = BlockSize.Normal;
+            BlockSize = BlockSize.Zoom100;
             _backend  = GetDefaultLevel();
             Title     = string.Empty;
             Blocks    = MyConverters.ToBlocks(_backend.Blocks);

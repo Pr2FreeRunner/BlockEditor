@@ -25,7 +25,7 @@ namespace BlockEditor.Views.Controls
 
         private void AddBlocks()
         {
-            foreach (var image in BlockImages.GetImageBlocks(BlockSize.Normal))
+            foreach (var image in BlockImages.GetAllImageBlocks(BlockSize.Zoom100))
             {
                 if (image == null)
                     continue;

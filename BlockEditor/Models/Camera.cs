@@ -17,12 +17,10 @@ namespace BlockEditor.Models
             set { lock (_lock)  { _position = value; } }
         }
 
-        public const int MOVE_STRENGTH = 20;
+        public const int MOVE_STRENGTH = 30;
 
-        public Camera()
-        {
 
-        }
+        public Camera() { }
 
         public Camera(MyPoint p)
         {
@@ -33,6 +31,7 @@ namespace BlockEditor.Models
         {
             Position = new MyPoint(x, y);
         }
+
 
         public void Move(BlockSize size)
         {

@@ -40,7 +40,7 @@ namespace BlockEditor.ViewModels
 
         public ZoomViewModel()
         {
-            Zoom = BlockSize.Normal;
+            Zoom = BlockSize.Zoom100;
 
             ZoomInCommand  = new RelayCommand(ZoomInExecute, ZoomInCanExecute);
             ZoomOutCommand = new RelayCommand(ZoomOutExecute, ZoomOutCanExecute);
@@ -50,7 +50,7 @@ namespace BlockEditor.ViewModels
         private string CreateZoomText(BlockSize size)
         {
             var current = size.GetPixelSize();
-            var normal  = BlockSize.Normal.GetPixelSize();
+            var normal  = BlockSize.Zoom100.GetPixelSize();
             var zoom    = (double) current * 100 / normal;
             var zoomInt = (int) zoom;
 
@@ -59,12 +59,12 @@ namespace BlockEditor.ViewModels
 
         private bool ZoomOutCanExecute(object obj)
         {
-            return Zoom > BlockSize.SuperSmall;
+            return Zoom > BlockSize.Zoom10;
         }
 
         private bool ZoomInCanExecute(object obj)
         {
-            return Zoom < BlockSize.SuperBig;
+            return Zoom < BlockSize.Zoom250;
         }
 
         private void ZoomInExecute(object obj)
