@@ -48,8 +48,8 @@ namespace BlockEditor.Models
         public Map(Level level)
         {
             _backend = level ?? GetDefaultLevel();
-            Title = _backend?.Title ?? string.Empty;
-            Blocks = MyConverters.ToBlocks(_backend.Blocks);
+            Title    = _backend?.Title ?? string.Empty;
+            Blocks   = MyConverters.ToBlocks(_backend.Blocks);
         }
 
         public string ToPr2String(string username, string token, bool publish = false, bool overwrite = false)
