@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using BlockEditor.Helpers;
 using BlockEditor.ViewModels;
+using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Views.Controls
 {
@@ -16,13 +17,14 @@ namespace BlockEditor.Views.Controls
         {
             InitializeComponent();
             this.DataContext = ViewModel = new MapViewModel();
-            ViewModel.SelectedBlock = () => BlocksControl.SelectedBlock;
+            ViewModel.GetSelectedBlock = () => BlocksControl.SelectedBlock;
 
             MapButtons.ViewModel.OnLoadMap += ViewModel.OnLoadMap;
             MapButtons.ViewModel.OnSaveMap += () => MapUtil.Save(ViewModel.Map);
-            MapButtons.ViewModel.OnTestMap += () => MapUtil.TestInTasTool(ViewModel.Map);
+            //MapButtons.ViewModel.OnTestMap += () => MapUtil.TestInTasTool(ViewModel.Map);
+            MapButtons.ViewModel.OnTestMap += () => ViewModel.GoToStartPosition();
 
-            ZoomControl.ViewModel.OnZoomChanged += ViewModel.OnZoomChanged;
+            ZoomControl.ViewModel.OnZoomChanged += (zoom) => ViewModel.OnZoomChanged(zoom);
 
             this.Loaded += windowLoaded;
         }
@@ -34,7 +36,7 @@ namespace BlockEditor.Views.Controls
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            ViewModel.OnLoaded(sender, e);
+            ViewModel.OnLoaded();
         }
 
         private void Map_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -50,7 +52,15 @@ namespace BlockEditor.Views.Controls
 
         private void Map_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            ViewModel.Map_SizeChanged(sender, e);
+            ViewModel.Map_SizeChanged((int)GamePanel.ActualWidth, (int)GamePanel.ActualHeight);
+        }
+
+        private void OnZoomChanged(BlockSize size)
+        {
+            if(ViewModel?.Map == null)
+                return;
+
+            ViewModel.Map.BlockSize = size;
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
+using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Helpers
 {
@@ -34,7 +35,7 @@ namespace BlockEditor.Helpers
 
                 var pos = new MyPoint(posX, posY);
 
-                blocks.Add(pos, BlockImages.GetImageBlock(b.Id));
+                blocks.Add(pos, b.Id);
             }
 
             return blocks;

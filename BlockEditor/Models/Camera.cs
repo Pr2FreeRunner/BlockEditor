@@ -1,13 +1,28 @@
 ﻿using BlockEditor.Models;
 using System.Windows.Input;
+using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Models
 {
-    public struct Camera
+    public class Camera
     {
-        public MyPoint Position { get; set; }
+
+        private object _lock = new object();
+
+        private MyPoint _position;
+
+        public MyPoint Position
+        {
+            get { return _position; }
+            set { lock (_lock)  { _position = value; } }
+        }
 
         public const int MOVE_STRENGTH = 20;
+
+        public Camera()
+        {
+
+        }
 
         public Camera(MyPoint p)
         {
@@ -19,10 +34,11 @@ namespace BlockEditor.Models
             Position = new MyPoint(x, y);
         }
 
-        public Camera Move(int blockWidth, int blockHeight)
+        public void Move(BlockSize size)
         {
-            var currentX = Position.X;
-            var currentY = Position.Y;
+            var currentX  = Position.X;
+            var currentY  = Position.Y;
+            var blockSize = BlockImages.GetSize(size);
 
             if (Keyboard.IsKeyDown(Key.Up))
                 currentY -= MOVE_STRENGTH;
@@ -42,15 +58,16 @@ namespace BlockEditor.Models
             if (currentY < 0)
                 currentY = 0;
 
-            var maxWidth = Blocks.SIZE * blockWidth;
+            var maxWidth  = Blocks.SIZE * blockSize;
+            var maxHeight = Blocks.SIZE * blockSize;
+
             if (currentX > maxWidth)
                 currentX = maxWidth;
 
-            var maxHeight = Blocks.SIZE * blockHeight;
             if (currentY > maxHeight)
                 currentY = maxHeight;
 
-            return new Camera(currentX, currentY);
+            Position = new MyPoint(currentX, currentY);
         }
     }
 }

@@ -3,13 +3,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Views.Controls
 {
     public partial class BlocksControl : UserControl
     {
 
-        public ImageBlock SelectedBlock { get; private set; }
+        public BlockImage SelectedBlock { get; private set; }
 
         private Border _selectedBorder { get; set; }
 
@@ -24,7 +25,7 @@ namespace BlockEditor.Views.Controls
 
         private void AddBlocks()
         {
-            foreach (var image in BlockImages.GetImageBlocks())
+            foreach (var image in BlockImages.GetImageBlocks(BlockSize.Normal))
             {
                 if (image == null)
                     continue;
@@ -33,13 +34,17 @@ namespace BlockEditor.Views.Controls
             }
         }
 
-        private Border CreateBorder(ImageBlock block)
+        private Border CreateBorder(BlockImage block)
         {
             var border = new Border();
             border.Margin = new Thickness(3, 6, 3, 6);
-            border.MouseDown += Border_MouseDown;
             border.BorderThickness = new Thickness(3);
-            border.Child = block;
+            border.MouseDown += Border_MouseDown;
+
+            var image  = new Image();
+            image.Source = block.Image;
+            image.Tag = block;
+            border.Child = image;
 
             return border;
         }
@@ -60,8 +65,8 @@ namespace BlockEditor.Views.Controls
             if (e.ChangedButton != MouseButton.Left)
                 return;
 
-            var border  = sender as Border;
-            var block = border?.Child as ImageBlock;
+            var border = sender as Border;
+            var block  = (border?.Child as Image).Tag as BlockImage;
 
             if (block == null)
                 return;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Models
 {
@@ -13,23 +14,17 @@ namespace BlockEditor.Models
 
         public const int SIZE = 2_000;
 
-        private ImageBlock[,] _blocks;
+        private int?[,] _blocks;
 
         public bool Override { get; set; }
-
-        public int BlockWidth { get; set; }
-        public int BlockHeight { get; set; }
 
         private readonly UniqueBlocks _uniqueBlocks;
 
         public Blocks()
         {
-            _blocks       = new ImageBlock[SIZE, SIZE];
+            _blocks       = new int?[SIZE, SIZE];
             _uniqueBlocks = new UniqueBlocks();
-            
-            Override    = true;
-            BlockWidth  = 40;
-            BlockHeight = 40;
+            Override      = true;
         }
 
         private bool IsPositionOccupied(MyPoint p)
@@ -45,26 +40,7 @@ namespace BlockEditor.Models
             return false;
         }
 
-        private ImageBlock CreateBlock(ImageBlock selectedBlock)
-        {
-            if (selectedBlock == null)
-                return null;
-
-            var block = new ImageBlock();
-            var image = selectedBlock.Source as BitmapImage;
-
-            if (image == null)
-                return null;
-
-            var scaleX   = BlockWidth / selectedBlock.Source.Width;
-            var scaleY   = BlockHeight / selectedBlock.Source.Height;
-            block.Source = new TransformedBitmap(image, new ScaleTransform(scaleX, scaleY));
-            block.ID     = selectedBlock.ID;
-
-            return block;
-        }
-
-        public ImageBlock Get(int x, int y)
+        public BlockImage GetBlock(BlockSize size, int x, int y)
         {
             if(x < 0 || y < 0)
                 return null;
@@ -72,15 +48,17 @@ namespace BlockEditor.Models
             if(x >= SIZE || y >= SIZE)
                 return null;
 
-            return _blocks[x, y];
+            var id = _blocks[x, y];
+
+            if(id == null)
+                return null;
+
+            return BlockImages.GetImageBlock(size, id.Value);
         }
 
 
-        public void Add(MyPoint p, ImageBlock selectedBlock)
+        public void Add(MyPoint p, int id)
         {
-            if (selectedBlock == null)
-                return;
-
             if(p.X < 0 || p.Y < 0)
                 return;
 
@@ -90,26 +68,15 @@ namespace BlockEditor.Models
             if (IsPositionOccupied(p))
                 return;
 
-            var block = CreateBlock(selectedBlock);
-
-            if (block == null)
-                return;
-
-            HandleStartBlock(p, block);
-            _blocks[p.X, p.Y] = block;
+            HandleStartBlock(p, id);
+            _blocks[p.X, p.Y] = id;
         }
 
-        private void HandleStartBlock(MyPoint p, ImageBlock block)
+        private void HandleStartBlock(MyPoint p, int blockid)
         {
-            if(block == null)
-                return;
-
-            if(block.ID == 0)
-                return;
-
             foreach (var startBlock in _uniqueBlocks.GetBlocks())
             {
-                if(block.ID != startBlock.ID)
+                if(blockid != startBlock.ID)
                     continue;
 
                 if(startBlock.Position != null)
@@ -138,12 +105,12 @@ namespace BlockEditor.Models
             {
                 for (int y = 0; y < SIZE; y++)
                 {
-                    var block = _blocks[x, y];
+                    var id = _blocks[x, y];
 
-                    if(block == null)
+                    if(id == null)
                         continue;
 
-                    yield return new SimpleBlock(block.ID) { Position = new MyPoint(x, y) };
+                    yield return new SimpleBlock(id.Value) { Position = new MyPoint(x, y) };
                 }
             }
 

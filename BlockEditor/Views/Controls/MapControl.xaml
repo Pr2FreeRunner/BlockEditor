@@ -20,24 +20,21 @@
             <RowDefinition Height="80" />
         </Grid.RowDefinitions>
 
-        <ItemsControl ItemsSource="{Binding MapContent}" 
-                      Grid.Column="0" 
-                      Grid.ColumnSpan="99"
-                      Grid.Row="0" 
-                      Grid.RowSpan="2">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas x:Name="Map"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch" 
-                        Background="{Binding Background, Mode=OneWay}"
-                        PreviewMouseDown="Map_PreviewMouseDown"
-                        PreviewMouseMove="Map_PreviewMouseMove"
-                        SizeChanged="Map_SizeChanged"                                        
-                        />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>
+        <Grid 
+            Grid.Column="0"
+            Grid.Row="0" 
+            Grid.RowSpan="99"
+            Grid.ColumnSpan="99"
+            PreviewMouseDown="Map_PreviewMouseDown"
+            PreviewMouseMove="Map_PreviewMouseMove"
+            SizeChanged="Map_SizeChanged"
+            Name="GamePanel">
+            
+            <Image 
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Source="{Binding MapContent, Mode=OneWay}" />
+        </Grid>
 
 
         <myControls:BlocksControl Grid.Column="2" Grid.Row="0" 

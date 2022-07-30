@@ -3,6 +3,7 @@ using Converters;
 using Converters.DataStructures.DTO;
 using LevelModel.Models;
 using System;
+using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Models
 {
@@ -17,14 +18,31 @@ namespace BlockEditor.Models
             set => _backend.Title = value;
         }
 
+        private BlockSize _blockSize;
+        public BlockSize BlockSize
+        {
+            get
+            {
+                return _blockSize;
+            }
+            set
+            {
+                _blockSize = value;
+                BlockSizeValue = BlockImages.GetSize(value);
+            }
+        }
+
+        public int BlockSizeValue; 
+
 
         private readonly Level _backend;
 
         public Map()
         {
-            _backend = GetDefaultLevel();
-            Title = string.Empty;
-            Blocks = MyConverters.ToBlocks(_backend.Blocks);
+            BlockSize = BlockSize.Normal;
+            _backend  = GetDefaultLevel();
+            Title     = string.Empty;
+            Blocks    = MyConverters.ToBlocks(_backend.Blocks);
         }
 
         public Map(Level level)
@@ -65,8 +83,8 @@ namespace BlockEditor.Models
 
         public MyPoint GetMapIndex(System.Windows.Point p)
         {
-            var x = (int)(p.X / Blocks.BlockWidth);
-            var y = (int)(p.Y / Blocks.BlockHeight);
+            var x = (int)(p.X / BlockSizeValue);
+            var y = (int)(p.Y / BlockSizeValue);
 
             return new MyPoint(x, y);
         }

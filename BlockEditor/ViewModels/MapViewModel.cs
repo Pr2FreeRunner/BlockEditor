@@ -1,17 +1,15 @@
 ﻿using BlockEditor.Helpers;
 using BlockEditor.Models;
-using BlockEditor.Views;
-using DataAccess.DataStructures;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.ViewModels
 {
@@ -25,20 +23,20 @@ namespace BlockEditor.ViewModels
             set { RaisePropertyChanged(ref _background, value); }
         }
 
-        private ObservableCollection<UIElement> _mapContent;
-        public ObservableCollection<UIElement> MapContent
+        private GameImage _gameImage;
+        private Camera _camera;
+
+        public BitmapImage MapContent
         {
-            get { return _mapContent; }
-            set { RaisePropertyChanged(ref _mapContent, value); }
+            get => _gameImage?.CreateImage(); 
+            set => RaisePropertyChanged(); 
         }
 
-        public Func<ImageBlock> SelectedBlock { get; set; }
+        public Func<BlockImage> GetSelectedBlock { get; set; }
 
         public GameEngine Engine { get; }
         public Map Map { get; private set; }
 
-        private Camera _camera { get; set; }
-        private MyPoint _mapSize;
 
         public MapViewModel()
         {
@@ -46,43 +44,50 @@ namespace BlockEditor.ViewModels
             Engine = new GameEngine();
             Engine.OnFrame += OnFrame;
             Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+            _camera = new Camera();
         }
 
         private void OnFrame()
         {
-            DrawBlocks();
-            _camera = _camera.Move(Map.Blocks.BlockWidth, Map.Blocks.BlockHeight);
+            if(Map == null || _gameImage == null)
+                return;
+
+            _gameImage.Clear(System.Drawing.Color.Black);
+            var size = Map.BlockSize;
+
+            DrawBlocks(size);
+            _camera.Move(size);
+
+            MapContent = null;
         }
 
-        private void DrawBlocks()
+        private void DrawBlocks(BlockSize size)
         {
-            var width = _mapSize.X;
-            var height = _mapSize.Y;
+            var width     = _gameImage.Width;
+            var height    = _gameImage.Height;
+            var sizeValue = BlockImages.GetSize(size);
 
-            var minBlockX = _camera.Position.X / Map.Blocks.BlockWidth;
-            var minBlockY = _camera.Position.Y / Map.Blocks.BlockHeight;
+            var minBlockX = _camera.Position.X / sizeValue;
+            var minBlockY = _camera.Position.Y / sizeValue;
 
-            var blockCountX = width / Map.Blocks.BlockWidth;
-            var blockCountY = height / Map.Blocks.BlockHeight;
-
-            var blocks = new ObservableCollection<UIElement>();
+            var blockCountX = width / sizeValue;
+            var blockCountY = height / sizeValue;
 
             for (int y = minBlockY; y < minBlockY + blockCountY; y++)
             {
                 for (int x = minBlockX; x < minBlockX + blockCountX; x++)
                 {
-                    var block = Map.Blocks.Get(x, y);
+                    var block = Map.Blocks.GetBlock(size, x, y);
 
                     if (block == null)
                         continue;
 
-                    Canvas.SetLeft(block, x * Map.Blocks.BlockWidth - _camera.Position.X);
-                    Canvas.SetTop(block, y * Map.Blocks.BlockHeight - _camera.Position.Y);
-                    blocks.Add(block);
+                    var posX = x * sizeValue - _camera.Position.X;
+                    var posY = y * sizeValue - _camera.Position.Y;
+
+                    _gameImage.DrawImage(ref block.Bitmap, posX, posY);
                 }
             }
-
-            MapContent = blocks;
         }
 
         private Point? GetPosition(IInputElement src, MouseEventArgs e)
@@ -100,16 +105,18 @@ namespace BlockEditor.ViewModels
 
         private void AddBlock(Point? p)
         {
-            var selectedBlock = SelectedBlock?.Invoke();
+            var selectedBlock = GetSelectedBlock?.Invoke();
 
             if (p == null || selectedBlock == null || Map == null)
                 return;
 
             var x = p.Value.X + _camera.Position.X;
             var y = p.Value.Y + _camera.Position.Y;
-            var pos = new Point(x, y);
 
-            Map.Blocks.Add(Map.GetMapIndex(pos), selectedBlock);
+            var pos   = new Point(x, y);
+            var index = Map.GetMapIndex(pos);
+
+            Map.Blocks.Add(index, selectedBlock.ID);
         }
 
         private void DeleteBlock(Point? p)
@@ -131,14 +138,10 @@ namespace BlockEditor.ViewModels
             if (p == null)
                 return;
 
-            var x = p.Value.X * Map.Blocks.BlockWidth - (_mapSize.X / 2);
-            var y = p.Value.Y * Map.Blocks.BlockHeight - (_mapSize.Y / 2);
-            var point = new MyPoint(x, y);
+            var x = p.Value.X * Map.BlockSizeValue - (_gameImage.Width / 2);
+            var y = p.Value.Y * Map.BlockSizeValue - (_gameImage.Height / 2);
 
-            Application.Current?.Dispatcher?.Invoke(DispatcherPriority.Render, new ThreadStart(delegate
-            {
-                _camera = new Camera(point);
-            }));
+            _camera.Position = new MyPoint(x, y); ;
         }
 
         #region Events
@@ -167,7 +170,7 @@ namespace BlockEditor.ViewModels
             }
             else if (e.LeftButton == MouseButtonState.Pressed)
             {
-                if (SelectedBlock?.Invoke() == null)
+                if (GetSelectedBlock?.Invoke() == null)
                     return;
 
                 // for permormance this is inside the if-else block
@@ -176,23 +179,18 @@ namespace BlockEditor.ViewModels
             }
         }
     
-        public void Map_SizeChanged(object sender, SizeChangedEventArgs e)
+        public void Map_SizeChanged(int width, int height)
         {
-            _mapSize.X = (int)e.NewSize.Width;
-            _mapSize.Y = (int)e.NewSize.Height;
+            _gameImage = new GameImage(width, height); // thread safe?
+            GoToStartPosition();
         }
-       
-        public void OnLoaded(object sender, RoutedEventArgs e)
+
+        public void OnLoaded()
         {
             Engine.Start();
         }
-
-        internal void OnZoomChanged(double obj)
-        {
-
-        }
-
-        internal void OnLoadMap(Map map)
+      
+        public void OnLoadMap(Map map)
         {
             if (map == null)
                 return;
@@ -204,6 +202,25 @@ namespace BlockEditor.ViewModels
             GoToStartPosition();
 
             Engine.Pause = false;
+        }
+
+        public void OnZoomChanged(BlockSize size)
+        {
+            var halfScreenX = _gameImage.Width  / 2;
+            var halfScreenY = _gameImage.Height / 2;
+
+            var cameraPosition = new Point(_camera.Position.X, _camera.Position.Y);
+            var middleOfScreen = new Point(cameraPosition.X + halfScreenX, cameraPosition.Y + halfScreenY);
+
+            var currentIndex = Map.GetMapIndex(middleOfScreen);
+            var currentSize  = Map.BlockSize;
+
+            Map.BlockSize = size;
+
+            var x = currentIndex.X * Map.BlockSizeValue - halfScreenX;
+            var y = currentIndex.Y * Map.BlockSizeValue - halfScreenY;
+
+            _camera.Position = new MyPoint(x, y);
         }
 
         #endregion

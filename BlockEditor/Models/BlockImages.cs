@@ -4,20 +4,38 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Media.Imaging;
 using BlockEditor.Helpers;
+using System.Drawing;
+using System.Windows.Media;
 
 namespace BlockEditor.Models
 {
-    public static class BlockImages {
+    public static class BlockImages
+    {
 
-        private static Dictionary<int, ImageBlock> _images;
+        private static Dictionary<BlockSize, Dictionary<int, BlockImage>> _images;
+        private static Dictionary<BlockSize, BlockImage> _unknownBlocks;
         public const int _unknownID = 99;
-        private static ImageBlock _unknownBlock;
+
+        public enum BlockSize { VerySmall, Small, Normal, Big, VeryBig };
+
+
+        public const int DEFAULT_SIZE = 40;
 
         public static void Init()
         {
-            _images = new Dictionary<int, ImageBlock>();
+            _images = new Dictionary<BlockSize, Dictionary<int, BlockImage>>();
+            _unknownBlocks = new Dictionary<BlockSize, BlockImage>();
+
+            foreach (var size in GetBlockSizes())
+                _images.Add(size, new Dictionary<int, BlockImage>());
 
             LoadImages();
+        }
+
+        private static IEnumerable<BlockSize> GetBlockSizes()
+        {
+            foreach (var e in Enum.GetValues(typeof(BlockSize)))
+                yield return (BlockSize)e;
         }
 
         private static string[] GetFiles()
@@ -27,62 +45,128 @@ namespace BlockEditor.Models
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "Resources", "Blocks");
                 return Directory.GetFiles(path);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageUtil.ShowError(ex.Message);
                 return null;
             }
         }
 
-        private static ImageBlock GetImage(string filepath)
+        private static BitmapImage GetImage(string filepath)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(filepath))
                     return null;
 
-                var filename = Path.GetFileNameWithoutExtension(filepath);
-
-                if (!int.TryParse(filename, NumberStyles.Any, CultureInfo.InvariantCulture, out var id))
-                    return null;
-
-                var image = new BitmapImage(new Uri(filepath));
-
-                if (image == null)
-                    return null;
-
-                return new ImageBlock { ID = id, Source = image };
+                return new BitmapImage(new Uri(filepath));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageUtil.ShowError(ex.Message);
                 return null;
             }
         }
 
-        public static ImageBlock GetImageBlock(int id)
+        private static IEnumerable<Tuple<BlockSize, BlockImage>> GetAllSizedImages(string filepath)
         {
-            if(_images == null)
-                return null;
+            var src = GetImage(filepath);
 
-            if(_images.TryGetValue(id, out var image))
-                return image;
+            if (src == null)
+                yield break;
 
-            return _unknownBlock;
+            var filename = Path.GetFileNameWithoutExtension(filepath);
+
+            if (!int.TryParse(filename, NumberStyles.Any, CultureInfo.InvariantCulture, out var id))
+                yield break;
+
+            foreach (var e in GetBlockSizes())
+            {
+                var image = Resize(GetSize(e), src);
+                var bitmap = ToBitmap(image);
+                var block = new BlockImage { ID = id, Image = image, Bitmap = bitmap };
+
+                yield return new Tuple<BlockSize, BlockImage>(e, block);
+            }
+
         }
 
-        public static IEnumerable<ImageBlock> GetImageBlocks()
+        private static BitmapSource Resize(int size, BitmapImage src)
+        {
+            if (src == null || src.Width == 0 || src.Height == 0)
+                return null;
+
+            var scaleX = size / src.Width;
+            var scaleY = size / src.Height;
+            var image = new TransformedBitmap(src, new ScaleTransform(scaleX, scaleY));
+
+            return image;
+        }
+
+        private static Bitmap ToBitmap(BitmapSource bitmapImage)
+        {
+            if (bitmapImage == null)
+                return null;
+
+            using (MemoryStream outStream = new MemoryStream())
+            {
+                BitmapEncoder enc = new BmpBitmapEncoder();
+                enc.Frames.Add(BitmapFrame.Create(bitmapImage));
+                enc.Save(outStream);
+                Bitmap bitmap = new Bitmap(outStream);
+
+                return new Bitmap(bitmap);
+            }
+        }
+
+        public static int GetSize(BlockSize size)
+        {
+            switch (size)
+            {
+                case BlockSize.VerySmall: return 10;
+
+                case BlockSize.Small: return 20;
+
+                case BlockSize.Big: return 60;
+
+                case BlockSize.VeryBig: return 80;
+
+                default: return 40;
+            }
+        }
+
+        public static BlockImage GetImageBlock(BlockSize size, int id)
+        {
+            if (_images == null)
+                return null;
+
+            if (!_images.TryGetValue(size, out var dic))
+                return null;
+
+            if (dic.TryGetValue(id, out var block))
+                return block;
+
+            if(_unknownBlocks.TryGetValue(size, out var unknownBlock))
+                return unknownBlock;
+
+            return null;
+        }
+
+        public static IEnumerable<BlockImage> GetImageBlocks(BlockSize size)
         {
             if (_images == null)
                 yield break;
 
-            foreach (var i in _images)
+            if(!_images.TryGetValue(size, out var dic))
+                yield break;
+
+            foreach (var i in dic)
             {
-                if(i.Value == null)
+                if (i.Value == null)
                     continue;
 
                 yield return i.Value;
-            } 
+            }
         }
 
         private static void LoadImages()
@@ -95,15 +179,27 @@ namespace BlockEditor.Models
 
             foreach (var file in files)
             {
-                var image = GetImage(file);
+                foreach (var item in GetAllSizedImages(file))
+                {
+                    if (item == null)
+                        continue;
 
-                if (image == null)
-                    continue;
+                    var size  = item.Item1;
+                    var block = item.Item2;
 
-                if(image.ID == _unknownID)
-                    _unknownBlock = image;
-                else
-                    _images.Add(image.ID, image);
+                    if (block == null)
+                        continue;
+
+                    if (item.Item2.ID == _unknownID)
+                    {
+                        _unknownBlocks.Add(size, block);
+                    }
+                    else
+                    {
+                        if (_images.TryGetValue(size, out var dic))
+                            dic.Add(item.Item2.ID, item.Item2);
+                    }
+                }
             }
         }
 
