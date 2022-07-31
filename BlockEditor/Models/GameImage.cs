@@ -78,11 +78,17 @@ namespace BlockEditor.Models
                 Marshal.Copy(arr, 0, _location + i, locWidth);
         }
 
-        public void DrawImage(ref Bitmap img, int X, int Y)
+        public void DrawImage(ref Bitmap img, int x, int y)
         {
-            if (img.PixelFormat != PixelFormat.Format32bppArgb)
-                throw new Exception("The image is not in the supported format. (32bppArgb)");
-
+            if (img.PixelFormat == PixelFormat.Format32bppArgb)
+                DrawBmpImage(ref img, x, y);
+            else if (img.PixelFormat == PixelFormat.Format32bppPArgb)
+                DrawPngImage(ref img, x, y);
+            else
+                throw new Exception("The image is not in the supported format.");
+        }
+        private void DrawBmpImage(ref Bitmap img, int X, int Y)
+        {
             int dWidth  = img.Width;
             int dHeight = img.Height;
 
@@ -139,11 +145,8 @@ namespace BlockEditor.Models
             img.UnlockBits(dmb);
         }
 
-        public unsafe void DrawPngImage(ref Bitmap img, int X, int Y)
+        private unsafe void DrawPngImage(ref Bitmap img, int X, int Y)
         {
-            if (img.PixelFormat != PixelFormat.Format32bppPArgb)
-                throw new Exception("The image is not in the supported format. (32bppPArgb)");
-
             int dWidth = img.Width;
             int dHeight = img.Height;
 
@@ -151,7 +154,8 @@ namespace BlockEditor.Models
                 return;
 
             int leftCutOff = 0;
-            int topCutOff = 0;
+            int topCutOff  = 0;
+
             if (X < 0)
             {
                 dWidth += X;
@@ -175,35 +179,37 @@ namespace BlockEditor.Models
             if (dWidth <= 0 || dHeight <= 0)
                 return;
 
-            // Copy/blend bytes
-            System.Drawing.Imaging.BitmapData dmb = img.LockBits(new Rectangle(0, 0, 1, 1), System.Drawing.Imaging.ImageLockMode.ReadOnly, PixelFormat.Format32bppPArgb);
+            var dmb      = img.LockBits(new Rectangle(0, 0, 1, 1), ImageLockMode.ReadOnly, PixelFormat.Format32bppPArgb);
             IntPtr ItPtr = dmb.Scan0;
             IntPtr ptrMe = _location + (X * 4) + (Y * _stride);
             int ItStride = img.Width * 4;
-            ItPtr += (leftCutOff * 4);
-            ItPtr += (topCutOff * dmb.Stride);
+
+            ItPtr += leftCutOff * 4;
+            ItPtr += topCutOff * dmb.Stride;
 
             for (int iY = 0; iY < dHeight; iY++)
             {
                 byte* pMe = (byte*)ptrMe;
                 byte* pIt = (byte*)ItPtr;
+
                 for (int iX = 0; iX < dWidth; iX++)
                 {
-                    // Values for loop
-                    double a = (double)pIt[3] / 255.0;
+                    double a      = pIt[3] / 255.0;
                     double alpha1 = 1 - a;
 
                     // newC = (1 - A)*oldC + ovrCA
-                    pMe[0] = (byte)(pMe[0] * alpha1 + pIt[0]);
-                    pMe[1] = (byte)(pMe[1] * alpha1 + pIt[1]);
-                    pMe[2] = (byte)(pMe[2] * alpha1 + pIt[2]);
+                    pMe[0] = (byte) (pMe[0] * alpha1 + pIt[0]);
+                    pMe[1] = (byte) (pMe[1] * alpha1 + pIt[1]);
+                    pMe[2] = (byte) (pMe[2] * alpha1 + pIt[2]);
 
                     pMe += 4;
                     pIt += 4;
                 }
+
                 ptrMe += _stride;
                 ItPtr += ItStride;
             }
+
             img.UnlockBits(dmb);
         }
     }
