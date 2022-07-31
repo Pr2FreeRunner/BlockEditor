@@ -12,5 +12,6 @@ namespace BlockEditor.Models
 
         public BitmapSource Image { get; set; }
 
+        public Bitmap PNG { get; set; }
     }
 }

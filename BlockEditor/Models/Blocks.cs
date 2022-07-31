@@ -1,9 +1,10 @@
 ﻿using LevelModel.Models;
 using LevelModel.Models.Components;
 using System.Collections.Generic;
+using System.Windows.Media.Imaging;
 using System.Diagnostics;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
+
 using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Models
@@ -18,12 +19,12 @@ namespace BlockEditor.Models
 
         public bool Override { get; set; }
 
-        private readonly UniqueBlocks _uniqueBlocks;
+        public UniqueBlocks StartBlocks { get; }
 
         public Blocks()
         {
             _blocks       = new int?[SIZE, SIZE];
-            _uniqueBlocks = new UniqueBlocks();
+            StartBlocks = new UniqueBlocks();
             Override      = true;
         }
 
@@ -68,13 +69,13 @@ namespace BlockEditor.Models
             if (IsPositionOccupied(p))
                 return;
 
-            HandleStartBlock(p, id);
-            _blocks[p.X, p.Y] = id;
+            if(!HandledStartBlock(p, id))
+                _blocks[p.X, p.Y] = id;
         }
 
-        private void HandleStartBlock(MyPoint p, int blockid)
+        private bool HandledStartBlock(MyPoint p, int blockid)
         {
-            foreach (var startBlock in _uniqueBlocks.GetBlocks())
+            foreach (var startBlock in StartBlocks.GetBlocks())
             {
                 if(blockid != startBlock.ID)
                     continue;
@@ -83,7 +84,10 @@ namespace BlockEditor.Models
                     Delete(startBlock.Position.Value);
 
                 startBlock.Position = p;
+                return true;
             }
+
+            return false;
         }
 
         public void Delete(MyPoint p)
@@ -93,7 +97,7 @@ namespace BlockEditor.Models
 
         public MyPoint? GetStartPosition()
         {
-            return _uniqueBlocks?.Player1?.Position;
+            return StartBlocks?.Player1?.Position;
         }
 
         public IEnumerable<SimpleBlock> GetBlocks()

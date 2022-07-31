@@ -6,6 +6,7 @@ using System.Windows.Media.Imaging;
 using BlockEditor.Helpers;
 using System.Drawing;
 using System.Windows.Media;
+using System.Drawing.Imaging;
 
 using static BlockEditor.Models.BlockImages;
 
@@ -62,6 +63,21 @@ namespace BlockEditor.Models
             }
         }
 
+        private static Bitmap CreatePng(Bitmap bmp)
+        {
+            if(bmp == null)
+                return null;
+
+            Bitmap png = new Bitmap(bmp.Width, bmp.Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+
+            using (var gr = Graphics.FromImage(bmp))
+            {
+                gr.DrawImage(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height));
+            }
+
+            return png;
+        }
+
         private static IEnumerable<Tuple<BlockSize, BlockImage>> GetImages(string filepath)
         {
             var src = GetImage(filepath);
@@ -76,9 +92,10 @@ namespace BlockEditor.Models
 
             foreach (var e in BlockSizeUtil.GetAll())
             {
-                var image = Resize(e.GetPixelSize(), src);
+                var image  = Resize(e.GetPixelSize(), src);
                 var bitmap = ToBitmap(image);
-                var block = new BlockImage { ID = id, Image = image, Bitmap = bitmap };
+                var png    = CreatePng(bitmap);
+                var block  = new BlockImage { ID = id, Image = image, Bitmap = bitmap, PNG = png };
 
                 yield return new Tuple<BlockSize, BlockImage>(e, block);
             }
@@ -110,6 +127,24 @@ namespace BlockEditor.Models
                 Bitmap bitmap = new Bitmap(outStream);
 
                 return new Bitmap(bitmap);
+            }
+        }
+
+        public static BitmapImage ToBitmapImage(Bitmap bitmap)
+        {
+            using (var memory = new MemoryStream())
+            {
+                bitmap.Save(memory, ImageFormat.Png);
+                memory.Position = 0;
+
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                bitmapImage.Freeze();
+
+                return bitmapImage;
             }
         }
 

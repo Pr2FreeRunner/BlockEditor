@@ -1,30 +1,26 @@
-﻿using BlockEditor.Helpers;
-using BlockEditor.Models;
-using System;
-using System.Collections.ObjectModel;
+﻿using System;
 using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using System.Windows.Controls;
 using System.Windows.Threading;
+using System.Windows.Media.Imaging;
+using System.Collections.ObjectModel;
+using BlockEditor.Helpers;
+using BlockEditor.Models;
+
 using static BlockEditor.Models.BlockImages;
+using System.Linq;
 
 namespace BlockEditor.ViewModels
 {
     public class MapViewModel : NotificationObject
     {
 
-        private Brush _background;
-        public Brush Background
-        {
-            get { return _background; }
-            set { RaisePropertyChanged(ref _background, value); }
-        }
-
         private GameImage _gameImage;
-        private GameImage _previewImage;
+
+        private Point? _mousePosition;
 
         private Camera _camera;
 
@@ -36,6 +32,7 @@ namespace BlockEditor.ViewModels
         public Func<int?> GetSelectedBlockID { get; set; }
 
         public GameEngine Engine { get; }
+
         public Map Map { get; private set; }
 
 
@@ -44,77 +41,9 @@ namespace BlockEditor.ViewModels
             Map = new Map();
             Engine = new GameEngine();
             Engine.OnFrame += OnFrame;
-            Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
             _camera = new Camera();
         }
 
-        private void OnFrame()
-        {
-            if(Map == null || _gameImage == null || _previewImage == null)
-                return;
-
-            _gameImage.Clear(Map.Background);
-            _previewImage.Clear(System.Drawing.Color.Yellow);
-
-            var size = Map.BlockSize;
-
-            DrawBlocks(size);
-            _camera.Move(size);
-            DrawSelection(size);
-
-            RaisePropertyChanged(nameof(MapContent));
-        }
-
-        private void DrawBlocks(BlockSize size)
-        {
-            var width     = _gameImage.Width;
-            var height    = _gameImage.Height;
-            var sizeValue = size.GetPixelSize();
-
-            var minBlockX = _camera.Position.X / sizeValue;
-            var minBlockY = _camera.Position.Y / sizeValue;
-
-            var blockCountX = width / sizeValue;
-            var blockCountY = height / sizeValue;
-
-            for (int y = minBlockY; y < minBlockY + blockCountY; y++)
-            {
-                for (int x = minBlockX; x < minBlockX + blockCountX; x++)
-                {
-                    var block = Map.Blocks.GetBlock(size, x, y);
-
-                    if (block == null)
-                        continue;
-
-                    var posX = x * sizeValue - _camera.Position.X;
-                    var posY = y * sizeValue - _camera.Position.Y;
-
-                    _gameImage.DrawImage(ref block.Bitmap, posX, posY);
-                }
-            }
-        }
-
-        private void DrawSelection(BlockSize size)
-        {
-            if(_mousePosition == null)
-                return;
-
-            var id = GetSelectedBlockID();
-
-            if(id == null)
-                return;
-
-            var block = BlockImages.GetImageBlock(size, id.Value);
-
-            if(block?.Bitmap == null)
-                return;
-
-            var blockSize = size.GetPixelSize();
-            var positionX = _mousePosition.Value.X - blockSize / 2;
-            var positionY = _mousePosition.Value.Y - blockSize / 2;
-
-            _gameImage.DrawImage(ref block.Bitmap, (int)positionX, (int)positionY);
-        }
 
         private Point? GetPosition(IInputElement src, MouseEventArgs e)
         {
@@ -170,6 +99,94 @@ namespace BlockEditor.ViewModels
             _camera.Position = new MyPoint(x, y); ;
         }
 
+
+        #region Frame Update
+
+        private void OnFrame()
+        {
+            if(Map == null || _gameImage == null)
+                return;
+
+            _gameImage.Clear(Map.Background);
+
+            var size = Map.BlockSize;
+
+            DrawBlocks(size);
+            _camera.Move(size);
+            DrawSelection(size);
+
+            RaisePropertyChanged(nameof(MapContent));
+        }
+
+        private void DrawBlocks(BlockSize size)
+        {
+            var width     = _gameImage.Width;
+            var height    = _gameImage.Height;
+            var sizeValue = size.GetPixelSize();
+
+            var minBlockX = _camera.Position.X / sizeValue;
+            var minBlockY = _camera.Position.Y / sizeValue;
+
+            var blockCountX = width / sizeValue;
+            var blockCountY = height / sizeValue;
+
+            for (int y = minBlockY; y < minBlockY + blockCountY; y++)
+            {
+                for (int x = minBlockX; x < minBlockX + blockCountX; x++)
+                {
+                    var block = Map.Blocks.GetBlock(size, x, y);
+
+                    if (block == null)
+                        continue;
+
+                    var posX = x * sizeValue - _camera.Position.X;
+                    var posY = y * sizeValue - _camera.Position.Y;
+
+                    _gameImage.DrawImage(ref block.Bitmap, posX, posY);
+                }
+            }
+
+            foreach (var startBlock in Map.Blocks.StartBlocks.GetBlocks())
+            {
+                if(startBlock?.Position == null)
+                    continue;
+
+                var block = BlockImages.GetImageBlock(size, startBlock.ID);
+
+                if(block == null)
+                    continue;
+
+                var posX = startBlock.Position.Value.X * sizeValue - _camera.Position.X;
+                var posY = startBlock.Position.Value.Y * sizeValue - _camera.Position.Y;
+
+                _gameImage.DrawImage(ref block.Bitmap, posX, posY);
+            }
+        }
+
+        private void DrawSelection(BlockSize size)
+        {
+            if(_mousePosition == null)
+                return;
+
+            var id = GetSelectedBlockID();
+
+            if(id == null)
+                return;
+
+            var block = BlockImages.GetImageBlock(size, id.Value)?.Bitmap;
+
+            if(block == null)
+                return;
+
+            var blockSize = size.GetPixelSize();
+            var positionX = (int) (_mousePosition.Value.X - blockSize / 2.0);
+            var positionY = (int) (_mousePosition.Value.Y - blockSize / 2.0);
+
+            _gameImage.DrawImage(ref block, positionX, positionY);
+        }
+
+        #endregion
+
         #region Events
 
         public void Map_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -185,8 +202,6 @@ namespace BlockEditor.ViewModels
                 AddBlock(p);
             }
         }
-
-        private Point? _mousePosition;
 
         public void Map_PreviewMouseMove(object sender, MouseEventArgs e)
         {
@@ -209,7 +224,6 @@ namespace BlockEditor.ViewModels
         {
             // thread safe?
             _gameImage = new GameImage(width, height);
-            _previewImage = new GameImage(width, height); 
         }
 
         public void OnLoaded()

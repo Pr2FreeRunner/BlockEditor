@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using static BlockEditor.Models.BlockImages;
 
@@ -50,8 +51,9 @@ namespace BlockEditor.Helpers
 
             var previousX = 0;
             var previousY = 0;
+            var allBlocks = blocks.StartBlocks.GetBlocks().Concat(blocks.GetBlocks());
 
-            foreach (var b in blocks.GetBlocks())
+            foreach (var b in allBlocks)
             {
                 if (b?.Position == null)
                     continue;
