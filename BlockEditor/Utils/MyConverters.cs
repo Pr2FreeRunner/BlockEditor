@@ -1,23 +1,14 @@
 ﻿using BlockEditor.Models;
 using LevelModel.Models;
 using LevelModel.Models.Components;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using static BlockEditor.Models.BlockImages;
+using System.Globalization;
+using System.Collections.Generic;
 
 namespace BlockEditor.Helpers
 {
     public static class MyConverters
     {
-
-        public static bool TryParse(string input, out int result)
-        {
-            return int.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out result);
-        }
 
         public static Blocks ToBlocks(IList<Block> pr2Blocks)
         {
@@ -69,5 +60,6 @@ namespace BlockEditor.Helpers
 
             return pr2Blocks;
         }
+
     }
 }

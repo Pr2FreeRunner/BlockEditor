@@ -41,17 +41,17 @@ namespace BlockEditor.Views.Controls
         private void Map_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
 
-            ViewModel.Map_PreviewMouseDown(sender, e);
+            ViewModel.OnPreviewMouseDown(sender, e);
         }
 
         private void Map_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            ViewModel.Map_PreviewMouseMove(sender, e);
+            ViewModel.OnPreviewMouseMove(sender, e);
         }
 
         private void Map_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            ViewModel.Map_SizeChanged((int)GamePanel.ActualWidth, (int)GamePanel.ActualHeight);
+            ViewModel.OnSizeChanged((int)GamePanel.ActualWidth, (int)GamePanel.ActualHeight);
         }
 
         private void OnZoomChanged(BlockSize size)

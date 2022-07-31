@@ -5,9 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using BlockEditor.Helpers;
 using BlockEditor.Models;
-using System.Drawing;
-
-using Point = System.Windows.Point;
+using BlockEditor.Utils;
 using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.ViewModels
@@ -37,22 +35,8 @@ namespace BlockEditor.ViewModels
         {
             Map = new Map();
             Engine = new GameEngine();
-            Engine.OnFrame += OnFrame;
+            Engine.OnFrame += OnFrameUpdate;
             _camera = new Camera();
-        }
-
-
-        private Point? GetPosition(IInputElement src, MouseEventArgs e)
-        {
-            if (src == null || e == null)
-                return null;
-
-            var point = e.GetPosition(src);
-
-            var x = point.X;
-            var y = point.Y;
-
-            return new Point(x, y);
         }
 
         private void AddBlock(Point? p)
@@ -91,24 +75,25 @@ namespace BlockEditor.ViewModels
                 return;
 
             var size = Map.BlockSize.GetPixelSize();
-            var x = p.Value.X * size - (_gameImage.Width / 2);
-            var y = p.Value.Y * size - (_gameImage.Height / 2);
+            var x    = p.Value.X * size - (_gameImage.Width / 2);
+            var y    = p.Value.Y * size - (_gameImage.Height / 2);
 
             _camera.Position = new MyPoint(x, y); ;
         }
 
-        private void OnFrame()
+
+        #region Events
+
+        public void OnFrameUpdate()
         {
             new FrameUpdater(_gameImage, Map, _camera, _mousePosition, GetSelectedBlockID());
 
             RaisePropertyChanged(nameof(MapContent));
         }
 
-        #region Events
-
-        public void Map_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        public void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var p = GetPosition(sender as IInputElement, e);
+            var p = MyUtils.GetPosition(sender as IInputElement, e);
 
             if (e.ChangedButton == MouseButton.Right)
             {
@@ -120,9 +105,9 @@ namespace BlockEditor.ViewModels
             }
         }
 
-        public void Map_PreviewMouseMove(object sender, MouseEventArgs e)
+        public void OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
-            _mousePosition = GetPosition(sender as IInputElement, e);
+            _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
 
             if (e.RightButton == MouseButtonState.Pressed)
             {
@@ -137,7 +122,7 @@ namespace BlockEditor.ViewModels
             }
         }
     
-        public void Map_SizeChanged(int width, int height)
+        public void OnSizeChanged(int width, int height)
         {
             // thread safe?
             _gameImage = new GameImage(width, height);

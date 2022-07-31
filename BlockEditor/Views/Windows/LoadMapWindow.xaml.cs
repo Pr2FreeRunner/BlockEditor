@@ -1,38 +1,31 @@
 ﻿using BlockEditor.Helpers;
 using BlockEditor.Models;
 using BlockEditor.Views.Controls;
-using DataAccess;
 using LevelModel.Models;
-using Microsoft.Win32;
-using Newtonsoft.Json.Linq;
-using Parsers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+
+using static BlockEditor.Utils.SearchLevelUtil;
 
 namespace BlockEditor.Views.Windows
 {
 
     public partial class LoadMapWindow : Window
     {
-        // those depending on login must be last
         private enum SearchBy { Username, ID, LocalFile, Newest, MyLevels } 
+
+        private SearchBy _searchBy;
+        private int _page = 1;
+        private string NOT_FOUND = "404 Not Found";
 
         public int SelectedLevelID { get; private set; }
         public Level SelectedLevel { get; private set; }
 
-
-        private SearchBy _searchBy;
-
-        private int _page = 1;
-
-        private string NOT_FOUND = "404 Not Found";
 
         public LoadMapWindow()
         {
@@ -40,6 +33,7 @@ namespace BlockEditor.Views.Windows
             AddSearchByItems();
             UpdateButtons();
         }
+
 
         private void AddSearchByItems()
         {
@@ -104,18 +98,40 @@ namespace BlockEditor.Views.Windows
             }
         }
 
-        private void OnSelectedLevel(int id)
-        {
-            SelectedLevelID = id;
-            Close(true);
-        }
-
         private void Close(bool success)
         {
             DialogResult = success;
             Close();
         }
 
+        private void Clean()
+        {
+            errorText.Content = string.Empty;
+            SearchResultPanel.Children.Clear();
+        }
+
+        private bool IsOKToSearch()
+        {
+            return !string.IsNullOrWhiteSpace(searchTextbox.Text) || _searchBy == SearchBy.LocalFile;
+        }
+
+        private void UpdateButtons()
+        {
+            var ok     = IsOKToSearch();
+            var pageOk = (ok && _searchBy == SearchBy.Username) ||  _searchBy == SearchBy.Newest;
+
+            btnSearch.IsEnabled = ok;
+            btnRightPage.IsEnabled = pageOk;
+            btnLeftPage.IsEnabled  = pageOk && _page > 1;
+            searchTextbox.IsEnabled = _searchBy != SearchBy.MyLevels 
+                                    && _searchBy != SearchBy.LocalFile
+                                    && _searchBy != SearchBy.Newest;
+
+            PageText.Text = _page.ToString(CultureInfo.InvariantCulture);
+        }
+
+        #region Events
+        
         private void Search_Click(object sender, RoutedEventArgs e)
         {
             using (new TempCursor(Cursors.Wait))
@@ -128,7 +144,7 @@ namespace BlockEditor.Views.Windows
                     switch (_searchBy)
                     {
                         case SearchBy.Username:
-                            AddSearchResults(SearchByUsername(search));
+                            AddSearchResults(SearchByUsername(search, _page));
                             break;
 
                         case SearchBy.ID:
@@ -137,7 +153,7 @@ namespace BlockEditor.Views.Windows
                             if (id == null)
                                 errorText.Content = "Invalid Level ID";
                             else
-                                AddSearchResults(SearchByLevelId(id.Value));
+                                AddSearchResults(SearchByLevelId(id.Value, Close, OnSelectedLevel));
                             break;
 
                         case SearchBy.MyLevels:
@@ -145,11 +161,11 @@ namespace BlockEditor.Views.Windows
                             break;
 
                         case SearchBy.LocalFile:
-                            AddSearchResults(SearchLocalFile());
+                            AddSearchResults(SearchLocalFile(Close, OnSelectedLevel));
                             break;
 
                         case SearchBy.Newest:
-                            AddSearchResults(SearchNewest());
+                            AddSearchResults(SearchNewest(_page));
                             break;
                         default: throw new Exception("Something is wrong...");
                     }
@@ -162,209 +178,7 @@ namespace BlockEditor.Views.Windows
 
             UpdateButtons();
         }
-
-        private IEnumerable<SearchResult> SearchLocalFile()
-        {
-            var filepath = GetLocalFilepath();
-
-            if (string.IsNullOrWhiteSpace(filepath))
-                yield break;
-
-            var data = File.ReadAllText(filepath);
-
-            try 
-            { 
-                var levelInfo = PR2Parser.Level(data);
-
-                if (levelInfo?.Messages?.Where(m => m != null).Any() == true)
-                {
-                    MessageUtil.ShowMessages(levelInfo.Messages);
-                    Close(false);
-                    yield break;
-                }
-
-                if (levelInfo?.Level?.Title == null)
-                {
-                    MessageUtil.ShowError("Failed to parse level.");
-                    Close(false);
-                    yield break;
-                }
-
-                SelectedLevel = levelInfo.Level;
-                OnSelectedLevel(levelInfo.Level.LevelID);
-            }
-            catch
-            {
-                MessageUtil.ShowError("Failed to parse level.");
-                Close(false);
-            }
-        }
-
-        private bool IsSlowDownResponse(string data)
-        {
-            if (string.IsNullOrWhiteSpace(data))
-                return false;
-
-            try
-            {
-                var json = JObject.Parse(data);
-                var success = json?.GetValue("success")?.Value<bool>() ?? false;
-                var msg = json?.GetValue("error")?.Value<string>() ?? string.Empty;
-
-                return !success && msg != null && msg.Contains("Slow down", StringComparison.InvariantCultureIgnoreCase);
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        private IEnumerable<SearchResult> SearchByUsername(string username)
-        {
-            if (string.IsNullOrWhiteSpace(username))
-                yield break;
-
-            var data = PR2Accessor.Search(username, _page);
-
-            if (IsSlowDownResponse(data))
-            {
-                yield return SearchResult.SLOW_DOWN;
-                yield break;
-            }
-
-            var levels = PR2Parser.SearchResult(data);
-
-            foreach (var l in levels)
-            {
-                if (l == null)
-                    continue;
-
-                yield return new SearchResult(l.LevelID, l.Title, l.UserName);
-            }
-        }
-
-        private IEnumerable<SearchResult> SearchNewest()
-        {
-            if (!CurrentUser.IsLoggedIn())
-            {
-                MessageUtil.ShowError("Requires user to login");
-                yield break;
-            }
-
-            var data = PR2Accessor.Newest(_page, CurrentUser.Token);
-
-            if (IsSlowDownResponse(data))
-            {
-                yield return SearchResult.SLOW_DOWN;
-                yield break;
-            }
-
-            var levels = PR2Parser.SearchResult(data);
-
-            foreach (var l in levels)
-            {
-                if (l == null)
-                    continue;
-
-                yield return new SearchResult(l.LevelID, l.Title, l.UserName);
-            }
-        }
-
-        private IEnumerable<SearchResult> SearchMyLevels()
-        {
-            if (!CurrentUser.IsLoggedIn())
-            {
-                MessageUtil.ShowError("Requires user to login");
-                yield break;
-            }
-
-            var data = PR2Accessor.LoadMyLevels(CurrentUser.Token);
-
-            if (IsSlowDownResponse(data))
-            {
-                yield return SearchResult.SLOW_DOWN;
-                yield break;
-            }
-
-            var levels = PR2Parser.LoadResult(data);
-
-            foreach (var l in levels)
-            {
-                if (l == null)
-                    continue;
-
-                yield return new SearchResult(l.LevelID, l.Title , l.UserName);
-            }
-        }
-
-        private int? GetLevelID(string input)
-        {
-            if (string.IsNullOrWhiteSpace(input))
-                return null;
-
-            if (!MyConverters.TryParse(input, out var id))
-                return null;
-
-            return id;
-        }
-
-        private IEnumerable<SearchResult> SearchByLevelId(int id)
-        {
-            SearchResult result = null;
-
-            try
-            {
-                var data = PR2Accessor.Download(id);
-
-                if (string.IsNullOrWhiteSpace(data))
-                    yield break;
-
-                if (IsSlowDownResponse(data))
-                {
-                    result = SearchResult.SLOW_DOWN;
-                }
-                else
-                {
-                    var levelInfo = PR2Parser.Level(data);
-
-                    if (levelInfo.Messages.Any())
-                    {
-                        MessageUtil.ShowMessages(levelInfo.Messages);
-                        Close(false);
-                        yield break;
-                    }
-
-                    if (levelInfo?.Level?.Title == null)
-                    {
-                        MessageUtil.ShowError("Failed to parse level.");
-                        Close(false);
-                        yield break;
-                    }
-
-                    SelectedLevel = levelInfo.Level;
-                    OnSelectedLevel(levelInfo.Level.LevelID);
-                }
-            }
-            catch (WebException ex)
-            {
-                var r = ex.Response as HttpWebResponse;
-
-                if (r != null && r.StatusCode == HttpStatusCode.NotFound)
-                    yield break;
-                else
-                    throw;
-            }
-
-            if (result != null)
-                yield return result;
-        }
-
-        private void Clean()
-        {
-            errorText.Content = string.Empty;
-            SearchResultPanel.Children.Clear();
-        }
-
+ 
         private void SearchBy_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -387,26 +201,6 @@ namespace BlockEditor.Views.Windows
                 searchTextbox.Text = string.Empty;
                 Search_Click(null, null);
             }
-        }
-
-        private bool IsOKToSearch()
-        {
-            return !string.IsNullOrWhiteSpace(searchTextbox.Text) || _searchBy == SearchBy.LocalFile;
-        }
-
-        private void UpdateButtons()
-        {
-            var ok     = IsOKToSearch();
-            var pageOk = (ok && _searchBy == SearchBy.Username) ||  _searchBy == SearchBy.Newest;
-
-            btnSearch.IsEnabled = ok;
-            btnRightPage.IsEnabled = pageOk;
-            btnLeftPage.IsEnabled  = pageOk && _page > 1;
-            searchTextbox.IsEnabled = _searchBy != SearchBy.MyLevels 
-                                    && _searchBy != SearchBy.LocalFile
-                                    && _searchBy != SearchBy.Newest;
-
-            PageText.Text = _page.ToString(CultureInfo.InvariantCulture);
         }
 
         private void searchTextbox_TextChanged(object sender, TextChangedEventArgs e)
@@ -467,15 +261,19 @@ namespace BlockEditor.Views.Windows
             }
         }
 
-        private string GetLocalFilepath()
+        private void OnSelectedLevel(int id)
         {
-            var openFileDialog = new OpenFileDialog();
-
-            if (openFileDialog.ShowDialog() == true)
-                return openFileDialog.FileName;
-            
-            return string.Empty;
+            SelectedLevelID = id;
+            Close(true);
         }
+
+        private void OnSelectedLevel(Level level)
+        {
+            SelectedLevel = level;
+            OnSelectedLevel(level.LevelID);
+        }
+
+        #endregion
 
     }
 }
