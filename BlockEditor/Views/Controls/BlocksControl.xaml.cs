@@ -1,8 +1,9 @@
-﻿using BlockEditor.Models;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
+using BlockEditor.Models;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Controls;
+
 using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Views.Controls
@@ -10,7 +11,14 @@ namespace BlockEditor.Views.Controls
     public partial class BlocksControl : UserControl
     {
 
-        public BlockImage SelectedBlock { get; private set; }
+        private int? _selectedBlockID;
+        private readonly object _lock = new object();
+
+        public int? SelectedBlockId 
+        { 
+            get { return _selectedBlockID; } 
+            set { lock(_lock) _selectedBlockID = value; } 
+        }
 
         private Border _selectedBorder { get; set; }
 
@@ -42,8 +50,9 @@ namespace BlockEditor.Views.Controls
             border.MouseDown += Border_MouseDown;
 
             var image  = new Image();
+
             image.Source = block.Image;
-            image.Tag = block;
+            image.Tag = block.ID;
             border.Child = image;
 
             return border;
@@ -66,15 +75,15 @@ namespace BlockEditor.Views.Controls
                 return;
 
             var border = sender as Border;
-            var block  = (border?.Child as Image).Tag as BlockImage;
+            var id     = (border?.Child as Image).Tag as int?;
 
-            if (block == null)
+            if (id == null)
                 return;
 
             ToggleBorder(_selectedBorder);
 
             _selectedBorder = border;
-            SelectedBlock   = block;
+            SelectedBlockId   = id;
 
             ToggleBorder(_selectedBorder);
         }

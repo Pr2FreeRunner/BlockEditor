@@ -24,15 +24,16 @@ namespace BlockEditor.ViewModels
         }
 
         private GameImage _gameImage;
+        private GameImage _previewImage;
+
         private Camera _camera;
 
         public BitmapImage MapContent
         {
             get => _gameImage?.CreateImage(); 
-            set => RaisePropertyChanged(); 
         }
 
-        public Func<BlockImage> GetSelectedBlock { get; set; }
+        public Func<int?> GetSelectedBlockID { get; set; }
 
         public GameEngine Engine { get; }
         public Map Map { get; private set; }
@@ -49,16 +50,19 @@ namespace BlockEditor.ViewModels
 
         private void OnFrame()
         {
-            if(Map == null || _gameImage == null)
+            if(Map == null || _gameImage == null || _previewImage == null)
                 return;
 
-            _gameImage.Clear(System.Drawing.Color.Black);
+            _gameImage.Clear(Map.Background);
+            _previewImage.Clear(System.Drawing.Color.Yellow);
+
             var size = Map.BlockSize;
 
             DrawBlocks(size);
             _camera.Move(size);
+            DrawSelection(size);
 
-            MapContent = null;
+            RaisePropertyChanged(nameof(MapContent));
         }
 
         private void DrawBlocks(BlockSize size)
@@ -90,6 +94,28 @@ namespace BlockEditor.ViewModels
             }
         }
 
+        private void DrawSelection(BlockSize size)
+        {
+            if(_mousePosition == null)
+                return;
+
+            var id = GetSelectedBlockID();
+
+            if(id == null)
+                return;
+
+            var block = BlockImages.GetImageBlock(size, id.Value);
+
+            if(block?.Bitmap == null)
+                return;
+
+            var blockSize = size.GetPixelSize();
+            var positionX = _mousePosition.Value.X - blockSize / 2;
+            var positionY = _mousePosition.Value.Y - blockSize / 2;
+
+            _gameImage.DrawImage(ref block.Bitmap, (int)positionX, (int)positionY);
+        }
+
         private Point? GetPosition(IInputElement src, MouseEventArgs e)
         {
             if (src == null || e == null)
@@ -105,9 +131,9 @@ namespace BlockEditor.ViewModels
 
         private void AddBlock(Point? p)
         {
-            var selectedBlock = GetSelectedBlock?.Invoke();
+            var id = GetSelectedBlockID?.Invoke();
 
-            if (p == null || selectedBlock == null || Map == null)
+            if (p == null || id == null || Map == null)
                 return;
 
             var x = p.Value.X + _camera.Position.X;
@@ -116,7 +142,7 @@ namespace BlockEditor.ViewModels
             var pos   = new Point(x, y);
             var index = Map.GetMapIndex(pos);
 
-            Map.Blocks.Add(index, selectedBlock.ID);
+            Map.Blocks.Add(index, id.Value);
         }
 
         private void DeleteBlock(Point? p)
@@ -160,28 +186,30 @@ namespace BlockEditor.ViewModels
             }
         }
 
+        private Point? _mousePosition;
+
         public void Map_PreviewMouseMove(object sender, MouseEventArgs e)
         {
+            _mousePosition = GetPosition(sender as IInputElement, e);
+
             if (e.RightButton == MouseButtonState.Pressed)
             {
-                // for permormance this is inside the if-else block
-                var p = GetPosition(sender as IInputElement, e);
-                DeleteBlock(p);
+                DeleteBlock(_mousePosition);
             }
             else if (e.LeftButton == MouseButtonState.Pressed)
             {
-                if (GetSelectedBlock?.Invoke() == null)
+                if (GetSelectedBlockID?.Invoke() == null)
                     return;
 
-                // for permormance this is inside the if-else block
-                var p = GetPosition(sender as IInputElement, e);
-                AddBlock(p.Value);
+                AddBlock(_mousePosition);
             }
         }
     
         public void Map_SizeChanged(int width, int height)
         {
-            _gameImage = new GameImage(width, height); // thread safe?
+            // thread safe?
+            _gameImage = new GameImage(width, height);
+            _previewImage = new GameImage(width, height); 
         }
 
         public void OnLoaded()

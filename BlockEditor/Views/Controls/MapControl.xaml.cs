@@ -17,7 +17,7 @@ namespace BlockEditor.Views.Controls
         {
             InitializeComponent();
             this.DataContext = ViewModel = new MapViewModel();
-            ViewModel.GetSelectedBlock = () => BlocksControl.SelectedBlock;
+            ViewModel.GetSelectedBlockID = () => BlocksControl.SelectedBlockId;
 
             MapButtons.ViewModel.OnLoadMap += ViewModel.OnLoadMap;
             MapButtons.ViewModel.OnSaveMap += () => MapUtil.Save(ViewModel.Map);
@@ -60,6 +60,14 @@ namespace BlockEditor.Views.Controls
                 return;
 
             ViewModel.Map.BlockSize = size;
+        }
+
+        private void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Escape)
+            {
+                BlocksControl.SelectedBlockId = null;
+            }
         }
     }
 }

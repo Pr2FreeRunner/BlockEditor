@@ -3,6 +3,8 @@ using Converters;
 using Converters.DataStructures.DTO;
 using LevelModel.Models;
 using System;
+using System.Drawing;
+
 using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Models
@@ -12,6 +14,17 @@ namespace BlockEditor.Models
 
 
         public Blocks Blocks { get; set; }
+
+        public Color Background
+        {
+            get
+            {
+                if (_backend.BackgroundColor != null)
+                    return ColorTranslator.FromHtml("#" + _backend.BackgroundColor);
+                else
+                    return Color.Black;
+            }
+        }
 
         public string Title { 
             get => _backend.Title;
@@ -39,17 +52,17 @@ namespace BlockEditor.Models
 
         public Map()
         {
+            _backend   = GetDefaultLevel();
+            Title      = string.Empty;
+            Blocks     = MyConverters.ToBlocks(_backend.Blocks);
             BlockSize = BlockSize.Zoom100;
-            _backend  = GetDefaultLevel();
-            Title     = string.Empty;
-            Blocks    = MyConverters.ToBlocks(_backend.Blocks);
         }
 
         public Map(Level level)
         {
-            _backend = level ?? GetDefaultLevel();
-            Title    = _backend?.Title ?? string.Empty;
-            Blocks   = MyConverters.ToBlocks(_backend.Blocks);
+            _backend   = level ?? GetDefaultLevel();
+            Title      = _backend?.Title ?? string.Empty;
+            Blocks     = MyConverters.ToBlocks(_backend.Blocks);
         }
 
         public string ToPr2String(string username, string token, bool publish = false, bool overwrite = false)

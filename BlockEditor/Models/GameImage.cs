@@ -31,7 +31,7 @@ namespace BlockEditor.Models
 
         public BitmapImage CreateImage()
         {
-            if(Width == 0  || Height == 0)
+            if(Width == 0 || Height == 0)
                 return null;
 
             var bitmap =  new Bitmap(Width, Height, _stride, PixelFormat.Format32bppArgb, _location);
@@ -68,16 +68,16 @@ namespace BlockEditor.Models
         {
             int locWidth = Width; 
             int val      = color.ToArgb();
-            int[] arr4   = new int[locWidth];
+            int[] arr    = new int[locWidth];
 
 
-            for (int i = 0; i < arr4.Length; i++)
-                arr4[i] = val;
+            for (int i = 0; i < arr.Length; i++)
+                arr[i] = val;
 
             for (int i = 0; i < _length; i += _stride)
-                Marshal.Copy(arr4, 0, _location + i, locWidth);
+                Marshal.Copy(arr, 0, _location + i, locWidth);
         }
-  
+
         public void DrawImage(ref Bitmap img, int X, int Y)
         {
             if (img.PixelFormat != PixelFormat.Format32bppArgb)
