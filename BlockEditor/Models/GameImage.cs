@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -83,17 +84,11 @@ namespace BlockEditor.Models
                 Marshal.Copy(arr, 0, _location + i, locWidth);
         }
 
-        public void DrawImage(ref Bitmap img, int x, int y)
+        public void DrawImage(ref Bitmap img, int X, int Y)
         {
-            if (img.PixelFormat == PixelFormat.Format32bppArgb)
-                DrawBmpImage(ref img, x, y);
-            else if (img.PixelFormat == PixelFormat.Format32bppPArgb)
-                DrawPngImage(ref img, x, y);
-            else
+            if (img.PixelFormat != PixelFormat.Format32bppArgb)
                 throw new Exception("The image is not in the supported format.");
-        }
-        private void DrawBmpImage(ref Bitmap img, int X, int Y)
-        {
+
             int dWidth  = img.Width;
             int dHeight = img.Height;
 
@@ -150,73 +145,16 @@ namespace BlockEditor.Models
             img.UnlockBits(dmb);
         }
 
-        private unsafe void DrawPngImage(ref Bitmap img, int X, int Y)
+        public void DrawTransperentImage(Graphics graphics, Bitmap bmp, int x, int y)
         {
-            int dWidth = img.Width;
-            int dHeight = img.Height;
-
-            if (X >= Width || Y >= Height)
+            if (graphics == null || bmp == null)
                 return;
 
-            int leftCutOff = 0;
-            int topCutOff  = 0;
+            graphics.CompositingMode = CompositingMode.SourceOver;
 
-            if (X < 0)
-            {
-                dWidth += X;
-                leftCutOff = -X;
-                X = 0;
-            }
-
-            if (Y < 0)
-            {
-                dHeight += Y;
-                topCutOff = -Y;
-                Y = 0;
-            }
-
-            if (dWidth + X > Width)
-                dWidth = Width - X;
-
-            if (dHeight + Y > Height)
-                dHeight = Height - Y;
-
-            if (dWidth <= 0 || dHeight <= 0)
-                return;
-
-            var dmb      = img.LockBits(new Rectangle(0, 0, 1, 1), ImageLockMode.ReadOnly, PixelFormat.Format32bppPArgb);
-            IntPtr ItPtr = dmb.Scan0;
-            IntPtr ptrMe = _location + (X * 4) + (Y * _stride);
-            int ItStride = img.Width * 4;
-
-            ItPtr += leftCutOff * 4;
-            ItPtr += topCutOff * dmb.Stride;
-
-            for (int iY = 0; iY < dHeight; iY++)
-            {
-                byte* pMe = (byte*)ptrMe;
-                byte* pIt = (byte*)ItPtr;
-
-                for (int iX = 0; iX < dWidth; iX++)
-                {
-                    double a      = pIt[3] / 255.0;
-                    double alpha1 = 1 - a;
-
-                    // newC = (1 - A)*oldC + ovrCA
-                    pMe[0] = (byte) (pMe[0] * alpha1 + pIt[0]);
-                    pMe[1] = (byte) (pMe[1] * alpha1 + pIt[1]);
-                    pMe[2] = (byte) (pMe[2] * alpha1 + pIt[2]);
-
-                    pMe += 4;
-                    pIt += 4;
-                }
-
-                ptrMe += _stride;
-                ItPtr += ItStride;
-            }
-
-            img.UnlockBits(dmb);
+            graphics.DrawImage(bmp, new Point(x - 1, y - 1));
         }
+
     }
 
 }

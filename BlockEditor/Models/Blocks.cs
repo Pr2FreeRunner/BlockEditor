@@ -41,7 +41,7 @@ namespace BlockEditor.Models
             return false;
         }
 
-        public BlockImage GetBlock(BlockSize size, int x, int y)
+        public int? GetBlockId(BlockSize size, int x, int y)
         {
             if(x < 0 || y < 0)
                 return null;
@@ -49,12 +49,7 @@ namespace BlockEditor.Models
             if(x >= SIZE || y >= SIZE)
                 return null;
 
-            var id = _blocks[x, y];
-
-            if(id == null)
-                return null;
-
-            return BlockImages.GetImageBlock(size, id.Value);
+            return _blocks[x, y];
         }
 
 

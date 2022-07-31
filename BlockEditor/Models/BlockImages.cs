@@ -7,8 +7,8 @@ using BlockEditor.Helpers;
 using System.Drawing;
 using System.Windows.Media;
 using System.Drawing.Imaging;
-
-using static BlockEditor.Models.BlockImages;
+using System.Drawing.Drawing2D;
+using BlockEditor.Utils;
 
 namespace BlockEditor.Models
 {
@@ -63,19 +63,30 @@ namespace BlockEditor.Models
             }
         }
 
-        private static Bitmap CreatePng(Bitmap bmp)
+        private static Bitmap ToSemiTransparentBitmap(Bitmap image, float opacity)
         {
-            if(bmp == null)
-                return null;
+            var colorMatrix      = new ColorMatrix();
+            colorMatrix.Matrix33 = opacity;
+            var imageAttributes  = new ImageAttributes();
 
-            Bitmap png = new Bitmap(bmp.Width, bmp.Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            imageAttributes.SetColorMatrix(colorMatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+            var output = new Bitmap(image.Width, image.Height);
 
-            using (var gr = Graphics.FromImage(bmp))
+            using (var gfx = Graphics.FromImage(output))
             {
-                gr.DrawImage(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height));
+                gfx.SmoothingMode = SmoothingMode.AntiAlias;
+                gfx.DrawImage(
+                    image,
+                    new Rectangle(0, 0, image.Width, image.Height),
+                    0,
+                    0,
+                    image.Width,
+                    image.Height,
+                    GraphicsUnit.Pixel,
+                    imageAttributes);
             }
 
-            return png;
+            return output;
         }
 
         private static IEnumerable<Tuple<BlockSize, BlockImage>> GetImages(string filepath)
@@ -94,8 +105,8 @@ namespace BlockEditor.Models
             {
                 var image  = Resize(e.GetPixelSize(), src);
                 var bitmap = ToBitmap(image);
-                var png    = CreatePng(bitmap);
-                var block  = new BlockImage { ID = id, Image = image, Bitmap = bitmap, PNG = png };
+                var semi   = ToSemiTransparentBitmap(bitmap, 0.5f);
+                var block  = new BlockImage { ID = id, Image = image, Bitmap = bitmap, SemiTransparentBitmap = semi };
 
                 yield return new Tuple<BlockSize, BlockImage>(e, block);
             }
@@ -213,45 +224,6 @@ namespace BlockEditor.Models
                             dic.Add(item.Item2.ID, item.Item2);
                     }
                 }
-            }
-        }
-
-    }
-
-    public static class BlockSizeUtil
-    {
-
-        public const int DEFAULT_BLOCK_SIZE = 40;
-
-        public static IEnumerable<BlockSize> GetAll()
-        {
-            foreach (var e in Enum.GetValues(typeof(BlockSize)))
-                yield return (BlockSize)e;
-        }
-
-        public static int GetPixelSize(this BlockSize size)
-        {
-            switch (size)
-            {
-                case BlockSize.Zoom10: return (int)(DEFAULT_BLOCK_SIZE * 0.10);
-
-                case BlockSize.Zoom25: return (int)(DEFAULT_BLOCK_SIZE * 0.25);
-
-                case BlockSize.Zoom50: return (int)(DEFAULT_BLOCK_SIZE * 0.5);
-
-                case BlockSize.Zoom75: return (int)(DEFAULT_BLOCK_SIZE * 0.75);
-
-                case BlockSize.Zoom100: return (int)(DEFAULT_BLOCK_SIZE * 1.00);
-
-                case BlockSize.Zoom125: return (int)(DEFAULT_BLOCK_SIZE * 1.25);
-
-                case BlockSize.Zoom150: return (int)(DEFAULT_BLOCK_SIZE * 1.50);
-
-                case BlockSize.Zoom200: return (int)(DEFAULT_BLOCK_SIZE * 2.00);
-
-                case BlockSize.Zoom250: return (int)(DEFAULT_BLOCK_SIZE * 2.50);
-
-                default: return DEFAULT_BLOCK_SIZE;
             }
         }
 

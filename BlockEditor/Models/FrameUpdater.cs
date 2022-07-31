@@ -1,7 +1,6 @@
 ﻿using BlockEditor.Helpers;
+using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 
 namespace BlockEditor.Models
 {
@@ -43,18 +42,16 @@ namespace BlockEditor.Models
         private Graphics CreateGraphics()
         {
             var bmp = _gameImage?.GetBitmap();
+            var ex  = new Exception("Failed to generate graphics for the game");
 
-            if(bmp == null)
-                return null;
+            if (bmp == null)
+                throw ex;
 
-            return Graphics.FromImage(bmp);
+            return Graphics.FromImage(bmp) ?? throw ex;
         }
 
         private void DrawGrids()
         {
-            if(_graphics == null)
-                return;
-
             var width  = _gameImage.Width;
             var height = _gameImage.Height;
             var startX = _camera.Position.X / _map.BlockPixelSize / 30;
@@ -69,45 +66,6 @@ namespace BlockEditor.Models
                 _graphics.DrawLine(pencil, 0, i, width, i);
 
         }
-
-        private void DrawTransperentImage(Bitmap input, int x, int y)
-        {
-            if(_graphics == null)
-                return;
-
-            var image = SetOpacity(input, 0.5f);
-
-            _graphics.CompositingMode = CompositingMode.SourceOver;
-
-            _graphics.DrawImage(image, new Point(x - 1, y - 1));
-        }
-
-        private static Bitmap SetOpacity(Bitmap image, float opacity)
-        {
-            var colorMatrix      = new ColorMatrix();
-            colorMatrix.Matrix33 = opacity;
-            var imageAttributes  = new ImageAttributes();
-     
-            imageAttributes.SetColorMatrix(colorMatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-            var output = new Bitmap(image.Width, image.Height);
-
-            using (var gfx = Graphics.FromImage(output))
-            {
-                gfx.SmoothingMode = SmoothingMode.AntiAlias;
-                gfx.DrawImage(
-                    image,
-                    new Rectangle(0, 0, image.Width, image.Height),
-                    0,
-                    0,
-                    image.Width,
-                    image.Height,
-                    GraphicsUnit.Pixel,
-                    imageAttributes);
-            }
-
-            return output;
-        }
-
 
         private void DrawBlocks()
         {
@@ -124,15 +82,9 @@ namespace BlockEditor.Models
             {
                 for (int x = minBlockX; x < minBlockX + blockCountX; x++)
                 {
-                    var block = _map.Blocks.GetBlock(_map.BlockSize, x, y);
+                    var id = _map.Blocks.GetBlockId(_map.BlockSize, x, y);
 
-                    if (block == null)
-                        continue;
-
-                    var posX = x * _map.BlockPixelSize - _camera.Position.X;
-                    var posY = y * _map.BlockPixelSize - _camera.Position.Y;
-
-                    _gameImage.DrawImage(ref block.Bitmap, posX, posY);
+                    DrawBlock(id, x, y, false);
                 }
             }
 
@@ -141,17 +93,30 @@ namespace BlockEditor.Models
                 if (startBlock?.Position == null)
                     continue;
 
-                var block = BlockImages.GetImageBlock(_map.BlockSize, startBlock.ID);
+                var x = startBlock.Position.Value.X;
+                var y = startBlock.Position.Value.Y;
 
-                if (block == null)
-                    continue;
-
-                var posX = startBlock.Position.Value.X * _map.BlockPixelSize - _camera.Position.X;
-                var posY = startBlock.Position.Value.Y * _map.BlockPixelSize - _camera.Position.Y;
-
-                DrawTransperentImage(block.Bitmap, posX, posY);
-                //_gameImage.DrawImage(ref block.Bitmap, posX, posY);
+                DrawBlock(startBlock.ID, x, y, true);
             }
+        }
+
+        private void DrawBlock(int? id, int x, int y, bool semiTrans)
+        {
+            if(id == null)
+                return;
+
+            var block = BlockImages.GetImageBlock(_map.BlockSize, id.Value);
+
+            if (block == null)
+                return;
+
+            var posX = x * _map.BlockPixelSize - _camera.Position.X;
+            var posY = y * _map.BlockPixelSize - _camera.Position.Y;
+
+            if(semiTrans)
+                _gameImage.DrawTransperentImage(_graphics, block.SemiTransparentBitmap, posX, posY);
+            else
+                _gameImage.DrawImage(ref block.Bitmap, posX, posY);
         }
 
         private void DrawSelection()
@@ -164,7 +129,7 @@ namespace BlockEditor.Models
             if (id == null)
                 return;
 
-            var block = BlockImages.GetImageBlock(_map.BlockSize, id.Value)?.Bitmap;
+            var block = BlockImages.GetImageBlock(_map.BlockSize, id.Value)?.SemiTransparentBitmap;
 
             if (block == null)
                 return;
@@ -172,8 +137,8 @@ namespace BlockEditor.Models
             var positionX = (int) (_mousePosition.Value.X - _map.BlockPixelSize / 2.0);
             var positionY = (int) (_mousePosition.Value.Y - _map.BlockPixelSize / 2.0);
 
-            DrawTransperentImage(block, positionX, positionY);
-            //_gameImage.DrawImage(ref block, positionX, positionY);
+            _gameImage.DrawTransperentImage(_graphics, block, positionX, positionY);
         }
+
     }
 }

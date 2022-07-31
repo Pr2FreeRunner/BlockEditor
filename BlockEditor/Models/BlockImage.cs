@@ -10,7 +10,7 @@ namespace BlockEditor.Models
 
         public Bitmap Bitmap;
 
-        public Bitmap PNG;
+        public Bitmap SemiTransparentBitmap { get; set; }
 
         public BitmapSource Image { get; set; }
 
