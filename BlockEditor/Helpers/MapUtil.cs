@@ -5,6 +5,7 @@ using DataAccess.DataStructures;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -138,6 +139,21 @@ namespace BlockEditor.Helpers
             proc.Start();
         }
 
+        public static Pen GetGridPen(Color mapBackground)
+        {
+            int r   = 0;
+            int g   = 0;
+            int b   = 0;
+
+            if (mapBackground.R < 128)
+                r = 255;
+            if (mapBackground.G < 128)
+                g = 255;
+            if (mapBackground.B < 128)
+                b = 255;
+
+            return new Pen(Color.FromArgb(77, r, g, b), 1);
+        }
 
     }
 }

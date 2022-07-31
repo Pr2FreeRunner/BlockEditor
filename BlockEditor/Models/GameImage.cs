@@ -29,15 +29,20 @@ namespace BlockEditor.Models
             Clear(Color.Black);
         }
 
-        public BitmapImage CreateImage()
+        public BitmapImage GetImage()
         {
-            if(Width == 0 || Height == 0)
-                return null;
-
-            var bitmap =  new Bitmap(Width, Height, _stride, PixelFormat.Format32bppPArgb, _location);
+            var bitmap = GetBitmap();
             var image  = ToImage(bitmap);
 
             return image;
+        }
+
+        public Bitmap GetBitmap()
+        {
+            if (Width == 0 || Height == 0)
+                return null;
+
+            return new Bitmap(Width, Height, _stride, PixelFormat.Format32bppPArgb, _location);
         }
 
         BitmapImage ToImage(Bitmap bitmap)

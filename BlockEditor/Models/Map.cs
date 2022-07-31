@@ -41,11 +41,11 @@ namespace BlockEditor.Models
             set
             {
                 _blockSize = value;
-                BlockSizeValue = value.GetPixelSize();
+                BlockPixelSize = value.GetPixelSize();
             }
         }
 
-        public int BlockSizeValue; 
+        public int BlockPixelSize; 
 
 
         private readonly Level _backend;
@@ -96,8 +96,8 @@ namespace BlockEditor.Models
 
         public MyPoint GetMapIndex(System.Windows.Point p)
         {
-            var x = (int)(p.X / BlockSizeValue);
-            var y = (int)(p.Y / BlockSizeValue);
+            var x = (int)(p.X / BlockPixelSize);
+            var y = (int)(p.Y / BlockPixelSize);
 
             return new MyPoint(x, y);
         }
