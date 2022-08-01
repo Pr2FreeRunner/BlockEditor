@@ -34,6 +34,8 @@ namespace BlockEditor.Utils
 
                 case BlockSize.Zoom150: return (int)(DEFAULT_BLOCK_SIZE * 1.50);
 
+                case BlockSize.Zoom175: return (int)(DEFAULT_BLOCK_SIZE * 1.75);
+
                 case BlockSize.Zoom200: return (int)(DEFAULT_BLOCK_SIZE * 2.00);
 
                 case BlockSize.Zoom250: return (int)(DEFAULT_BLOCK_SIZE * 2.50);

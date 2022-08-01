@@ -53,10 +53,10 @@ namespace BlockEditor.Models
 
         public Map()
         {
-            _backend   = GetDefaultLevel();
-            Title      = string.Empty;
-            Blocks     = MyConverters.ToBlocks(_backend.Blocks);
-            BlockSize = BlockSize.Zoom100;
+            _backend  = GetDefaultLevel();
+            Title     = string.Empty;
+            Blocks    = MyConverters.ToBlocks(_backend.Blocks);
+            BlockSize = BlockImages.DEFAULT_BLOCK_SIZE;
         }
 
         public Map(Level level)

@@ -46,5 +46,17 @@ namespace BlockEditor {
                 this["Token"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Zoom {
+            get {
+                return ((int)(this["Zoom"]));
+            }
+            set {
+                this["Zoom"] = value;
+            }
+        }
     }
 }

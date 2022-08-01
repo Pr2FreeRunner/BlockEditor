@@ -26,6 +26,8 @@ namespace BlockEditor.Views.Controls
             ZoomControl.ViewModel.OnZoomChanged += (zoom) => ViewModel.OnZoomChanged(zoom);
 
             this.Loaded += windowLoaded;
+
+            ZoomControl.ViewModel.Init();
         }
 
         private void windowLoaded(object sender, RoutedEventArgs e)

@@ -32,6 +32,7 @@ namespace BlockEditor.ViewModels
                 _zoom = value;
                 ZoomText = CreateZoomText(value);
                 OnZoomChanged?.Invoke(_zoom);
+                Save();
             }
         }
         
@@ -41,11 +42,13 @@ namespace BlockEditor.ViewModels
 
         public ZoomViewModel()
         {
-            Zoom = BlockSize.Zoom100;
-
             ZoomInCommand  = new RelayCommand(ZoomInExecute, ZoomInCanExecute);
             ZoomOutCommand = new RelayCommand(ZoomOutExecute, ZoomOutCanExecute);
+        }
 
+        public void Init()
+        {
+            Load();
         }
 
         private string CreateZoomText(BlockSize size)
@@ -82,6 +85,31 @@ namespace BlockEditor.ViewModels
                 return;
 
             Zoom -= 1;
+        }
+
+        private void Save()
+        {
+            try
+            {
+                Settings.Default["Zoom"] = (int) Zoom;
+                Settings.Default.Save();
+            }
+            catch (Exception ex)
+            {
+                MessageUtil.ShowError(ex.Message);
+            }
+        }
+
+        private void Load()
+        {
+            try
+            {
+                Zoom = (BlockSize)(Settings.Default["Zoom"] ?? BlockImages.DEFAULT_BLOCK_SIZE);
+            }
+            catch (Exception ex)
+            {
+                MessageUtil.ShowError(ex.Message);
+            }
         }
 
     }

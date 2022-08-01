@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace BlockEditor.Models
 {
-    class FrameUpdater
+    class FrameUpdate
     {
 
         private GameImage _gameImage;
@@ -14,7 +14,7 @@ namespace BlockEditor.Models
         private int? _selectedBlockID;
         private Graphics _graphics;
 
-        public FrameUpdater(GameImage image, Map map, Camera camera, MyPoint? mousePosition, int? selectedBlockID)
+        public FrameUpdate(GameImage image, Map map, Camera camera, MyPoint? mousePosition, int? selectedBlockID)
         {
             if (image == null || map == null || camera == null)
                 return;

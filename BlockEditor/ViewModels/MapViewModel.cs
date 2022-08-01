@@ -40,6 +40,7 @@ namespace BlockEditor.ViewModels
             UserOperations = new UserOperations();
             Engine.OnFrame += OnFrameUpdate;
             _camera = new Camera();
+            _gameImage = new GameImage(0,0);
         }
 
         private void AddBlock(Point? p)
@@ -96,7 +97,7 @@ namespace BlockEditor.ViewModels
 
         public void OnFrameUpdate()
         {
-            new FrameUpdater(_gameImage, Map, _camera, _mousePosition, GetSelectedBlockID());
+            new FrameUpdate(_gameImage, Map, _camera, _mousePosition, GetSelectedBlockID());
 
             RaisePropertyChanged(nameof(MapContent));
         }
