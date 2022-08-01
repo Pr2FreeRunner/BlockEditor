@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using BlockEditor.Helpers;
 using BlockEditor.Models;
+using BlockEditor.Models.UserOperations;
 using BlockEditor.Utils;
 using static BlockEditor.Models.BlockImages;
 
@@ -30,11 +31,13 @@ namespace BlockEditor.ViewModels
 
         public Map Map { get; private set; }
 
+        public UserOperations UserOperations { get; }
 
         public MapViewModel()
         {
             Map = new Map();
             Engine = new GameEngine();
+            UserOperations = new UserOperations();
             Engine.OnFrame += OnFrameUpdate;
             _camera = new Camera();
         }
@@ -52,7 +55,8 @@ namespace BlockEditor.ViewModels
             var pos   = new Point(x, y);
             var index = Map.GetMapIndex(pos);
 
-            Map.Blocks.Add(index, id.Value);
+            var op = new AddBlockOperation(Map, id.Value, index);
+            UserOperations.Execute(op);
         }
 
         private void DeleteBlock(Point? p)
@@ -62,9 +66,15 @@ namespace BlockEditor.ViewModels
 
             var x = p.Value.X + _camera.Position.X;
             var y = p.Value.Y + _camera.Position.Y;
-            var pos = new Point(x, y);
 
-            Map.Blocks.Delete(Map.GetMapIndex(pos));
+            var index   = Map.GetMapIndex(new Point(x, y));
+            var blockId = Map.Blocks.GetBlockId(index.X, index.Y);
+
+            if(blockId == null)
+                return;
+
+            var op = new DeleteBlockOperation(Map, blockId.Value, index);
+            UserOperations.Execute(op);
         }
 
         public void GoToStartPosition()
@@ -124,8 +134,11 @@ namespace BlockEditor.ViewModels
     
         public void OnSizeChanged(int width, int height)
         {
-            // thread safe?
-            _gameImage = new GameImage(width, height);
+            if(_gameImage != null)
+                _gameImage.Dispose();
+
+           
+            _gameImage = new GameImage(width, height);  // thread safe?
         }
 
         public void OnLoaded()
@@ -144,6 +157,8 @@ namespace BlockEditor.ViewModels
             var size = Map.BlockSize;
             Map = map;
             Map.BlockSize = size;
+
+            UserOperations.Clear();
 
             GoToStartPosition();
 

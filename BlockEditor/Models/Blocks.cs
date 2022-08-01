@@ -41,7 +41,7 @@ namespace BlockEditor.Models
             return false;
         }
 
-        public int? GetBlockId(BlockSize size, int x, int y)
+        public int? GetBlockId(int x, int y)
         {
             if(x < 0 || y < 0)
                 return null;

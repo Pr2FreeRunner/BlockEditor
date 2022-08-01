@@ -82,7 +82,7 @@ namespace BlockEditor.Models
             {
                 for (int x = minBlockX; x < minBlockX + blockCountX; x++)
                 {
-                    var id = _map.Blocks.GetBlockId(_map.BlockSize, x, y);
+                    var id = _map.Blocks.GetBlockId(x, y);
 
                     DrawBlock(id, x, y, false);
                 }

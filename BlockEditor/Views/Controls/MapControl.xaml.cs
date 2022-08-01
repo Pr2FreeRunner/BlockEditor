@@ -67,6 +67,21 @@ namespace BlockEditor.Views.Controls
             if(e.Key == Key.Escape)
             {
                 BlocksControl.SelectedBlockId = null;
+                return;
+            }
+
+            var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+
+            if (e.Key == Key.Z && ctrl)
+            {
+                ViewModel.UserOperations.Undo();
+                return;
+            }
+
+            if (e.Key == Key.Y && ctrl)
+            {
+                ViewModel.UserOperations.Redo();
+                return;
             }
         }
     }
