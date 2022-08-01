@@ -68,7 +68,7 @@ namespace BlockEditor.Views.Controls
         {
             if(e.Key == Key.Escape)
             {
-                BlocksControl.SelectedBlockId = null;
+                BlocksControl.RemoveSelection();
                 return;
             }
 

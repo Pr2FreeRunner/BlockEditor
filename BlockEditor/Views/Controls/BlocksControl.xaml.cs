@@ -17,7 +17,7 @@ namespace BlockEditor.Views.Controls
         public int? SelectedBlockId 
         { 
             get { return _selectedBlockID; } 
-            set { lock(_lock) _selectedBlockID = value; } 
+            private set { lock(_lock) _selectedBlockID = value; } 
         }
 
         private Border _selectedBorder { get; set; }
@@ -80,13 +80,22 @@ namespace BlockEditor.Views.Controls
             if (id == null)
                 return;
 
+            CreateSelection(border, id);
+        }
+
+        private void CreateSelection(Border border, int? id)
+        {
             ToggleBorder(_selectedBorder);
 
             _selectedBorder = border;
-            SelectedBlockId   = id;
+            SelectedBlockId = id;
 
             ToggleBorder(_selectedBorder);
         }
 
+        public void RemoveSelection()
+        {
+            CreateSelection(null, null);
+        }
     }
 }
