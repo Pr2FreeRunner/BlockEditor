@@ -31,13 +31,13 @@ namespace BlockEditor.ViewModels
 
         public Map Map { get; private set; }
 
-        public UserOperations UserOperations { get; }
+        public UserOperationsViewModel UserOperations { get; }
 
         public MapViewModel()
         {
             Map = new Map();
             Engine = new GameEngine();
-            UserOperations = new UserOperations();
+            UserOperations = new UserOperationsViewModel();
             Engine.OnFrame += OnFrameUpdate;
             _camera = new Camera();
             _gameImage = new GameImage(0,0);
@@ -55,6 +55,9 @@ namespace BlockEditor.ViewModels
 
             var pos   = new Point(x, y);
             var index = Map.GetMapIndex(pos);
+
+            if(Map.Blocks.GetBlockId(index.X, index.Y) == id.Value)
+                return;
 
             var op = new AddBlockOperation(Map, id.Value, index);
             UserOperations.Execute(op);

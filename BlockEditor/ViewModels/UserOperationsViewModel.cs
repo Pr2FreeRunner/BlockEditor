@@ -1,20 +1,27 @@
 ﻿using BlockEditor.Helpers;
+using BlockEditor.Models.UserOperations;
 using System;
 using System.Collections.Generic;
 
-namespace BlockEditor.Models.UserOperations
+namespace BlockEditor.ViewModels
 {
 
-    public class UserOperations
+    public class UserOperationsViewModel : NotificationObject
     {
         private readonly Stack<IUserOperation> _operations;
         private readonly Stack<IUserOperation> _undos;
         private readonly object _lock = new object();
 
-        public UserOperations()
+        public RelayCommand UndoCommand { get; }
+        public RelayCommand RedoCommand { get; }
+
+        public UserOperationsViewModel()
         {
             _operations = new Stack<IUserOperation>();
             _undos = new Stack<IUserOperation>();
+
+            UndoCommand = new RelayCommand((_) => Undo(), (_) => CanUndo());
+            RedoCommand = new RelayCommand((_) => Redo(), (_) => CanRedo());
         }
 
         public bool CanUndo()
