@@ -56,6 +56,7 @@ namespace BlockEditor.Models
         private void SelectCommandExecute(object obj)
         {
             SelectedBlock = null;
+            SelectedBlocks = null;
             UserSelection.OnSelectionClick();
             OnSelectionClick?.Invoke();
         }

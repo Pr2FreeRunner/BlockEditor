@@ -110,6 +110,12 @@ namespace BlockEditor.ViewModels
 
                 case UserMode.AddSelection:
                     _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
+
+                    if (e.LeftButton != MouseButtonState.Pressed)
+                        break;
+
+                    var p3 = MyUtils.GetPosition(sender as IInputElement, e);
+                    Game.AddBlocks(p3, BlockSelection.SelectedBlocks);
                     break;
             }
         }
