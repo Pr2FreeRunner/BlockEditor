@@ -24,25 +24,28 @@ namespace BlockEditor.ViewModels
             get => Game.GameImage?.GetImage(); 
         }
 
-        public Func<int?> GetSelectedBlockID { get; set; }
-
-        public UserOperationsViewModel UserOperations { get; }
+        public int? SelectedBlockID { get; set; }
 
         public MapViewModel()
         {
             Game = new Game();
             Game.Engine.OnFrame += OnFrameUpdate;
             Mode = UserMode.None;
-            UserOperations = new UserOperationsViewModel();
         }
 
         #region Events
 
         public void OnFrameUpdate()
         {
-            new FrameUpdate(Game, _mousePosition, GetSelectedBlockID());
+            new FrameUpdate(Game, _mousePosition, SelectedBlockID);
 
             RaisePropertyChanged(nameof(MapContent));
+        }
+
+        internal void OnSelectedBlockID(int? id)
+        {
+            SelectedBlockID = id;
+            Mode = id != null ? UserMode.AddBlock : UserMode.None;
         }
 
         public void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -53,9 +56,9 @@ namespace BlockEditor.ViewModels
                     var p = MyUtils.GetPosition(sender as IInputElement, e);
 
                     if (e.ChangedButton == MouseButton.Right)
-                        UserOperations.Execute(Game.DeleteBlock(p));
+                        Game.DeleteBlock(p);
                     else if (e.ChangedButton == MouseButton.Left)
-                        UserOperations.Execute(Game.AddBlock(p, GetSelectedBlockID?.Invoke()));
+                        Game.AddBlock(p, SelectedBlockID);
                     break;
 
                 case UserMode.Selection:
@@ -72,9 +75,9 @@ namespace BlockEditor.ViewModels
                     _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
 
                     if (e.RightButton == MouseButtonState.Pressed)
-                        UserOperations.Execute(Game.DeleteBlock(_mousePosition));
+                        Game.DeleteBlock(_mousePosition);
                     else if (e.LeftButton == MouseButtonState.Pressed)
-                        UserOperations.Execute(Game.AddBlock(_mousePosition, GetSelectedBlockID?.Invoke()));
+                        Game.AddBlock(_mousePosition, SelectedBlockID);
                     break;
             }
             
@@ -111,7 +114,7 @@ namespace BlockEditor.ViewModels
             Game.Map = map;
             Game.Map.BlockSize = size;
 
-            UserOperations.Clear();
+            Game.UserOperations.Clear();
 
             Game.GoToStartPosition();
 

@@ -1,4 +1,5 @@
 ﻿using BlockEditor.Utils;
+using BlockEditor.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,19 +18,23 @@ namespace BlockEditor.Models
 
         public Map Map { get; set; }
 
+        public UserOperationsViewModel UserOperations { get; }
+
+
         public Game()
         {
             Map = new Map();
             Engine = new GameEngine();
             Camera = new Camera();
             GameImage = new GameImage(0, 0);
+            UserOperations = new UserOperationsViewModel();
         }
 
 
-        public IUserOperation AddBlock(Point? p, int? id)
+        public void AddBlock(Point? p, int? id)
         {
             if (p == null || id == null || Map == null)
-                return null;
+                return;
 
             var x = p.Value.X + Camera.Position.X;
             var y = p.Value.Y + Camera.Position.Y;
@@ -38,15 +43,16 @@ namespace BlockEditor.Models
             var index = Map.GetMapIndex(pos);
 
             if (Map.Blocks.GetBlockId(index.X, index.Y) == id.Value)
-                return null;
+                return;
 
-            return new AddBlockOperation(Map, id.Value, index);
+            var op = new AddBlockOperation(Map, id.Value, index);
+            UserOperations.Execute(op);
         }
 
-        public IUserOperation DeleteBlock(Point? p)
+        public void DeleteBlock(Point? p)
         {
             if (p == null || Map == null)
-                return null;
+                return;
 
             var x = p.Value.X + Camera.Position.X;
             var y = p.Value.Y + Camera.Position.Y;
@@ -55,9 +61,10 @@ namespace BlockEditor.Models
             var blockId = Map.Blocks.GetBlockId(index.X, index.Y);
 
             if (blockId == null)
-                return null;
+                return;
 
-            return new DeleteBlockOperation(Map, blockId.Value, index);
+            var op = new DeleteBlockOperation(Map, blockId.Value, index);
+            UserOperations.Execute(op);
         }
 
         public void GoToStartPosition()

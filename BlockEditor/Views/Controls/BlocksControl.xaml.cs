@@ -5,20 +5,14 @@ using System.Windows.Media;
 using System.Windows.Controls;
 
 using static BlockEditor.Models.BlockImages;
+using System;
 
 namespace BlockEditor.Views.Controls
 {
     public partial class BlocksControl : UserControl
     {
 
-        private int? _selectedBlockID;
-        private readonly object _lock = new object();
-
-        public int? SelectedBlockId 
-        { 
-            get { return _selectedBlockID; } 
-            private set { lock(_lock) _selectedBlockID = value; } 
-        }
+        public event Action<int?> OnSelectedBlockID;
 
         private Border _selectedBorder { get; set; }
 
@@ -88,7 +82,7 @@ namespace BlockEditor.Views.Controls
             ToggleBorder(_selectedBorder);
 
             _selectedBorder = border;
-            SelectedBlockId = id;
+            OnSelectedBlockID?.Invoke(id);
 
             ToggleBorder(_selectedBorder);
         }

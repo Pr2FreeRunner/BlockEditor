@@ -26,8 +26,8 @@
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightGreen">
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <Button Margin="10,7" Width="50" Content="Undo" FontFamily="Segoe UI" Command="{Binding UserOperations.UndoCommand}" />
-                <Button Margin="10,7" Width="50" Content="Redo" FontFamily="Segoe UI" Command="{Binding UserOperations.RedoCommand}"/>
+                <Button Margin="10,7" Width="50" Content="Undo" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.UndoCommand}" />
+                <Button Margin="10,7" Width="50" Content="Redo" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.RedoCommand}"/>
                 <Button Margin="10,7" Width="50" Content="Select" FontFamily="Segoe UI" Command="{Binding SelectCommand}"/>
 
             </StackPanel>

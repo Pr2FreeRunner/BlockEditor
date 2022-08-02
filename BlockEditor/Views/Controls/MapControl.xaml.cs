@@ -4,7 +4,6 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using BlockEditor.Helpers;
 using BlockEditor.ViewModels;
-using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Views.Controls
 {
@@ -17,14 +16,12 @@ namespace BlockEditor.Views.Controls
         {
             InitializeComponent();
             this.DataContext = ViewModel = new MapViewModel();
-            ViewModel.GetSelectedBlockID = () => BlocksControl.SelectedBlockId;
 
             MapButtons.ViewModel.OnLoadMap += ViewModel.OnLoadMap;
             MapButtons.ViewModel.OnSaveMap += () => MapUtil.Save(ViewModel.Game.Map);
             MapButtons.ViewModel.OnTestMap += () => MapUtil.TestInTasTool(ViewModel.Game.Map);
-
             ZoomControl.ViewModel.OnZoomChanged += (zoom) => ViewModel.OnZoomChanged(zoom);
-
+            BlocksControl.OnSelectedBlockID += ViewModel.OnSelectedBlockID;
             this.Loaded += windowLoaded;
 
             ZoomControl.ViewModel.Init();
@@ -68,13 +65,13 @@ namespace BlockEditor.Views.Controls
 
             if (e.Key == Key.Z && ctrl)
             {
-                ViewModel.UserOperations.Undo();
+                ViewModel.Game.UserOperations.Undo();
                 return;
             }
 
             if (e.Key == Key.Y && ctrl)
             {
-                ViewModel.UserOperations.Redo();
+                ViewModel.Game.UserOperations.Redo();
                 return;
             }
         }
