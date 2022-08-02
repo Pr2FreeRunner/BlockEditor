@@ -16,7 +16,7 @@ namespace BlockEditor.Views.Controls
         public MapControl()
         {
             InitializeComponent();
-            this.DataContext = ViewModel = new MapViewModel();
+            this.DataContext = ViewModel = new MapViewModel(CleanBlocksControlSelection);
 
             MapButtons.ViewModel.OnLoadMap += ViewModel.OnLoadMap;
             MapButtons.ViewModel.OnSaveMap += () => MapUtil.Save(ViewModel.Game.Map);
@@ -28,6 +28,10 @@ namespace BlockEditor.Views.Controls
             ZoomControl.ViewModel.Init();
         }
 
+        private void CleanBlocksControlSelection()
+        {
+            BlocksControl.RemoveSelection();
+        }
         private void windowLoaded(object sender, RoutedEventArgs e)
         {
             ViewModel.Game.GoToStartPosition();
@@ -56,30 +60,23 @@ namespace BlockEditor.Views.Controls
 
         private void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
         {
+            var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+            
             if(e.Key == Key.Escape)
             {
-                ViewModel.BlockSelection.Clean();
-
-                BlocksControl.RemoveSelection();
-                ViewModel.Mode = UserMode.None;
+                ViewModel.OnCleanUserMode();
                 return;
             }
-
-            var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-
-            if (e.Key == Key.Z && ctrl)
+            else if (e.Key == Key.Z && ctrl)
             {
                 ViewModel.Game.UserOperations.Undo();
-                return;
             }
 
-            if (e.Key == Key.Y && ctrl)
+            else if (e.Key == Key.Y && ctrl)
             {
                 ViewModel.Game.UserOperations.Redo();
-                return;
             }
-
-            if(ViewModel.Mode == UserMode.Selection && (e.Key == Key.C || e.Key == Key.X))
+            else if(ViewModel.Mode == UserMode.Selection && (e.Key == Key.C || e.Key == Key.X))
             {
                 ViewModel.BlockSelection.UserSelection.OnKeydown(ViewModel.Game.Map, e.Key == Key.X);
                 ViewModel.Mode = UserMode.AddSelection;

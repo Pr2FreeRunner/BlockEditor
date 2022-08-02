@@ -25,9 +25,11 @@ namespace BlockEditor.ViewModels
 
         public BlockSelection BlockSelection { get; }
 
+        private Action _cleanBlockSelection { get; }
 
-        public MapViewModel()
+        public MapViewModel(Action cleanBlockSelection)
         {
+            _cleanBlockSelection = cleanBlockSelection;
             Game = new Game();
             Game.Engine.OnFrame += OnFrameUpdate;
             Mode = UserMode.None;
@@ -35,12 +37,20 @@ namespace BlockEditor.ViewModels
             BlockSelection.OnSelectionClick += OnSelectionClick;
         }
 
+
+        #region Events
+       
         private void OnSelectionClick()
         {
             Mode = UserMode.Selection;
         }
 
-        #region Events
+        public void OnCleanUserMode()
+        {
+            _cleanBlockSelection?.Invoke();
+            BlockSelection?.Clean();
+            Mode = UserMode.None;
+        }
 
         public void OnFrameUpdate()
         {
