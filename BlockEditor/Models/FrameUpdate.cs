@@ -8,18 +8,18 @@ namespace BlockEditor.Models
     {
 
         private MyPoint? _mousePosition;
-        private int? _selectedBlockID;
+        private BlockSelection _selection;
         private Graphics _graphics;
         private Game _game;
 
-        public FrameUpdate(Game game, MyPoint? mousePosition, int? selectedBlockID)
+        public FrameUpdate(Game game, MyPoint? mousePosition, BlockSelection selection)
         {
             if (game?.GameImage == null || game?.Map == null || game?.Camera == null)
                 return;
 
             _game = game;
             _mousePosition = mousePosition;
-            _selectedBlockID = selectedBlockID;
+            _selection = selection;
             _graphics = CreateGraphics();
 
             Update();
@@ -32,7 +32,8 @@ namespace BlockEditor.Models
             //DrawGrids();
             DrawBlocks();
             _game.Camera.Move(_game.Map.BlockSize);
-            DrawSelection();
+            DrawSelectedBlock();
+            DrawSelectedRectangle();
         }
 
         private Graphics CreateGraphics()
@@ -115,12 +116,15 @@ namespace BlockEditor.Models
                 _game.GameImage.DrawImage(ref block.Bitmap, posX, posY);
         }
 
-        private void DrawSelection()
+        private void DrawSelectedBlock()
         {
+            if(_selection == null)
+                return;
+
             if (_mousePosition == null)
                 return;
 
-            var id = _selectedBlockID;
+            var id = _selection.SelectedBlock;
 
             if (id == null)
                 return;
@@ -134,6 +138,26 @@ namespace BlockEditor.Models
             var positionY = (int) (_mousePosition.Value.Y - _game.Map.BlockPixelSize / 2.0);
 
             _game.GameImage.DrawTransperentImage(_graphics, block, positionX, positionY);
+        }
+
+        private void DrawSelectedRectangle()
+        {
+            if(_selection == null)
+                return;
+
+            var start = _selection.UserSelection.StartImageIndex;
+            var end   = _selection.UserSelection.EndImageIndex ?? _mousePosition;
+
+            if (start == null || end == null)
+                return;
+
+            var startX = Math.Min(start.Value.X, end.Value.X);
+            var startY = Math.Min(start.Value.Y, end.Value.Y);
+            var endX  = Math.Max(start.Value.X, end.Value.X);
+            var endY  = Math.Max(start.Value.Y, end.Value.Y);
+
+            var rec = new Rectangle(startX, startY, endX - startX, endY - startY);
+            _game.GameImage.DrawSelectionRectangle(_graphics, rec);
         }
 
     }

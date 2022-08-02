@@ -30,22 +30,32 @@ namespace BlockEditor.Models
             UserOperations = new UserOperationsViewModel();
         }
 
+        public MyPoint? GetMapIndex(Point? p)
+        {
+            if (p == null || Map == null)
+                return  null;;
+
+            var x = p.Value.X + Camera.Position.X;
+            var y = p.Value.Y + Camera.Position.Y;
+
+            var pos = new Point(x, y);
+            return Map.GetMapIndex(pos);
+        }
 
         public void AddBlock(Point? p, int? id)
         {
             if (p == null || id == null || Map == null)
                 return;
 
-            var x = p.Value.X + Camera.Position.X;
-            var y = p.Value.Y + Camera.Position.Y;
+            var index = GetMapIndex(p);
 
-            var pos = new Point(x, y);
-            var index = Map.GetMapIndex(pos);
-
-            if (Map.Blocks.GetBlockId(index.X, index.Y) == id.Value)
+            if(index == null)
                 return;
 
-            var op = new AddBlockOperation(Map, id.Value, index);
+            if (Map.Blocks.GetBlockId(index.Value.X, index.Value.Y) == id.Value)
+                return;
+
+            var op = new AddBlockOperation(Map, id.Value, index.Value);
             UserOperations.Execute(op);
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlockEditor.Helpers;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -153,6 +154,20 @@ namespace BlockEditor.Models
             graphics.CompositingMode = CompositingMode.SourceOver;
 
             graphics.DrawImage(bmp, new Point(x - 1, y - 1));
+        }
+
+        public void DrawSelectionRectangle(Graphics graphics, Rectangle rec)
+        {
+            if (graphics == null || rec == null)
+                return;
+
+            var pen  = MapUtil.GetSelectionPen();
+            var brush = MapUtil.GetSelectionBrush(pen.Color);
+
+            graphics.CompositingMode = CompositingMode.SourceOver;
+            graphics.FillRectangle(brush, rec);
+
+            graphics.DrawRectangle(pen, rec);
         }
 
     }

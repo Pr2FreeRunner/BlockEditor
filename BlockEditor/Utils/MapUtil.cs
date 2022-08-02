@@ -155,5 +155,20 @@ namespace BlockEditor.Helpers
             return new Pen(Color.FromArgb(77, r, g, b), 1);
         }
 
+        public static Brush GetSelectionBrush(Color c)
+        {
+            var brush = new SolidBrush(Color.FromArgb(50, c));
+
+            return brush;
+        }
+
+        public static Pen GetSelectionPen()
+        {
+            int r = 100;
+            int g = 200;
+            int b = 255;
+
+            return new Pen(Color.FromArgb(80, r, g, b), 1);
+        }
     }
 }

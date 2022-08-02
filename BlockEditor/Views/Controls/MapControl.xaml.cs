@@ -57,6 +57,7 @@ namespace BlockEditor.Views.Controls
         {
             if(e.Key == Key.Escape)
             {
+                ViewModel.BlockSelection.UserSelection.Reset();
                 BlocksControl.RemoveSelection();
                 return;
             }

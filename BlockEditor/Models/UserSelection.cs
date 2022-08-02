@@ -4,34 +4,34 @@ namespace BlockEditor.Models
 {
     public class UserSelection
     {
-        public bool Active { get; set; }
 
-        public MyPoint? StartIndex { get; private set; }
-        public MyPoint? EndIndex { get; private set; }
-        private event Action<int?[,]> OnNewSelection;
+        public MyPoint? StartMapIndex { get; private set; }
+        public MyPoint? EndMapIndex { get; private set; }
+
+        public MyPoint? StartImageIndex { get; private set; }
+        public MyPoint? EndImageIndex { get; private set; }
+
+        public event Action<int?[,]> OnNewSelection;
 
 
-        public UserSelection(Action<int?[,]> onNewSelectin)
+        public void Reset()
         {
-            OnNewSelection = onNewSelectin;
-        }
+            StartMapIndex = null;
+            EndMapIndex = null;
 
-        private void Reset()
-        {
-            Active = false;
-            StartIndex = null;
-            EndIndex = null;
+            StartImageIndex = null;
+            EndImageIndex = null;
         }
 
         private int?[,] GetSelection(Map map, bool delete)
         {
-            if (map == null || StartIndex == null || EndIndex == null)
+            if (map == null || StartMapIndex == null || EndMapIndex == null)
                 return null;
 
-            var startRow = Math.Min(StartIndex.Value.X, EndIndex.Value.X);
-            var startColumn = Math.Min(StartIndex.Value.Y, EndIndex.Value.Y);
-            var endRow = Math.Max(StartIndex.Value.X, EndIndex.Value.X);
-            var endColumn = Math.Max(StartIndex.Value.Y, EndIndex.Value.Y);
+            var startRow    = Math.Min(StartMapIndex.Value.X, EndMapIndex.Value.X);
+            var startColumn = Math.Min(StartMapIndex.Value.Y, EndMapIndex.Value.Y);
+            var endRow      = Math.Max(StartMapIndex.Value.X, EndMapIndex.Value.X);
+            var endColumn   = Math.Max(StartMapIndex.Value.Y, EndMapIndex.Value.Y);
 
             var selection = new int?[endRow - startRow, endColumn - startColumn];
 
@@ -51,44 +51,29 @@ namespace BlockEditor.Models
             return selection;
         }
 
-
         public void OnSelectionClick()
         {
             Reset();
         }
 
-        public void OnMouseDown(MyPoint p)
+        public void OnMouseDown(MyPoint? image, MyPoint? map)
         {
-            if (Active)
-            {
-                Reset();
-                return;
-            }
+            StartImageIndex = image;
+            StartMapIndex = map;
 
-            StartIndex = p;
-            EndIndex = null;
-            Active = true;
+            EndImageIndex = null;
+            EndMapIndex = null;
+
         }
 
-        public void OnMouseUp(MyPoint p)
+        public void OnMouseUp(MyPoint? image, MyPoint? map)
         {
-            if (!Active)
-            {
-                Reset();
-                return;
-            }
-
-            EndIndex = p;
+            EndImageIndex = image;
+            EndMapIndex = map;
         }
 
         public void OnKeydown(Map map)
         {
-            if (!Active)
-            {
-                Reset();
-                return;
-            }
-
             var selection = GetSelection(map, false);
             OnNewSelection?.Invoke(selection);
             Reset();
