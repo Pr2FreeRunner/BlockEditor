@@ -59,15 +59,16 @@ namespace BlockEditor.Models
             if (index == null || selectedBlocks == null || Map == null)
                 return;
 
-            var height = selectedBlocks.GetLength(0);
-            var width  = selectedBlocks.GetLength(1);
+            var width = selectedBlocks.GetLength(0);
+            var height  = selectedBlocks.GetLength(1);
 
-            for (int row = 0; row < height; row++)
+            for (int x = 0; x < width; x++)
             {
-                for (int column = 0; column < width; column++)
+                for (int y = 0; y < height; y++)
                 {
-                    var blockIndex = new MyPoint(index.Value.X + column - height, index.Value.Y + row - width);
-                    var id = selectedBlocks[row, column];
+                    var blockIndex = new MyPoint(index.Value.X + x - width  + 1, 
+                                                 index.Value.Y + y - height + 1);
+                    var id = selectedBlocks[x, y];
 
                     if(id == null)
                         continue;

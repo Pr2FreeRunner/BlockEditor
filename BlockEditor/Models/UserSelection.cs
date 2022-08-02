@@ -28,22 +28,22 @@ namespace BlockEditor.Models
             if (map == null || StartMapIndex == null || EndMapIndex == null)
                 return null;
 
-            var startRow    = Math.Min(StartMapIndex.Value.Y, EndMapIndex.Value.Y);
-            var startColumn = Math.Min(StartMapIndex.Value.X, EndMapIndex.Value.X);
-            var endRow      = Math.Max(StartMapIndex.Value.Y, EndMapIndex.Value.Y) + 1;
-            var endColumn   = Math.Max(StartMapIndex.Value.X, EndMapIndex.Value.X) + 1;
+            var startY = Math.Min(StartMapIndex.Value.Y, EndMapIndex.Value.Y);
+            var startX = Math.Min(StartMapIndex.Value.X, EndMapIndex.Value.X);
+            var endY   = Math.Max(StartMapIndex.Value.Y, EndMapIndex.Value.Y) + 1;
+            var endX   = Math.Max(StartMapIndex.Value.X, EndMapIndex.Value.X) + 1;
 
-            var selection = new int?[endRow - startRow, endColumn - startColumn];
+            var selection = new int?[endX - startX, endY - startY];
 
-            for (int row = startRow; row < endRow; row++)
+            for (int y = startY; y < endY; y++)
             {
-                for (int column = startColumn; column < endColumn ; column++)
+                for (int x = startX; x < endX ; x++)
                 {
-                    var id = map.Blocks.GetBlockId(column, row);
-                    selection[row - startRow, column - startColumn] = id;
+                    var id = map.Blocks.GetBlockId(x, y);
+                    selection[x - startX, y - startY] = id;
 
                     if (id != null && delete)
-                        map.Blocks.Delete(new MyPoint(column, row));
+                        map.Blocks.Delete(new MyPoint(x, y));
                 }
             }
 

@@ -148,22 +148,25 @@ namespace BlockEditor.Models
             if (blocks == null)
                 return;
 
-            var arrayX = (int)(_mousePosition.Value.X - _game.Map.BlockPixelSize / 2.0);
-            var arrayY = (int)(_mousePosition.Value.Y - _game.Map.BlockPixelSize / 2.0);
+            var arrayX = (int)(_mousePosition.Value.X + _game.Map.BlockPixelSize / 2.0);
+            var arrayY = (int)(_mousePosition.Value.Y + _game.Map.BlockPixelSize / 2.0);
 
-            for (int row = 0; row < blocks.GetLength(0); row++)
+            var width  = blocks.GetLength(0);
+            var height = blocks.GetLength(1);
+
+            for (int x = 0; x < width; x++)
             {
-                for (int column = 0; column < blocks.GetLength(1); column++)
+                for (int y = 0; y < height; y++)
                 {
-                    var id = blocks[row, column];
+                    var id = blocks[x, y];
 
                     var block = BlockImages.GetImageBlock(_game.Map.BlockSize, id)?.SemiTransparentBitmap;
 
                     if (block == null)
                         continue;
 
-                    var blockX = arrayX - column * _game.Map.BlockPixelSize;
-                    var blockY = arrayY - row    * _game.Map.BlockPixelSize;
+                    var blockX = arrayX - width  * _game.Map.BlockPixelSize + x * _game.Map.BlockPixelSize;
+                    var blockY = arrayY - height * _game.Map.BlockPixelSize + y * _game.Map.BlockPixelSize;
 
                     _game.GameImage.DrawTransperentImage(_graphics, block, blockX, blockY);
                 }
