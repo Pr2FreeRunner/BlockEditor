@@ -79,6 +79,14 @@ namespace BlockEditor.ViewModels
                     var index = Game.GetMapIndex(pos);
                     BlockSelection.UserSelection.OnMouseDown(pos, index);
                     break;
+
+                case UserMode.AddSelection:
+                    if (e.ChangedButton != MouseButton.Left)
+                        break;
+
+                    var p3 = MyUtils.GetPosition(sender as IInputElement, e);
+                    Game.AddBlocks(p3, BlockSelection.SelectedBlocks);
+                    break;
             }
             
         }
@@ -97,6 +105,10 @@ namespace BlockEditor.ViewModels
                     break;
 
                 case UserMode.Selection:
+                    _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
+                    break;
+
+                case UserMode.AddSelection:
                     _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
                     break;
             }

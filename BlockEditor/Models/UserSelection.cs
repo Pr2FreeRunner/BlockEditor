@@ -30,20 +30,20 @@ namespace BlockEditor.Models
 
             var startRow    = Math.Min(StartMapIndex.Value.Y, EndMapIndex.Value.Y);
             var startColumn = Math.Min(StartMapIndex.Value.X, EndMapIndex.Value.X);
-            var endRow      = Math.Max(StartMapIndex.Value.Y, EndMapIndex.Value.Y);
-            var endColumn   = Math.Max(StartMapIndex.Value.X, EndMapIndex.Value.X);
+            var endRow      = Math.Max(StartMapIndex.Value.Y, EndMapIndex.Value.Y) + 1;
+            var endColumn   = Math.Max(StartMapIndex.Value.X, EndMapIndex.Value.X) + 1;
 
             var selection = new int?[endRow - startRow, endColumn - startColumn];
 
             for (int row = startRow; row < endRow; row++)
             {
-                for (int column = startColumn; column < endColumn; column++)
+                for (int column = startColumn; column < endColumn ; column++)
                 {
                     var id = map.Blocks.GetBlockId(column, row);
                     selection[row - startRow, column - startColumn] = id;
 
                     if (id != null && delete)
-                        map.Blocks.Delete(new MyPoint(row, column));
+                        map.Blocks.Delete(new MyPoint(column, row));
                 }
             }
 

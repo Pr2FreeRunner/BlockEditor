@@ -82,7 +82,7 @@ namespace BlockEditor.Views.Controls
             if(ViewModel.Mode == UserMode.Selection && (e.Key == Key.C || e.Key == Key.X))
             {
                 ViewModel.BlockSelection.UserSelection.OnKeydown(ViewModel.Game.Map, e.Key == Key.X);
-                ViewModel.Mode = UserMode.None;
+                ViewModel.Mode = UserMode.AddSelection;
             }
         }
 

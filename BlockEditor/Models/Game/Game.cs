@@ -38,9 +38,9 @@ namespace BlockEditor.Models
             return Map.GetMapIndex(pos);
         }
 
-        public void AddBlock(MyPoint? p, int? id)
+        public void AddBlock(MyPoint? p, int? id, bool isMapIndex = false)
         {
-            var index = GetMapIndex(p);
+            var index = isMapIndex ? p : GetMapIndex(p);
 
             if (index == null || id == null || Map == null)
                 return;
@@ -50,6 +50,31 @@ namespace BlockEditor.Models
 
             var op = new AddBlockOperation(Map, id.Value, index.Value);
             UserOperations.Execute(op);
+        }
+
+        internal void AddBlocks(MyPoint? p, int?[,] selectedBlocks)
+        {
+            var index = GetMapIndex(p);
+
+            if (index == null || selectedBlocks == null || Map == null)
+                return;
+
+            var height = selectedBlocks.GetLength(0);
+            var width  = selectedBlocks.GetLength(1);
+
+            for (int row = 0; row < height; row++)
+            {
+                for (int column = 0; column < width; column++)
+                {
+                    var blockIndex = new MyPoint(index.Value.X + column - height, index.Value.Y + row - width);
+                    var id = selectedBlocks[row, column];
+
+                    if(id == null)
+                        continue;
+
+                    AddBlock(blockIndex, id, true);
+                }
+            }
         }
 
         public void DeleteBlock(MyPoint? p)
@@ -81,5 +106,6 @@ namespace BlockEditor.Models
 
             Camera.Position = new MyPoint(x, y); ;
         }
+
     }
 }
