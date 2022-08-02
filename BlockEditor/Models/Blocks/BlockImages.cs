@@ -161,15 +161,15 @@ namespace BlockEditor.Models
             }
         }
 
-        public static BlockImage GetImageBlock(BlockSize size, int id)
+        public static BlockImage GetImageBlock(BlockSize size, int? id)
         {
-            if (_images == null)
+            if (_images == null || id == null)
                 return null;
 
             if (!_images.TryGetValue(size, out var dic))
                 return null;
 
-            if (dic.TryGetValue(id, out var block))
+            if (dic.TryGetValue(id.Value, out var block))
                 return block;
 
             if(_unknownBlocks.TryGetValue(size, out var unknownBlock))

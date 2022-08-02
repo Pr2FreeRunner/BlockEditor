@@ -70,6 +70,13 @@ namespace BlockEditor.Models
             return SelectedBlocks != null;
         }
 
+        public void Clean()
+        {
+            UserSelection.Reset();
+            SelectedBlock = null;
+            SelectedBlocks = null;
+        }
+
         public void RotateLeft()
         {
             if (!CanRotate())

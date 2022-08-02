@@ -28,10 +28,10 @@ namespace BlockEditor.Models
             if (map == null || StartMapIndex == null || EndMapIndex == null)
                 return null;
 
-            var startRow    = Math.Min(StartMapIndex.Value.X, EndMapIndex.Value.X);
-            var startColumn = Math.Min(StartMapIndex.Value.Y, EndMapIndex.Value.Y);
-            var endRow      = Math.Max(StartMapIndex.Value.X, EndMapIndex.Value.X);
-            var endColumn   = Math.Max(StartMapIndex.Value.Y, EndMapIndex.Value.Y);
+            var startRow    = Math.Min(StartMapIndex.Value.Y, EndMapIndex.Value.Y);
+            var startColumn = Math.Min(StartMapIndex.Value.X, EndMapIndex.Value.X);
+            var endRow      = Math.Max(StartMapIndex.Value.Y, EndMapIndex.Value.Y);
+            var endColumn   = Math.Max(StartMapIndex.Value.X, EndMapIndex.Value.X);
 
             var selection = new int?[endRow - startRow, endColumn - startColumn];
 
@@ -39,15 +39,14 @@ namespace BlockEditor.Models
             {
                 for (int column = startColumn; column < endColumn; column++)
                 {
-                    var id = map.Blocks.GetBlockId(row, column);
-                    selection[row - startRow, column - endColumn] = id;
+                    var id = map.Blocks.GetBlockId(column, row);
+                    selection[row - startRow, column - startColumn] = id;
 
                     if (id != null && delete)
                         map.Blocks.Delete(new MyPoint(row, column));
                 }
             }
 
-            Reset();
             return selection;
         }
 
@@ -71,9 +70,9 @@ namespace BlockEditor.Models
             EndMapIndex = map;
         }
 
-        public void OnKeydown(Map map)
+        public void OnKeydown(Map map, bool delete)
         {
-            var selection = GetSelection(map, false);
+            var selection = GetSelection(map, delete);
             OnNewSelection?.Invoke(selection);
             Reset();
         }

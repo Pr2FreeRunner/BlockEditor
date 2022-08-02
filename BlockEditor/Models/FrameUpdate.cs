@@ -33,6 +33,7 @@ namespace BlockEditor.Models
             DrawBlocks();
             _game.Camera.Move(_game.Map.BlockSize);
             DrawSelectedBlock();
+            DrawSelectedBlocks();
             DrawSelectedRectangle();
         }
 
@@ -99,10 +100,7 @@ namespace BlockEditor.Models
 
         private void DrawBlock(int? id, int x, int y, bool semiTrans)
         {
-            if(id == null)
-                return;
-
-            var block = BlockImages.GetImageBlock(_game.Map.BlockSize, id.Value);
+            var block = BlockImages.GetImageBlock(_game.Map.BlockSize, id);
 
             if (block == null)
                 return;
@@ -126,10 +124,7 @@ namespace BlockEditor.Models
 
             var id = _selection.SelectedBlock;
 
-            if (id == null)
-                return;
-
-            var block = BlockImages.GetImageBlock(_game.Map.BlockSize, id.Value)?.SemiTransparentBitmap;
+            var block = BlockImages.GetImageBlock(_game.Map.BlockSize, id)?.SemiTransparentBitmap;
 
             if (block == null)
                 return;
@@ -138,6 +133,42 @@ namespace BlockEditor.Models
             var positionY = (int) (_mousePosition.Value.Y - _game.Map.BlockPixelSize / 2.0);
 
             _game.GameImage.DrawTransperentImage(_graphics, block, positionX, positionY);
+        }
+
+        private void DrawSelectedBlocks()
+        {
+            if (_selection == null)
+                return;
+
+            if (_mousePosition == null)
+                return;
+
+            var blocks = _selection.SelectedBlocks;
+
+            if (blocks == null)
+                return;
+
+            var arrayX = (int)(_mousePosition.Value.X - _game.Map.BlockPixelSize / 2.0);
+            var arrayY = (int)(_mousePosition.Value.Y - _game.Map.BlockPixelSize / 2.0);
+
+            for (int row = 0; row < blocks.GetLength(0); row++)
+            {
+                for (int column = 0; column < blocks.GetLength(1); column++)
+                {
+                    var id = blocks[row, column];
+
+                    var block = BlockImages.GetImageBlock(_game.Map.BlockSize, id)?.SemiTransparentBitmap;
+
+                    if (block == null)
+                        continue;
+
+                    var blockX = arrayX - column * _game.Map.BlockPixelSize;
+                    var blockY = arrayY - row    * _game.Map.BlockPixelSize;
+
+                    _game.GameImage.DrawTransperentImage(_graphics, block, blockX, blockY);
+                }
+            }
+           
         }
 
         private void DrawSelectedRectangle()

@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using BlockEditor.Helpers;
 using BlockEditor.ViewModels;
+using BlockEditor.Models;
 
 namespace BlockEditor.Views.Controls
 {
@@ -57,9 +58,10 @@ namespace BlockEditor.Views.Controls
         {
             if(e.Key == Key.Escape)
             {
-                ViewModel.BlockSelection.UserSelection.Reset();
+                ViewModel.BlockSelection.Clean();
+
                 BlocksControl.RemoveSelection();
-                ViewModel.Mode = Models.UserMode.None;
+                ViewModel.Mode = UserMode.None;
                 return;
             }
 
@@ -75,6 +77,12 @@ namespace BlockEditor.Views.Controls
             {
                 ViewModel.Game.UserOperations.Redo();
                 return;
+            }
+
+            if(ViewModel.Mode == UserMode.Selection && (e.Key == Key.C || e.Key == Key.X))
+            {
+                ViewModel.BlockSelection.UserSelection.OnKeydown(ViewModel.Game.Map, e.Key == Key.X);
+                ViewModel.Mode = UserMode.None;
             }
         }
 

@@ -51,6 +51,7 @@ namespace BlockEditor.ViewModels
 
         internal void OnSelectedBlockID(int? id)
         {
+            BlockSelection.Clean(); 
             BlockSelection.SelectedBlock = id;
             Mode = id != null ? UserMode.AddBlock : UserMode.None;
         }
