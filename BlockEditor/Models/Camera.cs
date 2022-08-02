@@ -18,6 +18,8 @@ namespace BlockEditor.Models
             set { lock (_lock)  { _position = value; } }
         }
 
+        public MyPoint ScreenSize { get; internal set; }
+
         public const int MOVE_STRENGTH = 30;
 
 
@@ -58,8 +60,8 @@ namespace BlockEditor.Models
             if (currentY < 0)
                 currentY = 0;
 
-            var maxWidth  = Blocks.SIZE * blockSize;
-            var maxHeight = Blocks.SIZE * blockSize;
+            var maxWidth  = Blocks.SIZE * blockSize - ScreenSize.X;
+            var maxHeight = Blocks.SIZE * blockSize - ScreenSize.Y;
 
             if (currentX > maxWidth)
                 currentX = maxWidth;

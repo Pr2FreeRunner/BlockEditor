@@ -152,7 +152,7 @@ namespace BlockEditor.ViewModels
             if(Game.GameImage != null)
                 Game.GameImage.Dispose();
 
-           
+           Game.Camera.ScreenSize = new MyPoint(width, height);
             Game.GameImage = new GameImage(width, height);  // thread safe?
         }
       
