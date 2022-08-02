@@ -14,7 +14,7 @@ namespace BlockEditor.ViewModels
     {
         public Game Game { get; }
 
-        private Point? _mousePosition;
+        private MyPoint? _mousePosition;
 
         public UserMode Mode { get; set; }
 
@@ -74,7 +74,7 @@ namespace BlockEditor.ViewModels
                     if (p2 == null)
                         break;
 
-                    var pos = new Point(p2.Value.X, p2.Value.Y);
+                    var pos = new MyPoint(p2.Value.X, p2.Value.Y);
                     var index = Game.GetMapIndex(pos);
                     BlockSelection.UserSelection.OnMouseDown(pos, index);
                     break;
@@ -106,12 +106,7 @@ namespace BlockEditor.ViewModels
             switch (Mode)
             {
                 case UserMode.Selection:
-                    var p = MyUtils.GetPosition(sender as IInputElement, e);
-
-                    if (p == null)
-                        break;
-
-                    var pos = new Point(p.Value.X, p.Value.Y);
+                    var pos   = MyUtils.GetPosition(sender as IInputElement, e);
                     var index = Game.GetMapIndex(pos);
 
                     BlockSelection.UserSelection.OnMouseUp(pos, index);
@@ -152,8 +147,8 @@ namespace BlockEditor.ViewModels
             var halfScreenX = Game.GameImage.Width  / 2;
             var halfScreenY = Game.GameImage.Height / 2;
 
-            var cameraPosition = new Point(Game.Camera.Position.X, Game.Camera.Position.Y);
-            var middleOfScreen = new Point(cameraPosition.X + halfScreenX, cameraPosition.Y + halfScreenY);
+            var cameraPosition = new MyPoint(Game.Camera.Position.X, Game.Camera.Position.Y);
+            var middleOfScreen = new MyPoint(cameraPosition.X + halfScreenX, cameraPosition.Y + halfScreenY);
 
             var currentIndex = Game.Map.GetMapIndex(middleOfScreen);
             var currentSize  = Game.Map.BlockSize;

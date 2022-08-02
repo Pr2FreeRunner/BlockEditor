@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace BlockEditor.Models
+﻿namespace BlockEditor.Models
 {
     public struct MyPoint 
     {
@@ -13,12 +11,5 @@ namespace BlockEditor.Models
             Y = y;
         }
 
-        public static implicit operator MyPoint(Point p)
-        {
-            var x = (int)p.X;
-            var y = (int)p.Y;
-
-            return new MyPoint(x, y);
-        }
     }
 }

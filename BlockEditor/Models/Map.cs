@@ -95,7 +95,7 @@ namespace BlockEditor.Models
             return levelInfo.Level;
         }
 
-        public MyPoint GetMapIndex(System.Windows.Point p)
+        public MyPoint GetMapIndex(MyPoint p)
         {
             var x = (int)(p.X / BlockPixelSize);
             var y = (int)(p.Y / BlockPixelSize);

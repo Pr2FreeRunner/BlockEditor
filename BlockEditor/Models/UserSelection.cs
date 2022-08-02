@@ -63,7 +63,6 @@ namespace BlockEditor.Models
 
             EndImageIndex = null;
             EndMapIndex = null;
-
         }
 
         public void OnMouseUp(MyPoint? image, MyPoint? map)

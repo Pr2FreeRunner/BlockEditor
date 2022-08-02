@@ -1,9 +1,5 @@
 ﻿using BlockEditor.Utils;
 using BlockEditor.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
 
 namespace BlockEditor.Models
 {
@@ -30,7 +26,7 @@ namespace BlockEditor.Models
             UserOperations = new UserOperationsViewModel();
         }
 
-        public MyPoint? GetMapIndex(Point? p)
+        public MyPoint? GetMapIndex(MyPoint? p)
         {
             if (p == null || Map == null)
                 return  null;;
@@ -38,18 +34,15 @@ namespace BlockEditor.Models
             var x = p.Value.X + Camera.Position.X;
             var y = p.Value.Y + Camera.Position.Y;
 
-            var pos = new Point(x, y);
+            var pos = new MyPoint(x, y);
             return Map.GetMapIndex(pos);
         }
 
-        public void AddBlock(Point? p, int? id)
+        public void AddBlock(MyPoint? p, int? id)
         {
-            if (p == null || id == null || Map == null)
-                return;
-
             var index = GetMapIndex(p);
 
-            if(index == null)
+            if (index == null || id == null || Map == null)
                 return;
 
             if (Map.Blocks.GetBlockId(index.Value.X, index.Value.Y) == id.Value)
@@ -59,21 +52,19 @@ namespace BlockEditor.Models
             UserOperations.Execute(op);
         }
 
-        public void DeleteBlock(Point? p)
+        public void DeleteBlock(MyPoint? p)
         {
-            if (p == null || Map == null)
+            var index = GetMapIndex(p);
+
+            if (index == null || Map == null)
                 return;
 
-            var x = p.Value.X + Camera.Position.X;
-            var y = p.Value.Y + Camera.Position.Y;
-
-            var index   = Map.GetMapIndex(new Point(x, y));
-            var blockId = Map.Blocks.GetBlockId(index.X, index.Y);
+            var blockId = Map.Blocks.GetBlockId(index.Value.X, index.Value.Y);
 
             if (blockId == null)
                 return;
 
-            var op = new DeleteBlockOperation(Map, blockId.Value, index);
+            var op = new DeleteBlockOperation(Map, blockId.Value, index.Value);
             UserOperations.Execute(op);
         }
 

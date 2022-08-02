@@ -59,6 +59,7 @@ namespace BlockEditor.Views.Controls
             {
                 ViewModel.BlockSelection.UserSelection.Reset();
                 BlocksControl.RemoveSelection();
+                ViewModel.Mode = Models.UserMode.None;
                 return;
             }
 
