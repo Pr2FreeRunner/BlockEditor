@@ -20,8 +20,8 @@ namespace BlockEditor.Views.Controls
             ViewModel.GetSelectedBlockID = () => BlocksControl.SelectedBlockId;
 
             MapButtons.ViewModel.OnLoadMap += ViewModel.OnLoadMap;
-            MapButtons.ViewModel.OnSaveMap += () => MapUtil.Save(ViewModel.Map);
-            MapButtons.ViewModel.OnTestMap += () => MapUtil.TestInTasTool(ViewModel.Map);
+            MapButtons.ViewModel.OnSaveMap += () => MapUtil.Save(ViewModel.Game.Map);
+            MapButtons.ViewModel.OnTestMap += () => MapUtil.TestInTasTool(ViewModel.Game.Map);
 
             ZoomControl.ViewModel.OnZoomChanged += (zoom) => ViewModel.OnZoomChanged(zoom);
 
@@ -32,12 +32,12 @@ namespace BlockEditor.Views.Controls
 
         private void windowLoaded(object sender, RoutedEventArgs e)
         {
-            ViewModel.GoToStartPosition();
+            ViewModel.Game.GoToStartPosition();
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            ViewModel.OnLoaded();
+            ViewModel.Game.Engine.Start();
         }
 
         private void Map_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -54,14 +54,6 @@ namespace BlockEditor.Views.Controls
         private void Map_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             ViewModel.OnSizeChanged((int)GamePanel.ActualWidth, (int)GamePanel.ActualHeight);
-        }
-
-        private void OnZoomChanged(BlockSize size)
-        {
-            if(ViewModel?.Map == null)
-                return;
-
-            ViewModel.Map.BlockSize = size;
         }
 
         private void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -85,6 +77,12 @@ namespace BlockEditor.Views.Controls
                 ViewModel.UserOperations.Redo();
                 return;
             }
+        }
+
+        private void Map_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            ViewModel.OnPreviewMouseUp(sender, e);
+
         }
     }
 }

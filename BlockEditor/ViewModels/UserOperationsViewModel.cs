@@ -36,6 +36,9 @@ namespace BlockEditor.ViewModels
 
         public void Execute(IUserOperation op)
         {
+            if(op == null)
+                return;
+
             try
             {
                 lock (_lock)

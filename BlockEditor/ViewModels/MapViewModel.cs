@@ -7,146 +7,96 @@ using BlockEditor.Helpers;
 using BlockEditor.Models;
 using BlockEditor.Utils;
 using static BlockEditor.Models.BlockImages;
+using static BlockEditor.Models.UserModes;
 
 namespace BlockEditor.ViewModels
 {
     public class MapViewModel : NotificationObject
     {
-
-        private GameImage _gameImage;
+        public Game Game { get; }
 
         private Point? _mousePosition;
 
-        private Camera _camera;
+        public UserMode Mode { get; set; }
 
         public BitmapImage MapContent
         {
-            get => _gameImage?.GetImage(); 
+            get => Game.GameImage?.GetImage(); 
         }
 
         public Func<int?> GetSelectedBlockID { get; set; }
-
-        public GameEngine Engine { get; }
-
-        public Map Map { get; private set; }
 
         public UserOperationsViewModel UserOperations { get; }
 
         public MapViewModel()
         {
-            Map = new Map();
-            Engine = new GameEngine();
+            Game = new Game();
+            Game.Engine.OnFrame += OnFrameUpdate;
+            Mode = UserMode.None;
             UserOperations = new UserOperationsViewModel();
-            Engine.OnFrame += OnFrameUpdate;
-            _camera = new Camera();
-            _gameImage = new GameImage(0,0);
         }
-
-        private void AddBlock(Point? p)
-        {
-            var id = GetSelectedBlockID?.Invoke();
-
-            if (p == null || id == null || Map == null)
-                return;
-
-            var x = p.Value.X + _camera.Position.X;
-            var y = p.Value.Y + _camera.Position.Y;
-
-            var pos   = new Point(x, y);
-            var index = Map.GetMapIndex(pos);
-
-            if(Map.Blocks.GetBlockId(index.X, index.Y) == id.Value)
-                return;
-
-            var op = new AddBlockOperation(Map, id.Value, index);
-            UserOperations.Execute(op);
-        }
-
-        private void DeleteBlock(Point? p)
-        {
-            if (p == null || Map == null)
-                return;
-
-            var x = p.Value.X + _camera.Position.X;
-            var y = p.Value.Y + _camera.Position.Y;
-
-            var index   = Map.GetMapIndex(new Point(x, y));
-            var blockId = Map.Blocks.GetBlockId(index.X, index.Y);
-
-            if(blockId == null)
-                return;
-
-            var op = new DeleteBlockOperation(Map, blockId.Value, index);
-            UserOperations.Execute(op);
-        }
-
-        public void GoToStartPosition()
-        {
-            var p = Map.Blocks.GetStartPosition();
-
-            if (p == null)
-                return;
-
-            var size = Map.BlockSize.GetPixelSize();
-            var x    = p.Value.X * size - (_gameImage.Width / 2);
-            var y    = p.Value.Y * size - (_gameImage.Height / 2);
-
-            _camera.Position = new MyPoint(x, y); ;
-        }
-
 
         #region Events
 
         public void OnFrameUpdate()
         {
-            new FrameUpdate(_gameImage, Map, _camera, _mousePosition, GetSelectedBlockID());
+            new FrameUpdate(Game, _mousePosition, GetSelectedBlockID());
 
             RaisePropertyChanged(nameof(MapContent));
         }
 
         public void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var p = MyUtils.GetPosition(sender as IInputElement, e);
+            switch (Mode)
+            {
+                case UserMode.AddBlock:
+                    var p = MyUtils.GetPosition(sender as IInputElement, e);
 
-            if (e.ChangedButton == MouseButton.Right)
-            {
-                DeleteBlock(p);
+                    if (e.ChangedButton == MouseButton.Right)
+                        UserOperations.Execute(Game.DeleteBlock(p));
+                    else if (e.ChangedButton == MouseButton.Left)
+                        UserOperations.Execute(Game.AddBlock(p, GetSelectedBlockID?.Invoke()));
+                    break;
+
+                case UserMode.Selection:
+                    break;
             }
-            else if (e.ChangedButton == MouseButton.Left)
-            {
-                AddBlock(p);
-            }
+            
         }
 
         public void OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
-            _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
-
-            if (e.RightButton == MouseButtonState.Pressed)
+            switch (Mode)
             {
-                DeleteBlock(_mousePosition);
+                case UserMode.AddBlock:
+                    _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
+
+                    if (e.RightButton == MouseButtonState.Pressed)
+                        UserOperations.Execute(Game.DeleteBlock(_mousePosition));
+                    else if (e.LeftButton == MouseButtonState.Pressed)
+                        UserOperations.Execute(Game.AddBlock(_mousePosition, GetSelectedBlockID?.Invoke()));
+                    break;
             }
-            else if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                if (GetSelectedBlockID?.Invoke() == null)
-                    return;
+            
+        }
 
-                AddBlock(_mousePosition);
+        internal void OnPreviewMouseUp(object sender, MouseEventArgs e)
+        {
+            switch (Mode)
+            {
+                case UserMode.Selection:
+                    _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
+                    break;
             }
         }
-    
+
         public void OnSizeChanged(int width, int height)
         {
-            if(_gameImage != null)
-                _gameImage.Dispose();
+            if(Game.GameImage != null)
+                Game.GameImage.Dispose();
 
            
-            _gameImage = new GameImage(width, height);  // thread safe?
-        }
-
-        public void OnLoaded()
-        {
-            Engine.Start();
+            Game.GameImage = new GameImage(width, height);  // thread safe?
         }
       
         public void OnLoadMap(Map map)
@@ -154,37 +104,37 @@ namespace BlockEditor.ViewModels
             if (map == null)
                 return;
 
-            Engine.Pause = true;
+            Game.Engine.Pause = true;
             Thread.Sleep(GameEngine.FPS * 5); // make sure engine has been stopped
 
-            var size = Map.BlockSize;
-            Map = map;
-            Map.BlockSize = size;
+            var size = Game.Map.BlockSize;
+            Game.Map = map;
+            Game.Map.BlockSize = size;
 
             UserOperations.Clear();
 
-            GoToStartPosition();
+            Game.GoToStartPosition();
 
-            Engine.Pause = false;
+            Game.Engine.Pause = false;
         }
 
         public void OnZoomChanged(BlockSize size)
         {
-            var halfScreenX = _gameImage.Width  / 2;
-            var halfScreenY = _gameImage.Height / 2;
+            var halfScreenX = Game.GameImage.Width  / 2;
+            var halfScreenY = Game.GameImage.Height / 2;
 
-            var cameraPosition = new Point(_camera.Position.X, _camera.Position.Y);
+            var cameraPosition = new Point(Game.Camera.Position.X, Game.Camera.Position.Y);
             var middleOfScreen = new Point(cameraPosition.X + halfScreenX, cameraPosition.Y + halfScreenY);
 
-            var currentIndex = Map.GetMapIndex(middleOfScreen);
-            var currentSize  = Map.BlockSize;
+            var currentIndex = Game.Map.GetMapIndex(middleOfScreen);
+            var currentSize  = Game.Map.BlockSize;
 
-            Map.BlockSize = size;
+            Game.Map.BlockSize = size;
 
-            var x = currentIndex.X * Map.BlockPixelSize - halfScreenX;
-            var y = currentIndex.Y * Map.BlockPixelSize - halfScreenY;
+            var x = currentIndex.X * Game.Map.BlockPixelSize - halfScreenX;
+            var y = currentIndex.Y * Game.Map.BlockPixelSize - halfScreenY;
 
-            _camera.Position = new MyPoint(x, y);
+            Game.Camera.Position = new MyPoint(x, y);
         }
 
         #endregion

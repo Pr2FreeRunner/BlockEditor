@@ -7,21 +7,17 @@ namespace BlockEditor.Models
     class FrameUpdate
     {
 
-        private GameImage _gameImage;
-        private Map _map;
-        private Camera _camera;
         private MyPoint? _mousePosition;
         private int? _selectedBlockID;
         private Graphics _graphics;
+        private Game _game;
 
-        public FrameUpdate(GameImage image, Map map, Camera camera, MyPoint? mousePosition, int? selectedBlockID)
+        public FrameUpdate(Game game, MyPoint? mousePosition, int? selectedBlockID)
         {
-            if (image == null || map == null || camera == null)
+            if (game?.GameImage == null || game?.Map == null || game?.Camera == null)
                 return;
 
-            _gameImage = image;
-            _map = map;
-            _camera = camera;
+            _game = game;
             _mousePosition = mousePosition;
             _selectedBlockID = selectedBlockID;
             _graphics = CreateGraphics();
@@ -31,17 +27,17 @@ namespace BlockEditor.Models
 
         private void Update()
         {
-            _gameImage.Clear(_map.Background);
+            _game.GameImage.Clear(_game.Map.Background);
 
             //DrawGrids();
             DrawBlocks();
-            _camera.Move(_map.BlockSize);
+            _game.Camera.Move(_game.Map.BlockSize);
             DrawSelection();
         }
 
         private Graphics CreateGraphics()
         {
-            var bmp = _gameImage?.GetBitmap();
+            var bmp = _game.GameImage?.GetBitmap();
             var ex  = new Exception("Failed to generate graphics for the game");
 
             if (bmp == null)
@@ -52,43 +48,43 @@ namespace BlockEditor.Models
 
         private void DrawGrids()
         {
-            var width  = _gameImage.Width;
-            var height = _gameImage.Height;
-            var startX = _camera.Position.X / _map.BlockPixelSize / 30;
-            var startY = _camera.Position.X / _map.BlockPixelSize / 30;
-            var pencil = MapUtil.GetGridPen(_map.Background);
+            var width  = _game.GameImage.Width;
+            var height = _game.GameImage.Height;
+            var startX = _game.Camera.Position.X / _game.Map.BlockPixelSize / 30;
+            var startY = _game.Camera.Position.X / _game.Map.BlockPixelSize / 30;
+            var pencil = MapUtil.GetGridPen(_game.Map.Background);
 
-            for (int i = startX; i < width; i += _map.BlockPixelSize)
+            for (int i = startX; i < width; i += _game.Map.BlockPixelSize)
                 _graphics.DrawLine(pencil, i, 0, i, height);
 
 
-            for (int i = startY; i < height; i += _map.BlockPixelSize)
+            for (int i = startY; i < height; i += _game.Map.BlockPixelSize)
                 _graphics.DrawLine(pencil, 0, i, width, i);
 
         }
 
         private void DrawBlocks()
         {
-            var width  = _gameImage.Width;
-            var height = _gameImage.Height;
+            var width  = _game.GameImage.Width;
+            var height = _game.GameImage.Height;
 
-            var minBlockX = _camera.Position.X / _map.BlockPixelSize;
-            var minBlockY = _camera.Position.Y / _map.BlockPixelSize;
+            var minBlockX = _game.Camera.Position.X / _game.Map.BlockPixelSize;
+            var minBlockY = _game.Camera.Position.Y / _game.Map.BlockPixelSize;
 
-            var blockCountX = width  / _map.BlockPixelSize;
-            var blockCountY = height / _map.BlockPixelSize;
+            var blockCountX = width  / _game.Map.BlockPixelSize;
+            var blockCountY = height / _game.Map.BlockPixelSize;
 
             for (int y = minBlockY; y < minBlockY + blockCountY; y++)
             {
                 for (int x = minBlockX; x < minBlockX + blockCountX; x++)
                 {
-                    var id = _map.Blocks.GetBlockId(x, y);
+                    var id = _game.Map.Blocks.GetBlockId(x, y);
 
                     DrawBlock(id, x, y, false);
                 }
             }
 
-            foreach (var startBlock in _map.Blocks.StartBlocks.GetBlocks())
+            foreach (var startBlock in _game.Map.Blocks.StartBlocks.GetBlocks())
             {
                 if (startBlock?.Position == null)
                     continue;
@@ -105,18 +101,18 @@ namespace BlockEditor.Models
             if(id == null)
                 return;
 
-            var block = BlockImages.GetImageBlock(_map.BlockSize, id.Value);
+            var block = BlockImages.GetImageBlock(_game.Map.BlockSize, id.Value);
 
             if (block == null)
                 return;
 
-            var posX = x * _map.BlockPixelSize - _camera.Position.X;
-            var posY = y * _map.BlockPixelSize - _camera.Position.Y;
+            var posX = x * _game.Map.BlockPixelSize - _game.Camera.Position.X;
+            var posY = y * _game.Map.BlockPixelSize - _game.Camera.Position.Y;
 
             if(semiTrans)
-                _gameImage.DrawTransperentImage(_graphics, block.SemiTransparentBitmap, posX, posY);
+                _game.GameImage.DrawTransperentImage(_graphics, block.SemiTransparentBitmap, posX, posY);
             else
-                _gameImage.DrawImage(ref block.Bitmap, posX, posY);
+                _game.GameImage.DrawImage(ref block.Bitmap, posX, posY);
         }
 
         private void DrawSelection()
@@ -129,15 +125,15 @@ namespace BlockEditor.Models
             if (id == null)
                 return;
 
-            var block = BlockImages.GetImageBlock(_map.BlockSize, id.Value)?.SemiTransparentBitmap;
+            var block = BlockImages.GetImageBlock(_game.Map.BlockSize, id.Value)?.SemiTransparentBitmap;
 
             if (block == null)
                 return;
 
-            var positionX = (int) (_mousePosition.Value.X - _map.BlockPixelSize / 2.0);
-            var positionY = (int) (_mousePosition.Value.Y - _map.BlockPixelSize / 2.0);
+            var positionX = (int) (_mousePosition.Value.X - _game.Map.BlockPixelSize / 2.0);
+            var positionY = (int) (_mousePosition.Value.Y - _game.Map.BlockPixelSize / 2.0);
 
-            _gameImage.DrawTransperentImage(_graphics, block, positionX, positionY);
+            _game.GameImage.DrawTransperentImage(_graphics, block, positionX, positionY);
         }
 
     }
