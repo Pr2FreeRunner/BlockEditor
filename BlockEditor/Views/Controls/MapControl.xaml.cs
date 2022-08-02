@@ -32,6 +32,7 @@ namespace BlockEditor.Views.Controls
         {
             BlocksControl.RemoveSelection();
         }
+     
         private void windowLoaded(object sender, RoutedEventArgs e)
         {
             ViewModel.Game.GoToStartPosition();

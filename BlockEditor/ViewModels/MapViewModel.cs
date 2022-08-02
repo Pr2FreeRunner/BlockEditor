@@ -27,6 +27,7 @@ namespace BlockEditor.ViewModels
 
         private Action _cleanBlockSelection { get; }
 
+
         public MapViewModel(Action cleanBlockSelection)
         {
             _cleanBlockSelection = cleanBlockSelection;
