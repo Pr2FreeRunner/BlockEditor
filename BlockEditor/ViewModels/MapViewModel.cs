@@ -5,7 +5,6 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using BlockEditor.Helpers;
 using BlockEditor.Models;
-using BlockEditor.Models.UserOperations;
 using BlockEditor.Utils;
 using static BlockEditor.Models.BlockImages;
 

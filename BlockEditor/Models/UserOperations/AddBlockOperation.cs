@@ -1,4 +1,6 @@
-﻿namespace BlockEditor.Models.UserOperations
+﻿using BlockEditor.Models;
+
+namespace BlockEditor.Models
 {
     public class AddBlockOperation : IUserOperation
     {

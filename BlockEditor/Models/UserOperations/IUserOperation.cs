@@ -1,4 +1,4 @@
-﻿namespace BlockEditor.Models.UserOperations
+﻿namespace BlockEditor.Models
 {
     public interface IUserOperation
     {
