@@ -44,6 +44,7 @@ namespace BlockEditor.ViewModels
         private void OnSelectionClick()
         {
             Mode = UserMode.Selection;
+            _cleanBlockSelection?.Invoke();
         }
 
         public void OnCleanUserMode()
@@ -64,7 +65,9 @@ namespace BlockEditor.ViewModels
         {
             BlockSelection.Clean(); 
             BlockSelection.SelectedBlock = id;
-            Mode = id != null ? UserMode.AddBlock : UserMode.None;
+
+            if(id != null)
+                Mode = UserMode.AddBlock;
         }
 
         public void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
