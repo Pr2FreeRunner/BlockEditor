@@ -23,7 +23,7 @@ namespace BlockEditor.Models
             EndImageIndex = null;
         }
 
-        private int?[,] GetSelection(Map map, bool delete)
+        private int?[,] GetSelection(Map map)
         {
             if (map == null || StartMapIndex == null || EndMapIndex == null)
                 return null;
@@ -39,11 +39,7 @@ namespace BlockEditor.Models
             {
                 for (int x = startX; x < endX ; x++)
                 {
-                    var id = map.Blocks.GetBlockId(x, y);
-                    selection[x - startX, y - startY] = id;
-
-                    if (id != null && delete)
-                        map.Blocks.Delete(new MyPoint(x, y));
+                    selection[x - startX, y - startY] = map.Blocks.GetBlockId(x, y);
                 }
             }
 
@@ -70,9 +66,9 @@ namespace BlockEditor.Models
             EndMapIndex = map;
         }
 
-        public void OnKeydown(Map map, bool delete)
+        public void OnKeydown(Map map)
         {
-            var selection = GetSelection(map, delete);
+            var selection = GetSelection(map);
             OnNewSelection?.Invoke(selection);
             Reset();
         }

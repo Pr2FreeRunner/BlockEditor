@@ -54,7 +54,7 @@ namespace BlockEditor.Models
             UserOperations.Execute(op);
         }
 
-        internal void AddBlocks(MyPoint? p, int?[,] selectedBlocks)
+        internal void AddSelection(MyPoint? p, int?[,] selectedBlocks)
         {
             var index = GetMapIndex(p);
 
@@ -87,6 +87,42 @@ namespace BlockEditor.Models
                 return;
 
             var op = new AddSelectionOperation(Map, blocks);
+            UserOperations.Execute(op);
+        }
+
+        public void DeleteSelection(MyPoint? p, int?[,] selectedBlocks)
+        {
+            var index = GetMapIndex(p);
+
+            if (index == null || selectedBlocks == null || Map == null)
+                return;
+
+            var width =  selectedBlocks.GetLength(0);
+            var height = selectedBlocks.GetLength(1);
+            var blocks = new List<SimpleBlock>();
+
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    var id = selectedBlocks[x, y];
+                    var blockIndex = new MyPoint(index.Value.X + x, index.Value.Y + y);
+                    var currentID = Map.Blocks.GetBlockId(blockIndex.X, blockIndex.Y);
+
+                    if (currentID == null)
+                        continue;
+
+                    if (id == null)
+                        continue;
+
+                    blocks.Add(new SimpleBlock(id.Value, blockIndex));
+                }
+            }
+
+            if (!blocks.Any())
+                return;
+
+            var op = new DeleteSelectionOperation(Map, blocks);
             UserOperations.Execute(op);
         }
 

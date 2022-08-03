@@ -99,7 +99,7 @@ namespace BlockEditor.ViewModels
                         break;
 
                     var p3 = MyUtils.GetPosition(sender as IInputElement, e);
-                    Game.AddBlocks(p3, BlockSelection.SelectedBlocks);
+                    Game.AddSelection(p3, BlockSelection.SelectedBlocks);
                     break;
             }
             
@@ -129,7 +129,7 @@ namespace BlockEditor.ViewModels
                         break;
 
                     var p3 = MyUtils.GetPosition(sender as IInputElement, e);
-                    Game.AddBlocks(p3, BlockSelection.SelectedBlocks);
+                    Game.AddSelection(p3, BlockSelection.SelectedBlocks);
                     break;
             }
         }
