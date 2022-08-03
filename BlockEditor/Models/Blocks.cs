@@ -109,7 +109,7 @@ namespace BlockEditor.Models
                     if(id == null)
                         continue;
 
-                    yield return new SimpleBlock(id.Value) { Position = new MyPoint(x, y) };
+                    yield return new SimpleBlock(id.Value, new MyPoint(x, y));
                 }
             }
 

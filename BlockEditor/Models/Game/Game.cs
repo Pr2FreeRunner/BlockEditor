@@ -1,5 +1,7 @@
 ﻿using BlockEditor.Utils;
 using BlockEditor.ViewModels;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BlockEditor.Models
 {
@@ -61,21 +63,31 @@ namespace BlockEditor.Models
 
             var width = selectedBlocks.GetLength(0);
             var height  = selectedBlocks.GetLength(1);
+            var blocks  = new List<SimpleBlock>();
 
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
                 {
-                    var blockIndex = new MyPoint(index.Value.X + x - width  + 1, 
-                                                 index.Value.Y + y - height + 1);
-                    var id = selectedBlocks[x, y];
+                    var id         = selectedBlocks[x, y];
+                    var blockIndex = new MyPoint(index.Value.X + x - width  + 1, index.Value.Y + y - height + 1);
+                    var currentID  = Map.Blocks.GetBlockId(blockIndex.X, blockIndex.Y);
+                     
+                    if(currentID == id)
+                        continue;
 
                     if(id == null)
                         continue;
 
-                    AddBlock(blockIndex, id, true);
+                    blocks.Add(new SimpleBlock(id.Value, blockIndex));
                 }
             }
+
+            if(!blocks.Any())
+                return;
+
+            var op = new AddSelectionOperation(Map, blocks);
+            UserOperations.Execute(op);
         }
 
         public void DeleteBlock(MyPoint? p)

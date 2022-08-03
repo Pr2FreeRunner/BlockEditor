@@ -11,5 +11,11 @@
         {
             ID = id;
         }
+
+        public SimpleBlock(int id, MyPoint p)
+        {
+            ID = id;
+            Position = p;
+        }
     }
 }
