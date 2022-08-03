@@ -5,23 +5,27 @@ namespace BlockEditor.Models
     public class UserSelection
     {
 
-        private MyPoint? _keyDownMapIndex { get; set; }
-        private MyPoint? _keyUpMapIndex { get; set; }
+        private MyPoint? _mouseDownMapIndex { get; set; }
+        private MyPoint? _mouseUpMapIndex { get; set; }
 
-        private MyPoint? _keyDownImageIndex { get; set; }
-        private MyPoint? _keyUpImageIndex { get;  set; }
+        private MyPoint? _mouseDownImageIndex { get; set; }
+        private MyPoint? _mouseUpImageIndex { get;  set; }
 
         public event Action<int?[,]> OnNewSelection;
+
 
         public MyPoint? StartMapIndex
         {
             get
             {
-                if(_keyDownMapIndex == null || _keyUpMapIndex == null)
+                if(_mouseDownMapIndex == null)
                     return null;
+                
+                if(_mouseUpMapIndex == null)
+                    return _mouseDownMapIndex;
 
-                var x = Math.Min(_keyDownMapIndex.Value.X, _keyUpMapIndex.Value.X);
-                var y = Math.Min(_keyDownMapIndex.Value.Y, _keyUpMapIndex.Value.Y);
+                var x = Math.Min(_mouseDownMapIndex.Value.X, _mouseUpMapIndex.Value.X);
+                var y = Math.Min(_mouseDownMapIndex.Value.Y, _mouseUpMapIndex.Value.Y);
 
                 return new MyPoint(x, y);
             }
@@ -31,11 +35,11 @@ namespace BlockEditor.Models
         {
             get
             {
-                if (_keyDownMapIndex == null || _keyUpMapIndex == null)
+                if (_mouseDownMapIndex == null || _mouseUpMapIndex == null)
                     return null;
 
-                var x = Math.Max(_keyDownMapIndex.Value.X, _keyUpMapIndex.Value.X);
-                var y = Math.Max(_keyDownMapIndex.Value.Y, _keyUpMapIndex.Value.Y);
+                var x = Math.Max(_mouseDownMapIndex.Value.X, _mouseUpMapIndex.Value.X);
+                var y = Math.Max(_mouseDownMapIndex.Value.Y, _mouseUpMapIndex.Value.Y);
 
                 return new MyPoint(x, y);
             }
@@ -46,11 +50,14 @@ namespace BlockEditor.Models
         {
             get
             {
-                if (_keyDownImageIndex == null || _keyUpImageIndex == null)
+                if (_mouseDownImageIndex == null)
                     return null;
 
-                var x = Math.Min(_keyDownImageIndex.Value.X, _keyUpImageIndex.Value.X);
-                var y = Math.Min(_keyDownImageIndex.Value.Y, _keyUpImageIndex.Value.Y);
+                if (_mouseUpImageIndex == null)
+                    return _mouseDownImageIndex;
+
+                var x = Math.Min(_mouseDownImageIndex.Value.X, _mouseUpImageIndex.Value.X);
+                var y = Math.Min(_mouseDownImageIndex.Value.Y, _mouseUpImageIndex.Value.Y);
 
                 return new MyPoint(x, y);
             }
@@ -59,11 +66,11 @@ namespace BlockEditor.Models
         {
             get
             {
-                if (_keyDownImageIndex == null || _keyUpImageIndex == null)
+                if (_mouseDownImageIndex == null || _mouseUpImageIndex == null)
                     return null;
 
-                var x = Math.Max(_keyDownImageIndex.Value.X, _keyUpImageIndex.Value.X);
-                var y = Math.Max(_keyDownImageIndex.Value.Y, _keyUpImageIndex.Value.Y);
+                var x = Math.Max(_mouseDownImageIndex.Value.X, _mouseUpImageIndex.Value.X);
+                var y = Math.Max(_mouseDownImageIndex.Value.Y, _mouseUpImageIndex.Value.Y);
 
                 return new MyPoint(x, y);
             }
@@ -71,16 +78,16 @@ namespace BlockEditor.Models
 
         public void Reset()
         {
-            _keyDownMapIndex = null;
-            _keyUpMapIndex = null;
+            _mouseDownMapIndex = null;
+            _mouseUpMapIndex = null;
 
-            _keyDownImageIndex = null;
-            _keyUpImageIndex = null;
+            _mouseDownImageIndex = null;
+            _mouseUpImageIndex = null;
         }
 
         private int?[,] GetSelection(Map map)
         {
-            if (map == null || _keyDownMapIndex == null || _keyUpMapIndex == null)
+            if (map == null || _mouseDownMapIndex == null || _mouseUpMapIndex == null)
                 return null;
 
             var start = StartMapIndex;
@@ -89,11 +96,11 @@ namespace BlockEditor.Models
             if(start == null || end == null)
                 return null;
 
-            var selection = new int?[end.Value.X - start.Value.X, end.Value.Y - start.Value.Y];
+            var selection = new int?[end.Value.X - start.Value.X + 1, end.Value.Y - start.Value.Y + 1];
 
-            for (int y = start.Value.Y; y < end.Value.Y; y++)
+            for (int y = start.Value.Y; y <= end.Value.Y; y++)
             {
-                for (int x = start.Value.X; x < end.Value.X; x++)
+                for (int x = start.Value.X; x <= end.Value.X; x++)
                 {
                     selection[x - start.Value.X, y - start.Value.Y] = map.Blocks.GetBlockId(x, y);
                 }
@@ -109,17 +116,17 @@ namespace BlockEditor.Models
 
         public void OnMouseDown(MyPoint? image, MyPoint? map)
         {
-            _keyDownImageIndex = image;
-            _keyDownMapIndex = map;
+            _mouseDownImageIndex = image;
+            _mouseDownMapIndex = map;
 
-            _keyUpImageIndex = null;
-            _keyUpMapIndex = null;
+            _mouseUpImageIndex = null;
+            _mouseUpMapIndex = null;
         }
 
         public void OnMouseUp(MyPoint? image, MyPoint? map)
         {
-            _keyUpImageIndex = image;
-            _keyUpMapIndex = map;
+            _mouseUpImageIndex = image;
+            _mouseUpMapIndex = map;
         }
 
         public void OnKeydown(Map map)

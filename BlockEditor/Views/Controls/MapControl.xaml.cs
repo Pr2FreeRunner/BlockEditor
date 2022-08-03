@@ -79,7 +79,7 @@ namespace BlockEditor.Views.Controls
             }
             else if(ViewModel.Mode == UserMode.Selection && (e.Key == Key.C || e.Key == Key.X || e.Key == Key.Delete))
             {
-                var startPoint = ViewModel.BlockSelection.UserSelection.StartMapIndex;
+                var startPoint = ViewModel.BlockSelection.UserSelection.StartImageIndex;
 
                 ViewModel.BlockSelection.UserSelection.OnKeydown(ViewModel.Game.Map);
 
