@@ -58,10 +58,7 @@ namespace BlockEditor.Models
 
         private void SelectCommandExecute(object obj)
         {
-            SelectedBlock = null;
-            SelectedBlocks = null;
-            UserSelection.OnSelectionClick();
-            OnSelectionClick?.Invoke();
+            SelectionActivation();
         }
 
         private void OnUserSelection(int?[,] selection)
@@ -103,5 +100,12 @@ namespace BlockEditor.Models
             SelectedBlocks = ArrayUtil.RotateLeft(SelectedBlocks);
         }
 
+        public void SelectionActivation()
+        {
+            SelectedBlock = null;
+            SelectedBlocks = null;
+            UserSelection.OnSelectionClick();
+            OnSelectionClick?.Invoke();
+        }
     }
 }

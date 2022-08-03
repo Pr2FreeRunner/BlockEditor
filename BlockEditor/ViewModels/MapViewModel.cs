@@ -16,7 +16,7 @@ namespace BlockEditor.ViewModels
 
         private MyPoint? _mousePosition;
 
-        public UserMode Mode { get; set; }
+        public UserMode Mode { get; set;}
 
         public BitmapImage MapContent
         {
@@ -84,6 +84,7 @@ namespace BlockEditor.ViewModels
                     break;
 
                 case UserMode.Selection:
+     
                     var p2 = MyUtils.GetPosition(sender as IInputElement, e);
 
                     if (p2 == null)
@@ -112,7 +113,6 @@ namespace BlockEditor.ViewModels
                         OnCleanUserMode();
                     }
 
-
                     break;
 
                 case UserMode.AddSelection:
@@ -131,7 +131,6 @@ namespace BlockEditor.ViewModels
 
                     break;
             }
-            
         }
 
         public void OnPreviewMouseMove(object sender, MouseEventArgs e)

@@ -26,13 +26,13 @@
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightGreen">
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <Button Margin="10,7" Width="50" Content="Undo"   FontFamily="Segoe UI" Command="{Binding Game.UserOperations.UndoCommand}" />
-                <Button Margin="10,7" Width="50" Content="Redo"   FontFamily="Segoe UI" Command="{Binding Game.UserOperations.RedoCommand}"/>
-              
-                <Button Margin="10,7" Width="50" Content="Select" FontFamily="Segoe UI" Command="{Binding BlockSelection.SelectCommand}"/>
+                <Button Margin="10,7" Width="50" Content="Undo" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.UndoCommand}" ToolTip="Hotkey: Ctrl + Z" />
+                <Button Margin="10,7" Width="50" Content="Redo" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.RedoCommand}" ToolTip="HotKey: Ctrl + Y"/>
 
-                <Button Margin="10,7" Width="100" Content="Rotate Left"     FontFamily="Segoe UI" Command="{Binding BlockSelection.RotateLeftCommand}"/>
-                <Button Margin="10,7" Width="100" Content="Rotate Right"    FontFamily="Segoe UI" Command="{Binding BlockSelection.RotateRightCommand}"/>
+                <Button Margin="10,7" Width="50" Content="Select" FontFamily="Segoe UI" Command="{Binding BlockSelection.SelectCommand}" ToolTip="Hotkey: S"/>
+
+                <Button Margin="10,7" Width="100" Content="Rotate Left"  FontFamily="Segoe UI" Command="{Binding BlockSelection.RotateLeftCommand}" ToolTip="Hotkey: L"/>
+                <Button Margin="10,7" Width="100" Content="Rotate Right" FontFamily="Segoe UI" Command="{Binding BlockSelection.RotateRightCommand}" ToolTip="Hotkey: R"/>
 
             </StackPanel>
 

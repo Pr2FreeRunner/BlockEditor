@@ -26,6 +26,7 @@ namespace BlockEditor.Views.Controls
             this.Loaded += windowLoaded;
 
             ZoomControl.ViewModel.Init();
+            this.Focus();
         }
 
         private void CleanBlocksControlSelection()
@@ -45,7 +46,6 @@ namespace BlockEditor.Views.Controls
 
         private void Map_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-
             ViewModel.OnPreviewMouseDown(sender, e);
         }
 
@@ -54,6 +54,12 @@ namespace BlockEditor.Views.Controls
             ViewModel.OnPreviewMouseMove(sender, e);
         }
 
+        private void Map_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            ViewModel.OnPreviewMouseUp(sender, e);
+
+        }
+  
         private void Map_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             ViewModel.OnSizeChanged((int)GamePanel.ActualWidth, (int)GamePanel.ActualHeight);
@@ -91,6 +97,18 @@ namespace BlockEditor.Views.Controls
                 else
                     ViewModel.Mode = UserMode.AddSelection;
             }
+            else if(ViewModel.Mode == UserMode.AddSelection && e.Key == Key.L)
+            {
+                ViewModel.BlockSelection.RotateLeft();
+            }
+            else if (ViewModel.Mode == UserMode.AddSelection && e.Key == Key.R)
+            {
+                ViewModel.BlockSelection.RotateRight();
+            }
+            else if (e.Key == Key.S && ViewModel.Mode != UserMode.Selection)
+            {
+                ViewModel.BlockSelection.SelectionActivation();
+            }
         }
 
         private bool IsSelectionKey(KeyEventArgs e, bool ctrl)
@@ -102,10 +120,5 @@ namespace BlockEditor.Views.Controls
             return isSelectionMode && (isCopy || isDelete);
         }
 
-        private void Map_PreviewMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            ViewModel.OnPreviewMouseUp(sender, e);
-
-        }
     }
 }

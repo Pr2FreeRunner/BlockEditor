@@ -1,5 +1,8 @@
-﻿namespace BlockEditor.Models
+﻿using System.Diagnostics;
+
+namespace BlockEditor.Models
 {
+    [DebuggerDisplay("{X}, {Y}")]
     public struct MyPoint 
     {
         public int X { get; set; }
