@@ -41,7 +41,7 @@ namespace BlockEditor.Models
                 var x = Math.Max(_mouseDownMapIndex.Value.X, _mouseUpMapIndex.Value.X);
                 var y = Math.Max(_mouseDownMapIndex.Value.Y, _mouseUpMapIndex.Value.Y);
 
-                return new MyPoint(x, y);
+                return new MyPoint(x + 1, y + 1);
             }
         }
 
@@ -96,11 +96,11 @@ namespace BlockEditor.Models
             if(start == null || end == null)
                 return null;
 
-            var selection = new int?[end.Value.X - start.Value.X + 1, end.Value.Y - start.Value.Y + 1];
+            var selection = new int?[end.Value.X - start.Value.X, end.Value.Y - start.Value.Y];
 
-            for (int y = start.Value.Y; y <= end.Value.Y; y++)
+            for (int y = start.Value.Y; y < end.Value.Y; y++)
             {
-                for (int x = start.Value.X; x <= end.Value.X; x++)
+                for (int x = start.Value.X; x < end.Value.X; x++)
                 {
                     selection[x - start.Value.X, y - start.Value.Y] = map.Blocks.GetBlockId(x, y);
                 }

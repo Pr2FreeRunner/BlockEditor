@@ -68,29 +68,38 @@ namespace BlockEditor.Views.Controls
                 ViewModel.OnCleanUserMode();
                 return;
             }
-            else if (e.Key == Key.Z && ctrl)
+            else if (ctrl && e.Key == Key.Z)
             {
                 ViewModel.Game.UserOperations.Undo();
             }
-
-            else if (e.Key == Key.Y && ctrl)
+            else if (ctrl && e.Key == Key.Y)
             {
                 ViewModel.Game.UserOperations.Redo();
             }
-            else if(ViewModel.Mode == UserMode.Selection && (e.Key == Key.C || e.Key == Key.X || e.Key == Key.Delete))
+            else if(IsSelectionKey(e, ctrl))
             {
-                var startPoint = ViewModel.BlockSelection.UserSelection.StartImageIndex;
+                var startPoint = ViewModel.BlockSelection.UserSelection.StartMapIndex;
+                var endPoint   = ViewModel.BlockSelection.UserSelection.EndMapIndex;
 
                 ViewModel.BlockSelection.UserSelection.OnKeydown(ViewModel.Game.Map);
 
                 if(e.Key == Key.X || e.Key == Key.Delete)
-                    ViewModel.Game.DeleteSelection(startPoint, ViewModel.BlockSelection.SelectedBlocks);
+                    ViewModel.Game.DeleteSelection(startPoint, endPoint);
 
                 if(e.Key == Key.Delete)
                     ViewModel.OnCleanUserMode();
                 else
                     ViewModel.Mode = UserMode.AddSelection;
             }
+        }
+
+        private bool IsSelectionKey(KeyEventArgs e, bool ctrl)
+        {
+            var isSelectionMode = ViewModel.Mode == UserMode.Selection;
+            var isCopy = ctrl && (e.Key == Key.C || e.Key == Key.X);
+            var isDelete = e.Key == Key.Delete;
+
+            return isSelectionMode && (isCopy || isDelete);
         }
 
         private void Map_PreviewMouseUp(object sender, MouseButtonEventArgs e)

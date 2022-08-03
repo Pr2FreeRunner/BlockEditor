@@ -89,9 +89,30 @@ namespace BlockEditor.ViewModels
                     if (p2 == null)
                         break;
 
-                    var pos = new MyPoint(p2.Value.X, p2.Value.Y);
-                    var index = Game.GetMapIndex(pos);
-                    BlockSelection.UserSelection.OnMouseDown(pos, index);
+                    if (e.LeftButton == MouseButtonState.Pressed) 
+                    { 
+                        BlockSelection.UserSelection.OnMouseDown(p2, Game.GetMapIndex(p2));
+                    }
+                    else if (e.RightButton == MouseButtonState.Pressed)
+                    { 
+                        var click = Game.GetMapIndex(_mousePosition);
+                        var start = BlockSelection.UserSelection.StartMapIndex;
+                        var end   = BlockSelection.UserSelection.EndMapIndex;
+
+                        if (click == null || start == null || end == null)
+                            break;
+
+                        if (click.Value.X < start.Value.X || click.Value.X >= end.Value.X)
+                            break;
+
+                        if (click.Value.Y < start.Value.Y || click.Value.Y >= end.Value.Y)
+                            break;
+
+                        Game.DeleteSelection(start, end);
+                        OnCleanUserMode();
+                    }
+
+
                     break;
 
                 case UserMode.AddSelection:
@@ -100,6 +121,14 @@ namespace BlockEditor.ViewModels
 
                     var p3 = MyUtils.GetPosition(sender as IInputElement, e);
                     Game.AddSelection(p3, BlockSelection.SelectedBlocks);
+                    break;
+
+                case UserMode.None:
+                    var p4 = MyUtils.GetPosition(sender as IInputElement, e);
+
+                    if (e.ChangedButton == MouseButton.Right)
+                        Game.DeleteBlock(p4);
+
                     break;
             }
             
@@ -134,11 +163,15 @@ namespace BlockEditor.ViewModels
             }
         }
 
-        internal void OnPreviewMouseUp(object sender, MouseEventArgs e)
+        internal void OnPreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             switch (Mode)
             {
                 case UserMode.Selection:
+
+                    if (e.ChangedButton != MouseButton.Left)
+                        break;
+
                     var pos   = MyUtils.GetPosition(sender as IInputElement, e);
                     var index = Game.GetMapIndex(pos);
 
