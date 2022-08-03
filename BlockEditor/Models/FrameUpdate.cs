@@ -185,12 +185,7 @@ namespace BlockEditor.Models
             if (start == null || end == null)
                 return;
 
-            var startX = Math.Min(start.Value.X, end.Value.X);
-            var startY = Math.Min(start.Value.Y, end.Value.Y);
-            var endX  = Math.Max(start.Value.X, end.Value.X);
-            var endY  = Math.Max(start.Value.Y, end.Value.Y);
-
-            var rec = new Rectangle(startX, startY, endX - startX, endY - startY);
+            var rec = new Rectangle(start.Value.X, start.Value.Y, end.Value.X - start.Value.X, end.Value.Y - start.Value.Y);
             _game.GameImage.DrawSelectionRectangle(_graphics, rec);
         }
 

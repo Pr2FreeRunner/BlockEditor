@@ -77,17 +77,19 @@ namespace BlockEditor.Views.Controls
             {
                 ViewModel.Game.UserOperations.Redo();
             }
-            else if(ViewModel.Mode == UserMode.Selection && (e.Key == Key.C || e.Key == Key.X))
+            else if(ViewModel.Mode == UserMode.Selection && (e.Key == Key.C || e.Key == Key.X || e.Key == Key.Delete))
             {
-                var startPoint = ViewModel.BlockSelection.UserSelection.StartImageIndex;
+                var startPoint = ViewModel.BlockSelection.UserSelection.StartMapIndex;
 
                 ViewModel.BlockSelection.UserSelection.OnKeydown(ViewModel.Game.Map);
 
-                if(e.Key == Key.X)
+                if(e.Key == Key.X || e.Key == Key.Delete)
                     ViewModel.Game.DeleteSelection(startPoint, ViewModel.BlockSelection.SelectedBlocks);
 
-
-                ViewModel.Mode = UserMode.AddSelection;
+                if(e.Key == Key.Delete)
+                    ViewModel.OnCleanUserMode();
+                else
+                    ViewModel.Mode = UserMode.AddSelection;
             }
         }
 
