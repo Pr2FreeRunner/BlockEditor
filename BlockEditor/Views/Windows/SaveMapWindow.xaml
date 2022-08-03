@@ -29,8 +29,8 @@
 
             <TextBlock FontSize="{StaticResource DefaultFontSize}" Text="Where do you wish to save the level?" HorizontalAlignment="Center" Grid.Row="0" Margin="20, 20, 20, 10"/>
             <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="20,15, 20,20" HorizontalAlignment="Center">
-                <Button  FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold"Width="150" Height="25" Content="PR2" Margin="10" Name="btnPr2" Click="btnPr2_Click" />
-                <Button  FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold"Width="150" Height="25" Content="Local File" Margin="10" Click="btnLocalFile_Click" />
+                <Button  FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="150" Height="25" Content="PR2" Margin="10" Name="btnPr2" Click="btnPr2_Click" />
+                <Button  FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="150" Height="25" Content="Local File" Margin="10" Click="btnLocalFile_Click" />
             </StackPanel>
         </Grid>
 
