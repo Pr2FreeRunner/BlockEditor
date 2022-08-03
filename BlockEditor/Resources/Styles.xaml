@@ -16,6 +16,8 @@
     <SolidColorBrush x:Key="StandardBackgroundDisable" Color="LightGray" />
     <SolidColorBrush x:Key="StandardForegroundDisable" Color="#898989" />
     <SolidColorBrush x:Key="StandardBorderBrushIsPressed" Color="Gray" />
+    <SolidColorBrush x:Key="ToggleButtonSelected" Color="White" />
+
 
     <Style TargetType="{x:Type Label}">
         <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
@@ -53,7 +55,7 @@
                         </Trigger>
 
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="BorderBrush" Value="{StaticResource StandardBorderBrushIsPressed}" />
+                            <Setter Property="BorderBrush" Value="{StaticResource ToggleButtonSelected}" />
                             <Setter Property="BorderThickness" Value="1"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
