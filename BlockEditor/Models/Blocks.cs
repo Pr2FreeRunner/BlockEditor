@@ -58,7 +58,7 @@ namespace BlockEditor.Models
             if(p.X < 0 || p.Y < 0)
                 return;
 
-            if(p.X >= SIZE || p.Y >= SIZE)
+            if(p.X >= SIZE || p.Y >= (SIZE - 1))
                 return;
 
             if (IsPositionOccupied(p))
