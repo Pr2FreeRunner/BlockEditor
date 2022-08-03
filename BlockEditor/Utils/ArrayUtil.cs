@@ -29,7 +29,7 @@ namespace BlockEditor.Utils
             return result;
         }
 
-        public static T[,] RotateRight<T>(T[,] matrix)
+        public static T[,] RotateLeft<T>(T[,] matrix)
         {
             if (matrix == null)
                 return null;
@@ -131,6 +131,7 @@ namespace BlockEditor.Utils
 
             return CreateSubArray(matrix, startRow, startColumn, endRow, endColumn);
         }
+
 
         public static T[,] CreateSubArray<T>(T[,] matrix, int startRow, int startColumn, int endRow, int endColumn)
         {
