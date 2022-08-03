@@ -15,8 +15,19 @@ namespace BlockEditor.ViewModels
         public Game Game { get; }
 
         private MyPoint? _mousePosition;
+        private UserMode _mode;
 
-        public UserMode Mode { get; set;}
+        public UserMode Mode { 
+            get
+            {
+                return _mode;
+            }
+            set
+            {
+                _mode = value;
+                RaisePropertyChanged(nameof(IsSelectionMode));
+            }
+        }
 
         public BitmapImage MapContent
         {
@@ -27,6 +38,7 @@ namespace BlockEditor.ViewModels
 
         private Action _cleanBlockSelection { get; }
 
+        public bool IsSelectionMode => Mode == UserMode.Selection;
 
         public MapViewModel(Action cleanBlockSelection)
         {

@@ -61,6 +61,53 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <Style TargetType="{x:Type ToggleButton}">
+        <Setter Property="Background" Value="{StaticResource StandardBackground}" />
+        <Setter Property="Foreground" Value="{StaticResource StandardForeground}" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="BorderBrush" Value="{StaticResource StandardBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="0.3"/>
+        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+        <Setter Property="MinHeight" Value="24"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border CornerRadius="10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-1,0,0" />
+                        </Grid>
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="4" Color="Gray" Direction="270" Opacity=".5" ShadowDepth="0.8" />
+                        </Border.Effect>
+                    </Border>
+
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ToggleButton.IsEnabled" Value="false">
+                            <Setter Property="Background"       Value="{StaticResource StandardBackgroundDisable}" />
+                            <Setter Property="Foreground"       Value="{StaticResource StandardForegroundDisable}" />
+                            <Setter Property="BorderThickness"  Value="0.2" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"   Value="True">
+                            <Setter Property="Background" Value="{StaticResource StandardBackgroundMouseOver}" />
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource StandardBorderBrushIsPressed}" />
+                            <Setter Property="BorderThickness" Value="1"/>
+                        </Trigger>
+
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background" Value="White" />
+                            <Setter Property="BorderThickness" Value="2"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style TargetType="{x:Type TextBox}">
         <Setter Property="SnapsToDevicePixels" Value="True" />
