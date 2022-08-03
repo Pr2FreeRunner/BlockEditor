@@ -109,6 +109,11 @@ namespace BlockEditor.Views.Controls
             {
                 ViewModel.BlockSelection.SelectionActivation();
             }
+            else if(e.Key == Key.G)
+            {
+                if(ViewModel.StartPositionCommand.CanExecute(null))
+                    ViewModel.StartPositionCommand.Execute(null);
+            }
         }
 
         private bool IsSelectionKey(KeyEventArgs e, bool ctrl)

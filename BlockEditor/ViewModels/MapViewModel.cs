@@ -40,14 +40,19 @@ namespace BlockEditor.ViewModels
 
         public bool IsSelectionMode => Mode == UserMode.Selection;
 
+        public RelayCommand StartPositionCommand { get; }
+
         public MapViewModel(Action cleanBlockSelection)
         {
-            _cleanBlockSelection = cleanBlockSelection;
             Game = new Game();
-            Game.Engine.OnFrame += OnFrameUpdate;
             Mode = UserMode.None;
-            BlockSelection = new BlockSelection();
+
+            _cleanBlockSelection = cleanBlockSelection;
+            BlockSelection       = new BlockSelection();
+            StartPositionCommand = new RelayCommand((_) => Game.GoToStartPosition());
+
             BlockSelection.OnSelectionClick += OnSelectionClick;
+            Game.Engine.OnFrame += OnFrameUpdate;
         }
 
 

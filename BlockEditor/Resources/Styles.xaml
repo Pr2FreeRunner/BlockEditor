@@ -8,6 +8,13 @@
         <GradientStop Color="#c4ecb3" Offset="1.0" />
     </LinearGradientBrush>
 
+    <LinearGradientBrush x:Key="LightBackground" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#c4ecb3" Offset="0.0" />
+        <GradientStop Color="WhiteSmoke" Offset="0.5" />
+        <GradientStop Color="#c4ecb3" Offset="1.0" />
+    </LinearGradientBrush>
+
+
     <sys:Double x:Key="DefaultFontSize">14</sys:Double>
     <Color           x:Key="StandardBackgroundLight">#D5EAF1</Color>
     <SolidColorBrush x:Key="StandardForeground" Color="Black" />
