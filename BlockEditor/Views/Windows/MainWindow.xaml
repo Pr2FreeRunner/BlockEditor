@@ -8,6 +8,6 @@
         WindowState="Maximized"
         Title="Block Editor">
     <Grid>
-        <myControls:MapControl x:Name="Map"/>
+        <myControls:MapControl x:Name="MapControl"/>
     </Grid>
 </Window>

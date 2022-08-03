@@ -33,25 +33,25 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Column="0" Margin="20,0,0,0" Text="Currently logged in as:" VerticalAlignment="Center"/>
-            <TextBlock Grid.Column="1" Margin="10,0,0,0"  VerticalAlignment="Center" Name="CurrentUserTextbox" Text="Free"  FontWeight="SemiBold"/>
-            <Button Grid.Column="2" Width="70" Height="25"  HorizontalAlignment="Right" Content="Logout" Margin="30,5,20,5" Click="Logout_Click" />
+            <TextBlock FontSize="{StaticResource DefaultFontSize}" Grid.Column="0" Margin="20,0,0,0" Text="Currently logged in as:" VerticalAlignment="Center"/>
+            <TextBlock FontSize="{StaticResource DefaultFontSize}" Grid.Column="1" Margin="10,0,0,0"  VerticalAlignment="Center" Name="CurrentUserTextbox" Text="Free"  FontWeight="SemiBold"/>
+            <Button FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Grid.Column="2" Width="70" Height="25"  HorizontalAlignment="Right" Content="Logout" Margin="30,5,20,5" Click="Logout_Click" />
         </Grid>
         
         <StackPanel Margin="20,0,20,0" Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Stretch">
             <TextBlock Text="Account:" Margin="2, 20, 20, 0"/>
             <TextBox HorizontalAlignment="Stretch" Margin="0, 0, 0, 20" Name="NameTextbox" TextChanged="Name_TextChanged"/>
 
-            <TextBlock Text="Password:"  Margin="0, 10, 20, 0"/>
-            <TextBox HorizontalAlignment="Stretch" Margin="0, 0, 0, 20" Name="PasswordTextbox" TextChanged="Password_TextChanged"/>
+            <TextBlock FontSize="{StaticResource DefaultFontSize}" Text="Password:"  Margin="0, 10, 20, 0"/>
+            <TextBox  FontSize="{StaticResource DefaultFontSize}" HorizontalAlignment="Stretch" Margin="0, 0, 0, 20" Name="PasswordTextbox" TextChanged="Password_TextChanged"/>
 
         </StackPanel>
 
         <TextBlock Margin="20,0,20,0" MaxWidth="500" TextWrapping="Wrap" Name="ErrorTextbox" HorizontalAlignment="Center" Foreground="Red" Text="Error" Grid.Row="2" FontWeight="SemiBold"/>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,15,20,0">
-            <Button Width="100" Height="25" Content="Login" IsDefault="True" Margin="5" Name="BtnOk" Click="btnOk_Click" />
-            <Button Width="100" Height="25" Content="Cancel" IsCancel="True" Margin="5" Click="btnCancel_Click" />
+            <Button FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="100" Height="25" Content="Login" IsDefault="True" Margin="5" Name="BtnOk" Click="btnOk_Click" />
+            <Button FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="100" Height="25" Content="Cancel" IsCancel="True" Margin="5" Click="btnCancel_Click" />
         </StackPanel>
         
     </Grid>

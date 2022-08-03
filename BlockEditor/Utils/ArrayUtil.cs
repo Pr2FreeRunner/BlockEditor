@@ -29,7 +29,7 @@ namespace BlockEditor.Utils
             return result;
         }
 
-        public static T[,] RotateLeft<T>(T[,] matrix)
+        public static T[,] RotateRight<T>(T[,] matrix)
         {
             if (matrix == null)
                 return null;

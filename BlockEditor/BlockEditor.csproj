@@ -17,6 +17,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\GUI\undo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\GUI\undo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Dependencies\Multi-Tool\" />
     <Folder Include="Dependencies\TAS\" />
     <Folder Include="Resources\Blocks\" />

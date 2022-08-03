@@ -17,11 +17,6 @@
     <SolidColorBrush x:Key="StandardForegroundDisable" Color="#898989" />
     <SolidColorBrush x:Key="StandardBorderBrushIsPressed" Color="Gray" />
 
-
-    <Style TargetType="{x:Type TextBlock}">
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
-    </Style>
-
     <Style TargetType="{x:Type Label}">
         <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
     </Style>
@@ -40,7 +35,7 @@
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border CornerRadius="10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
                         <Grid>
-                            <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" />
+                            <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-1,0,0" />
                         </Grid>
                         <Border.Effect>
                             <DropShadowEffect BlurRadius="4" Color="Gray" Direction="270" Opacity=".5" ShadowDepth="0.8" />
@@ -74,8 +69,8 @@
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="MinWidth" Value="120" />
         <Setter Property="MinHeight" Value="20" />
-        <Setter Property="AllowDrop" Value="true" />
         <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+        <Setter Property="AllowDrop" Value="true" />
 
         <Setter Property="Template">
             <Setter.Value>

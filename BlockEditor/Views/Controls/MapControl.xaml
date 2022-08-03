@@ -7,7 +7,8 @@
              mc:Ignorable="d" 
              Loaded="OnLoaded"
              d:DesignHeight="450" d:DesignWidth="800"
-             PreviewKeyDown="UserControl_PreviewKeyDown">
+             PreviewKeyDown="UserControl_PreviewKeyDown"
+             Focusable="true">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -17,7 +18,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="50" />
             <RowDefinition Height="*" />
             <RowDefinition Height="80" />
         </Grid.RowDefinitions>
@@ -25,14 +26,14 @@
         <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="99"
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightGreen">
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <Button Margin="10,7" Width="50" Content="Undo" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.UndoCommand}" ToolTip="Hotkey: Ctrl + Z" />
-                <Button Margin="10,7" Width="50" Content="Redo" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.RedoCommand}" ToolTip="HotKey: Ctrl + Y"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Button Margin="10,7,5,7" Width="30" Content="&#128896;" FontWeight="SemiBold" FontSize="22" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.UndoCommand}" ToolTip="Undo &#x0a;Hotkey:  Ctrl + Z"/>
+                <Button Margin="0,7,0,7"  Width="30" Content="&#128898;" FontWeight="SemiBold" FontSize="22" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.RedoCommand}" ToolTip="Redo &#x0a;HotKey:  Ctrl + Y"/>
 
-                <Button Margin="10,7" Width="50" Content="Select" FontFamily="Segoe UI" Command="{Binding BlockSelection.SelectCommand}" ToolTip="Hotkey: S"/>
+                <Button Margin="25,7,25,7" Width="60" Content="Select" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding BlockSelection.SelectCommand}" ToolTip="Select Multiple Blocks &#x0a;Hotkey:  S"/>
 
-                <Button Margin="10,7" Width="100" Content="Rotate Left"  FontFamily="Segoe UI" Command="{Binding BlockSelection.RotateLeftCommand}" ToolTip="Hotkey: L"/>
-                <Button Margin="10,7" Width="100" Content="Rotate Right" FontFamily="Segoe UI" Command="{Binding BlockSelection.RotateRightCommand}" ToolTip="Hotkey: R"/>
+                <Button Margin="0,7,5,7" Width="30" Content="⤹" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding BlockSelection.RotateLeftCommand}"  ToolTip="Rotate Blocks Left &#x0a;Hotkey:  L"/>
+                <Button Margin="0,7,10,7" Width="30" Content="⤸" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding BlockSelection.RotateRightCommand}" ToolTip="Rotate Blocks Right &#x0a;Hotkey:  R"/>
 
             </StackPanel>
 

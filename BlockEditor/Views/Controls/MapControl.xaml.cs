@@ -26,7 +26,6 @@ namespace BlockEditor.Views.Controls
             this.Loaded += windowLoaded;
 
             ZoomControl.ViewModel.Init();
-            this.Focus();
         }
 
         private void CleanBlocksControlSelection()
@@ -37,6 +36,7 @@ namespace BlockEditor.Views.Controls
         private void windowLoaded(object sender, RoutedEventArgs e)
         {
             ViewModel.Game.GoToStartPosition();
+            Keyboard.Focus(this);
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
