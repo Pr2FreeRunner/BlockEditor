@@ -11,7 +11,9 @@
             HorizontalAlignment="Center" 
             VerticalAlignment="Center"
             Margin="8"
-            Padding="1,5,1,5">
+            Padding="1,5,1,5"
+            BorderThickness="1" 
+            BorderBrush="{StaticResource StandardBorderColor}">
         
         <Border.Background>
             <LinearGradientBrush StartPoint="0 1" EndPoint="1 1" Opacity="0.25">

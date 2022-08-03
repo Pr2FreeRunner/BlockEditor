@@ -6,8 +6,8 @@
              mc:Ignorable="d"
              VerticalAlignment="Stretch"
              HorizontalAlignment="Stretch">
-    
-    <Border CornerRadius="12,12,12,12">
+
+    <Border CornerRadius="12,12,12,12" BorderThickness="1" BorderBrush="{StaticResource StandardBorderColor}" Padding="0,4">
 
         <Border.Background>
             <LinearGradientBrush StartPoint="0 1" EndPoint="1 1" Opacity="0.25">

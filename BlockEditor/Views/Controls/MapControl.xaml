@@ -20,11 +20,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="80" />
+            <RowDefinition Height="88" />
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="99"
-                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{StaticResource LightBackground}">
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                Background="{StaticResource LightBackground}">
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Button Margin="10,7,5,7" Width="30" Content="&#128896;" FontWeight="SemiBold" FontSize="22" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.UndoCommand}" ToolTip="Undo &#x0a;Hotkey:  Ctrl + Z"/>

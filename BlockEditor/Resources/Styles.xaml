@@ -24,6 +24,8 @@
     <SolidColorBrush x:Key="StandardForegroundDisable" Color="#898989" />
     <SolidColorBrush x:Key="StandardBorderBrushIsPressed" Color="Gray" />
     <SolidColorBrush x:Key="ToggleButtonSelected" Color="White" />
+    <SolidColorBrush x:Key="StandardBorderColor" Color="#6f6f6f" />
+
 
 
     <Style TargetType="{x:Type Label}">
