@@ -64,25 +64,22 @@ namespace BlockEditor.Models
             if (IsPositionOccupied(p))
                 return;
 
-            if(!HandledStartBlock(p, id))
+            if(Block.IsStartBlock(id))
+                AddStartBlock(p, id);
+            else
                 _blocks[p.X, p.Y] = id;
         }
 
-        private bool HandledStartBlock(MyPoint p, int blockid)
+        private void AddStartBlock(MyPoint p, int blockid)
         {
             foreach (var startBlock in StartBlocks.GetBlocks())
             {
                 if(blockid != startBlock.ID)
                     continue;
 
-                if(startBlock.Position != null)
-                    Delete(startBlock.Position.Value);
-
                 startBlock.Position = p;
-                return true;
+                return;
             }
-
-            return false;
         }
 
         public void Delete(MyPoint p)

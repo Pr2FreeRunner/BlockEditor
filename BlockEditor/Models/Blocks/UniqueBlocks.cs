@@ -26,5 +26,18 @@ namespace BlockEditor.Models
             yield return Player3;
             yield return Player4;
         }
+
+        public MyPoint? GetPosition(int id)
+        {
+            foreach (var startBlock in GetBlocks())
+            {
+                if (startBlock.ID != id)
+                    continue;
+
+                return startBlock.Position;
+            }
+
+            return null;
+        }
     }
 }
