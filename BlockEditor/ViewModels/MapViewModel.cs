@@ -6,7 +6,6 @@ using System.Windows.Media.Imaging;
 using BlockEditor.Helpers;
 using BlockEditor.Models;
 using BlockEditor.Utils;
-using BlockEditor.Views.Windows;
 using LevelModel.Models.Components;
 using static BlockEditor.Models.BlockImages;
 
