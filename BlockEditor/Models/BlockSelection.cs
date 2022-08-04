@@ -44,13 +44,15 @@ namespace BlockEditor.Models
             set { _selectedBlock = value; }
         }
 
+        private Action _cleanBlockSelection { get; }
 
-        public BlockSelection()
+        public BlockSelection(Action cleanBlockSelection)
         {
             RotateRightCommand    = new RelayCommand((_) => RotateLeft(), (_) => CanRotate());
             RotateLeftCommand     = new RelayCommand((_) => RotateRight(),  (_) => CanRotate());
             SelectCommand         = new RelayCommand(SelectCommandExecute);
             UserSelection         = new UserSelection();
+            _cleanBlockSelection  = cleanBlockSelection;
 
             UserSelection.OnNewSelection += OnUserSelection;
         }
@@ -71,11 +73,14 @@ namespace BlockEditor.Models
             return SelectedBlocks != null;
         }
 
-        public void Clean()
+        public void Clean(bool cleanSelectedBlock = true)
         {
+            _cleanBlockSelection?.Invoke();
             UserSelection.Reset();
-            SelectedBlock = null;
             SelectedBlocks = null;
+
+            if(cleanSelectedBlock)
+                SelectedBlock = null;
         }
 
         public void RotateLeft()

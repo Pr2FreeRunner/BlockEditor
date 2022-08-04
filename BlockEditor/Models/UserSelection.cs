@@ -48,7 +48,7 @@ namespace BlockEditor.Models
             if(p == null)
                 return false;
 
-            if (p == null || Start == null || End == null)
+            if (IsComplete() == false)
                 return false;
 
             if (p.Value.X < Start.Value.X || p.Value.X >= End.Value.X)
@@ -90,7 +90,8 @@ namespace BlockEditor.Models
 
         public UserSelection()
         {
-            Reset();
+            MapRegion = new MyRegion();
+            ImageRegion = new MyRegion();
         }
 
         public void Reset()

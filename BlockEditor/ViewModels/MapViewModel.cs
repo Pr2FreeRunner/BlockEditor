@@ -38,8 +38,6 @@ namespace BlockEditor.ViewModels
 
         public BlockSelection BlockSelection { get; }
 
-        private Action _cleanBlockSelection { get; }
-
         public bool IsSelectionMode => Mode == UserMode.Selection;
         public bool IsFillMode {
             get { return Mode == UserMode.Fill; }
@@ -62,10 +60,9 @@ namespace BlockEditor.ViewModels
             Game = new Game();
             Mode = UserMode.None;
 
-            _cleanBlockSelection = cleanBlockSelection;
-            BlockSelection       = new BlockSelection();
+            BlockSelection       = new BlockSelection(cleanBlockSelection);
             StartPositionCommand = new RelayCommand((_) => Game.GoToStartPosition());
-            FillCommand          = new RelayCommand((_) => IsFillMode = !IsFillMode);
+            FillCommand          = new RelayCommand((_) => OnFillClick());
             BlockSelection.OnSelectionClick += OnSelectionClick;
             Game.Engine.OnFrame += OnFrameUpdate;
         }
@@ -75,13 +72,34 @@ namespace BlockEditor.ViewModels
        
         private void OnSelectionClick()
         {
-            Mode = UserMode.Selection;
-            _cleanBlockSelection?.Invoke();
+            if(Mode != UserMode.Selection)
+            {
+                Mode = UserMode.Selection;
+                BlockSelection?.Clean();
+            }
+            else
+            {
+                Mode = UserMode.None;
+            }         
         }
+
+        private void OnFillClick()
+        {
+
+            if (Mode != UserMode.Fill)
+            {
+                Mode = UserMode.Fill;
+                BlockSelection?.Clean(false);
+            }
+            else
+            {
+                Mode = UserMode.None;
+            }
+        }
+
 
         public void OnCleanUserMode()
         {
-            _cleanBlockSelection?.Invoke();
             BlockSelection?.Clean();
             Mode = UserMode.None;
         }
@@ -95,11 +113,7 @@ namespace BlockEditor.ViewModels
 
         internal void OnSelectedBlockID(int? id)
         {
-            if(Mode != UserMode.Selection && Mode != UserMode.Fill)
-            {
-                BlockSelection.Clean();
-                BlockSelection.SelectedBlock = id;
-            }
+            BlockSelection.SelectedBlock = id;
 
             if(id != null && Mode != UserMode.Fill)
                 Mode = UserMode.AddBlock;
@@ -107,35 +121,34 @@ namespace BlockEditor.ViewModels
 
         public void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            var p     = MyUtils.GetPosition(sender as IInputElement, e);
+            var index = Game.GetMapIndex(p);
+
+            if (p == null || index == null)
+                return;
+
             switch (Mode)
             {
                 case UserMode.AddBlock:
-                    var p1 = MyUtils.GetPosition(sender as IInputElement, e);
 
                     if (e.ChangedButton == MouseButton.Right)
-                        Game.DeleteBlock(p1);
+                        Game.DeleteBlock(p);
                     else if (e.ChangedButton == MouseButton.Left)
-                        Game.AddBlock(p1, BlockSelection.SelectedBlock);
+                        Game.AddBlock(p, BlockSelection.SelectedBlock);
                     break;
 
                 case UserMode.Selection:
-     
-                    var p2 = MyUtils.GetPosition(sender as IInputElement, e);
-
-                    if (p2 == null)
-                        break;
 
                     if (e.LeftButton == MouseButtonState.Pressed) 
                     { 
-                        BlockSelection.UserSelection.OnMouseDown(p2, Game.GetMapIndex(p2));
+                        BlockSelection.UserSelection.OnMouseDown(p, index);
                     }
                     else if (e.RightButton == MouseButtonState.Pressed)
                     { 
-                        var click = Game.GetMapIndex(_mousePosition);
                         var start = BlockSelection.UserSelection.MapRegion.Start;
                         var end   = BlockSelection.UserSelection.MapRegion.End;
 
-                        if(BlockSelection.UserSelection.MapRegion.IsInside(click))
+                        if(BlockSelection.UserSelection.MapRegion.IsInside(index))
                             break;
 
                         Game.DeleteSelection(start, end);
@@ -148,31 +161,26 @@ namespace BlockEditor.ViewModels
                     if (e.ChangedButton != MouseButton.Left)
                         break;
 
-                    var p3 = MyUtils.GetPosition(sender as IInputElement, e);
-                    Game.AddSelection(p3, BlockSelection.SelectedBlocks);
+                    Game.AddSelection(p, BlockSelection.SelectedBlocks);
                     break;
 
                 case UserMode.Fill:
                     if (e.ChangedButton != MouseButton.Left)
                         break;
 
-                    var id = BlockSelection.SelectedBlock;
+                    var selectedId = BlockSelection.SelectedBlock;
                     
-                    if(id == null)
+                    if(selectedId == null)
                         throw new Exception("Select a block to flood fill.");
-
-                    var index = Game.GetMapIndex(MyUtils.GetPosition(sender as IInputElement, e));
-
-                    var click4 = Game.GetMapIndex(_mousePosition);
-
-                    Mode = UserMode.None;
 
                     using(new TempCursor(Cursors.Wait)) 
                     {
-                        if (BlockSelection.UserSelection.MapRegion.IsInside(click4))
-                            Game.AddBlocks(MapUtil.GetRectangleFill(Game.Map, id.Value, BlockSelection.UserSelection.MapRegion));
-                        else
-                            Game.AddBlocks(MapUtil.GetFloodFill(Game.Map, index, id.Value));
+                        var startId = Game.Map.Blocks.GetBlockId(index);
+
+                        if(startId != null && !Game.Map.Blocks.Overwrite)
+                            throw new Exception("You need to enable 'Overwrite' option for this to work");
+
+                        Game.AddBlocks(MapUtil.GetFloodFill(Game.Map, index, selectedId.Value));
                     }
                     break;
 
@@ -188,28 +196,19 @@ namespace BlockEditor.ViewModels
 
         public void OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
+            _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
+
             switch (Mode)
             {
                 case UserMode.AddBlock:
-                    _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
-
                     if (e.RightButton == MouseButtonState.Pressed)
                         Game.DeleteBlock(_mousePosition);
                     else if (e.LeftButton == MouseButtonState.Pressed)
                         Game.AddBlock(_mousePosition, BlockSelection.SelectedBlock);
                     break;
 
-                case UserMode.Selection:
-                    _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
-                    break;
-
-                case UserMode.Fill:
-                    _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
-                    break;
 
                 case UserMode.AddSelection:
-                    _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
-
                     if (e.LeftButton != MouseButtonState.Pressed)
                         break;
 
@@ -230,6 +229,9 @@ namespace BlockEditor.ViewModels
 
                     var pos   = MyUtils.GetPosition(sender as IInputElement, e);
                     var index = Game.GetMapIndex(pos);
+                    
+                    if(index != null)
+                        index = new MyPoint(index.Value.X + 1, index.Value.Y + 1);
 
                     BlockSelection.UserSelection.OnMouseUp(pos, index);
                     break;
