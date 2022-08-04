@@ -45,9 +45,6 @@ namespace BlockEditor.Models
             if (index == null || id == null || Map == null)
                 return;
 
-            if (Map.Blocks.GetBlockId(index.Value.X, index.Value.Y) == id.Value)
-                return;
-
             var op = new AddBlockOperation(Map, id.Value, index.Value);
             UserOperations.Execute(op);
         }
@@ -60,7 +57,7 @@ namespace BlockEditor.Models
             if (!blocks.Any())
                 return;
 
-            var op = new AddSelectionOperation(Map, blocks);
+            var op = new AddBlocksOperation(Map, blocks);
             UserOperations.Execute(op);
         }
  
@@ -94,7 +91,7 @@ namespace BlockEditor.Models
             if(!blocks.Any())
                 return;
 
-            var op = new AddSelectionOperation(Map, blocks);
+            var op = new AddBlocksOperation(Map, blocks);
             UserOperations.Execute(op);
         }
 
@@ -121,7 +118,7 @@ namespace BlockEditor.Models
             if (!blocks.Any())
                 return;
 
-            var op = new DeleteSelectionOperation(Map, blocks);
+            var op = new DeleteBlocksOperation(Map, blocks);
             UserOperations.Execute(op);
         }
 

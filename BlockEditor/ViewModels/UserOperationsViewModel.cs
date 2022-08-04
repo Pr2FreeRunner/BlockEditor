@@ -44,8 +44,11 @@ namespace BlockEditor.ViewModels
                 lock (_lock)
                 {
                     _undos.Clear();
-                    op.Execute();
-                    _operations.Push(op);
+
+                    var success = op.Execute();
+
+                    if(success)
+                        _operations.Push(op);
                 }
             }
             catch (Exception ex)
@@ -64,8 +67,10 @@ namespace BlockEditor.ViewModels
                 lock (_lock)
                 {
                     var op = _operations.Pop();
-                    op.Undo();
-                    _undos.Push(op);
+                    var success = op.Undo();
+
+                    if (success)
+                        _undos.Push(op);
                 }
             }
             catch (Exception ex)
@@ -84,8 +89,10 @@ namespace BlockEditor.ViewModels
                 lock(_lock)
                 {
                     var op = _undos.Pop();
-                    op.Execute();
-                    _operations.Push(op);
+                    var success = op.Execute();
+
+                    if(success)
+                        _operations.Push(op);
                 }
             }
             catch (Exception ex)

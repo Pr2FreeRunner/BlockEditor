@@ -1,5 +1,4 @@
-﻿using BlockEditor.Models;
-using LevelModel.Models.Components;
+﻿using LevelModel.Models.Components;
 
 namespace BlockEditor.Models
 {
@@ -17,26 +16,31 @@ namespace BlockEditor.Models
             _blockID = blockID;
         }
 
-        public void Execute()
+        public bool Execute()
         {
             if(_map?.Blocks == null)
-                return;
+                return false;
+
+            if(_map.Blocks.GetBlockId(_point) == _blockID)
+                return false;
 
             if (Block.IsStartBlock(_blockID))
                 _oldPosition = _map.Blocks.StartBlocks.GetPosition(_blockID);
             
             _map?.Blocks.Add(_point, _blockID);
+
+            return true;
         }
 
-        public void Undo()
+        public bool Undo()
         {
             if (_map?.Blocks == null)
-                return;
+                return false;
 
             if (Block.IsStartBlock(_blockID))
             {
                 if(_oldPosition == null)
-                    return;
+                    return false;
 
                 _map.Blocks.Add(_oldPosition.Value, _blockID); 
             }
@@ -44,6 +48,8 @@ namespace BlockEditor.Models
             { 
                 _map.Blocks.Delete(_point);
             }
+
+            return true;
         }
     }
 

@@ -5,28 +5,28 @@ using System.Text;
 
 namespace BlockEditor.Models
 {
-    public class AddSelectionOperation : IUserOperation
+    public class AddBlocksOperation : IUserOperation
     {
         private readonly Map _map;
-        private IEnumerable<SimpleBlock> _selection;
+        private IEnumerable<SimpleBlock> _blocks;
 
 
-        public AddSelectionOperation(Map map, IEnumerable<SimpleBlock> selection)
+        public AddBlocksOperation(Map map, IEnumerable<SimpleBlock> blocks)
         {
             _map = map;
-            _selection = selection;
+            _blocks = blocks;
         }
 
-        public void Execute()
+        public bool Execute()
         {
-            if (_selection == null)
-                return;
+            if (_blocks == null)
+                return false;
 
             var addedBlocks = new List<SimpleBlock>();
 
             try
             {
-                foreach (var block in _selection)
+                foreach (var block in _blocks)
                 {
                     if (block?.Position == null)
                         continue;
@@ -37,21 +37,23 @@ namespace BlockEditor.Models
             }
             catch (Exception ex)
             {
-                _selection = addedBlocks;
+                _blocks = addedBlocks;
                 MessageUtil.ShowError(ex.Message);
             }
+
+            return true;
         }
 
-        public void Undo()
+        public bool Undo()
         {
-            if (_selection == null)
-                return;
+            if (_blocks == null)
+                return false;
 
             var removedBlocks = new List<SimpleBlock>();
             
             try
             {
-                foreach (var block in _selection)
+                foreach (var block in _blocks)
                 {
                     if (block?.Position == null)
                         continue;
@@ -61,9 +63,11 @@ namespace BlockEditor.Models
             }
             catch (Exception ex)
             {
-                _selection = removedBlocks;
+                _blocks = removedBlocks;
                 MessageUtil.ShowError(ex.Message);
             }
+
+            return true;
         }
 
     }

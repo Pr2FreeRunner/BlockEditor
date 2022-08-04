@@ -10,14 +10,14 @@
             _add = new AddBlockOperation(map, blockID, p);
         }
 
-        public void Execute()
+        public bool Execute()
         {
-            _add?.Undo();
+            return _add.Undo();
         }
 
-        public void Undo()
+        public bool Undo()
         {
-            _add?.Execute();
+            return _add.Execute();
         }
     }
 }
