@@ -91,8 +91,8 @@ namespace BlockEditor.Views.Controls
             }
             else if(IsSelectionKey(e, ctrl))
             {
-                var startPoint = ViewModel.BlockSelection.UserSelection.StartMapIndex;
-                var endPoint   = ViewModel.BlockSelection.UserSelection.EndMapIndex;
+                var startPoint = ViewModel.BlockSelection.UserSelection.MapRegion.Start;
+                var endPoint   = ViewModel.BlockSelection.UserSelection.MapRegion.End;
 
                 ViewModel.BlockSelection.UserSelection.OnKeydown(ViewModel.Game.Map);
 

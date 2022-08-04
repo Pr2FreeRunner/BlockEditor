@@ -17,5 +17,12 @@
             ID = id;
             Position = p;
         }
+
+        public SimpleBlock(int id, int x, int y)
+        {
+            ID = id;
+            Position = new MyPoint(x, y);
+
+        }
     }
 }

@@ -8,7 +8,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Text;
 using System.Windows.Input;
 
 namespace BlockEditor.Helpers
@@ -171,27 +170,28 @@ namespace BlockEditor.Helpers
             return new Pen(Color.FromArgb(80, r, g, b), 1);
         }
 
-        public static List<MyPoint> GetRectangleFill(Map map, MyPoint start, MyPoint end, bool overwrite = true)
+        public static List<SimpleBlock> GetRectangleFill(Map map, int id, MyRegion region)
         {
-            var result = new List<MyPoint>();
+            var result    = new List<SimpleBlock>();
+            var overwrite = map.Blocks.Overwrite;
 
-            if (map == null)
+            if (map == null || region == null || !region.IsComplete())
                 return result;
 
-            for (int x = start.X; x < end.X; x++)
+            for (int x = region.Start.Value.X; x < region.End.Value.X; x++)
             {
-                for (int y = start.Y; y < end.Y; y++)
+                for (int y = region.Start.Value.Y; y < region.End.Value.Y; y++)
                 {
                     if (overwrite)
                     {
-                        result.Add(new MyPoint(x, y));
+                        result.Add(new SimpleBlock(id, x, y));
                     }
                     else
                     {
-                        var id = map.Blocks.GetBlockId(x, y);
+                        var currentId = map.Blocks.GetBlockId(x, y);
 
-                        if (id != null)
-                            result.Add(new MyPoint(x, y));
+                        if (currentId != null)
+                            result.Add(new SimpleBlock(id, x, y));
                     }
                 }
             }

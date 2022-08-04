@@ -179,8 +179,8 @@ namespace BlockEditor.Models
             if(_selection == null)
                 return;
 
-            var start = _selection.UserSelection.StartImageIndex;
-            var end   = _selection.UserSelection.EndImageIndex ?? _mousePosition;
+            var start = _selection.UserSelection.ImageRegion?.Start;
+            var end   = _selection.UserSelection.ImageRegion?.End ?? _mousePosition;
 
             if (start == null || end == null)
                 return;

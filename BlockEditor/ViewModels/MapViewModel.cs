@@ -95,8 +95,11 @@ namespace BlockEditor.ViewModels
 
         internal void OnSelectedBlockID(int? id)
         {
-            BlockSelection.Clean(); 
-            BlockSelection.SelectedBlock = id;
+            if(Mode != UserMode.Selection && Mode != UserMode.Fill)
+            {
+                BlockSelection.Clean();
+                BlockSelection.SelectedBlock = id;
+            }
 
             if(id != null && Mode != UserMode.Fill)
                 Mode = UserMode.AddBlock;
@@ -129,16 +132,10 @@ namespace BlockEditor.ViewModels
                     else if (e.RightButton == MouseButtonState.Pressed)
                     { 
                         var click = Game.GetMapIndex(_mousePosition);
-                        var start = BlockSelection.UserSelection.StartMapIndex;
-                        var end   = BlockSelection.UserSelection.EndMapIndex;
+                        var start = BlockSelection.UserSelection.MapRegion.Start;
+                        var end   = BlockSelection.UserSelection.MapRegion.End;
 
-                        if (click == null || start == null || end == null)
-                            break;
-
-                        if (click.Value.X < start.Value.X || click.Value.X >= end.Value.X)
-                            break;
-
-                        if (click.Value.Y < start.Value.Y || click.Value.Y >= end.Value.Y)
+                        if(BlockSelection.UserSelection.MapRegion.IsInside(click))
                             break;
 
                         Game.DeleteSelection(start, end);
@@ -159,17 +156,23 @@ namespace BlockEditor.ViewModels
                     if (e.ChangedButton != MouseButton.Left)
                         break;
 
-                    var index = Game.GetMapIndex(MyUtils.GetPosition(sender as IInputElement, e));
-                    var id    = BlockSelection.SelectedBlock;
+                    var id = BlockSelection.SelectedBlock;
                     
                     if(id == null)
                         throw new Exception("Select a block to flood fill.");
 
+                    var index = Game.GetMapIndex(MyUtils.GetPosition(sender as IInputElement, e));
+
+                    var click4 = Game.GetMapIndex(_mousePosition);
+
                     Mode = UserMode.None;
 
                     using(new TempCursor(Cursors.Wait)) 
-                    { 
-                        Game.AddBlocks(MapUtil.GetFloodFill(Game.Map, index, id.Value));
+                    {
+                        if (BlockSelection.UserSelection.MapRegion.IsInside(click4))
+                            Game.AddBlocks(MapUtil.GetRectangleFill(Game.Map, id.Value, BlockSelection.UserSelection.MapRegion));
+                        else
+                            Game.AddBlocks(MapUtil.GetFloodFill(Game.Map, index, id.Value));
                     }
                     break;
 

@@ -2,107 +2,118 @@
 
 namespace BlockEditor.Models
 {
-    public class UserSelection
+
+    public class MyRegion
     {
+        public MyPoint? Point1 { get; set; }
 
-        private MyPoint? _mouseDownMapIndex { get; set; }
-        private MyPoint? _mouseUpMapIndex { get; set; }
+        public MyPoint? Point2 { get; set; }
 
-        private MyPoint? _mouseDownImageIndex { get; set; }
-        private MyPoint? _mouseUpImageIndex { get;  set; }
-
-        public event Action<int?[,]> OnNewSelection;
-
-
-        public MyPoint? StartMapIndex
+        public  MyPoint? Start 
         {
             get
             {
-                if(_mouseDownMapIndex == null)
+                if (Point1 == null && Point2 == null)
                     return null;
-                
-                if(_mouseUpMapIndex == null)
-                    return _mouseDownMapIndex;
 
-                var x = Math.Min(_mouseDownMapIndex.Value.X, _mouseUpMapIndex.Value.X);
-                var y = Math.Min(_mouseDownMapIndex.Value.Y, _mouseUpMapIndex.Value.Y);
+                if (Point2 == null)
+                    return Point1;
+
+                if (Point1 == null)
+                    return Point2;
+
+                var x = Math.Min(Point1.Value.X, Point2.Value.X);
+                var y = Math.Min(Point1.Value.Y, Point2.Value.Y);
 
                 return new MyPoint(x, y);
             }
         }
 
-        public MyPoint? EndMapIndex
+        public MyPoint? End
         {
             get
             {
-                if (_mouseDownMapIndex == null || _mouseUpMapIndex == null)
+                if (Point1 == null || Point2 == null)
                     return null;
 
-                var x = Math.Max(_mouseDownMapIndex.Value.X, _mouseUpMapIndex.Value.X);
-                var y = Math.Max(_mouseDownMapIndex.Value.Y, _mouseUpMapIndex.Value.Y);
-
-                return new MyPoint(x + 1, y + 1);
-            }
-        }
-
-
-        public MyPoint? StartImageIndex
-        {
-            get
-            {
-                if (_mouseDownImageIndex == null)
-                    return null;
-
-                if (_mouseUpImageIndex == null)
-                    return _mouseDownImageIndex;
-
-                var x = Math.Min(_mouseDownImageIndex.Value.X, _mouseUpImageIndex.Value.X);
-                var y = Math.Min(_mouseDownImageIndex.Value.Y, _mouseUpImageIndex.Value.Y);
+                var x = Math.Max(Point1.Value.X, Point2.Value.X);
+                var y = Math.Max(Point1.Value.Y, Point2.Value.Y);
 
                 return new MyPoint(x, y);
             }
         }
-        public MyPoint? EndImageIndex
+
+        public bool IsInside(MyPoint? p)
         {
-            get
-            {
-                if (_mouseDownImageIndex == null || _mouseUpImageIndex == null)
-                    return null;
+            if(p == null)
+                return false;
 
-                var x = Math.Max(_mouseDownImageIndex.Value.X, _mouseUpImageIndex.Value.X);
-                var y = Math.Max(_mouseDownImageIndex.Value.Y, _mouseUpImageIndex.Value.Y);
+            if (p == null || Start == null || End == null)
+                return false;
 
-                return new MyPoint(x, y);
-            }
+            if (p.Value.X < Start.Value.X || p.Value.X >= End.Value.X)
+                return false;
+
+            if (p.Value.Y < Start.Value.Y || p.Value.Y >= End.Value.Y)
+                return false;
+
+            return true;
+        }
+
+        public bool IsComplete()
+        {
+            if(Point1 == null)
+                return false;
+
+            if(Point2 == null)
+                return false;
+
+            return true;
         }
 
         public void Reset()
         {
-            _mouseDownMapIndex = null;
-            _mouseUpMapIndex = null;
+            Point1 = null;
+            Point2 = null;
+        }
 
-            _mouseDownImageIndex = null;
-            _mouseUpImageIndex = null;
+    }
+
+    public class UserSelection
+    {
+
+        public MyRegion MapRegion { get; }
+        public MyRegion ImageRegion { get; }
+
+        public event Action<int?[,]> OnNewSelection;
+
+
+        public UserSelection()
+        {
+            Reset();
+        }
+
+        public void Reset()
+        {
+            MapRegion.Reset();
+            ImageRegion.Reset();
         }
 
         private int?[,] GetSelection(Map map)
         {
-            if (map == null || _mouseDownMapIndex == null || _mouseUpMapIndex == null)
+            if (map == null || MapRegion == null || !MapRegion.IsComplete())
                 return null;
 
-            var start = StartMapIndex;
-            var end   = EndMapIndex;
+            var start = MapRegion.Start.Value;
+            var end   = MapRegion.End.Value;
 
-            if(start == null || end == null)
-                return null;
+            var selection = new int?[end.X - start.X, end.Y - start.Y];
 
-            var selection = new int?[end.Value.X - start.Value.X, end.Value.Y - start.Value.Y];
-
-            for (int y = start.Value.Y; y < end.Value.Y; y++)
+            for (int y = start.Y; y < end.Y; y++)
             {
-                for (int x = start.Value.X; x < end.Value.X; x++)
+                for (int x = start.X; x < end.X; x++)
                 {
-                    selection[x - start.Value.X, y - start.Value.Y] = map.Blocks.GetBlockId(x, y);
+                    selection[x - start.X, y - start.Y] = map.Blocks.GetBlockId(x, y);
                 }
             }
 
@@ -116,17 +127,18 @@ namespace BlockEditor.Models
 
         public void OnMouseDown(MyPoint? image, MyPoint? map)
         {
-            _mouseDownImageIndex = image;
-            _mouseDownMapIndex = map;
+            MapRegion.Point1   = map;
+            ImageRegion.Point1 = image;
 
-            _mouseUpImageIndex = null;
-            _mouseUpMapIndex = null;
+            MapRegion.Point2   = null;
+            ImageRegion.Point2 = null;
+
         }
 
         public void OnMouseUp(MyPoint? image, MyPoint? map)
         {
-            _mouseUpImageIndex = image;
-            _mouseUpMapIndex = map;
+            MapRegion.Point2 = map;
+            ImageRegion.Point2 = image;
         }
 
         public void OnKeydown(Map map)
@@ -135,5 +147,7 @@ namespace BlockEditor.Models
             OnNewSelection?.Invoke(selection);
             Reset();
         }
+
+
     }
 }
