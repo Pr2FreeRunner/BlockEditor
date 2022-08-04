@@ -27,6 +27,9 @@ namespace BlockEditor.ViewModels
                 _mode = value;
                 RaisePropertyChanged(nameof(IsSelectionMode));
                 RaisePropertyChanged(nameof(IsFillMode));
+
+                if(_mode != UserMode.Fill)
+                    Mouse.OverrideCursor = null;
             }
         }
 
@@ -87,8 +90,8 @@ namespace BlockEditor.ViewModels
             if (Mode != UserMode.Fill)
             {
                 Mode = UserMode.Fill;
+                Mouse.OverrideCursor = Cursors.UpArrow;
                 BlockSelection?.Reset(false);
-                Mouse.OverrideCursor = Cursors.Pen;
             }
             else
             {
@@ -263,7 +266,7 @@ namespace BlockEditor.ViewModels
             Game.Map.BlockSize = size;
 
             Game.UserOperations.Clear();
-
+            OnCleanUserMode();
             Game.GoToStartPosition();
 
             Game.Engine.Pause = false;
