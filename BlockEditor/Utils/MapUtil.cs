@@ -199,11 +199,10 @@ namespace BlockEditor.Helpers
             return result;
         }
 
-        public static List<SimpleBlock> GetFloodFill(Map map, MyPoint? startPoint, int id, out bool limitReaced)
+        public static List<SimpleBlock> GetFloodFill(Map map, MyPoint? startPoint, int id)
         {
             var result  = new List<SimpleBlock>();
             var blocks  = new Stack<MyPoint>();
-            limitReaced = false;
 
             if (map == null || startPoint == null)
                 return result;
@@ -219,11 +218,8 @@ namespace BlockEditor.Helpers
             {
                 var point = blocks.Pop();
 
-                if(maxBlocks <= blocks.Count)
-                {
-                    limitReaced = true;
-                    continue;
-                }
+                if(maxBlocks <= result.Count)
+                    throw new BlockLimitException("Operation Canceled" + Environment.NewLine + Environment.NewLine);
 
                 if(visited.Contains(point))
                     continue;

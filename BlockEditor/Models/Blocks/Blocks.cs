@@ -1,11 +1,9 @@
 ﻿using LevelModel.Models;
 using LevelModel.Models.Components;
 using System.Collections.Generic;
-using System;
 
 namespace BlockEditor.Models
 {
-
     public class Blocks
     {
 
@@ -75,7 +73,7 @@ namespace BlockEditor.Models
                 if (!IsPositionOccupied(p))
                 {
                     if(BlockCount >= LIMIT)
-                        throw new Exception("Maximum block limit of 50k was hit!");
+                        throw new BlockLimitException();
                     _blocks[p.X, p.Y] = id;
                     BlockCount++;
                 }
@@ -92,7 +90,7 @@ namespace BlockEditor.Models
                 if(startBlock.Position == null)
                 {
                     if (BlockCount >= LIMIT)
-                        throw new Exception("Maximum block limit of 50k was hit!");
+                        throw new BlockLimitException();
 
                     BlockCount++;
                 }

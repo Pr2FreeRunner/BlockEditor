@@ -166,19 +166,11 @@ namespace BlockEditor.ViewModels
                         throw new Exception("Select a block to flood fill.");
 
                     Mode = UserMode.None;
-                    var blocks = MapUtil.GetFloodFill(Game.Map, index, id.Value, out var limitReached);
 
-                    if (limitReached)
-                    {
-                        var r = UserQuestionWindow.Show("The maximum block limit of 50k was hit!" 
-                            + Environment.NewLine + Environment.NewLine
-                            + "Do you still wish to add the filled blocks?", "Question");
-
-                        if(r != UserQuestionWindow.QuestionResult.Yes)
-                            return;
+                    using(new TempCursor(Cursors.Wait)) 
+                    { 
+                        Game.AddBlocks(MapUtil.GetFloodFill(Game.Map, index, id.Value));
                     }
-                    
-                    Game.AddBlocks(blocks);
                     break;
 
                 case UserMode.None:
