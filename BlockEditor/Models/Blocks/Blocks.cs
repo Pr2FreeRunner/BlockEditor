@@ -1,5 +1,4 @@
-﻿using LevelModel.Models;
-using LevelModel.Models.Components;
+﻿using LevelModel.Models.Components;
 using System.Collections.Generic;
 
 namespace BlockEditor.Models

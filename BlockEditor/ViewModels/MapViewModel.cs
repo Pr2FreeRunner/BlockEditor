@@ -200,6 +200,10 @@ namespace BlockEditor.ViewModels
                     _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
                     break;
 
+                case UserMode.Fill:
+                    _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
+                    break;
+
                 case UserMode.AddSelection:
                     _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
 
