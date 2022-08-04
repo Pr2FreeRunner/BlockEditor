@@ -31,7 +31,7 @@
                 <Button Margin="10,7,5,7" Width="30" Content="&#128896;" FontWeight="SemiBold" FontSize="22" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.UndoCommand}" ToolTip="Undo &#x0a;Hotkey:  Ctrl + Z"/>
                 <Button Margin="0,7,0,7"  Width="30" Content="&#128898;" FontWeight="SemiBold" FontSize="22" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.RedoCommand}" ToolTip="Redo &#x0a;HotKey:  Ctrl + Y"/>
 
-                <ToggleButton IsChecked="{Binding IsSelectionMode, Mode=OneWay}" Margin="25,7,25,7" Width="60" Content="Select" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding BlockSelection.SelectCommand}" ToolTip="Select Multiple Blocks &#x0a;Hotkey:  S"/>
+                <ToggleButton IsChecked="{Binding IsSelectionMode, Mode=OneWay}" Margin="25,7,25,7" Width="60" Content="Select" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding SelectCommand}" ToolTip="Select Multiple Blocks &#x0a;Hotkey:  S"/>
 
                 <Button Margin="0,7,5,7" Width="30" Content="⤹" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding BlockSelection.RotateLeftCommand}"  ToolTip="Rotate Blocks Left &#x0a;Hotkey:  L"/>
                 <Button Margin="0,7,10,7" Width="30" Content="⤸" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding BlockSelection.RotateRightCommand}" ToolTip="Rotate Blocks Right &#x0a;Hotkey:  R"/>

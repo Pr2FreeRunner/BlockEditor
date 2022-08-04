@@ -114,7 +114,8 @@ namespace BlockEditor.Views.Controls
             }
             else if (e.Key == Key.S && ViewModel.Mode != UserMode.Selection)
             {
-                ViewModel.BlockSelection.SelectionActivation();
+                if(ViewModel.SelectCommand.CanExecute(null))
+                    ViewModel.SelectCommand.Execute(null);
             }
             else if(e.Key == Key.G)
             {
@@ -127,7 +128,7 @@ namespace BlockEditor.Views.Controls
             }
             else if (e.Key == Key.F)
             {
-                ViewModel.IsFillMode = !ViewModel.IsFillMode;
+                ViewModel.OnFillClick();
             }
         }
 

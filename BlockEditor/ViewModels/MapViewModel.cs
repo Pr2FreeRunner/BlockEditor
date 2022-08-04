@@ -7,6 +7,7 @@ using BlockEditor.Helpers;
 using BlockEditor.Models;
 using BlockEditor.Utils;
 using BlockEditor.Views.Windows;
+using LevelModel.Models.Components;
 using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.ViewModels
@@ -53,7 +54,7 @@ namespace BlockEditor.ViewModels
 
         public RelayCommand StartPositionCommand { get; }
         public RelayCommand FillCommand { get; }
-
+        public RelayCommand SelectCommand { get; }
 
         public MapViewModel(Action cleanBlockSelection)
         {
@@ -63,6 +64,7 @@ namespace BlockEditor.ViewModels
             BlockSelection       = new BlockSelection(cleanBlockSelection);
             StartPositionCommand = new RelayCommand((_) => Game.GoToStartPosition());
             FillCommand          = new RelayCommand((_) => OnFillClick());
+            SelectCommand        = new RelayCommand((_) => BlockSelection.SelectionActivation());
             BlockSelection.OnSelectionClick += OnSelectionClick;
             Game.Engine.OnFrame += OnFrameUpdate;
         }
@@ -83,9 +85,8 @@ namespace BlockEditor.ViewModels
             }         
         }
 
-        private void OnFillClick()
+        public void OnFillClick()
         {
-
             if (Mode != UserMode.Fill)
             {
                 Mode = UserMode.Fill;
@@ -114,6 +115,7 @@ namespace BlockEditor.ViewModels
         internal void OnSelectedBlockID(int? id)
         {
             BlockSelection.SelectedBlock = id;
+            BlockSelection.SelectedBlocks = null;
 
             if(id != null && Mode != UserMode.Fill)
                 Mode = UserMode.AddBlock;
@@ -173,12 +175,15 @@ namespace BlockEditor.ViewModels
                     if(selectedId == null)
                         throw new Exception("Select a block to flood fill.");
 
+                    if(Block.IsStartBlock(selectedId))
+                        throw new Exception("Flood fill with start block is not allowed.");
+
                     using(new TempCursor(Cursors.Wait)) 
                     {
                         var startId = Game.Map.Blocks.GetBlockId(index);
 
                         if(startId != null && !Game.Map.Blocks.Overwrite)
-                            throw new Exception("You need to enable 'Overwrite' option for this to work");
+                            throw new Exception("Enable 'Overwrite' option for this to work.");
 
                         Game.AddBlocks(MapUtil.GetFloodFill(Game.Map, index, selectedId.Value));
                     }
