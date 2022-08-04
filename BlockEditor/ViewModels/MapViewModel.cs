@@ -132,9 +132,9 @@ namespace BlockEditor.ViewModels
                 case UserMode.AddBlock:
 
                     if (e.ChangedButton == MouseButton.Right)
-                        Game.DeleteBlock(p);
+                        Game.DeleteBlock(index);
                     else if (e.ChangedButton == MouseButton.Left)
-                        Game.AddBlock(p, BlockSelection.SelectedBlock);
+                        Game.AddBlock(index, BlockSelection.SelectedBlock);
                     break;
 
                 case UserMode.Selection:
@@ -161,7 +161,7 @@ namespace BlockEditor.ViewModels
                     if (e.ChangedButton != MouseButton.Left)
                         break;
 
-                    Game.AddSelection(p, BlockSelection.SelectedBlocks);
+                    Game.AddSelection(index, BlockSelection.SelectedBlocks);
                     break;
 
                 case UserMode.Fill:
@@ -185,10 +185,8 @@ namespace BlockEditor.ViewModels
                     break;
 
                 case UserMode.None:
-                    var p4 = MyUtils.GetPosition(sender as IInputElement, e);
-
                     if (e.ChangedButton == MouseButton.Right)
-                        Game.DeleteBlock(p4);
+                        Game.DeleteBlock(index);
 
                     break;
             }
@@ -197,14 +195,15 @@ namespace BlockEditor.ViewModels
         public void OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
             _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
+            var index = Game.GetMapIndex(_mousePosition);
 
             switch (Mode)
             {
                 case UserMode.AddBlock:
                     if (e.RightButton == MouseButtonState.Pressed)
-                        Game.DeleteBlock(_mousePosition);
+                        Game.DeleteBlock(index);
                     else if (e.LeftButton == MouseButtonState.Pressed)
-                        Game.AddBlock(_mousePosition, BlockSelection.SelectedBlock);
+                        Game.AddBlock(index, BlockSelection.SelectedBlock);
                     break;
 
 
@@ -212,8 +211,7 @@ namespace BlockEditor.ViewModels
                     if (e.LeftButton != MouseButtonState.Pressed)
                         break;
 
-                    var p3 = MyUtils.GetPosition(sender as IInputElement, e);
-                    Game.AddSelection(p3, BlockSelection.SelectedBlocks);
+                    Game.AddSelection(index, BlockSelection.SelectedBlocks);
                     break;
             }
         }

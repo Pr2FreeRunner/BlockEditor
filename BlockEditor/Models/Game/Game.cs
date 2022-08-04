@@ -31,7 +31,7 @@ namespace BlockEditor.Models
         public MyPoint? GetMapIndex(MyPoint? p)
         {
             if (p == null || Map == null)
-                return  null;;
+                return  null;
 
             var x = p.Value.X + Camera.Position.X;
             var y = p.Value.Y + Camera.Position.Y;
@@ -40,10 +40,8 @@ namespace BlockEditor.Models
             return Map.GetMapIndex(pos);
         }
 
-        public void AddBlock(MyPoint? p, int? id, bool isMapIndex = false)
+        public void AddBlock(MyPoint? index, int? id, bool isMapIndex = false)
         {
-            var index = isMapIndex ? p : GetMapIndex(p);
-
             if (index == null || id == null || Map == null)
                 return;
 
@@ -54,10 +52,20 @@ namespace BlockEditor.Models
             UserOperations.Execute(op);
         }
 
-        internal void AddSelection(MyPoint? p, int?[,] selectedBlocks)
+        internal void AddBlocks(IEnumerable<SimpleBlock> blocks)
         {
-            var index = GetMapIndex(p);
+            if (blocks == null || Map == null)
+                return;
 
+            if (!blocks.Any())
+                return;
+
+            var op = new AddSelectionOperation(Map, blocks);
+            UserOperations.Execute(op);
+        }
+ 
+        internal void AddSelection(MyPoint? index, int?[,] selectedBlocks)
+        {
             if (index == null || selectedBlocks == null || Map == null)
                 return;
 
@@ -84,18 +92,6 @@ namespace BlockEditor.Models
             }
 
             if(!blocks.Any())
-                return;
-
-            var op = new AddSelectionOperation(Map, blocks);
-            UserOperations.Execute(op);
-        }
-
-        internal void AddBlocks(IEnumerable<SimpleBlock> blocks)
-        {
-            if (blocks == null || Map == null)
-                return;
-
-            if (!blocks.Any())
                 return;
 
             var op = new AddSelectionOperation(Map, blocks);
@@ -129,10 +125,8 @@ namespace BlockEditor.Models
             UserOperations.Execute(op);
         }
 
-        public void DeleteBlock(MyPoint? p)
+        public void DeleteBlock(MyPoint? index)
         {
-            var index = GetMapIndex(p);
-
             if (index == null || Map == null)
                 return;
 
