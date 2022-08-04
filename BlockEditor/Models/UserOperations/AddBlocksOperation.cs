@@ -2,20 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace BlockEditor.Models
 {
     public class AddBlocksOperation : IUserOperation
     {
         private readonly Map _map;
-        private IEnumerable<SimpleBlock> _blocks;
-
+        private readonly IEnumerable<SimpleBlock> _blocks;
+        private List<AddBlockOperation> _operations;
 
         public AddBlocksOperation(Map map, IEnumerable<SimpleBlock> blocks)
         {
             _map = map;
             _blocks = blocks;
+            _operations = new List<AddBlockOperation>();
         }
 
         public bool Execute()
@@ -23,25 +23,21 @@ namespace BlockEditor.Models
             if (_blocks == null || !_blocks.Any())
                 return false;
 
-            var addedBlocks = new List<SimpleBlock>();
+            var added = new List<AddBlockOperation>();
 
             try
             {
-                foreach (var block in _blocks)
-                {
-                    if (block?.Position == null)
-                        continue;
-
-                    _map?.Blocks.Add(block.Position.Value, block.ID);
-                    addedBlocks.Add(block);
-                }
+                if (_operations == null || !_operations.Any())
+                    ExecuteBlocks(added, false);
+                else
+                    ExecuteOperations(added, false);
             }
             catch (Exception ex)
             {
-                _blocks = addedBlocks;
                 MessageUtil.ShowError(ex.Message);
             }
 
+            _operations = added;
             return true;
         }
 
@@ -50,26 +46,48 @@ namespace BlockEditor.Models
             if (_blocks == null)
                 return false;
 
-            var removedBlocks = new List<SimpleBlock>();
-            
+            var removed = new List<AddBlockOperation>();
+
             try
             {
-                foreach (var block in _blocks)
-                {
-                    if (block?.Position == null)
-                        continue;
-
-                    _map?.Blocks.Delete(block.Position.Value);
-                }
+                if(_operations == null || !_operations.Any())
+                    ExecuteBlocks(removed, true);
+                else
+                    ExecuteOperations(removed, true);
             }
             catch (Exception ex)
             {
-                _blocks = removedBlocks;
                 MessageUtil.ShowError(ex.Message);
             }
 
+            _operations = removed;
             return true;
         }
 
+        private void ExecuteBlocks(List<AddBlockOperation> operations, bool undo)
+        {
+            foreach (var block in _blocks)
+            {
+                if (block?.Position == null)
+                    continue;
+
+                var op = new AddBlockOperation(_map, block.ID, block.Position.Value);
+                var ok = undo ? op.Undo() : op.Execute();
+
+                if (ok)
+                    operations.Add(op);
+            }
+        }
+
+        private void ExecuteOperations(List<AddBlockOperation> operations, bool undo)
+        {
+            foreach (var op in _operations)
+            {
+                var ok = undo ? op.Undo() : op.Execute();
+
+                if (ok)
+                    operations.Add(op);
+            }
+        }
     }
 }
