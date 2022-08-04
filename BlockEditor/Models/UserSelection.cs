@@ -121,11 +121,6 @@ namespace BlockEditor.Models
             return selection;
         }
 
-        public void OnSelectionClick()
-        {
-            Reset();
-        }
-
         public void OnMouseDown(MyPoint? image, MyPoint? map)
         {
             MapRegion.Point1   = map;
@@ -142,7 +137,7 @@ namespace BlockEditor.Models
             ImageRegion.Point2 = image;
         }
 
-        public void OnKeydown(Map map)
+        public void CreateSelection(Map map)
         {
             var selection = GetSelection(map);
             OnNewSelection?.Invoke(selection);

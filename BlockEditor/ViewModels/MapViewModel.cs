@@ -61,7 +61,7 @@ namespace BlockEditor.ViewModels
             BlockSelection       = new BlockSelection(cleanBlockSelection);
             StartPositionCommand = new RelayCommand((_) => Game.GoToStartPosition());
             FillCommand          = new RelayCommand((_) => OnFillClick());
-            SelectCommand        = new RelayCommand((_) => BlockSelection.SelectionActivation());
+            SelectCommand        = new RelayCommand((_) => OnSelectionClick()); 
             BlockSelection.OnSelectionClick += OnSelectionClick;
             Game.Engine.OnFrame += OnFrameUpdate;
         }
@@ -73,8 +73,8 @@ namespace BlockEditor.ViewModels
         {
             if(Mode != UserMode.Selection)
             {
+                BlockSelection.Reset(); 
                 Mode = UserMode.Selection;
-                BlockSelection?.Clean();
             }
             else
             {
@@ -87,7 +87,7 @@ namespace BlockEditor.ViewModels
             if (Mode != UserMode.Fill)
             {
                 Mode = UserMode.Fill;
-                BlockSelection?.Clean(false);
+                BlockSelection?.Reset(false);
             }
             else
             {
@@ -95,9 +95,10 @@ namespace BlockEditor.ViewModels
             }
         }
 
+
         public void OnCleanUserMode()
         {
-            BlockSelection?.Clean();
+            BlockSelection?.Reset();
             Mode = UserMode.None;
         }
 
@@ -110,8 +111,10 @@ namespace BlockEditor.ViewModels
 
         internal void OnSelectedBlockID(int? id)
         {
-            BlockSelection.SelectedBlock = id;
             BlockSelection.SelectedBlocks = null;
+
+            if(Mode != UserMode.Fill)
+                BlockSelection.SelectedBlock = id;
 
             if(id != null && Mode != UserMode.Fill)
                 Mode = UserMode.AddBlock;

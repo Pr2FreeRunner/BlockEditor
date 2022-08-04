@@ -1,6 +1,7 @@
 ﻿using BlockEditor.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BlockEditor.Models
@@ -19,7 +20,7 @@ namespace BlockEditor.Models
 
         public bool Execute()
         {
-            if (_blocks == null)
+            if (_blocks == null || !_blocks.Any())
                 return false;
 
             var addedBlocks = new List<SimpleBlock>();

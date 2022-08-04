@@ -73,6 +73,7 @@ namespace BlockEditor.Models
                 {
                     if(BlockCount >= LIMIT)
                         throw new BlockLimitException();
+
                     _blocks[p.X, p.Y] = id;
                     BlockCount++;
                 }

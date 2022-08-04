@@ -64,7 +64,7 @@ namespace BlockEditor.Models
             return SelectedBlocks != null;
         }
 
-        public void Clean(bool cleanSelectedBlock = true)
+        public void Reset(bool cleanSelectedBlock = true)
         {
             _cleanBlockSelection?.Invoke();
             UserSelection.Reset();
@@ -96,11 +96,6 @@ namespace BlockEditor.Models
             SelectedBlocks = ArrayUtil.RotateRight(SelectedBlocks);
         }
 
-        public void SelectionActivation()
-        {
-            SelectedBlock = null;
-            SelectedBlocks = null;
-            UserSelection.OnSelectionClick();
-        }
+  
     }
 }

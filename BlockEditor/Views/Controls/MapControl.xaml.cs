@@ -131,7 +131,7 @@ namespace BlockEditor.Views.Controls
                     var startPoint = ViewModel.BlockSelection.UserSelection.MapRegion.Start;
                     var endPoint = ViewModel.BlockSelection.UserSelection.MapRegion.End;
 
-                    ViewModel.BlockSelection.UserSelection.OnKeydown(ViewModel.Game.Map);
+                    ViewModel.BlockSelection.UserSelection.CreateSelection(ViewModel.Game.Map);
 
                     if (e.Key == Key.X || e.Key == Key.Delete)
                         ViewModel.Game.DeleteSelection(startPoint, endPoint);
