@@ -14,7 +14,6 @@ namespace BlockEditor.ViewModels
 {
     public class MapViewModel : NotificationObject
     {
-        public Game Game { get; }
 
         private MyPoint? _mousePosition;
         private UserMode _mode;
@@ -38,23 +37,22 @@ namespace BlockEditor.ViewModels
         }
 
         public BlockSelection BlockSelection { get; }
+        public Game Game { get; }
 
         public bool IsSelectionMode => Mode == UserMode.Selection;
         public bool IsFillMode {
             get { return Mode == UserMode.Fill; }
             set { Mode = value ? UserMode.Fill : UserMode.None; }
         }
-
-
         public bool IsOverwrite {
             get { return Game.Map?.Blocks?.Overwrite ?? false; }
             set { Game.Map.Blocks.Overwrite = value; RaisePropertyChanged(); }
         }
 
-
         public RelayCommand StartPositionCommand { get; }
         public RelayCommand FillCommand { get; }
         public RelayCommand SelectCommand { get; }
+
 
         public MapViewModel(Action cleanBlockSelection)
         {
