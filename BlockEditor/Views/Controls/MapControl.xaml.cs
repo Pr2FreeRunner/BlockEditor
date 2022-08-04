@@ -32,16 +32,30 @@ namespace BlockEditor.Views.Controls
         {
             BlocksControl.RemoveSelection();
         }
-     
+
         private void windowLoaded(object sender, RoutedEventArgs e)
         {
-            ViewModel.Game.GoToStartPosition();
-            Keyboard.Focus(this);
+            try
+            {
+                ViewModel.Game.GoToStartPosition();
+                Keyboard.Focus(this);
+            }
+            catch (Exception ex)
+            {
+                MessageUtil.ShowError(ex.Message);
+            }
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            ViewModel.Game.Engine.Start();
+            try
+            {
+                ViewModel.Game.Engine.Start();
+            }
+            catch (Exception ex)
+            {
+                MessageUtil.ShowError(ex.Message);
+            }
         }
 
         private void Map_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -50,7 +64,7 @@ namespace BlockEditor.Views.Controls
             {
                 ViewModel.OnPreviewMouseDown(sender, e);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageUtil.ShowError(ex.Message);
             }
@@ -58,77 +72,105 @@ namespace BlockEditor.Views.Controls
 
         private void Map_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            ViewModel.OnPreviewMouseMove(sender, e);
+            try
+            {
+                ViewModel.OnPreviewMouseMove(sender, e);
+            }
+            catch (Exception ex)
+            {
+                MessageUtil.ShowError(ex.Message);
+            }
         }
 
         private void Map_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
-            ViewModel.OnPreviewMouseUp(sender, e);
+            try
+            {
+                ViewModel.OnPreviewMouseUp(sender, e);
+            }
+            catch (Exception ex)
+            {
+                MessageUtil.ShowError(ex.Message);
+            }
 
         }
-  
+
         private void Map_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            ViewModel.OnSizeChanged((int)GamePanel.ActualWidth, (int)GamePanel.ActualHeight);
+            try
+            {
+                ViewModel.OnSizeChanged((int)GamePanel.ActualWidth, (int)GamePanel.ActualHeight);
+            }
+            catch (Exception ex)
+            {
+                MessageUtil.ShowError(ex.Message);
+            }
         }
 
         private void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-            
-            if(e.Key == Key.Escape)
+            try
             {
-                ViewModel.OnCleanUserMode();
-                return;
-            }
-            else if (ctrl && e.Key == Key.Z)
-            {
-                ViewModel.Game.UserOperations.Undo();
-            }
-            else if (ctrl && e.Key == Key.Y)
-            {
-                ViewModel.Game.UserOperations.Redo();
-            }
-            else if(IsSelectionKey(e, ctrl))
-            {
-                var startPoint = ViewModel.BlockSelection.UserSelection.MapRegion.Start;
-                var endPoint   = ViewModel.BlockSelection.UserSelection.MapRegion.End;
+                var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 
-                ViewModel.BlockSelection.UserSelection.OnKeydown(ViewModel.Game.Map);
-
-                if(e.Key == Key.X || e.Key == Key.Delete)
-                    ViewModel.Game.DeleteSelection(startPoint, endPoint);
-
-                if(e.Key == Key.Delete)
+                if (e.Key == Key.Escape)
+                {
                     ViewModel.OnCleanUserMode();
-                else
-                    ViewModel.Mode = UserMode.AddSelection;
+                    return;
+                }
+                else if (ctrl && e.Key == Key.Z)
+                {
+                    ViewModel.Game.UserOperations.Undo();
+                }
+                else if (ctrl && e.Key == Key.Y)
+                {
+                    ViewModel.Game.UserOperations.Redo();
+                }
+                else if (IsSelectionKey(e, ctrl))
+                {
+                    var startPoint = ViewModel.BlockSelection.UserSelection.MapRegion.Start;
+                    var endPoint = ViewModel.BlockSelection.UserSelection.MapRegion.End;
+
+                    ViewModel.BlockSelection.UserSelection.OnKeydown(ViewModel.Game.Map);
+
+                    if (e.Key == Key.X || e.Key == Key.Delete)
+                        ViewModel.Game.DeleteSelection(startPoint, endPoint);
+
+                    if (e.Key == Key.Delete)
+                        ViewModel.OnCleanUserMode();
+                    else
+                        ViewModel.Mode = UserMode.AddSelection;
+                }
+                else if (ViewModel.Mode == UserMode.AddSelection && e.Key == Key.L)
+                {
+                    ViewModel.BlockSelection.RotateLeft();
+                }
+                else if (ViewModel.Mode == UserMode.AddSelection && e.Key == Key.R)
+                {
+                    ViewModel.BlockSelection.RotateRight();
+                }
+                else if (e.Key == Key.S && ViewModel.Mode != UserMode.Selection)
+                {
+                    if (ViewModel.SelectCommand.CanExecute(null))
+                        ViewModel.SelectCommand.Execute(null);
+                }
+                else if (e.Key == Key.G)
+                {
+                    if (ViewModel.StartPositionCommand.CanExecute(null))
+                        ViewModel.StartPositionCommand.Execute(null);
+                }
+                else if (e.Key == Key.O)
+                {
+                    ViewModel.IsOverwrite = !ViewModel.IsOverwrite;
+                }
+                else if (e.Key == Key.F)
+                {
+                    ViewModel.OnFillClick();
+                }
             }
-            else if(ViewModel.Mode == UserMode.AddSelection && e.Key == Key.L)
+            catch (Exception ex)
             {
-                ViewModel.BlockSelection.RotateLeft();
-            }
-            else if (ViewModel.Mode == UserMode.AddSelection && e.Key == Key.R)
-            {
-                ViewModel.BlockSelection.RotateRight();
-            }
-            else if (e.Key == Key.S && ViewModel.Mode != UserMode.Selection)
-            {
-                if(ViewModel.SelectCommand.CanExecute(null))
-                    ViewModel.SelectCommand.Execute(null);
-            }
-            else if(e.Key == Key.G)
-            {
-                if(ViewModel.StartPositionCommand.CanExecute(null))
-                    ViewModel.StartPositionCommand.Execute(null);
-            }
-            else if (e.Key == Key.O)
-            {
-                ViewModel.IsOverwrite = !ViewModel.IsOverwrite;
-            }
-            else if (e.Key == Key.F)
-            {
-                ViewModel.OnFillClick();
+                MessageUtil.ShowError(ex.Message);
             }
         }
 
