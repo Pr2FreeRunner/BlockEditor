@@ -17,7 +17,7 @@ namespace BlockEditor.Models
 
         private int?[,] _blocks;
 
-        public bool Override { get; set; }
+        public bool Overwrite { get; set; }
 
         public UniqueBlocks StartBlocks { get; }
 
@@ -25,14 +25,14 @@ namespace BlockEditor.Models
         {
             _blocks       = new int?[SIZE, SIZE];
             StartBlocks = new UniqueBlocks();
-            Override      = true;
+            Overwrite      = true;
         }
 
         private bool IsPositionOccupied(MyPoint p)
         {
             if (_blocks[p.X, p.Y] != null)
             {
-                if (!Override)
+                if (!Overwrite)
                     return true;
 
                 Delete(p);
@@ -61,13 +61,15 @@ namespace BlockEditor.Models
             if(p.X >= SIZE || p.Y >= (SIZE - 1))
                 return;
 
-            if (IsPositionOccupied(p))
-                return;
+            
 
             if(Block.IsStartBlock(id))
                 AddStartBlock(p, id);
             else
-                _blocks[p.X, p.Y] = id;
+            {
+                if (!IsPositionOccupied(p))
+                    _blocks[p.X, p.Y] = id;
+            }
         }
 
         private void AddStartBlock(MyPoint p, int blockid)

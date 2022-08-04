@@ -40,6 +40,12 @@ namespace BlockEditor.ViewModels
 
         public bool IsSelectionMode => Mode == UserMode.Selection;
 
+        public bool IsOverwrite {
+            get { return Game.Map?.Blocks?.Overwrite ?? false; }
+            set { Game.Map.Blocks.Overwrite = value; RaisePropertyChanged(); }
+        }
+
+
         public RelayCommand StartPositionCommand { get; }
 
         public MapViewModel(Action cleanBlockSelection)
@@ -50,7 +56,6 @@ namespace BlockEditor.ViewModels
             _cleanBlockSelection = cleanBlockSelection;
             BlockSelection       = new BlockSelection();
             StartPositionCommand = new RelayCommand((_) => Game.GoToStartPosition());
-
             BlockSelection.OnSelectionClick += OnSelectionClick;
             Game.Engine.OnFrame += OnFrameUpdate;
         }

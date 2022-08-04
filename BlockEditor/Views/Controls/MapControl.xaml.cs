@@ -114,6 +114,10 @@ namespace BlockEditor.Views.Controls
                 if(ViewModel.StartPositionCommand.CanExecute(null))
                     ViewModel.StartPositionCommand.Execute(null);
             }
+            else if (e.Key == Key.O)
+            {
+                ViewModel.IsOverwrite = !ViewModel.IsOverwrite;
+            }
         }
 
         private bool IsSelectionKey(KeyEventArgs e, bool ctrl)

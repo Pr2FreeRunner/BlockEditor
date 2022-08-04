@@ -40,6 +40,8 @@
 
                 <Button  Margin="25,7,25,7" Width="40" Content="&#8982;"  FontSize="25" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding StartPositionCommand}" ToolTip="Go to start position&#x0a;Hotkey:  G"/>
 
+                <CheckBox IsChecked="{Binding IsOverwrite, Mode=TwoWay}" Margin="25,7,25,7" Height="25" VerticalContentAlignment="Center" Width="100" Content="Overwrite"  FontSize="15" FontWeight="SemiBold" FontFamily="Segoe UI" ToolTip="Overwrite block&#x0a;Hotkey:  O"/>
+
             </StackPanel>
 
         </Border>

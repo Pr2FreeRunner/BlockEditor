@@ -14,7 +14,7 @@ namespace BlockEditor.Models
     {
 
 
-        public Blocks Blocks { get; set; }
+        public Blocks Blocks { get; }
 
         public Color Background
         {
