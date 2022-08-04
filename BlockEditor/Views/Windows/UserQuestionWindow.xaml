@@ -19,7 +19,7 @@
         </Grid.RowDefinitions>
 
         <Border CornerRadius="15" Grid.Row="0" Padding="20,30,20,30" Margin="20,20,20,10" BorderThickness="2" BorderBrush="{StaticResource StandardBackgroundMouseOver}">
-            <TextBlock FontSize="14" Text="Question to ask?" Name="txtQuestion" />
+            <TextBlock HorizontalAlignment="Center" FontSize="14" Text="Question to ask?" Name="txtQuestion" />
         </Border>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="20,5,20, 10" HorizontalAlignment="Right">

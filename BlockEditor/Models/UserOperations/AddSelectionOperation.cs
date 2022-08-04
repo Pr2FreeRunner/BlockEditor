@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlockEditor.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,7 +8,7 @@ namespace BlockEditor.Models
     public class AddSelectionOperation : IUserOperation
     {
         private readonly Map _map;
-        private readonly IEnumerable<SimpleBlock> _selection;
+        private IEnumerable<SimpleBlock> _selection;
 
 
         public AddSelectionOperation(Map map, IEnumerable<SimpleBlock> selection)
@@ -21,12 +22,23 @@ namespace BlockEditor.Models
             if (_selection == null)
                 return;
 
-            foreach (var block in _selection)
-            {
-                if (block?.Position == null)
-                    continue;
+            var addedBlocks = new List<SimpleBlock>();
 
-                _map?.Blocks.Add(block.Position.Value, block.ID);
+            try
+            {
+                foreach (var block in _selection)
+                {
+                    if (block?.Position == null)
+                        continue;
+
+                    _map?.Blocks.Add(block.Position.Value, block.ID);
+                    addedBlocks.Add(block);
+                }
+            }
+            catch (Exception ex)
+            {
+                _selection = addedBlocks;
+                MessageUtil.ShowError(ex.Message);
             }
         }
 
@@ -35,12 +47,22 @@ namespace BlockEditor.Models
             if (_selection == null)
                 return;
 
-            foreach (var block in _selection)
+            var removedBlocks = new List<SimpleBlock>();
+            
+            try
             {
-                if (block?.Position == null)
-                    continue;
+                foreach (var block in _selection)
+                {
+                    if (block?.Position == null)
+                        continue;
 
-                _map?.Blocks.Delete(block.Position.Value);
+                    _map?.Blocks.Delete(block.Position.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                _selection = removedBlocks;
+                MessageUtil.ShowError(ex.Message);
             }
         }
 

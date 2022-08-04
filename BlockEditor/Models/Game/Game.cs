@@ -90,6 +90,18 @@ namespace BlockEditor.Models
             UserOperations.Execute(op);
         }
 
+        internal void AddBlocks(IEnumerable<SimpleBlock> blocks)
+        {
+            if (blocks == null || Map == null)
+                return;
+
+            if (!blocks.Any())
+                return;
+
+            var op = new AddSelectionOperation(Map, blocks);
+            UserOperations.Execute(op);
+        }
+
         public void DeleteSelection(MyPoint? start, MyPoint? end)
         {
             if (start == null || end == null || Map == null)

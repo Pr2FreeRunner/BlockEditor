@@ -50,8 +50,7 @@ namespace BlockEditor.ViewModels
             }
             catch (Exception ex)
             {
-                MessageUtil.ShowError("Error occurred when executing user operation..."
-                                + Environment.NewLine + Environment.NewLine + ex.Message);
+                MessageUtil.ShowError(ex.Message);
             }
         }
 
@@ -71,8 +70,7 @@ namespace BlockEditor.ViewModels
             }
             catch (Exception ex)
             {
-                MessageUtil.ShowError("Error occurred when undoing user operation..."
-                                + Environment.NewLine + Environment.NewLine + ex.Message);
+                MessageUtil.ShowError(ex.Message);
             }
         }
 
@@ -92,8 +90,7 @@ namespace BlockEditor.ViewModels
             }
             catch (Exception ex)
             {
-                MessageUtil.ShowError("Error occurred when redoing user operation..."
-                     + Environment.NewLine + Environment.NewLine + ex.Message);
+                MessageUtil.ShowError(ex.Message);
             }
         }
 

@@ -6,6 +6,7 @@ using System.Windows.Media.Imaging;
 using BlockEditor.Helpers;
 using BlockEditor.Models;
 using BlockEditor.Utils;
+using BlockEditor.Views.Windows;
 using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.ViewModels
@@ -26,6 +27,7 @@ namespace BlockEditor.ViewModels
             {
                 _mode = value;
                 RaisePropertyChanged(nameof(IsSelectionMode));
+                RaisePropertyChanged(nameof(IsFillMode));
             }
         }
 
@@ -39,6 +41,11 @@ namespace BlockEditor.ViewModels
         private Action _cleanBlockSelection { get; }
 
         public bool IsSelectionMode => Mode == UserMode.Selection;
+        public bool IsFillMode {
+            get { return Mode == UserMode.Fill; }
+            set { Mode = value ? UserMode.Fill : UserMode.None; }
+        }
+
 
         public bool IsOverwrite {
             get { return Game.Map?.Blocks?.Overwrite ?? false; }
@@ -47,6 +54,8 @@ namespace BlockEditor.ViewModels
 
 
         public RelayCommand StartPositionCommand { get; }
+        public RelayCommand FillCommand { get; }
+
 
         public MapViewModel(Action cleanBlockSelection)
         {
@@ -56,6 +65,7 @@ namespace BlockEditor.ViewModels
             _cleanBlockSelection = cleanBlockSelection;
             BlockSelection       = new BlockSelection();
             StartPositionCommand = new RelayCommand((_) => Game.GoToStartPosition());
+            FillCommand          = new RelayCommand((_) => IsFillMode = !IsFillMode);
             BlockSelection.OnSelectionClick += OnSelectionClick;
             Game.Engine.OnFrame += OnFrameUpdate;
         }
@@ -88,7 +98,7 @@ namespace BlockEditor.ViewModels
             BlockSelection.Clean(); 
             BlockSelection.SelectedBlock = id;
 
-            if(id != null)
+            if(id != null && Mode != UserMode.Fill)
                 Mode = UserMode.AddBlock;
         }
 
@@ -143,6 +153,32 @@ namespace BlockEditor.ViewModels
 
                     var p3 = MyUtils.GetPosition(sender as IInputElement, e);
                     Game.AddSelection(p3, BlockSelection.SelectedBlocks);
+                    break;
+
+                case UserMode.Fill:
+                    if (e.ChangedButton != MouseButton.Left)
+                        break;
+
+                    var index = Game.GetMapIndex(MyUtils.GetPosition(sender as IInputElement, e));
+                    var id    = BlockSelection.SelectedBlock;
+                    
+                    if(id == null)
+                        throw new Exception("Select a block to flood fill.");
+
+                    Mode = UserMode.None;
+                    var blocks = MapUtil.GetFloodFill(Game.Map, index, id.Value, out var limitReached);
+
+                    if (limitReached)
+                    {
+                        var r = UserQuestionWindow.Show("The maximum block limit of 50k was hit!" 
+                            + Environment.NewLine + Environment.NewLine
+                            + "Do you still wish to add the filled blocks?", "Question");
+
+                        if(r != UserQuestionWindow.QuestionResult.Yes)
+                            return;
+                    }
+                    
+                    Game.AddBlocks(blocks);
                     break;
 
                 case UserMode.None:

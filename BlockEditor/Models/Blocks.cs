@@ -1,11 +1,7 @@
 ﻿using LevelModel.Models;
 using LevelModel.Models.Components;
 using System.Collections.Generic;
-using System.Windows.Media.Imaging;
-using System.Diagnostics;
-using System.Windows.Media;
-
-using static BlockEditor.Models.BlockImages;
+using System;
 
 namespace BlockEditor.Models
 {
@@ -14,11 +10,12 @@ namespace BlockEditor.Models
     {
 
         public const int SIZE = 2_000;
+        public const int LIMIT = 50_000;
 
         private int?[,] _blocks;
 
         public bool Overwrite { get; set; }
-
+        public int BlockCount;
         public UniqueBlocks StartBlocks { get; }
 
         public Blocks()
@@ -52,6 +49,14 @@ namespace BlockEditor.Models
             return _blocks[x, y];
         }
 
+        public int? GetBlockId(MyPoint? point)
+        {
+            if(point == null)
+                return null;
+
+            return GetBlockId(point.Value.X, point.Value.Y);
+        }
+
 
         public void Add(MyPoint p, int id)
         {
@@ -59,16 +64,21 @@ namespace BlockEditor.Models
                 return;
 
             if(p.X >= SIZE || p.Y >= (SIZE - 1))
-                return;
-
-            
+                return;       
 
             if(Block.IsStartBlock(id))
+            { 
                 AddStartBlock(p, id);
+            }
             else
             {
                 if (!IsPositionOccupied(p))
+                {
+                    if(BlockCount >= LIMIT)
+                        throw new Exception("Maximum block limit of 50k was hit!");
                     _blocks[p.X, p.Y] = id;
+                    BlockCount++;
+                }
             }
         }
 
@@ -79,6 +89,14 @@ namespace BlockEditor.Models
                 if(blockid != startBlock.ID)
                     continue;
 
+                if(startBlock.Position == null)
+                {
+                    if (BlockCount >= LIMIT)
+                        throw new Exception("Maximum block limit of 50k was hit!");
+
+                    BlockCount++;
+                }
+
                 startBlock.Position = p;
                 return;
             }
@@ -86,6 +104,9 @@ namespace BlockEditor.Models
 
         public void Delete(MyPoint p)
         {
+            if(GetBlockId(p.X, p.Y) != null)
+                BlockCount--;
+
             _blocks[p.X, p.Y] = null;
         }
 

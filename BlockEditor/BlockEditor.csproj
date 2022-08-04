@@ -17,12 +17,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\GUI\Bucket.png" />
     <None Remove="Resources\GUI\undo.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\GUI\Bucket.png" />
     <Resource Include="Resources\GUI\undo.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
 

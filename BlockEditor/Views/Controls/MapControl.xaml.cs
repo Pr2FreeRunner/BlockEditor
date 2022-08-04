@@ -46,7 +46,14 @@ namespace BlockEditor.Views.Controls
 
         private void Map_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ViewModel.OnPreviewMouseDown(sender, e);
+            try
+            {
+                ViewModel.OnPreviewMouseDown(sender, e);
+            }
+            catch(Exception ex)
+            {
+                MessageUtil.ShowError(ex.Message);
+            }
         }
 
         private void Map_PreviewMouseMove(object sender, MouseEventArgs e)
@@ -117,6 +124,10 @@ namespace BlockEditor.Views.Controls
             else if (e.Key == Key.O)
             {
                 ViewModel.IsOverwrite = !ViewModel.IsOverwrite;
+            }
+            else if (e.Key == Key.F)
+            {
+                ViewModel.IsFillMode = !ViewModel.IsFillMode;
             }
         }
 
