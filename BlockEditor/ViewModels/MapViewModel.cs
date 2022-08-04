@@ -88,9 +88,11 @@ namespace BlockEditor.ViewModels
             {
                 Mode = UserMode.Fill;
                 BlockSelection?.Reset(false);
+                Mouse.OverrideCursor = Cursors.Pen;
             }
             else
             {
+                Mouse.OverrideCursor = null;
                 Mode = UserMode.None;
             }
         }
@@ -100,6 +102,7 @@ namespace BlockEditor.ViewModels
         {
             BlockSelection?.Reset();
             Mode = UserMode.None;
+            Mouse.OverrideCursor = null;
         }
 
         public void OnFrameUpdate()
