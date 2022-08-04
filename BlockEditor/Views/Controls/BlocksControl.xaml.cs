@@ -82,7 +82,9 @@ namespace BlockEditor.Views.Controls
             ToggleBorder(_selectedBorder);
 
             _selectedBorder = border;
-            OnSelectedBlockID?.Invoke(id);
+
+            if(id != null)
+                OnSelectedBlockID?.Invoke(id);
 
             ToggleBorder(_selectedBorder);
         }
