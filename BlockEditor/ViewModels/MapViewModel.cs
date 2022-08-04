@@ -98,7 +98,6 @@ namespace BlockEditor.ViewModels
             }
         }
 
-
         public void OnCleanUserMode()
         {
             BlockSelection?.Clean();
