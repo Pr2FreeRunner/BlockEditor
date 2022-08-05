@@ -287,8 +287,6 @@ namespace BlockEditor.ViewModels
                         throw new Exception("Enable 'Overwrite' option to overwrite blocks.");
 
                     Game.AddBlocks(blocks);
-                    Mode = UserMode.None;
-
                     break;
             }
         }
