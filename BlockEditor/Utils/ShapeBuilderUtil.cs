@@ -66,7 +66,7 @@ namespace BlockEditor.Utils
             return new MyRegion
             {
                 Point1 = region.Start,
-                Point2 = new MyPoint(region.Start.Value.X + size, region.Start.Value.Y + size)
+                Point2 = new MyPoint(region.Start.Value.X + size - 1, region.Start.Value.Y + size - 1)
             };
         }
 
@@ -121,21 +121,18 @@ namespace BlockEditor.Utils
             var outlineSize = 2;
 
             for (int x = region.Start.Value.X; x < region.End.Value.X; x++)
-            {
                 for (int y = region.Start.Value.Y; y < region.End.Value.Y && y < region.Start.Value.Y + outlineSize; y++)
                     AddBlock(map, result, id, x, y);
 
-            }
-
             for (int x = region.Start.Value.X; x < region.End.Value.X; x++)
-                for (int y = region.End.Value.Y; y > region.Start.Value.Y && y > region.End.Value.Y - outlineSize; y--)
+                for (int y = region.End.Value.Y - 1; y > region.Start.Value.Y && y > region.End.Value.Y - outlineSize - 1; y--)
                     AddBlock(map, result, id, x, y);
 
             for (int x = region.Start.Value.X; x < region.End.Value.X && x < region.Start.Value.X + outlineSize; x++)
                 for (int y = region.Start.Value.Y; y < region.End.Value.Y; y++)
                     AddBlock(map, result, id, x, y);
 
-            for (int x = region.End.Value.X; x > region.Start.Value.X && x > region.End.Value.X - outlineSize; x--)
+            for (int x = region.End.Value.X - 1; x > region.Start.Value.X && x > region.End.Value.X - outlineSize - 1; x--)
                 for (int y = region.Start.Value.Y; y < region.End.Value.Y; y++)
                     AddBlock(map, result, id, x, y);
 

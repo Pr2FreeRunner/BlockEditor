@@ -14,7 +14,6 @@ namespace BlockEditor.Views.Windows
         {
             InitializeComponent();
             Result = fallback;
-            Fill = fill;
             FillCheckbox.IsChecked = fill;
         }
 
