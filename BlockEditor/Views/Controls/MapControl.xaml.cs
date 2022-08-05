@@ -159,6 +159,11 @@ namespace BlockEditor.Views.Controls
                     if (ViewModel.StartPositionCommand.CanExecute(null))
                         ViewModel.StartPositionCommand.Execute(null);
                 }
+                else if (e.Key == Key.R)
+                {
+                    if (ViewModel.AddRectangleCommand.CanExecute(null))
+                        ViewModel.AddRectangleCommand.Execute(null);
+                }
                 else if (e.Key == Key.O)
                 {
                     ViewModel.IsOverwrite = !ViewModel.IsOverwrite;

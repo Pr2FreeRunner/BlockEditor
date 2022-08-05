@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -25,10 +26,12 @@ namespace BlockEditor.ViewModels
             set
             {
                 _mode = value;
+
                 RaisePropertyChanged(nameof(IsSelectionMode));
                 RaisePropertyChanged(nameof(IsFillMode));
+                RaisePropertyChanged(nameof(IsAddRectangleMode));
 
-                if(_mode != UserMode.Fill)
+                if (_mode != UserMode.Fill)
                     Mouse.OverrideCursor = null;
             }
         }
@@ -42,6 +45,7 @@ namespace BlockEditor.ViewModels
         public Game Game { get; }
 
         public bool IsSelectionMode => Mode == UserMode.Selection;
+        public bool IsAddRectangleMode => Mode == UserMode.AddRectangle;
         public bool IsFillMode {
             get { return Mode == UserMode.Fill; }
             set { Mode = value ? UserMode.Fill : UserMode.None; }
@@ -54,6 +58,8 @@ namespace BlockEditor.ViewModels
         public RelayCommand StartPositionCommand { get; }
         public RelayCommand FillCommand { get; }
         public RelayCommand SelectCommand { get; }
+        public RelayCommand AddRectangleCommand { get; }
+
 
 
         public MapViewModel(Action cleanBlockSelection)
@@ -64,7 +70,9 @@ namespace BlockEditor.ViewModels
             BlockSelection       = new BlockSelection(cleanBlockSelection);
             StartPositionCommand = new RelayCommand((_) => Game.GoToStartPosition());
             FillCommand          = new RelayCommand((_) => OnFillClick());
-            SelectCommand        = new RelayCommand((_) => OnSelectionClick()); 
+            SelectCommand        = new RelayCommand((_) => OnSelectionClick());
+            AddRectangleCommand  = new RelayCommand((_) => OnAddRectangleClick());
+
             BlockSelection.OnSelectionClick += OnSelectionClick;
             Game.Engine.OnFrame += OnFrameUpdate;
         }
@@ -100,6 +108,27 @@ namespace BlockEditor.ViewModels
             }
         }
 
+        public void OnAddRectangleClick()
+        {
+            if (Mode != UserMode.AddRectangle)
+            {
+                Mode = UserMode.AddRectangle;
+                BlockSelection?.Reset(false);
+            }
+            else
+            {
+                Mode = UserMode.None;
+            }
+        }
+
+        internal void OnSelectedBlockID(int? id)
+        {
+            BlockSelection.SelectedBlocks = null;
+            BlockSelection.SelectedBlock = id;
+
+            if(id != null && Mode != UserMode.Fill && Mode != UserMode.AddRectangle)
+                Mode = UserMode.AddBlock;
+        }
 
         public void OnCleanUserMode()
         {
@@ -115,14 +144,6 @@ namespace BlockEditor.ViewModels
             RaisePropertyChanged(nameof(MapContent));
         }
 
-        internal void OnSelectedBlockID(int? id)
-        {
-            BlockSelection.SelectedBlocks = null;
-            BlockSelection.SelectedBlock = id;
-
-            if(id != null && Mode != UserMode.Fill)
-                Mode = UserMode.AddBlock;
-        }
 
         public void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -136,11 +157,7 @@ namespace BlockEditor.ViewModels
             {
                 case UserMode.AddBlock:
 
-                    if (e.ChangedButton == MouseButton.Right)
-                        Game.DeleteBlock(index);
-                    else if (e.ChangedButton == MouseButton.Left)
-                        Game.AddBlock(index, BlockSelection.SelectedBlock);
-                    break;
+
 
                 case UserMode.Selection:
 
@@ -160,6 +177,13 @@ namespace BlockEditor.ViewModels
                         OnCleanUserMode();
                     }
 
+                    break;
+
+                case UserMode.AddRectangle:
+                    if (e.LeftButton != MouseButtonState.Pressed)
+                        break;
+
+                    BlockSelection.UserSelection.OnMouseDown(p, index);
                     break;
 
                 case UserMode.AddSelection:
@@ -192,10 +216,11 @@ namespace BlockEditor.ViewModels
                     }
                     break;
 
-                case UserMode.None:
+                default:
                     if (e.ChangedButton == MouseButton.Right)
                         Game.DeleteBlock(index);
-
+                    else if (e.ChangedButton == MouseButton.Left)
+                        Game.AddBlock(index, BlockSelection.SelectedBlock);
                     break;
             }
         }
@@ -226,6 +251,12 @@ namespace BlockEditor.ViewModels
 
         internal void OnPreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
+            var p = MyUtils.GetPosition(sender as IInputElement, e);
+            var index = Game.GetMapIndex(p);
+
+            if(p == null || index == null)
+                return;
+
             switch (Mode)
             {
                 case UserMode.Selection:
@@ -233,13 +264,31 @@ namespace BlockEditor.ViewModels
                     if (e.ChangedButton != MouseButton.Left)
                         break;
 
-                    var pos   = MyUtils.GetPosition(sender as IInputElement, e);
-                    var index = Game.GetMapIndex(pos);
-                    
-                    if(index != null)
-                        index = new MyPoint(index.Value.X + 1, index.Value.Y + 1);
+                    BlockSelection.UserSelection.OnMouseUp(p, index);
+                    break;
 
-                    BlockSelection.UserSelection.OnMouseUp(pos, index);
+                case UserMode.AddRectangle:
+
+                    if (e.ChangedButton != MouseButton.Left)
+                        break;
+
+                    BlockSelection.UserSelection.OnMouseUp(p, index);
+
+                    var selectedId = BlockSelection.SelectedBlock;
+                    var region     = BlockSelection.UserSelection.MapRegion.Copy();
+                    BlockSelection.UserSelection.Reset();
+
+                    if (selectedId == null)
+                        throw new Exception("Select a block to add a shape.");
+
+                    var blocks = MapUtil.GetRectangleFill(Game.Map, selectedId.Value, region);
+
+                    if(blocks != null && !blocks.Any() && region != null && region.IsComplete() && !Game.Map.Blocks.Overwrite)
+                        throw new Exception("Enable 'Overwrite' option to overwrite blocks.");
+
+                    Game.AddBlocks(blocks);
+                    Mode = UserMode.None;
+
                     break;
             }
         }

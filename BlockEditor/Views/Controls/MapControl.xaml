@@ -37,15 +37,17 @@
                 <Button Margin="0,7,10,7" Width="30" Content="⤸" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding BlockSelection.RotateRightCommand}" ToolTip="Rotate Blocks Right &#x0a;Hotkey:  R"/>
 
                 <Button  Margin="25,7,5,7" Width="40" Content="&#8982;"  FontSize="25" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding StartPositionCommand}" ToolTip="Go to start position&#x0a;Hotkey:  G"/>
-                <Grid Width="40" Height="32" Margin="5,7,25,7" ToolTip="Flood Fill&#x0a;Hotkey:  F">
+                <Grid Width="40" Height="32" Margin="5,7,5,7" ToolTip="Flood Fill&#x0a;Hotkey:  F">
                     <Grid.InputBindings>
                         <MouseBinding Gesture="LeftClick" Command="{Binding FillCommand}" />
                     </Grid.InputBindings>
                     <ToggleButton IsChecked="{Binding IsFillMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                     <Image Height="22" VerticalAlignment="Center" HorizontalAlignment="Center" Source="../../Resources/GUI/Bucket.png" />
                 </Grid>
+                <ToggleButton IsChecked="{Binding IsAddRectangleMode, Mode=OneWay}" Margin="5,7,5,7" Width="40" Content="&#9638;"  FontSize="25" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding AddRectangleCommand}" ToolTip="Add Rectangle Shape&#x0a;Hotkey:  R"/>
 
-                <CheckBox IsChecked="{Binding IsOverwrite, Mode=TwoWay}" Margin="25,7,25,7" Height="25" VerticalContentAlignment="Center" Width="100" Content="Overwrite"  FontSize="15" FontWeight="SemiBold" FontFamily="Segoe UI" ToolTip="Overwrite block&#x0a;Hotkey:  O"/>
+
+                <CheckBox IsChecked="{Binding IsOverwrite, Mode=TwoWay}" Margin="50,7,25,7" Height="25" VerticalContentAlignment="Center" Width="100" Content="Overwrite"  FontSize="15" FontWeight="SemiBold" FontFamily="Segoe UI" ToolTip="Overwrite block&#x0a;Hotkey:  O"/>
 
             </StackPanel>
 

@@ -190,7 +190,7 @@ namespace BlockEditor.Helpers
                     {
                         var currentId = map.Blocks.GetBlockId(x, y);
 
-                        if (currentId != null)
+                        if (currentId == null)
                             result.Add(new SimpleBlock(id, x, y));
                     }
                 }
