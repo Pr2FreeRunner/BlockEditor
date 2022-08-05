@@ -1,4 +1,5 @@
 ﻿using BlockEditor.Models;
+using BlockEditor.Views.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,15 @@ namespace BlockEditor.Utils
 
         public static bool PickShape()
         {
-            Type = ShapeType.Ellipse;
+            var window  = new PickShapeWindow(Type, Fill);
+            var success = window.ShowDialog();
+
+            if(success != true)
+                return false;
+
+            Type = window.Result;
+            Fill = window.Fill;
+
             return true;
         }
 
@@ -133,6 +142,10 @@ namespace BlockEditor.Utils
         private static List<SimpleBlock> GetEllipse(Map map, int id, MyRegion region)
         {
             var result = new List<SimpleBlock>();
+            var minSize = 10;
+
+            if(region.Width < minSize || region.Height < minSize)
+                throw new Exception("The region size is too small.");
 
             double a   = region.Width.Value / 2.0;
             double b   = region.Height.Value / 2.0;

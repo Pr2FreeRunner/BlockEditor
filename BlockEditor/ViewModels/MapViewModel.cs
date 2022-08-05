@@ -114,8 +114,7 @@ namespace BlockEditor.ViewModels
             if (Mode != UserMode.AddShape)
             {
                 BlockSelection?.Reset(false);
-                var ok = ShapeBuilderUtil.PickShape();
-                Mode = ok ? UserMode.AddShape : UserMode.None;
+                Mode = UserMode.AddShape;
             }
             else
             {
@@ -278,6 +277,9 @@ namespace BlockEditor.ViewModels
 
                     if (selectedId == null)
                         throw new Exception("Select a block to add a shape.");
+
+                    if(!ShapeBuilderUtil.PickShape())
+                        break;
 
                     var blocks = ShapeBuilderUtil.Build(Game.Map, selectedId.Value, region);
 
