@@ -121,8 +121,11 @@ namespace BlockEditor.Utils
             var outlineSize = 2;
 
             for (int x = region.Start.Value.X; x < region.End.Value.X; x++)
+            {
                 for (int y = region.Start.Value.Y; y < region.End.Value.Y && y < region.Start.Value.Y + outlineSize; y++)
                     AddBlock(map, result, id, x, y);
+
+            }
 
             for (int x = region.Start.Value.X; x < region.End.Value.X; x++)
                 for (int y = region.End.Value.Y; y > region.Start.Value.Y && y > region.End.Value.Y - outlineSize; y--)
@@ -132,7 +135,7 @@ namespace BlockEditor.Utils
                 for (int y = region.Start.Value.Y; y < region.End.Value.Y; y++)
                     AddBlock(map, result, id, x, y);
 
-            for (int x = region.End.Value.X; x > region.Start.Value.X && x > region.End.Value.X - outlineSize; x++)
+            for (int x = region.End.Value.X; x > region.Start.Value.X && x > region.End.Value.X - outlineSize; x--)
                 for (int y = region.Start.Value.Y; y < region.End.Value.Y; y++)
                     AddBlock(map, result, id, x, y);
 

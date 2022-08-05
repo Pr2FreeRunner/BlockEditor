@@ -63,7 +63,7 @@ namespace BlockEditor.Views.Windows
 
         private void FillCheckbox_Checked(object sender, RoutedEventArgs e)
         {
-            Fill = FillCheckbox.IsChecked ?? false;
+            Fill = !Fill;
         }
     }
 }

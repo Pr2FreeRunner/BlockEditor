@@ -21,7 +21,7 @@
 
         <StackPanel Grid.Row="0" Margin="5,10,5,20" Orientation="Vertical" HorizontalAlignment="Center">
             <TextBlock Text="Pick Shape" FontSize="25"  Margin="0,0,0,10" HorizontalAlignment="Center"/>
-            <CheckBox Checked="FillCheckbox_Checked" Margin="5,10,0,20" x:Name="FillCheckbox" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold"  Content="Fill Shape" />
+            <CheckBox Checked="FillCheckbox_Checked" Unchecked="FillCheckbox_Checked"  Margin="5,10,0,20" x:Name="FillCheckbox" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold"  Content="Fill Shape" />
 
             <Button FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="150" Height="25" Content="Rectangle"  Margin="5" Click="btnRectangle_Click" />
             <Button FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="150" Height="25" Content="Square"     Margin="5" Click="btnSquare_Click" />
