@@ -219,7 +219,7 @@ namespace BlockEditor.Helpers
                 var point = blocks.Pop();
 
                 if(maxBlocks <= result.Count)
-                    throw new BlockLimitException("Operation Canceled" + Environment.NewLine + Environment.NewLine);
+                    throw new MyExceptions("Operation Canceled" + Environment.NewLine + Environment.NewLine);
 
                 if(visited.Contains(point))
                     continue;

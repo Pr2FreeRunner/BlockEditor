@@ -155,10 +155,6 @@ namespace BlockEditor.ViewModels
 
             switch (Mode)
             {
-                case UserMode.AddBlock:
-
-
-
                 case UserMode.Selection:
 
                     if (e.LeftButton == MouseButtonState.Pressed) 
@@ -210,7 +206,7 @@ namespace BlockEditor.ViewModels
                         var startId = Game.Map.Blocks.GetBlockId(index);
 
                         if(startId != null && !Game.Map.Blocks.Overwrite)
-                            throw new Exception("Enable 'Overwrite' option for this to work.");
+                            throw new OverwriteException();
 
                         Game.AddBlocks(MapUtil.GetFloodFill(Game.Map, index, selectedId.Value));
                     }
@@ -284,7 +280,7 @@ namespace BlockEditor.ViewModels
                     var blocks = MapUtil.GetRectangleFill(Game.Map, selectedId.Value, region);
 
                     if(blocks != null && !blocks.Any() && region != null && region.IsComplete() && !Game.Map.Blocks.Overwrite)
-                        throw new Exception("Enable 'Overwrite' option to overwrite blocks.");
+                        throw new OverwriteException();
 
                     Game.AddBlocks(blocks);
                     break;

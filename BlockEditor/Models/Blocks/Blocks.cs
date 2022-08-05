@@ -72,7 +72,7 @@ namespace BlockEditor.Models
                 if (!IsPositionOccupied(p))
                 {
                     if(BlockCount >= LIMIT)
-                        throw new BlockLimitException();
+                        throw new MyExceptions();
 
                     _blocks[p.X, p.Y] = id;
                     BlockCount++;
@@ -90,7 +90,7 @@ namespace BlockEditor.Models
                 if(startBlock.Position == null)
                 {
                     if (BlockCount >= LIMIT)
-                        throw new BlockLimitException();
+                        throw new MyExceptions();
 
                     BlockCount++;
                 }
