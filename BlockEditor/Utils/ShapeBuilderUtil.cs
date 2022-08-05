@@ -10,7 +10,6 @@ namespace BlockEditor.Utils
     {
         public enum ShapeType { Rectangle, Square, Circle, Ellipse }
         public static ShapeType Type { get; private set; }
-
         public static bool Fill { get; private set; }
 
 
@@ -41,6 +40,13 @@ namespace BlockEditor.Utils
                 default: return fallback;
             }
         }
+
+        public static bool PickShape()
+        {
+            Type = ShapeType.Ellipse;
+            return true;
+        }
+
 
         private static MyRegion GetSquare(MyRegion region)
         {

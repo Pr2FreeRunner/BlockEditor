@@ -49,7 +49,7 @@ namespace BlockEditor.Models
                 if(!IsComplete())
                     return null;
 
-                return Start.Value.X - End.Value.X;
+                return End.Value.X - Start.Value.X;
             }
         }
 
@@ -60,7 +60,7 @@ namespace BlockEditor.Models
                 if (!IsComplete())
                     return null;
 
-                return Start.Value.Y - End.Value.Y;
+                return End.Value.Y - Start.Value.Y;
             }
         }
 

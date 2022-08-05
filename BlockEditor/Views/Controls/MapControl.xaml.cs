@@ -159,10 +159,10 @@ namespace BlockEditor.Views.Controls
                     if (ViewModel.StartPositionCommand.CanExecute(null))
                         ViewModel.StartPositionCommand.Execute(null);
                 }
-                else if (e.Key == Key.R)
+                else if (e.Key == Key.A)
                 {
-                    if (ViewModel.AddRectangleCommand.CanExecute(null))
-                        ViewModel.AddRectangleCommand.Execute(null);
+                    if (ViewModel.AddShapeComand.CanExecute(null))
+                        ViewModel.AddShapeComand.Execute(null);
                 }
                 else if (e.Key == Key.O)
                 {
