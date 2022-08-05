@@ -170,35 +170,6 @@ namespace BlockEditor.Helpers
             return new Pen(Color.FromArgb(80, r, g, b), 1);
         }
 
-        public static List<SimpleBlock> GetRectangleFill(Map map, int id, MyRegion region)
-        {
-            var result    = new List<SimpleBlock>();
-            var overwrite = map.Blocks.Overwrite;
-
-            if (map == null || region == null || !region.IsComplete())
-                return result;
-
-            for (int x = region.Start.Value.X; x < region.End.Value.X; x++)
-            {
-                for (int y = region.Start.Value.Y; y < region.End.Value.Y; y++)
-                {
-                    if (overwrite)
-                    {
-                        result.Add(new SimpleBlock(id, x, y));
-                    }
-                    else
-                    {
-                        var currentId = map.Blocks.GetBlockId(x, y);
-
-                        if (currentId == null)
-                            result.Add(new SimpleBlock(id, x, y));
-                    }
-                }
-            }
-
-            return result;
-        }
-
         public static List<SimpleBlock> GetFloodFill(Map map, MyPoint? startPoint, int id)
         {
             var result  = new List<SimpleBlock>();

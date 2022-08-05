@@ -42,6 +42,28 @@ namespace BlockEditor.Models
             }
         }
 
+        public int? Width
+        {
+            get
+            {
+                if(!IsComplete())
+                    return null;
+
+                return Start.Value.X - End.Value.X;
+            }
+        }
+
+        public int? Height
+        {
+            get
+            {
+                if (!IsComplete())
+                    return null;
+
+                return Start.Value.Y - End.Value.Y;
+            }
+        }
+
         public bool IsInside(MyPoint? p)
         {
             if(p == null)
