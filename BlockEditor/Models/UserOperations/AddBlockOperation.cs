@@ -48,13 +48,13 @@ namespace BlockEditor.Models
             }
             else
             {
-                if (_map.Blocks.GetBlock(_block.Position).IsEmpty())
+                if (_block.IsEmpty())
                     return false;
 
                 _map.Blocks.Delete(_block);
 
                 if(!_oldBlock.IsEmpty())
-                    _map.Blocks.Add(_block);
+                    _map.Blocks.Add(_oldBlock);
             }
 
             return true;
