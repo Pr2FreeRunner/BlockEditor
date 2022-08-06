@@ -8,31 +8,37 @@
 
         public int ID { get; set; }
 
-        public string BlockOptions { get; set; }
+        public string Options { get; set; }
 
 
         public SimpleBlock(int id)
         {
             ID = id;
             Position = null;
-            BlockOptions = string.Empty;
+            Options = string.Empty;
         }
 
         public SimpleBlock(int id, MyPoint p)
         {
             ID = id;
             Position = p;
-            BlockOptions = string.Empty;
+            Options = string.Empty;
         }
 
         public SimpleBlock(int id, int x, int y)
         {
             ID = id;
             Position = new MyPoint(x, y);
-            BlockOptions = string.Empty;
+            Options = string.Empty;
 
         }
 
+        public SimpleBlock(int id, int x, int y, string options)
+        {
+            ID = id;
+            Position = new MyPoint(x, y);
+            Options = options;
+        }
 
         public bool IsEmpty()
         {

@@ -25,7 +25,7 @@ namespace BlockEditor.Helpers
                 posX += b.X;
                 posY += b.Y;
 
-                blocks.Add(new SimpleBlock(b.Id, new MyPoint(posX, posY)));
+                blocks.Add(new SimpleBlock(b.Id, posX, posY, b.Options));
             }
 
             return blocks;
@@ -52,7 +52,7 @@ namespace BlockEditor.Helpers
                 previousX = b.Position.Value.X;
                 previousY = b.Position.Value.Y;
 
-                var block = new Block(x, y, b.ID, string.Empty);
+                var block = new Block(x, y, b.ID, b.Options);
                 pr2Blocks.Add(block);
             }
 
