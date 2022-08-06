@@ -36,24 +36,31 @@ namespace BlockEditor.Views.Windows
 
         public void ShowNextToClick()
         {
+            var topControlHeight = 100;
             var mainWindow = App.Current.MainWindow;
             var startPos   = mainWindow.PointToScreen(Mouse.GetPosition(mainWindow));
 
             var marginX    = 50;
             var marginY    = 150;
 
-            var posX = startPos.X - marginX - this.Width;
+            var height = double.IsNaN(this.Height) ? this.MinHeight : this.Height;
+            var width  = double.IsNaN(this.Width)  ? this.MinWidth : this.Width;
+
+            var posX = startPos.X - marginX - width;
             var posY = startPos.Y - marginY;
 
 
-            if(posX < 0)
-                posX = 0;
+            var underflowX = posX - mainWindow.Left;
+            var underflowY = posY - mainWindow.Top - topControlHeight;
 
-            if(posY < 0)
-                posY = 0;
+            if (underflowX < 0)
+                posX -= underflowX - marginX;
 
-            var overflowX = posX + this.Width  - mainWindow.Width;
-            var overflowY = posY + this.Height - mainWindow.Height;
+            if(underflowY < 0)
+                posY -= underflowY - marginY;
+
+            var overflowX = posX + width  - mainWindow.Width;
+            var overflowY = posY + height - mainWindow.Height;
 
             if (overflowX > 0)
                 posX -= overflowX + marginX;

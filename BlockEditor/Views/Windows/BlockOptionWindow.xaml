@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Height="230"
+        SizeToContent="Height"
+        MinHeight="240"
         Width="250"
         WindowStyle="None"
         WindowStartupLocation="CenterOwner"
@@ -33,11 +34,11 @@
                 
                 <TextBlock FontSize="{StaticResource DefaultFontSize}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="99" FontWeight="SemiBold" VerticalAlignment="Center" Text="Position" Margin="0,0,5,0" />
                 <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <TextBlock Text="X=" HorizontalAlignment="Left" FontSize="{StaticResource DefaultFontSize}"/>
+                    <TextBlock Text="X = " HorizontalAlignment="Left" FontSize="{StaticResource DefaultFontSize}"/>
                     <TextBlock x:Name="lblPosX" Text="100" FontWeight="SemiBold" HorizontalAlignment="Left" FontSize="{StaticResource DefaultFontSize}"/>
                 </StackPanel>
                 <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <TextBlock  Text="Y=" HorizontalAlignment="Left" FontSize="{StaticResource DefaultFontSize}"/>
+                    <TextBlock  Text="Y = " HorizontalAlignment="Left" FontSize="{StaticResource DefaultFontSize}"/>
                     <TextBlock x:Name="lblPosY" Text="100" FontWeight="SemiBold" HorizontalAlignment="Left" FontSize="{StaticResource DefaultFontSize}"/>
                 </StackPanel>
             </Grid>
