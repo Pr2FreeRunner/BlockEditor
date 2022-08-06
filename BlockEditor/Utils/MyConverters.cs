@@ -25,9 +25,7 @@ namespace BlockEditor.Helpers
                 posX += b.X;
                 posY += b.Y;
 
-                var pos = new MyPoint(posX, posY);
-
-                blocks.Add(pos, b.Id);
+                blocks.Add(new SimpleBlock(b.Id, new MyPoint(posX, posY)));
             }
 
             return blocks;
@@ -46,7 +44,7 @@ namespace BlockEditor.Helpers
 
             foreach (var b in allBlocks)
             {
-                if (b?.Position == null)
+                if (b.IsEmpty())
                     continue;
 
                 var x     = b.Position.Value.X - previousX;

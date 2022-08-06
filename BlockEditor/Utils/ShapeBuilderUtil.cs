@@ -107,9 +107,9 @@ namespace BlockEditor.Utils
             }
             else
             {
-                var currentId = map.Blocks.GetBlockId(x, y);
+                var currentBlock = map.Blocks.GetBlock(x, y);
 
-                if (currentId == null)
+                if (currentBlock.IsEmpty())
                     result.Add(new SimpleBlock(id, x, y));
             }
         }

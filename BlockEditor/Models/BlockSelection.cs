@@ -16,6 +16,7 @@ namespace BlockEditor.Models
 
         public event Action OnSelectionClick;
 
+
         private int?[,] _selectedBlocks;
         private readonly object _lock = new object();
         public int?[,] SelectedBlocks

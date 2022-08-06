@@ -5,33 +5,31 @@ namespace BlockEditor.Models
     public class AddBlockOperation : IUserOperation
     {
         private readonly Map _map;
-        private readonly MyPoint _point;
-        private readonly int _blockID;
+        private readonly SimpleBlock _block;
         private MyPoint? _oldPosition;
-        private int? _oldId;
+        private SimpleBlock _oldBlock;
 
 
-        public AddBlockOperation(Map map, int blockID, MyPoint p)
+        public AddBlockOperation(Map map, SimpleBlock b)
         {
             _map = map;
-            _point = p;
-            _blockID = blockID;
+            _block = b;
         }
 
         public bool Execute()
         {
-            if(_map?.Blocks == null)
+            if(_map?.Blocks == null || _block.IsEmpty())
                 return false;
 
-            _oldId = _map.Blocks.GetBlockId(_point);
+            _oldBlock = _map.Blocks.GetBlock(_block.Position);
 
-            if (_oldId == _blockID)
+            if (!_oldBlock.IsEmpty() && _oldBlock.ID == _block.ID)
                 return false;
 
-            if (Block.IsStartBlock(_blockID))
-                _oldPosition = _map.Blocks.StartBlocks.GetPosition(_blockID);
+            if (Block.IsStartBlock(_block.ID))
+                _oldPosition = _map.Blocks.StartBlocks.GetPosition(_block.ID);
 
-            _map?.Blocks.Add(_point, _blockID);
+            _map?.Blocks.Add(_block);
 
             return true;
         }
@@ -41,22 +39,22 @@ namespace BlockEditor.Models
             if (_map?.Blocks == null)
                 return false;
 
-            if (Block.IsStartBlock(_blockID))
+            if (Block.IsStartBlock(_block.ID))
             {
                 if(_oldPosition == null)
                     return false;
 
-                _map.Blocks.Add(_oldPosition.Value, _blockID); 
+                _map.Blocks.Add(_oldBlock); 
             }
             else
             {
-                if (_map.Blocks.GetBlockId(_point) == null)
+                if (_map.Blocks.GetBlock(_block.Position).IsEmpty())
                     return false;
 
-                _map.Blocks.Delete(_point);
+                _map.Blocks.Delete(_block);
 
-                if(_oldId != null)
-                    _map.Blocks.Add(_point, _oldId.Value);
+                if(!_oldBlock.IsEmpty())
+                    _map.Blocks.Add(_block);
             }
 
             return true;

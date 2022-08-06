@@ -38,7 +38,12 @@ namespace BlockEditor.Models
             {
                 for (int x = start.X; x < end.X; x++)
                 {
-                    selection[x - start.X, y - start.Y] = map.Blocks.GetBlockId(x, y);
+                    var b = map.Blocks.GetBlock(x, y);
+
+                    if(b.IsEmpty())
+                        continue;
+
+                    selection[x - start.X, y - start.Y] = b.ID;
                 }
             }
 

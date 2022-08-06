@@ -182,7 +182,7 @@ namespace BlockEditor.Helpers
             var lowerLimit = new MyPoint(0, 0);
             var upperLimit = new MyPoint(Blocks.SIZE, Blocks.SIZE);
             var visited    = new List<MyPoint>();
-            var startId    = map.Blocks.GetBlockId(startPoint);
+            var startBlock = map.Blocks.GetBlock(startPoint);
             var maxBlocks  = Blocks.LIMIT - map.Blocks.BlockCount;
 
             while (blocks.Count > 0)
@@ -190,7 +190,7 @@ namespace BlockEditor.Helpers
                 var point = blocks.Pop();
 
                 if(maxBlocks <= result.Count)
-                    throw new MyExceptions("Operation Canceled" + Environment.NewLine + Environment.NewLine);
+                    throw new BlockLimitException("Operation Canceled" + Environment.NewLine + Environment.NewLine);
 
                 if(visited.Contains(point))
                     continue;
@@ -203,9 +203,9 @@ namespace BlockEditor.Helpers
                 if (point.Y < lowerLimit.Y && point.Y >= upperLimit.Y)
                     continue;
 
-                var currentId = map.Blocks.GetBlockId(point.X, point.Y);
+                var currentBlock = map.Blocks.GetBlock(point.X, point.Y);
 
-                if (currentId != startId)
+                if (currentBlock.ID != startBlock.ID)
                     continue;
 
                 result.Add(new SimpleBlock(id, point));

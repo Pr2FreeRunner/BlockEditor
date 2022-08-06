@@ -204,9 +204,9 @@ namespace BlockEditor.ViewModels
 
                     using(new TempCursor(Cursors.Wait)) 
                     {
-                        var startId = Game.Map.Blocks.GetBlockId(index);
+                        var b = Game.Map.Blocks.GetBlock(index);
 
-                        if(startId != null && !Game.Map.Blocks.Overwrite)
+                        if(!b.IsEmpty() && !Game.Map.Blocks.Overwrite)
                             throw new OverwriteException();
 
                         Game.AddBlocks(MapUtil.GetFloodFill(Game.Map, index, selectedId.Value));

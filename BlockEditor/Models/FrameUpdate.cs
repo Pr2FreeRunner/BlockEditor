@@ -80,38 +80,41 @@ namespace BlockEditor.Models
             {
                 for (int x = minBlockX; x < minBlockX + blockCountX; x++)
                 {
-                    var id = _game.Map.Blocks.GetBlockId(x, y);
+                    var block = _game.Map.Blocks.GetBlock(x, y);
 
-                    DrawBlock(id, x, y, false);
+                    if(block.IsEmpty())
+                        continue;
+
+                    DrawBlock(block, false);
                 }
             }
 
             foreach (var startBlock in _game.Map.Blocks.StartBlocks.GetBlocks())
             {
-                if (startBlock?.Position == null)
+                if (startBlock.IsEmpty())
                     continue;
 
-                var x = startBlock.Position.Value.X;
-                var y = startBlock.Position.Value.Y;
-
-                DrawBlock(startBlock.ID, x, y, true);
+                DrawBlock(startBlock, true);
             }
         }
 
-        private void DrawBlock(int? id, int x, int y, bool semiTrans)
+        private void DrawBlock(SimpleBlock b, bool semiTrans)
         {
-            var block = BlockImages.GetImageBlock(_game.Map.BlockSize, id);
-
-            if (block == null)
+            if(b.IsEmpty())
                 return;
 
-            var posX = x * _game.Map.BlockPixelSize - _game.Camera.Position.X;
-            var posY = y * _game.Map.BlockPixelSize - _game.Camera.Position.Y;
+            var image = BlockImages.GetImageBlock(_game.Map.BlockSize, b.ID);
+            
+            if (image == null)
+                return;
+
+            var posX = b.Position.Value.X * _game.Map.BlockPixelSize - _game.Camera.Position.X;
+            var posY = b.Position.Value.Y * _game.Map.BlockPixelSize - _game.Camera.Position.Y;
 
             if(semiTrans)
-                _game.GameImage.DrawTransperentImage(_graphics, block.SemiTransparentBitmap, posX, posY);
+                _game.GameImage.DrawTransperentImage(_graphics, image.SemiTransparentBitmap, posX, posY);
             else
-                _game.GameImage.DrawImage(ref block.Bitmap, posX, posY);
+                _game.GameImage.DrawImage(ref image.Bitmap, posX, posY);
         }
 
         private void DrawSelectedBlock()

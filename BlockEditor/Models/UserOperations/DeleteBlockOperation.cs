@@ -5,9 +5,9 @@
         private readonly AddBlockOperation _add;
 
 
-        public DeleteBlockOperation(Map map, int blockID, MyPoint p)
+        public DeleteBlockOperation(Map map, SimpleBlock b)
         {
-            _add = new AddBlockOperation(map, blockID, p);
+            _add = new AddBlockOperation(map, b);
         }
 
         public bool Execute()

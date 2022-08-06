@@ -9,125 +9,168 @@ namespace BlockEditor.Models
         public const int SIZE = 2_000;
         public const int LIMIT = 50_000;
 
-        private int?[,] _blocks;
+        private SimpleBlock[,] _blocks;
 
         public bool Overwrite { get; set; }
         public int BlockCount;
+
         public UniqueBlocks StartBlocks { get; }
+
 
         public Blocks()
         {
-            _blocks       = new int?[SIZE, SIZE];
+            _blocks = new SimpleBlock[SIZE, SIZE];
             StartBlocks = new UniqueBlocks();
-            Overwrite      = true;
+            Overwrite = true;
         }
 
-        private bool IsPositionOccupied(MyPoint p)
+
+        private bool IsPositionOccupied(SimpleBlock b)
         {
-            if (_blocks[p.X, p.Y] != null)
+            if (b.IsEmpty())
+                return false;
+
+            var x = b.Position.Value.X;
+            var y = b.Position.Value.Y;
+
+            if (!_blocks[x, y].IsEmpty())
             {
                 if (!Overwrite)
                     return true;
 
-                Delete(p);
+                Delete(b);
             }
 
             return false;
         }
 
-        public int? GetBlockId(int x, int y)
+        public SimpleBlock GetBlock(int x, int y)
         {
-            if(x < 0 || y < 0)
-                return null;
+            if (x < 0 || y < 0)
+                return SimpleBlock.None;
 
-            if(x >= SIZE || y >= SIZE)
-                return null;
+            if (x >= SIZE || y >= SIZE)
+                return SimpleBlock.None;
 
-            return _blocks[x, y];
+            var block = _blocks[x, y];
+
+            if (block.IsEmpty())
+                return SimpleBlock.None;
+
+            return block;
         }
 
-        public int? GetBlockId(MyPoint? point)
+        public SimpleBlock GetBlock(MyPoint? point)
         {
-            if(point == null)
-                return null;
+            if (point == null)
+                return new SimpleBlock();
 
-            return GetBlockId(point.Value.X, point.Value.Y);
+            return GetBlock(point.Value.X, point.Value.Y);
         }
 
 
-        public void Add(MyPoint p, int id)
+        public void Add(SimpleBlock block)
         {
-            if(p.X < 0 || p.Y < 0)
+            if (block.Position == null)
                 return;
 
-            if(p.X >= SIZE || p.Y >= (SIZE - 1))
-                return;       
+            if (block.Position.Value.X < 0 || block.Position.Value.Y < 0)
+                return;
 
-            if(Block.IsStartBlock(id))
-            { 
-                AddStartBlock(p, id);
+            if (block.Position.Value.X >= SIZE || block.Position.Value.Y >= (SIZE - 1))
+                return;
+
+            if (Block.IsStartBlock(block.ID))
+            {
+                AddStartBlock(block);
             }
             else
             {
-                if (!IsPositionOccupied(p))
-                {
-                    if(BlockCount >= LIMIT)
-                        throw new MyExceptions();
-
-                    _blocks[p.X, p.Y] = id;
-                    BlockCount++;
-                }
-            }
-        }
-
-        private void AddStartBlock(MyPoint p, int blockid)
-        {
-            foreach (var startBlock in StartBlocks.GetBlocks())
-            {
-                if(blockid != startBlock.ID)
-                    continue;
-
-                if(startBlock.Position == null)
+                if (!IsPositionOccupied(block))
                 {
                     if (BlockCount >= LIMIT)
-                        throw new MyExceptions();
+                        throw new BlockLimitException();
 
+                    _blocks[block.Position.Value.X, block.Position.Value.Y] = block;
                     BlockCount++;
                 }
-
-                startBlock.Position = p;
-                return;
             }
         }
 
-        public void Delete(MyPoint p)
+        private void AddStartBlock(SimpleBlock b)
         {
-            if(GetBlockId(p.X, p.Y) != null)
+            if (b.IsEmpty())
+                return;
+
+            void IncreaseBlockCount(SimpleBlock startBlock)
+            {
+                if (startBlock.IsEmpty())
+                {
+                    if (BlockCount >= LIMIT)
+                        throw new BlockLimitException();
+
+                    BlockCount++;
+                }
+            }
+
+            var nr = b.ID - Block.START_BLOCK_P1 + 1;
+
+            if (nr == 1)
+            {
+                IncreaseBlockCount(StartBlocks.Player1);
+                StartBlocks.Player1 = b;
+            }
+            else if (nr == 2)
+            {
+                IncreaseBlockCount(StartBlocks.Player2);
+                StartBlocks.Player2 = b;
+            }
+            else if (nr == 3)
+            {
+                IncreaseBlockCount(StartBlocks.Player3);
+                StartBlocks.Player3 = b;
+            }
+            else if (nr == 4)
+            {
+                IncreaseBlockCount(StartBlocks.Player4);
+                StartBlocks.Player4 = b;
+            }
+        }
+
+        public void Delete(SimpleBlock block)
+        {
+            if (block.Position == null)
+                return;
+
+            var x = block.Position.Value.X;
+            var y = block.Position.Value.Y;
+
+            if (!GetBlock(x, y).IsEmpty())
                 BlockCount--;
 
-            _blocks[p.X, p.Y] = null;
+            _blocks[x, y] = new SimpleBlock();
         }
 
         public MyPoint? GetStartPosition()
         {
-            return StartBlocks?.Player1?.Position;
+            return StartBlocks?.Player1.Position;
         }
 
         public IEnumerable<SimpleBlock> GetBlocks()
         {
-            if(_blocks == null)
+            if (_blocks == null)
                 yield break;
 
             for (int x = 0; x < SIZE; x++)
             {
                 for (int y = 0; y < SIZE; y++)
                 {
-                    var id = _blocks[x, y];
+                    var block = _blocks[x, y];
 
-                    if(id == null)
+                    if (block.IsEmpty())
                         continue;
 
-                    yield return new SimpleBlock(id.Value, new MyPoint(x, y));
+                    yield return block;
                 }
             }
 

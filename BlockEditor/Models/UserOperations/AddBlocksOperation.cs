@@ -68,10 +68,10 @@ namespace BlockEditor.Models
         {
             foreach (var block in _blocks)
             {
-                if (block?.Position == null)
+                if (block.IsEmpty())
                     continue;
 
-                var op = new AddBlockOperation(_map, block.ID, block.Position.Value);
+                var op = new AddBlockOperation(_map, block);
                 var ok = undo ? op.Undo() : op.Execute();
 
                 if (ok)
