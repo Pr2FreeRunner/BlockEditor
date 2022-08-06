@@ -40,5 +40,23 @@ namespace BlockEditor.Models
             return null;
         }
 
+        public SimpleBlock GetBlock(MyPoint? p)
+        {
+            if(p == null)
+                return SimpleBlock.None;
+
+            foreach(var startBlock in GetBlocks())
+            {
+                if(startBlock.IsEmpty())
+                    continue;
+
+                if(startBlock.Position != p.Value)
+                    continue;
+
+                return startBlock;
+            }
+            return SimpleBlock.None;
+        }
+
     }
 }

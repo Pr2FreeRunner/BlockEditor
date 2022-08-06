@@ -17,7 +17,7 @@
     <Border CornerRadius="20" BorderThickness="2" VerticalAlignment="Top" BorderBrush="{StaticResource StandardBorderBrush}" Background="{StaticResource StandardBackground}">
         <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="10" >
            
-            <Border HorizontalAlignment="Center" BorderThickness="3" BorderBrush="Black" CornerRadius="2">
+            <Border HorizontalAlignment="Center" BorderThickness="2" BorderBrush="Black" CornerRadius="2">
                 <Image Name="BlockImage" Width="60" Height="60" />
             </Border>
             <TextBlock FontSize="16" x:Name="lblBlockName" FontWeight="Bold" Text="Block Name" HorizontalAlignment="Center" Margin="0,3,0,0"/>
@@ -44,7 +44,7 @@
             </Grid>
 
             <TextBlock FontWeight="SemiBold" FontSize="{StaticResource DefaultFontSize}" Text="Options:" HorizontalAlignment="Left" Margin="10,10,10,0"/>
-            <TextBox  Name="optionTextbox" Margin="10,1,10,10" FontSize="{StaticResource DefaultFontSize}"/>
+            <TextBox  TextChanged="optionTextbox_TextChanged" Name="optionTextbox" Margin="10,1,10,10" FontSize="{StaticResource DefaultFontSize}"/>
 
         </StackPanel>
     </Border>

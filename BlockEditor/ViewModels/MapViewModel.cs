@@ -210,7 +210,7 @@ namespace BlockEditor.ViewModels
                     if(p == null)
                         break;
 
-                    new BlockOptionWindow(Game.Map.Blocks.GetBlock(index), index).ShowNextToClick();
+                    new BlockOptionWindow(Game.Map, index).ShowNextToClick();
                     break;
 
                 case UserMode.Fill:

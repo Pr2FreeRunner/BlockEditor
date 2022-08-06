@@ -40,6 +40,13 @@
             Options = options;
         }
 
+        public SimpleBlock(int id, MyPoint p, string options)
+        {
+            ID = id;
+            Position = p;
+            Options = options;
+        }
+
         public bool IsEmpty()
         {
             return Position == null;

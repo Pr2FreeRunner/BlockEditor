@@ -12,30 +12,53 @@ namespace BlockEditor.Views.Windows
 
         private readonly CultureInfo _culture = CultureInfo.InvariantCulture;
         private bool isClosing;
+        private bool _validInput;
+        private SimpleBlock _block;
+        private readonly Map _map;
+        private readonly string _originalBlockOption;
 
-        public BlockOptionWindow(SimpleBlock block, MyPoint? index = null)
+        public BlockOptionWindow(Map map, MyPoint? index)
         {
             InitializeComponent();
 
-            if (block.IsEmpty())
+            if(map == null || index == null)
+                return;
+
+             _validInput = true;
+            _map = map;
+            Init(index.Value);
+            _originalBlockOption = _block.Options;
+        }
+
+        private void Init(MyPoint index)
+        {
+            _block = _map.Blocks.StartBlocks.GetBlock(index);
+
+            if (_block.IsEmpty())
+                _block = _map.Blocks.GetBlock(index);
+
+            if (_block.IsEmpty())
             {
                 lblBlockName.Text = "None";
-                lblPosX.Text = index.HasValue ? index.Value.X.ToString(_culture) : "";
-                lblPosY.Text = index.HasValue ? index.Value.Y.ToString(_culture) : "";
+                lblPosX.Text = index.X.ToString(_culture);
+                lblPosY.Text = index.Y.ToString(_culture);
                 optionTextbox.Text = string.Empty;
             }
             else
             {
-                BlockImage.Source = BlockImages.GetImageBlock(BlockImages.BlockSize.Zoom150, block.ID).Image;
-                lblBlockName.Text = Block.GetBlockName(block.ID);
-                lblPosX.Text = block.Position.Value.X.ToString(_culture);
-                lblPosY.Text = block.Position.Value.Y.ToString(_culture);
-                optionTextbox.Text = block.Options ?? string.Empty;
+                BlockImage.Source  = BlockImages.GetImageBlock(BlockImages.BlockSize.Zoom150, _block.ID).Image;
+                lblBlockName.Text  = Block.GetBlockName(_block.ID);
+                lblPosX.Text       = _block.Position.Value.X.ToString(_culture);
+                lblPosY.Text       = _block.Position.Value.Y.ToString(_culture);
+                optionTextbox.Text = _block.Options ?? string.Empty;
             }
         }
 
         public void ShowNextToClick()
         {
+            if(!_validInput)
+                return;
+
             var topControlHeight = 100;
             var mainWindow = App.Current.MainWindow;
             var startPos   = mainWindow.PointToScreen(Mouse.GetPosition(mainWindow));
@@ -91,6 +114,20 @@ namespace BlockEditor.Views.Windows
         {
             if(e.Key == Key.Escape)
                 CloseWindow();
+        }
+
+        private void optionTextbox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            var text = optionTextbox.Text;
+
+            if (text == null || _block.IsEmpty())
+                return;
+
+            var useOption = !string.Equals(text, _originalBlockOption, StringComparison.CurrentCultureIgnoreCase);
+
+            var b = new SimpleBlock(_block.ID, _block.Position.Value, useOption ? text : string.Empty);
+            _map.Blocks.Add(b);
+
         }
     }
 }
