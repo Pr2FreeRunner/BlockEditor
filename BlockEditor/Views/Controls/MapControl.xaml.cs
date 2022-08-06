@@ -154,6 +154,11 @@ namespace BlockEditor.Views.Controls
                     if (ViewModel.SelectCommand.CanExecute(null))
                         ViewModel.SelectCommand.Execute(null);
                 }
+                else if (e.Key == Key.B)
+                {
+                    if (ViewModel.BlockInfoCommand.CanExecute(null))
+                        ViewModel.BlockInfoCommand.Execute(null);
+                }
                 else if (e.Key == Key.G)
                 {
                     if (ViewModel.StartPositionCommand.CanExecute(null))
@@ -161,8 +166,8 @@ namespace BlockEditor.Views.Controls
                 }
                 else if (e.Key == Key.A)
                 {
-                    if (ViewModel.AddShapeComand.CanExecute(null))
-                        ViewModel.AddShapeComand.Execute(null);
+                    if (ViewModel.AddShapeCommand.CanExecute(null))
+                        ViewModel.AddShapeCommand.Execute(null);
                 }
                 else if (e.Key == Key.O)
                 {

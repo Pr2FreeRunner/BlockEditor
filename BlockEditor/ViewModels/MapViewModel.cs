@@ -7,6 +7,7 @@ using System.Windows.Media.Imaging;
 using BlockEditor.Helpers;
 using BlockEditor.Models;
 using BlockEditor.Utils;
+using BlockEditor.Views.Windows;
 using LevelModel.Models.Components;
 using static BlockEditor.Models.BlockImages;
 
@@ -30,6 +31,7 @@ namespace BlockEditor.ViewModels
                 RaisePropertyChanged(nameof(IsSelectionMode));
                 RaisePropertyChanged(nameof(IsFillMode));
                 RaisePropertyChanged(nameof(IsAddShapeMode));
+                RaisePropertyChanged(nameof(IsBlockInfoMode));
 
                 if (_mode != UserMode.Fill)
                     Mouse.OverrideCursor = null;
@@ -46,11 +48,9 @@ namespace BlockEditor.ViewModels
 
         public bool IsSelectionMode => Mode == UserMode.Selection;
         public bool IsAddShapeMode => Mode == UserMode.AddShape;
+        public bool IsFillMode => Mode == UserMode.Fill; 
+        public bool IsBlockInfoMode => Mode == UserMode.BlockInfo; 
 
-        public bool IsFillMode {
-            get { return Mode == UserMode.Fill; }
-            set { Mode = value ? UserMode.Fill : UserMode.None; }
-        }
         public bool IsOverwrite {
             get { return Game.Map?.Blocks?.Overwrite ?? false; }
             set { Game.Map.Blocks.Overwrite = value; RaisePropertyChanged(); }
@@ -59,8 +59,8 @@ namespace BlockEditor.ViewModels
         public RelayCommand StartPositionCommand { get; }
         public RelayCommand FillCommand { get; }
         public RelayCommand SelectCommand { get; }
-        public RelayCommand AddShapeComand { get; }
-
+        public RelayCommand AddShapeCommand { get; }
+        public RelayCommand BlockInfoCommand { get; }
 
 
         public MapViewModel(Action cleanBlockSelection)
@@ -72,7 +72,8 @@ namespace BlockEditor.ViewModels
             StartPositionCommand = new RelayCommand((_) => Game.GoToStartPosition());
             FillCommand          = new RelayCommand((_) => OnFillClick());
             SelectCommand        = new RelayCommand((_) => OnSelectionClick());
-            AddShapeComand       = new RelayCommand((_) => OnAddShapeClick());
+            AddShapeCommand      = new RelayCommand((_) => OnAddShapeClick());
+            BlockInfoCommand     = new RelayCommand((_) => OnBlockInfoClick());
 
             BlockSelection.OnSelectionClick += OnSelectionClick;
             Game.Engine.OnFrame += OnFrameUpdate;
@@ -122,6 +123,19 @@ namespace BlockEditor.ViewModels
             }
         }
 
+        public void OnBlockInfoClick()
+        {
+            if (Mode != UserMode.BlockInfo)
+            {
+                BlockSelection?.Reset();
+                Mode = UserMode.BlockInfo;
+            }
+            else
+            {
+                Mode = UserMode.None;
+            }
+        }
+
         internal void OnSelectedBlockID(int? id)
         {
             BlockSelection.SelectedBlocks = null;
@@ -144,7 +158,6 @@ namespace BlockEditor.ViewModels
 
             RaisePropertyChanged(nameof(MapContent));
         }
-
 
         public void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -188,6 +201,16 @@ namespace BlockEditor.ViewModels
                         break;
 
                     Game.AddSelection(index, BlockSelection.SelectedBlocks);
+                    break;
+
+                case UserMode.BlockInfo:
+                    if (e.ChangedButton != MouseButton.Left)
+                        break;
+
+                    if(p == null)
+                        break;
+
+                    new BlockOptionWindow(Game.Map.Blocks.GetBlock(index), index).ShowNextToClick();
                     break;
 
                 case UserMode.Fill:

@@ -1,0 +1,50 @@
+﻿<Window x:Class="BlockEditor.Views.Windows.BlockOptionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Height="230"
+        Width="250"
+        WindowStyle="None"
+        WindowStartupLocation="CenterOwner"
+        AllowsTransparency="True" 
+        Background="Transparent"
+        Deactivated="Window_Deactivated"
+        PreviewKeyDown="Window_PreviewKeyDown">
+
+    <Border CornerRadius="20" BorderThickness="2" VerticalAlignment="Top" BorderBrush="{StaticResource StandardBorderBrush}" Background="{StaticResource StandardBackground}">
+        <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="10" >
+           
+            <Border HorizontalAlignment="Center" BorderThickness="3" BorderBrush="Black" CornerRadius="2">
+                <Image Name="BlockImage" Width="60" Height="60" />
+            </Border>
+            <TextBlock FontSize="16" x:Name="lblBlockName" FontWeight="Bold" Text="Block Name" HorizontalAlignment="Center" Margin="0,3,0,0"/>
+  
+            <Grid Margin="10, 20, 10, 5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock FontSize="{StaticResource DefaultFontSize}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="99" FontWeight="SemiBold" VerticalAlignment="Center" Text="Position" Margin="0,0,5,0" />
+                <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Orientation="Horizontal">
+                    <TextBlock Text="X=" HorizontalAlignment="Left" FontSize="{StaticResource DefaultFontSize}"/>
+                    <TextBlock x:Name="lblPosX" Text="100" FontWeight="SemiBold" HorizontalAlignment="Left" FontSize="{StaticResource DefaultFontSize}"/>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Orientation="Horizontal">
+                    <TextBlock  Text="Y=" HorizontalAlignment="Left" FontSize="{StaticResource DefaultFontSize}"/>
+                    <TextBlock x:Name="lblPosY" Text="100" FontWeight="SemiBold" HorizontalAlignment="Left" FontSize="{StaticResource DefaultFontSize}"/>
+                </StackPanel>
+            </Grid>
+
+            <TextBlock FontWeight="SemiBold" FontSize="{StaticResource DefaultFontSize}" Text="Options:" HorizontalAlignment="Left" Margin="10,10,10,0"/>
+            <TextBox  Name="optionTextbox" Margin="10,1,10,10" FontSize="{StaticResource DefaultFontSize}"/>
+
+        </StackPanel>
+    </Border>
+</Window>
