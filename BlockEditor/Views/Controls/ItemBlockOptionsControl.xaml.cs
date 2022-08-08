@@ -1,4 +1,5 @@
-﻿using LevelModel.Models.Components;
+﻿using BlockEditor.Utils;
+using LevelModel.Models.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace BlockEditor.Views.Controls
         private readonly List<CheckBox> _checkboxes = new List<CheckBox>();
 
         public event Action<string> OnBlockOptionChanged;
+        public event Action<List<Item>> OnItemChanged;
+
 
         public ItemBlockOptionsControl()
         {
@@ -27,6 +30,20 @@ namespace BlockEditor.Views.Controls
         public void SetColumnCount(int count)
         {
             ItemGrid.Columns = count;
+        }
+
+        public void SetItems(List<Item> items)
+        {
+            foreach (var cb in _checkboxes)
+            {
+                if (cb == null)
+                    continue;
+
+                if (!(cb.Tag is int id))
+                    continue;
+
+                cb.IsChecked = items.Any(i => i.ID == id);
+            }
         }
 
         public void SetBlockOptions(string input)
@@ -80,6 +97,7 @@ namespace BlockEditor.Views.Controls
             var builder = new StringBuilder();
             var separator = "-";
             var first = true;
+            var items = new List<Item>();
 
             foreach(var cb in _checkboxes)
             {
@@ -91,10 +109,16 @@ namespace BlockEditor.Views.Controls
                 else
                     builder.Append(separator);
 
+                if(!(cb.Tag is int id))
+                    continue;
+
+                var item = new Item(id);
+                items.Add(item);
                 builder.Append(cb.Tag);
             }
 
             OnBlockOptionChanged?.Invoke(builder.ToString());
+            OnItemChanged?.Invoke(items);
         }
 
         public IEnumerable<Item> GetItems()

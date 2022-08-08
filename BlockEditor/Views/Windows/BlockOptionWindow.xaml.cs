@@ -14,7 +14,6 @@ namespace BlockEditor.Views.Windows
 
         private readonly CultureInfo _culture = CultureInfo.InvariantCulture;
         private bool isClosing;
-        private bool _validInput;
         private SimpleBlock _block;
         private readonly Map _map;
         private readonly string _originalBlockOption;
@@ -27,7 +26,6 @@ namespace BlockEditor.Views.Windows
                 return;
 
             MyUtils.SetPopUpWindowPosition(this);
-            _validInput = true;
             _map = map;
             Init(index.Value);
             _originalBlockOption = _block.Options;

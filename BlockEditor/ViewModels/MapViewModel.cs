@@ -147,10 +147,14 @@ namespace BlockEditor.ViewModels
             if (Mode != UserMode.MapInfo)
             {
                 BlockSelection?.Reset();
-                Mode = UserMode.MapInfo;
-                new MapInfoWindow().Show();
-                Mode = UserMode.None;
 
+                if(Game.Map == null)
+                    return;
+
+                Mode = UserMode.MapInfo;
+                var w = new MapInfoWindow(Game.Map);
+                w.Closing += (s, e) =>  { if(Mode == UserMode.MapInfo) Mode = UserMode.None; };
+                w.Show();
             }
             else
             {

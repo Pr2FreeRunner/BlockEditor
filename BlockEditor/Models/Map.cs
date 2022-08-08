@@ -4,6 +4,7 @@ using Converters;
 using Converters.DataStructures.DTO;
 using LevelModel.Models;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 using static BlockEditor.Models.BlockImages;
@@ -13,6 +14,7 @@ namespace BlockEditor.Models
     public class Map
     {
 
+        public Level Backend { get; }
 
         public Blocks Blocks { get; }
 
@@ -20,17 +22,13 @@ namespace BlockEditor.Models
         {
             get
             {
-                if (_backend.BackgroundColor != null)
-                    return ColorTranslator.FromHtml("#" + _backend.BackgroundColor);
+                if (Backend.BackgroundColor != null)
+                    return ColorTranslator.FromHtml("#" + Backend.BackgroundColor);
                 else
                     return Color.Black;
             }
         }
 
-        public string Title { 
-            get => _backend.Title;
-            set => _backend.Title = value;
-        }
 
         private BlockSize _blockSize;
         public BlockSize BlockSize
@@ -49,34 +47,33 @@ namespace BlockEditor.Models
         public int BlockPixelSize; 
 
 
-        private readonly Level _backend;
 
         public Map()
         {
-            _backend  = GetDefaultLevel();
-            Title     = string.Empty;
-            Blocks    = MyConverters.ToBlocks(_backend.Blocks);
+            Backend  = GetDefaultLevel();
+            Backend.Title = string.Empty;
+            Blocks    = MyConverters.ToBlocks(Backend.Blocks);
             BlockSize = BlockImages.DEFAULT_BLOCK_SIZE;
         }
 
         public Map(Level level)
         {
-            _backend   = level ?? GetDefaultLevel();
-            Title      = _backend?.Title ?? string.Empty;
-            Blocks     = MyConverters.ToBlocks(_backend.Blocks);
+            Backend = level ?? GetDefaultLevel();
+            Backend.Title = Backend?.Title ?? string.Empty;
+            Blocks = MyConverters.ToBlocks(Backend.Blocks);
         }
 
         public string ToPr2String(string username, string token, bool publish = false, bool overwrite = false)
         {
-            _backend.Blocks = MyConverters.ToPr2Blocks(Blocks);
-            _backend.Published = publish;
+            Backend.Blocks = MyConverters.ToPr2Blocks(Blocks);
+            Backend.Published = publish;
 
             if (username == null || token == null)
                 throw new ArgumentNullException("user");
 
             var dto = new ToPr2DTO()
             {
-                Level = _backend,
+                Level = Backend,
                 Username = username,
                 Token = token,
                 OverWrite = overwrite
