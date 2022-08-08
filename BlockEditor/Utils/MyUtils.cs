@@ -28,6 +28,11 @@ namespace BlockEditor.Utils
             return int.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out result);
         }
 
+        public static bool TryParseDouble(string input, out double result)
+        {
+            return double.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out result);
+        }
+
         public static void SetPopUpWindowPosition(Window w)
         {
             var window = App.Current?.MainWindow as MainWindow;
@@ -36,8 +41,8 @@ namespace BlockEditor.Utils
                 return;
 
            
-            var padddingX = window.Left + 100;
-            var padddingY = window.Top + window.Height / 4;
+            var padddingX = window.Left + 60;
+            var padddingY = window.Top + window.Height / 5;
 
             w.Left = padddingX;
             w.Top = padddingY;

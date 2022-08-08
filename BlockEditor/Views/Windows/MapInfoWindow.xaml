@@ -9,9 +9,8 @@
         WindowStyle="None"
         Width="415"
         SizeToContent="Height"
-        Topmost="True"
-        Deactivated="Window_Deactivated"
-        PreviewKeyDown="Window_PreviewKeyDown">
+        PreviewKeyDown="Window_PreviewKeyDown"
+        Closing="Window_Closing">
     
     <Border Background="{StaticResource LightBackground}" 
             BorderBrush="{StaticResource StandardBorderColor}"
@@ -19,18 +18,38 @@
             CornerRadius="15"
             VerticalAlignment="Center">
         <StackPanel Orientation="Vertical" Margin="10" VerticalAlignment="Center">
-            <Label Content="Map Info" Margin="0" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
-         
-            <Label Content="Title:" Margin="0,-10,0,0" FontWeight="SemiBold"/>
+            <Grid>
+                <Button Style="{StaticResource CloseBtn}" Click="CloseButton_Click" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+
+                <Label Content="Map Info" Margin="0" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
+            </Grid>
+            
+            <Label Content="Title:" Margin="0,-15,0,0" FontWeight="SemiBold"/>
             <TextBox x:Name="tbtTitle" Margin="4,0,0,0" TextChanged="Title_TextChanged" FontSize="{StaticResource DefaultFontSize}" />
             
-            <Label Margin="0,15,0,0" FontWeight="SemiBold" Content="Time:"/>
+            <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Time:"/>
             <TextBox x:Name="tbTime" Margin="4,0,0,0" TextChanged="Time_TextChanged" PreviewTextInput="Integer_PreviewTextInput" FontSize="{StaticResource DefaultFontSize}"  />
             
-            <Label Margin="0,15,0,0" FontWeight="SemiBold" Content="Chance of Cowboy:"/>
+            <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Chance of Cowboy:"/>
             <TextBox Margin="4,0,0,0" x:Name="tbCowboy" TextChanged="CowboyHat_TextChanged" PreviewTextInput="Integer_PreviewTextInput" FontSize="{StaticResource DefaultFontSize}"  />
 
-            <Label Margin="0,15,0,0" FontWeight="SemiBold" Content="Items:"/>
+            <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Rank:"/>
+            <TextBox Margin="4,0,0,0" x:Name="tbRank" TextChanged="Rank_TextChanged" PreviewTextInput="Integer_PreviewTextInput" FontSize="{StaticResource DefaultFontSize}"  />
+
+            <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Gravity:"/>
+            <TextBox Margin="4,0,0,0" x:Name="tbGravity" TextChanged="Gravity_TextChanged" PreviewTextInput="Double_PreviewTextInput" FontSize="{StaticResource DefaultFontSize}"  />
+
+            <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Game Mode:"/>
+            <ComboBox Margin="4,0,0,0" x:Name="tbMode" SelectionChanged="Mode_TextChanged" FontSize="{StaticResource DefaultFontSize}">
+                <ComboBoxItem Content="Race"/>
+                <ComboBoxItem Content="Deathmatch"/>
+                <ComboBoxItem Content="Objective"/>
+                <ComboBoxItem Content="Aliens Eggs"/>
+                <ComboBoxItem Content="Hat Attack"/>
+            </ComboBox>
+
+
+            <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Items:"/>
             <local:ItemBlockOptionsControl x:Name="ItemBlockOptionsControl" HorizontalAlignment="Stretch" Height="auto"/>
 
 

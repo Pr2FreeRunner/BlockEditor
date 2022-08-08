@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using BlockEditor.Views.Windows;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 
 namespace BlockEditor.Models
@@ -9,6 +11,12 @@ namespace BlockEditor.Models
 
         public static void Add(Window w)
         {
+            if (w is BlockOptionWindow)
+                RemoveWindows(_windows.Where(w => w is BlockOptionWindow));
+
+            if (w is MapInfoWindow)
+                RemoveWindows(_windows.Where(w => w is MapInfoWindow));
+
             _windows.Add(w);
         }
 
@@ -17,7 +25,7 @@ namespace BlockEditor.Models
             _windows.Remove(w);
         }
 
-        private static void RemoveBrokenWindows(List<Window> windows)
+        private static void RemoveWindows(IEnumerable<Window> windows, bool close = false)
         {
             if(windows == null)
                 return;
@@ -27,6 +35,9 @@ namespace BlockEditor.Models
                 try
                 {
                     Remove(w);
+
+                    if(close)
+                        w.Close();
                 }
                 catch { }
             }
@@ -50,7 +61,7 @@ namespace BlockEditor.Models
                 }
             }
 
-            RemoveBrokenWindows(broken);
+            RemoveWindows(broken);
         }
 
     }

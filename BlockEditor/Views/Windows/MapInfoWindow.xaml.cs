@@ -12,7 +12,6 @@ namespace BlockEditor.Views.Windows
 {
     public partial class MapInfoWindow : Window
     {
-        private bool _isClosing;
         private Map _map;
 
         public MapInfoWindow(Map map)
@@ -23,6 +22,7 @@ namespace BlockEditor.Views.Windows
             if(map == null)
                 throw new ArgumentException("map");
 
+            OpenWindows.Add(this);
             MyUtils.SetPopUpWindowPosition(this);
             Init();
             ItemBlockOptionsControl.OnItemChanged += OnItemBlockOptionChanged;
@@ -33,6 +33,10 @@ namespace BlockEditor.Views.Windows
             tbtTitle.Text = _map.Backend.Title;
             tbTime.Text = _map.Backend.MaxTime.ToString(CultureInfo.InvariantCulture);
             tbCowboy.Text = _map.Backend.CowboyChance.ToString(CultureInfo.InvariantCulture);
+            tbRank.Text = _map.Backend.RankLimit.ToString(CultureInfo.InvariantCulture);
+            tbGravity.Text = _map.Backend.Gravity.ToString(CultureInfo.InvariantCulture);
+            tbMode.Text = _map.Backend.GameMode?.FullName ?? string.Empty;
+
             ItemBlockOptionsControl.SetItems(_map.Backend.Items);
         }
 
@@ -50,6 +54,17 @@ namespace BlockEditor.Views.Windows
             var fullText  = textBox.Text.Insert(textBox.SelectionStart, e.Text);
             var culture   = CultureInfo.InvariantCulture;
             bool isInteger = !int.TryParse(fullText, NumberStyles.Integer, culture, out var result);
+
+            e.Handled = isInteger && result >= 0;
+        }
+
+
+        private void Double_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            var fullText = textBox.Text.Insert(textBox.SelectionStart, e.Text);
+            var culture = CultureInfo.InvariantCulture;
+            bool isInteger = !double.TryParse(fullText, NumberStyles.Any, culture, out var result);
 
             e.Handled = isInteger && result >= 0;
         }
@@ -96,24 +111,57 @@ namespace BlockEditor.Views.Windows
             //_map.Backend.BackgroundColor = tb.Text;
         }
 
-        private void CloseWindow()
-        {
-            if (_isClosing)
-                return;
-
-            _isClosing = true;
-            Close();
-        }
-
-        private void Window_Deactivated(object sender, EventArgs e)
-        {
-            CloseWindow();
-        }
-
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
-                CloseWindow();
+                Close();
+        }
+
+        private void Rank_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var tb = sender as TextBox;
+
+            if (tb == null)
+                return;
+
+            if (MyUtils.TryParse(tb.Text, out var result))
+                _map.Backend.RankLimit = result;
+        }
+
+        private void Gravity_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var tb = sender as TextBox;
+
+            if (tb == null)
+                return;
+
+            if (MyUtils.TryParseDouble(tb.Text, out var result))
+                _map.Backend.Gravity = result;
+        }
+
+        private void Mode_TextChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var text = ((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Content as string;
+
+            if (text == null)
+                return;
+
+            var g = new GameMode(text);
+
+            if (string.IsNullOrWhiteSpace(g.FullName))
+                return;
+
+            _map.Backend.GameMode = g;
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            OpenWindows.Remove(this);
         }
     }
 }

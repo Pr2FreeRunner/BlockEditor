@@ -14,10 +14,9 @@ namespace BlockEditor.Views.Windows
     {
 
         private readonly CultureInfo _culture = CultureInfo.InvariantCulture;
-        private bool isClosing;
         private readonly SimpleBlock _block;
         private readonly Map _map;
-        private readonly string _mapBlockOption;
+        private readonly string _mapItemOptions;
 
         public BlockOptionWindow(Map map, MyPoint? index)
         {
@@ -26,10 +25,12 @@ namespace BlockEditor.Views.Windows
             if (map == null || index == null)
                 return;
 
+
             _map = map;
             _block = GetBlock(index.Value);
-            _mapBlockOption = ItemBlockOptionsControl.GetOptions(map.Backend.Items.Select(i => i.ID));
+            _mapItemOptions = ItemBlockOptionsControl.GetOptions(map.Backend.Items.Select(i => i.ID));
 
+            OpenWindows.Add(this);
             MyUtils.SetPopUpWindowPosition(this);
             Init(index.Value);
         }
@@ -59,7 +60,7 @@ namespace BlockEditor.Views.Windows
                 lblPosX.Text       = _block.Position.Value.X.ToString(_culture);
                 lblPosY.Text       = _block.Position.Value.Y.ToString(_culture);
 
-                if(_block.ID == Block.ITEM_BLUE || _block.ID == Block.ITEM_RED)
+                if(_block.IsItem())
                 {
                     var c = new ItemBlockOptionsControl();
 
@@ -75,6 +76,7 @@ namespace BlockEditor.Views.Windows
                 else
                 {
                     var c = new BlockOptionsControl();
+                    c.SetBlockOptions(_block.Options);
                     c.Margin = new Thickness(10, 0, 10, 20);
                     c.OnBlockOptionChanged += OnOptionsChanged;
                     OptionPanel.Children.Add(c);
@@ -83,24 +85,15 @@ namespace BlockEditor.Views.Windows
         }
 
 
-        private void CloseWindow()
-        {
-            if(isClosing)
-                return;
-
-            isClosing = true;
-            Close();
-        }
-
         private void Window_Deactivated(object sender, EventArgs e)
         {
-            CloseWindow();
+            Close();
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Escape)
-                CloseWindow();
+                Close();
         }
 
         private void OnOptionsChanged(string text)
@@ -108,11 +101,22 @@ namespace BlockEditor.Views.Windows
             if (text == null || _block.IsEmpty())
                 return;
 
-            var useOption = !string.Equals(text, _mapBlockOption, StringComparison.CurrentCultureIgnoreCase);
+            var ignoreOption = _block.IsItem() && string.Equals(text, _mapItemOptions, StringComparison.CurrentCultureIgnoreCase);
 
-            var b = new SimpleBlock(_block.ID, _block.Position.Value, useOption ? text : string.Empty);
+            var b = new SimpleBlock(_block.ID, _block.Position.Value, ignoreOption ? string.Empty : text);
             _map.Blocks.Add(b);
 
+        }
+
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            OpenWindows.Remove(this);
         }
     }
 }

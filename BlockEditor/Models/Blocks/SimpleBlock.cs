@@ -1,4 +1,7 @@
-﻿namespace BlockEditor.Models
+﻿using LevelModel.Models.Components;
+using System;
+
+namespace BlockEditor.Models
 {
     public struct SimpleBlock
     {
@@ -50,6 +53,14 @@
         public bool IsEmpty()
         {
             return Position == null;
+        }
+
+        internal bool IsItem()
+        {
+            if(IsEmpty())
+                return false;
+
+            return ID == Block.ITEM_BLUE || ID == Block.ITEM_RED;
         }
     }
 }

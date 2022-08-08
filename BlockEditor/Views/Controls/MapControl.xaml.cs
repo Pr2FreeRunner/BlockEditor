@@ -107,7 +107,7 @@ namespace BlockEditor.Views.Controls
             }
         }
 
-        private void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
+        public void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             try
             {

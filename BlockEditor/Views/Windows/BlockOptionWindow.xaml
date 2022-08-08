@@ -10,15 +10,19 @@
         WindowStartupLocation="CenterOwner"
         AllowsTransparency="True" 
         Background="Transparent"
-        Deactivated="Window_Deactivated"
-        PreviewKeyDown="Window_PreviewKeyDown">
+        PreviewKeyDown="Window_PreviewKeyDown"
+        Closing="Window_Closing">
 
     <Border CornerRadius="15" BorderThickness="2" VerticalAlignment="Top" BorderBrush="{StaticResource StandardBorderBrush}" Background="{StaticResource StandardBackground}">
         <StackPanel x:Name="OptionPanel" Orientation="Vertical" VerticalAlignment="Top" Margin="10" >
-           
-            <Border HorizontalAlignment="Center" BorderThickness="2" BorderBrush="Black" CornerRadius="2">
-                <Image Name="BlockImage" Width="60" Height="60" />
-            </Border>
+            <Grid>
+                <Button Style="{StaticResource CloseBtn}" Click="CloseButton_Click" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                
+                <Border HorizontalAlignment="Center" BorderThickness="2" BorderBrush="Black" CornerRadius="2">
+                    <Image Name="BlockImage" Width="60" Height="60" />
+                </Border>
+            </Grid>
+
             <TextBlock FontSize="16" x:Name="lblBlockName" FontWeight="Bold" Text="Block Name" HorizontalAlignment="Center" Margin="0,3,0,0"/>
 
             <Grid Margin="10, 20, 10, 5">

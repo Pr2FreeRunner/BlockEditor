@@ -28,5 +28,10 @@ namespace BlockEditor.Views.Windows
         {
             OpenWindows.ShowAll();
         }
+
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            MyMapControl.UserControl_PreviewKeyDown(sender, e);
+        }
     }
 }

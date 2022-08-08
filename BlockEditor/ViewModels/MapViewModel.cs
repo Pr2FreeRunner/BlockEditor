@@ -154,7 +154,7 @@ namespace BlockEditor.ViewModels
                 Mode = UserMode.MapInfo;
                 var w = new MapInfoWindow(Game.Map);
                 w.Closing += (s, e) =>  { if(Mode == UserMode.MapInfo) Mode = UserMode.None; };
-                w.Show();
+                w.ShowDialog();
             }
             else
             {
@@ -236,7 +236,7 @@ namespace BlockEditor.ViewModels
                     if(p == null)
                         break;
 
-                    new BlockOptionWindow(Game.Map, index).Show();
+                    new BlockOptionWindow(Game.Map, index).ShowDialog();
                     break;
 
                 case UserMode.Fill:
