@@ -20,6 +20,8 @@ namespace BlockEditor.Utils
         {
             switch (size)
             {
+                case BlockSize.Zoom5: return (int)(DEFAULT_BLOCK_SIZE * 0.05);
+
                 case BlockSize.Zoom10: return (int)(DEFAULT_BLOCK_SIZE * 0.10);
 
                 case BlockSize.Zoom25: return (int)(DEFAULT_BLOCK_SIZE * 0.25);
@@ -28,7 +30,11 @@ namespace BlockEditor.Utils
 
                 case BlockSize.Zoom75: return (int)(DEFAULT_BLOCK_SIZE * 0.75);
 
+                case BlockSize.Zoom90: return (int)(DEFAULT_BLOCK_SIZE * 0.90);
+
                 case BlockSize.Zoom100: return (int)(DEFAULT_BLOCK_SIZE * 1.00);
+                
+                case BlockSize.Zoom110: return (int)(DEFAULT_BLOCK_SIZE * 1.10);
 
                 case BlockSize.Zoom125: return (int)(DEFAULT_BLOCK_SIZE * 1.25);
 

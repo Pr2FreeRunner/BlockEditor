@@ -63,7 +63,7 @@ namespace BlockEditor.ViewModels
 
         private bool ZoomOutCanExecute(object obj)
         {
-            return Zoom > BlockSize.Zoom10;
+            return Zoom > BlockSize.Zoom5;
         }
 
         private bool ZoomInCanExecute(object obj)
