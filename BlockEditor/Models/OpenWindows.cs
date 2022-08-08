@@ -34,10 +34,9 @@ namespace BlockEditor.Models
 
         public static void ShowAll()
         {
-            var count  = _windows.Count;
             var broken = new List<Window>();
 
-            for (int i = count - 1; i >= 0; i--)
+            for (int i = 0; i < _windows.Count; i++)
             {
                 var w = _windows[i];
 
