@@ -159,7 +159,7 @@ namespace BlockEditor.Views.Controls
                 {
                     ViewModel.BlockSelection.RotateRight();
                 }
-                else if (e.Key == Key.S && ViewModel.Mode != UserMode.Selection)
+                else if (e.Key == Key.S)
                 {
                     if (ViewModel.SelectCommand.CanExecute(null))
                         ViewModel.SelectCommand.Execute(null);

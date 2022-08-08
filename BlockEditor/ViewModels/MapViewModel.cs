@@ -35,7 +35,7 @@ namespace BlockEditor.ViewModels
                 RaisePropertyChanged(nameof(IsMapInfoMode));
 
 
-                if (_mode != UserMode.Fill)
+                if (_mode != UserMode.Fill || _mode != UserMode.BlockInfo)
                     Mouse.OverrideCursor = null;
             }
         }
@@ -135,9 +135,11 @@ namespace BlockEditor.ViewModels
             {
                 BlockSelection?.Reset();
                 Mode = UserMode.BlockInfo;
+                Mouse.OverrideCursor = Cursors.Cross;
             }
             else
             {
+                Mouse.OverrideCursor = null;
                 Mode = UserMode.None;
             }
         }
@@ -236,7 +238,8 @@ namespace BlockEditor.ViewModels
                     if(p == null)
                         break;
 
-                    new BlockOptionWindow(Game.Map, index).ShowDialog();
+                    using(new TempCursor(null))
+                        new BlockOptionWindow(Game.Map, index).ShowDialog();
                     break;
 
                 case UserMode.Fill:

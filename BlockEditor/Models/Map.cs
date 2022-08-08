@@ -6,7 +6,7 @@ using LevelModel.Models;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-
+using System.Linq;
 using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Models
@@ -63,8 +63,14 @@ namespace BlockEditor.Models
         public Map(Level level)
         {
             Level = level ?? GetDefaultLevel();
-            Level.Title = Level?.Title ?? string.Empty;
             Blocks = MyConverters.ToBlocks(Level.Blocks);
+
+            var s = "";
+
+            foreach(var h in level.BadHats)
+                s += h.ToString() + " ";
+
+            MessageUtil.ShowInfo(s);
         }
 
 

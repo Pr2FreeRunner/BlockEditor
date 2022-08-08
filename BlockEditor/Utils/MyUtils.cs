@@ -40,7 +40,6 @@ namespace BlockEditor.Utils
             if(window == null)
                 return;
 
-           
             var padddingX = window.Left + 60;
             var padddingY = window.Top + window.Height / 5;
 
