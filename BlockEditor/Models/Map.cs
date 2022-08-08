@@ -22,10 +22,17 @@ namespace BlockEditor.Models
         {
             get
             {
-                if (Backend.BackgroundColor != null)
-                    return ColorTranslator.FromHtml("#" + Backend.BackgroundColor);
-                else
+                try 
+                { 
+                    if (Backend.BackgroundColor != null)
+                        return ColorTranslator.FromHtml("#" + Backend.BackgroundColor);
+                    else
+                        return Color.Black;
+                }
+                catch
+                {
                     return Color.Black;
+                }
             }
         }
 
