@@ -6,6 +6,7 @@ using BlockEditor.Models;
 using LevelModel.Models.Components;
 using BlockEditor.Utils;
 using BlockEditor.Views.Controls;
+using System.Linq;
 
 namespace BlockEditor.Views.Windows
 {
@@ -14,9 +15,9 @@ namespace BlockEditor.Views.Windows
 
         private readonly CultureInfo _culture = CultureInfo.InvariantCulture;
         private bool isClosing;
-        private SimpleBlock _block;
+        private readonly SimpleBlock _block;
         private readonly Map _map;
-        private readonly string _originalBlockOption;
+        private readonly string _mapBlockOption;
 
         public BlockOptionWindow(Map map, MyPoint? index)
         {
@@ -25,19 +26,26 @@ namespace BlockEditor.Views.Windows
             if (map == null || index == null)
                 return;
 
-            MyUtils.SetPopUpWindowPosition(this);
             _map = map;
+            _block = GetBlock(index.Value);
+            _mapBlockOption = ItemBlockOptionsControl.GetOptions(map.Backend.Items.Select(i => i.ID));
+
+            MyUtils.SetPopUpWindowPosition(this);
             Init(index.Value);
-            _originalBlockOption = _block.Options;
+        }
+
+        private SimpleBlock GetBlock(MyPoint index)
+        {
+            var block = _map.Blocks.StartBlocks.GetBlock(index);
+
+            if (block.IsEmpty())
+                block = _map.Blocks.GetBlock(index);
+
+            return block;
         }
 
         private void Init(MyPoint index)
         {
-            _block = _map.Blocks.StartBlocks.GetBlock(index);
-
-            if (_block.IsEmpty())
-                _block = _map.Blocks.GetBlock(index);
-
             if (_block.IsEmpty())
             {
                 lblBlockName.Text = "None";
@@ -54,6 +62,12 @@ namespace BlockEditor.Views.Windows
                 if(_block.ID == Block.ITEM_BLUE || _block.ID == Block.ITEM_RED)
                 {
                     var c = new ItemBlockOptionsControl();
+
+                    if(string.IsNullOrWhiteSpace(_block.Options))
+                        c.SetItems(_map.Backend.Items);
+                    else
+                        c.SetBlockOptions(_block.Options);
+
                     c.Margin = new Thickness(5,0,10,20);
                     c.OnBlockOptionChanged += OnOptionsChanged;
                     OptionPanel.Children.Add(c);
@@ -94,7 +108,7 @@ namespace BlockEditor.Views.Windows
             if (text == null || _block.IsEmpty())
                 return;
 
-            var useOption = !string.Equals(text, _originalBlockOption, StringComparison.CurrentCultureIgnoreCase);
+            var useOption = !string.Equals(text, _mapBlockOption, StringComparison.CurrentCultureIgnoreCase);
 
             var b = new SimpleBlock(_block.ID, _block.Position.Value, useOption ? text : string.Empty);
             _map.Blocks.Add(b);

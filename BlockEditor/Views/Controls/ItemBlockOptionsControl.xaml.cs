@@ -2,6 +2,7 @@
 using LevelModel.Models.Components;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -92,33 +93,41 @@ namespace BlockEditor.Views.Controls
             }
         }
 
-        private void Item_CheckedChange(object sender, RoutedEventArgs e)
+        public static string GetOptions(IEnumerable<int> items)
         {
             var builder = new StringBuilder();
             var separator = "-";
             var first = true;
-            var items = new List<Item>();
+
+            foreach (var id in items)
+            {
+                if (first)
+                    first = false;
+                else
+                    builder.Append(separator);
+
+                builder.Append(id.ToString(CultureInfo.InvariantCulture));
+            }
+
+            return builder.ToString();
+        }
+        private void Item_CheckedChange(object sender, RoutedEventArgs e)
+        {
+            var items = new List<int>();
 
             foreach(var cb in _checkboxes)
             {
                 if (cb?.IsChecked == null || cb.IsChecked == false)
                     continue;
 
-                if (first)
-                    first = false;
-                else
-                    builder.Append(separator);
-
                 if(!(cb.Tag is int id))
                     continue;
 
-                var item = new Item(id);
-                items.Add(item);
-                builder.Append(cb.Tag);
+                items.Add(id);
             }
 
-            OnBlockOptionChanged?.Invoke(builder.ToString());
-            OnItemChanged?.Invoke(items);
+            OnBlockOptionChanged?.Invoke(GetOptions(items));
+            OnItemChanged?.Invoke(items.Select(x => new Item(x)).ToList());
         }
 
         public IEnumerable<Item> GetItems()
