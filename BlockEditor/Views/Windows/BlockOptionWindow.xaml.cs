@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Windows.Input;
 using BlockEditor.Models;
 using LevelModel.Models.Components;
+using BlockEditor.Utils;
+using BlockEditor.Views.Controls;
 
 namespace BlockEditor.Views.Windows
 {
@@ -21,10 +23,11 @@ namespace BlockEditor.Views.Windows
         {
             InitializeComponent();
 
-            if(map == null || index == null)
+            if (map == null || index == null)
                 return;
 
-             _validInput = true;
+            MyUtils.SetPopUpWindowPosition(this);
+            _validInput = true;
             _map = map;
             Init(index.Value);
             _originalBlockOption = _block.Options;
@@ -42,7 +45,6 @@ namespace BlockEditor.Views.Windows
                 lblBlockName.Text = "None";
                 lblPosX.Text = index.X.ToString(_culture);
                 lblPosY.Text = index.Y.ToString(_culture);
-                optionTextbox.Text = string.Empty;
             }
             else
             {
@@ -50,51 +52,24 @@ namespace BlockEditor.Views.Windows
                 lblBlockName.Text  = Block.GetBlockName(_block.ID);
                 lblPosX.Text       = _block.Position.Value.X.ToString(_culture);
                 lblPosY.Text       = _block.Position.Value.Y.ToString(_culture);
-                optionTextbox.Text = _block.Options ?? string.Empty;
+
+                if(_block.ID == Block.ITEM_BLUE || _block.ID == Block.ITEM_RED)
+                {
+                    var c = new ItemBlockOptionsControl();
+                    c.Margin = new Thickness(5,0,10,20);
+                    c.OnBlockOptionChanged += OnOptionsChanged;
+                    OptionPanel.Children.Add(c);
+                }
+                else
+                {
+                    var c = new BlockOptionsControl();
+                    c.Margin = new Thickness(10, 0, 10, 20);
+                    c.OnBlockOptionChanged += OnOptionsChanged;
+                    OptionPanel.Children.Add(c);
+                }
             }
         }
 
-        public void ShowNextToClick()
-        {
-            if(!_validInput)
-                return;
-
-            var topControlHeight = 100;
-            var mainWindow = App.Current.MainWindow;
-            var startPos   = mainWindow.PointToScreen(Mouse.GetPosition(mainWindow));
-
-            var marginX    = 50;
-            var marginY    = 150;
-
-            var height = double.IsNaN(this.Height) ? this.MinHeight : this.Height;
-            var width  = double.IsNaN(this.Width)  ? this.MinWidth : this.Width;
-
-            var posX = startPos.X - marginX - width;
-            var posY = startPos.Y - marginY;
-
-
-            var underflowX = posX - mainWindow.Left;
-            var underflowY = posY - mainWindow.Top - topControlHeight;
-
-            if (underflowX < 0)
-                posX -= underflowX - marginX;
-
-            if(underflowY < 0)
-                posY -= underflowY - marginY;
-
-            var overflowX = posX + width  - mainWindow.Width;
-            var overflowY = posY + height - mainWindow.Height;
-
-            if (overflowX > 0)
-                posX -= overflowX + marginX;
-
-            if (overflowY > 0)
-                posY -= overflowY + marginY;
-
-            this.Left = posX;
-            this.Top  = posY;
-            Show();
-        }
 
         private void CloseWindow()
         {
@@ -116,10 +91,8 @@ namespace BlockEditor.Views.Windows
                 CloseWindow();
         }
 
-        private void optionTextbox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void OnOptionsChanged(string text)
         {
-            var text = optionTextbox.Text;
-
             if (text == null || _block.IsEmpty())
                 return;
 

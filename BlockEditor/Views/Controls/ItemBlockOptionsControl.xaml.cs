@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace WpfApp3
+namespace BlockEditor.Views.Controls
 {
 
     public partial class ItemBlockOptionsControl : UserControl
@@ -65,6 +65,7 @@ namespace WpfApp3
                 cb.Content = item.Name;
                 cb.Tag = item.ID;
                 cb.FontSize = 14;
+                cb.HorizontalAlignment = HorizontalAlignment.Left;
                 cb.Margin = new Thickness(5);
                 cb.Checked   += Item_CheckedChange;
                 cb.Unchecked += Item_CheckedChange;

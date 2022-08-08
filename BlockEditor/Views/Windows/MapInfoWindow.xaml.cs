@@ -1,25 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BlockEditor.Utils;
+using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
-namespace WpfApp3
+namespace BlockEditor.Views.Windows
 {
     public partial class MapInfoWindow : Window
     {
+        private bool _isClosing;
+
         public MapInfoWindow()
         {
             InitializeComponent();
+            MyUtils.SetPopUpWindowPosition(this);
             ItemBlockOptionsControl.OnBlockOptionChanged += OnBlockOptionChanged;
         }
 
@@ -60,6 +55,26 @@ namespace WpfApp3
         private void Background_TextChanged(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private void CloseWindow()
+        {
+            if (_isClosing)
+                return;
+
+            _isClosing = true;
+            Close();
+        }
+
+        private void Window_Deactivated(object sender, EventArgs e)
+        {
+            CloseWindow();
+        }
+
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+                CloseWindow();
         }
     }
 }

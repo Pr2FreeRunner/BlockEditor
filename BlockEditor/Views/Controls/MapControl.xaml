@@ -46,6 +46,7 @@
                 </Grid>
                 <ToggleButton IsChecked="{Binding IsAddShapeMode, Mode=OneWay}" Margin="5,7,5,7" Width="40" Content="&#9638;"  FontSize="25" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding AddShapeCommand}" ToolTip="Add Shape&#x0a;Hotkey:  A"/>
                 <ToggleButton IsChecked="{Binding IsBlockInfoMode, Mode=OneWay}" Margin="5,7,5,7" Width="40" Content="&#128712;"  FontSize="25" FontFamily="Segoe UI" Command="{Binding BlockInfoCommand}" ToolTip="Show Block Info&#x0a;Hotkey:  B"/>
+                <ToggleButton IsChecked="{Binding IsMapInfoMode,   Mode=OneWay}" Margin="5,7,5,7" Width="40" Content="&#8505;"    FontSize="21" FontFamily="Segoe UI" Command="{Binding MapInfoCommand}" ToolTip="Show Map Info&#x0a;Hotkey:  M"/>
 
 
                 <CheckBox IsChecked="{Binding IsOverwrite, Mode=TwoWay}" Margin="50,7,25,7" Height="25" VerticalContentAlignment="Center" Width="100" Content="Overwrite"  FontSize="15" FontWeight="SemiBold" FontFamily="Segoe UI" ToolTip="Overwrite block&#x0a;Hotkey:  O"/>

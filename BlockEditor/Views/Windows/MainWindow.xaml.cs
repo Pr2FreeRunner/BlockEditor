@@ -13,13 +13,13 @@ namespace BlockEditor.Views.Windows
 
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
-            MapControl.ViewModel.Game.Engine.Pause = false;
+            MyMapControl.ViewModel.Game.Engine.Pause = false;
             base.OnPreviewGotKeyboardFocus(e);
         }
 
         protected override void OnLostKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
-            MapControl.ViewModel.Game.Engine.Pause = true;
+            MyMapControl.ViewModel.Game.Engine.Pause = true;
             base.OnLostKeyboardFocus(e);
         }
     }

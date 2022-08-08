@@ -164,6 +164,11 @@ namespace BlockEditor.Views.Controls
                     if (ViewModel.StartPositionCommand.CanExecute(null))
                         ViewModel.StartPositionCommand.Execute(null);
                 }
+                else if (e.Key == Key.M)
+                {
+                    if (ViewModel.MapInfoCommand.CanExecute(null))
+                        ViewModel.MapInfoCommand.Execute(null);
+                }
                 else if (e.Key == Key.A)
                 {
                     if (ViewModel.AddShapeCommand.CanExecute(null))

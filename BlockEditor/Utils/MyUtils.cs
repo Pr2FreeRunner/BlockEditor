@@ -1,4 +1,5 @@
 ﻿using BlockEditor.Models;
+using BlockEditor.Views.Windows;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
@@ -27,5 +28,19 @@ namespace BlockEditor.Utils
             return int.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out result);
         }
 
+        public static void SetPopUpWindowPosition(Window w)
+        {
+            var window = App.Current?.MainWindow as MainWindow;
+
+            if(window == null)
+                return;
+
+           
+            var padddingX = window.Left + 100;
+            var padddingY = window.Top + window.Height / 4;
+
+            w.Left = padddingX;
+            w.Top = padddingY;
+        }
     }
 }

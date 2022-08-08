@@ -32,6 +32,8 @@ namespace BlockEditor.ViewModels
                 RaisePropertyChanged(nameof(IsFillMode));
                 RaisePropertyChanged(nameof(IsAddShapeMode));
                 RaisePropertyChanged(nameof(IsBlockInfoMode));
+                RaisePropertyChanged(nameof(IsMapInfoMode));
+
 
                 if (_mode != UserMode.Fill)
                     Mouse.OverrideCursor = null;
@@ -49,7 +51,9 @@ namespace BlockEditor.ViewModels
         public bool IsSelectionMode => Mode == UserMode.Selection;
         public bool IsAddShapeMode => Mode == UserMode.AddShape;
         public bool IsFillMode => Mode == UserMode.Fill; 
-        public bool IsBlockInfoMode => Mode == UserMode.BlockInfo; 
+        public bool IsBlockInfoMode => Mode == UserMode.BlockInfo;
+        public bool IsMapInfoMode => Mode == UserMode.MapInfo;
+
 
         public bool IsOverwrite {
             get { return Game.Map?.Blocks?.Overwrite ?? false; }
@@ -61,6 +65,7 @@ namespace BlockEditor.ViewModels
         public RelayCommand SelectCommand { get; }
         public RelayCommand AddShapeCommand { get; }
         public RelayCommand BlockInfoCommand { get; }
+        public RelayCommand MapInfoCommand { get; }
 
 
         public MapViewModel(Action cleanBlockSelection)
@@ -74,6 +79,7 @@ namespace BlockEditor.ViewModels
             SelectCommand        = new RelayCommand((_) => OnSelectionClick());
             AddShapeCommand      = new RelayCommand((_) => OnAddShapeClick());
             BlockInfoCommand     = new RelayCommand((_) => OnBlockInfoClick());
+            MapInfoCommand       = new RelayCommand((_) => OnMapInfoClick());
 
             BlockSelection.OnSelectionClick += OnSelectionClick;
             Game.Engine.OnFrame += OnFrameUpdate;
@@ -129,6 +135,22 @@ namespace BlockEditor.ViewModels
             {
                 BlockSelection?.Reset();
                 Mode = UserMode.BlockInfo;
+            }
+            else
+            {
+                Mode = UserMode.None;
+            }
+        }
+
+        public void OnMapInfoClick()
+        {
+            if (Mode != UserMode.MapInfo)
+            {
+                BlockSelection?.Reset();
+                Mode = UserMode.MapInfo;
+                new MapInfoWindow().Show();
+                Mode = UserMode.None;
+
             }
             else
             {
@@ -210,7 +232,7 @@ namespace BlockEditor.ViewModels
                     if(p == null)
                         break;
 
-                    new BlockOptionWindow(Game.Map, index).ShowNextToClick();
+                    new BlockOptionWindow(Game.Map, index).Show();
                     break;
 
                 case UserMode.Fill:

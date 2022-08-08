@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         SizeToContent="Height"
-        MinHeight="240"
-        Width="250"
+        MinHeight="250"
+        Width="340"
         WindowStyle="None"
         WindowStartupLocation="CenterOwner"
         AllowsTransparency="True" 
@@ -14,14 +14,14 @@
         Deactivated="Window_Deactivated"
         PreviewKeyDown="Window_PreviewKeyDown">
 
-    <Border CornerRadius="20" BorderThickness="2" VerticalAlignment="Top" BorderBrush="{StaticResource StandardBorderBrush}" Background="{StaticResource StandardBackground}">
-        <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="10" >
+    <Border CornerRadius="15" BorderThickness="2" VerticalAlignment="Top" BorderBrush="{StaticResource StandardBorderBrush}" Background="{StaticResource StandardBackground}">
+        <StackPanel x:Name="OptionPanel" Orientation="Vertical" VerticalAlignment="Top" Margin="10" >
            
             <Border HorizontalAlignment="Center" BorderThickness="2" BorderBrush="Black" CornerRadius="2">
                 <Image Name="BlockImage" Width="60" Height="60" />
             </Border>
             <TextBlock FontSize="16" x:Name="lblBlockName" FontWeight="Bold" Text="Block Name" HorizontalAlignment="Center" Margin="0,3,0,0"/>
-  
+
             <Grid Margin="10, 20, 10, 5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
@@ -31,8 +31,8 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-                
-                <TextBlock FontSize="{StaticResource DefaultFontSize}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="99" FontWeight="SemiBold" VerticalAlignment="Center" Text="Position" Margin="0,0,5,0" />
+
+                <TextBlock FontSize="{StaticResource DefaultFontSize}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="99" FontWeight="SemiBold" VerticalAlignment="Center" Text="Position:" Margin="0,0,15,0" />
                 <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Orientation="Horizontal">
                     <TextBlock Text="X = " HorizontalAlignment="Left" FontSize="{StaticResource DefaultFontSize}"/>
                     <TextBlock x:Name="lblPosX" Text="100" FontWeight="SemiBold" HorizontalAlignment="Left" FontSize="{StaticResource DefaultFontSize}"/>
@@ -41,11 +41,9 @@
                     <TextBlock  Text="Y = " HorizontalAlignment="Left" FontSize="{StaticResource DefaultFontSize}"/>
                     <TextBlock x:Name="lblPosY" Text="100" FontWeight="SemiBold" HorizontalAlignment="Left" FontSize="{StaticResource DefaultFontSize}"/>
                 </StackPanel>
+                
             </Grid>
-
-            <TextBlock FontWeight="SemiBold" FontSize="{StaticResource DefaultFontSize}" Text="Options:" HorizontalAlignment="Left" Margin="10,10,10,0"/>
-            <TextBox  TextChanged="optionTextbox_TextChanged" Name="optionTextbox" Margin="10,1,10,10" FontSize="{StaticResource DefaultFontSize}"/>
-
+            <TextBlock Margin="10,20,0,0" FontWeight="SemiBold" FontSize="{StaticResource DefaultFontSize}" Text="Block Options:"/>
         </StackPanel>
     </Border>
 </Window>
