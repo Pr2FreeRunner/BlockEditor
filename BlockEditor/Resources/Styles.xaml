@@ -75,7 +75,7 @@
 
     <Style x:Key="CloseBtn" TargetType="{x:Type Button}">
         <Setter Property="BorderBrush" Value="{StaticResource StandardBorderBrush}"/>
-        <Setter Property="Background" Value="Red"/>
+        <Setter Property="Background" Value="#ec2c2c"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Width" Value="22"/>
         <Setter Property="FontWeight" Value="SemiBold"/>

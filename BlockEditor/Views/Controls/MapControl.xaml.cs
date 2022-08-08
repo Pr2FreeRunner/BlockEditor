@@ -126,6 +126,16 @@ namespace BlockEditor.Views.Controls
                 {
                     ViewModel.Game.UserOperations.Redo();
                 }
+                else if (ctrl && e.Key == Key.OemPlus)
+                {
+                    if(ZoomControl.ViewModel.ZoomInCommand.CanExecute(null))
+                        ZoomControl.ViewModel.ZoomInCommand.Execute(null);
+                }
+                else if (ctrl && e.Key == Key.OemMinus)
+                {
+                    if (ZoomControl.ViewModel.ZoomOutCommand.CanExecute(null))
+                        ZoomControl.ViewModel.ZoomOutCommand.Execute(null);
+                }
                 else if (IsSelectionKey(e, ctrl))
                 {
                     var startPoint = ViewModel.BlockSelection.UserSelection.MapRegion.Start;
