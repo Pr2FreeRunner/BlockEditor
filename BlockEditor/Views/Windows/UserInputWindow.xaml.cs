@@ -25,6 +25,8 @@ namespace BlockEditor.Views.Windows
             Title = title;
             txtResponse.Text = defaultValue;
             UpdateButtons();
+
+            OpenWindows.Add(this);
         }
 
         void PromptDialog_Loaded(object sender, RoutedEventArgs e)
@@ -81,6 +83,11 @@ namespace BlockEditor.Views.Windows
         private void txtResponse_TextChanged(object sender, TextChangedEventArgs e)
         {
             UpdateButtons();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            OpenWindows.Remove(this);
         }
     }
 }

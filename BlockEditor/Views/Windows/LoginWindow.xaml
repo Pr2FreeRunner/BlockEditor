@@ -11,7 +11,8 @@
         MinHeight="100"
         WindowStyle="SingleBorderWindow"
         ResizeMode="NoResize"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        Closing="Window_Closing">
 
     <Grid Margin="00, 20, 0, 15">
         <Grid.RowDefinitions>

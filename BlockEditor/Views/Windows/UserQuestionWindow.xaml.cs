@@ -16,6 +16,9 @@ namespace BlockEditor.Views.Windows
             this.Title = title;
             btnCancel.Visibility = showCancel ? Visibility.Visible : Visibility.Collapsed;
             _result = QuestionResult.Cancel;
+
+
+            OpenWindows.Add(this);
         }
 
         public static QuestionResult Show(string text, string title, bool showCancel = true)
@@ -53,5 +56,9 @@ namespace BlockEditor.Views.Windows
             Close();
         }
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            OpenWindows.Remove(this);
+        }
     }
 }

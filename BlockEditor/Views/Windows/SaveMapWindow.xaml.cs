@@ -23,6 +23,8 @@ namespace BlockEditor.Views.Windows
             InitializeComponent();
             txtResponse.Text = MapTitle = map.Backend.Title;
             btnPr2.IsEnabled = CurrentUser.IsLoggedIn();
+
+            OpenWindows.Add(this);
         }
 
         private void btnPr2_Click(object sender, RoutedEventArgs e)
@@ -71,6 +73,11 @@ namespace BlockEditor.Views.Windows
         private void CheckBoxChanged(object sender, RoutedEventArgs e)
         {
             Publish = publishCheckBox.IsChecked.HasValue ? publishCheckBox.IsChecked.Value : false;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            OpenWindows.Remove(this);
         }
     }
 }

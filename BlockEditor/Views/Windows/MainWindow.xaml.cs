@@ -22,5 +22,10 @@ namespace BlockEditor.Views.Windows
             MyMapControl.ViewModel.Game.Engine.Pause = true;
             base.OnLostKeyboardFocus(e);
         }
+
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            OpenWindows.ShowAll();
+        }
     }
 }

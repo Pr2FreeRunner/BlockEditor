@@ -10,7 +10,8 @@
         MinWidth="400"
         MinHeight="100"
         WindowStyle="SingleBorderWindow"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Closing="Window_Closing">
 
     <Grid>
         <Grid.RowDefinitions>

@@ -17,6 +17,8 @@ namespace BlockEditor.Views.Windows
         {
             InitializeComponent();
             UpdateButton();
+
+            OpenWindows.Add(this);
         }
 
         private void UpdateButton()
@@ -82,6 +84,11 @@ namespace BlockEditor.Views.Windows
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             NameTextbox.Focus();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            OpenWindows.Remove(this);
         }
     }
 }

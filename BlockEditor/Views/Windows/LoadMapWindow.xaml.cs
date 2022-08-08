@@ -27,11 +27,13 @@ namespace BlockEditor.Views.Windows
         public Level SelectedLevel { get; private set; }
 
 
-        public LoadMapWindow()
+        public LoadMapWindow() 
         {
             InitializeComponent();
             AddSearchByItems();
             UpdateButtons();
+
+            OpenWindows.Add(this);
         }
 
 
@@ -273,7 +275,13 @@ namespace BlockEditor.Views.Windows
             OnSelectedLevel(level.LevelID);
         }
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            OpenWindows.Remove(this);
+        }
+
         #endregion
+
 
     }
 }

@@ -15,6 +15,8 @@ namespace BlockEditor.Views.Windows
             InitializeComponent();
             Result = fallback;
             FillCheckbox.IsChecked = fill;
+
+            OpenWindows.Add(this);
         }
 
         private void btnRectangle_Click(object sender, RoutedEventArgs e)
@@ -63,6 +65,11 @@ namespace BlockEditor.Views.Windows
         private void FillCheckbox_Checked(object sender, RoutedEventArgs e)
         {
             Fill = !Fill;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            OpenWindows.Remove(this);
         }
     }
 }

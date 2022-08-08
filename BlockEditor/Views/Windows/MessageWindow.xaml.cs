@@ -29,6 +29,8 @@ namespace BlockEditor.Views.Windows
                 this.Title = "Info";
             }
 
+
+            OpenWindows.Add(this);
         }
 
         public static void Show(string msg, MessageWindowType type)
@@ -46,6 +48,11 @@ namespace BlockEditor.Views.Windows
         {
             DialogResult = true;
             Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            OpenWindows.Remove(this);
         }
     }
 }

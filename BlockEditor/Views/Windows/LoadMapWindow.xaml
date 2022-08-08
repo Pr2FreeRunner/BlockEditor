@@ -8,7 +8,8 @@
         Title="Search"
         WindowStartupLocation="CenterScreen"
         PreviewKeyDown="Window_PreviewKeyDown"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        Closing="Window_Closing">
     
     <Grid Margin="20,20,20,5" Width="450">
         <Grid.RowDefinitions>

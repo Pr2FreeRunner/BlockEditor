@@ -6,7 +6,8 @@
         xmlns:myControls="clr-namespace:BlockEditor.Views.Controls"
         mc:Ignorable="d"
         WindowState="Maximized"
-        Title="Block Editor">
+        Title="Block Editor"
+        Activated="Window_Activated">
     <Grid>
         <myControls:MapControl x:Name="MyMapControl"/>
     </Grid>
