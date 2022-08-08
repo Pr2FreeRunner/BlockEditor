@@ -28,7 +28,7 @@ namespace BlockEditor.Views.Windows
 
             _map = map;
             _block = GetBlock(index.Value);
-            _mapItemOptions = ItemBlockOptionsControl.GetOptions(map.Backend.Items.Select(i => i.ID));
+            _mapItemOptions = ItemBlockOptionsControl.GetOptions(map.Level.Items.Select(i => i.ID));
 
             OpenWindows.Add(this);
             MyUtils.SetPopUpWindowPosition(this);
@@ -65,7 +65,7 @@ namespace BlockEditor.Views.Windows
                     var c = new ItemBlockOptionsControl();
 
                     if(string.IsNullOrWhiteSpace(_block.Options))
-                        c.SetItems(_map.Backend.Items);
+                        c.SetItems(_map.Level.Items);
                     else
                         c.SetBlockOptions(_block.Options);
 

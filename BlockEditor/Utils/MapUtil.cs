@@ -33,7 +33,7 @@ namespace BlockEditor.Helpers
             }
             else
             {
-                map.Backend.Title = save.MapTitle;
+                map.Level.Title = save.MapTitle;
                 Upload(map, save.Publish);
             }
         }
@@ -79,7 +79,7 @@ namespace BlockEditor.Helpers
             {
                 try
                 {
-                    map.Backend.Title = Path.GetFileNameWithoutExtension(filepath);
+                    map.Level.Title = Path.GetFileNameWithoutExtension(filepath);
 
                     var data = map.ToPr2String(string.Empty, string.Empty, false);
 

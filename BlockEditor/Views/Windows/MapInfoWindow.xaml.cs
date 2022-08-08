@@ -30,14 +30,14 @@ namespace BlockEditor.Views.Windows
 
         private void Init()
         {
-            tbtTitle.Text = _map.Backend.Title;
-            tbTime.Text = _map.Backend.MaxTime.ToString(CultureInfo.InvariantCulture);
-            tbCowboy.Text = _map.Backend.CowboyChance.ToString(CultureInfo.InvariantCulture);
-            tbRank.Text = _map.Backend.RankLimit.ToString(CultureInfo.InvariantCulture);
-            tbGravity.Text = _map.Backend.Gravity.ToString(CultureInfo.InvariantCulture);
-            tbMode.Text = _map.Backend.GameMode?.FullName ?? string.Empty;
+            tbtTitle.Text = _map.Level.Title;
+            tbTime.Text = _map.Level.MaxTime.ToString(CultureInfo.InvariantCulture);
+            tbCowboy.Text = _map.Level.CowboyChance.ToString(CultureInfo.InvariantCulture);
+            tbRank.Text = _map.Level.RankLimit.ToString(CultureInfo.InvariantCulture);
+            tbGravity.Text = _map.Level.Gravity.ToString(CultureInfo.InvariantCulture);
+            tbMode.Text = _map.Level.GameMode?.FullName ?? string.Empty;
 
-            ItemBlockOptionsControl.SetItems(_map.Backend.Items);
+            ItemBlockOptionsControl.SetItems(_map.Level.Items);
         }
 
         private void OnItemBlockOptionChanged(List<Item> items)
@@ -45,7 +45,7 @@ namespace BlockEditor.Views.Windows
             if(items == null)
                 return;
 
-            _map.Backend.Items = items;
+            _map.Level.Items = items;
         }
 
         private void Integer_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -77,7 +77,7 @@ namespace BlockEditor.Views.Windows
                 return;
 
             if (MyUtils.TryParse(tb.Text, out var result))
-                _map.Backend.MaxTime = result;
+                _map.Level.MaxTime = result;
         }
 
         private void CowboyHat_TextChanged(object sender, TextChangedEventArgs e)
@@ -88,7 +88,7 @@ namespace BlockEditor.Views.Windows
                 return;
 
             if(MyUtils.TryParse(tb.Text, out var result))
-                _map.Backend.CowboyChance = result;
+                _map.Level.CowboyChance = result;
         }
 
         private void Title_TextChanged(object sender, TextChangedEventArgs e)
@@ -98,7 +98,7 @@ namespace BlockEditor.Views.Windows
             if (tb == null)
                 return;
 
-            _map.Backend.Title = tb.Text;
+            _map.Level.Title = tb.Text;
         }
 
         private void Background_TextChanged(object sender, TextChangedEventArgs e)
@@ -125,7 +125,7 @@ namespace BlockEditor.Views.Windows
                 return;
 
             if (MyUtils.TryParse(tb.Text, out var result))
-                _map.Backend.RankLimit = result;
+                _map.Level.RankLimit = result;
         }
 
         private void Gravity_TextChanged(object sender, TextChangedEventArgs e)
@@ -136,7 +136,7 @@ namespace BlockEditor.Views.Windows
                 return;
 
             if (MyUtils.TryParseDouble(tb.Text, out var result))
-                _map.Backend.Gravity = result;
+                _map.Level.Gravity = result;
         }
 
         private void Mode_TextChanged(object sender, SelectionChangedEventArgs e)
@@ -151,7 +151,7 @@ namespace BlockEditor.Views.Windows
             if (string.IsNullOrWhiteSpace(g.FullName))
                 return;
 
-            _map.Backend.GameMode = g;
+            _map.Level.GameMode = g;
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

@@ -21,7 +21,7 @@ namespace BlockEditor.Views.Windows
                 throw new ArgumentNullException("Map");
 
             InitializeComponent();
-            txtResponse.Text = MapTitle = map.Backend.Title;
+            txtResponse.Text = MapTitle = map.Level.Title;
             btnPr2.IsEnabled = CurrentUser.IsLoggedIn();
 
             OpenWindows.Add(this);

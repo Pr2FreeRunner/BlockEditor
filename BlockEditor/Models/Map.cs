@@ -14,7 +14,7 @@ namespace BlockEditor.Models
     public class Map
     {
 
-        public Level Backend { get; }
+        public Level Level { get; }
 
         public Blocks Blocks { get; }
 
@@ -24,8 +24,8 @@ namespace BlockEditor.Models
             {
                 try 
                 { 
-                    if (Backend.BackgroundColor != null)
-                        return ColorTranslator.FromHtml("#" + Backend.BackgroundColor);
+                    if (Level.BackgroundColor != null)
+                        return ColorTranslator.FromHtml("#" + Level.BackgroundColor);
                     else
                         return Color.Black;
                 }
@@ -57,30 +57,30 @@ namespace BlockEditor.Models
 
         public Map()
         {
-            Backend  = GetDefaultLevel();
-            Backend.Title = string.Empty;
-            Blocks    = MyConverters.ToBlocks(Backend.Blocks);
+            Level  = GetDefaultLevel();
+            Level.Title = string.Empty;
+            Blocks    = MyConverters.ToBlocks(Level.Blocks);
             BlockSize = BlockImages.DEFAULT_BLOCK_SIZE;
         }
 
         public Map(Level level)
         {
-            Backend = level ?? GetDefaultLevel();
-            Backend.Title = Backend?.Title ?? string.Empty;
-            Blocks = MyConverters.ToBlocks(Backend.Blocks);
+            Level = level ?? GetDefaultLevel();
+            Level.Title = Level?.Title ?? string.Empty;
+            Blocks = MyConverters.ToBlocks(Level.Blocks);
         }
 
         public string ToPr2String(string username, string token, bool publish = false, bool overwrite = false)
         {
-            Backend.Blocks = MyConverters.ToPr2Blocks(Blocks);
-            Backend.Published = publish;
+            Level.Blocks = MyConverters.ToPr2Blocks(Blocks);
+            Level.Published = publish;
 
             if (username == null || token == null)
                 throw new ArgumentNullException("user");
 
             var dto = new ToPr2DTO()
             {
-                Level = Backend,
+                Level = Level,
                 Username = username,
                 Token = token,
                 OverWrite = overwrite
