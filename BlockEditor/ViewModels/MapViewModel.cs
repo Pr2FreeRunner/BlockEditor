@@ -154,7 +154,7 @@ namespace BlockEditor.ViewModels
                 Mode = UserMode.MapInfo;
                 var w = new MapInfoWindow(Game.Map);
                 w.Closing += (s, e) =>  { if(Mode == UserMode.MapInfo) Mode = UserMode.None; };
-                w.ShowDialog();
+                w.Show();
             }
             else
             {
