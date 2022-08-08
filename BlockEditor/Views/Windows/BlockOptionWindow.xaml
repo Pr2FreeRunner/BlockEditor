@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         SizeToContent="Height"
-        MinHeight="250"
-        Width="340"
+        Width="350"
         WindowStyle="None"
         WindowStartupLocation="CenterOwner"
         AllowsTransparency="True" 
@@ -43,7 +42,7 @@
                 </StackPanel>
                 
             </Grid>
-            <TextBlock Margin="10,20,0,0" FontWeight="SemiBold" FontSize="{StaticResource DefaultFontSize}" Text="Block Options:"/>
+            <TextBlock Margin="10,15,0,0" FontWeight="SemiBold" FontSize="{StaticResource DefaultFontSize}" Text="Block Options:"/>
         </StackPanel>
     </Border>
 </Window>
