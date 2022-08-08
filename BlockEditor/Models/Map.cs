@@ -36,7 +36,7 @@ namespace BlockEditor.Models
             }
         }
 
-
+        public int BlockPixelSize; 
         private BlockSize _blockSize;
         public BlockSize BlockSize
         {
@@ -50,9 +50,6 @@ namespace BlockEditor.Models
                 BlockPixelSize = value.GetPixelSize();
             }
         }
-
-        public int BlockPixelSize; 
-
 
 
         public Map()
@@ -69,6 +66,7 @@ namespace BlockEditor.Models
             Level.Title = Level?.Title ?? string.Empty;
             Blocks = MyConverters.ToBlocks(Level.Blocks);
         }
+
 
         public string ToPr2String(string username, string token, bool publish = false, bool overwrite = false)
         {
@@ -106,7 +104,6 @@ namespace BlockEditor.Models
 
             return new MyPoint(x, y);
         }
-
 
     }
 }
