@@ -12,13 +12,14 @@
         PreviewKeyDown="Window_PreviewKeyDown"
         Closing="Window_Closing">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Center" HorizontalAlignment="Stretch">
-        <Border Background="{StaticResource LightBackground}" 
+    <Border Background="{StaticResource LightBackground}" 
             BorderBrush="{StaticResource StandardBorderColor}"
             BorderThickness="2"
             CornerRadius="15"
-            VerticalAlignment="Center">
-            <StackPanel Orientation="Vertical" Margin="10,5,10,10" VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            Padding="10">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+            <StackPanel Orientation="Vertical" Margin="5,0,5,5" VerticalAlignment="Center">
                 <Grid>
                     <Button Style="{StaticResource CloseBtn}" Margin="0,2,0,0" Click="CloseButton_Click" HorizontalAlignment="Right" VerticalAlignment="Top"/>
                     <Label Content="Map Info" Margin="0" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
@@ -31,7 +32,7 @@
                 <TextBox x:Name="tbTime" Margin="4,0,0,0" TextChanged="Time_TextChanged" PreviewTextInput="Integer_PreviewTextInput" FontSize="{StaticResource DefaultFontSize}"  />
 
                 <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Chance of Cowboy:"/>
-                <TextBox Margin="4,0,0,0" x:Name="tbCowboy" TextChanged="CowboyHat_TextChanged" PreviewTextInput="Integer_PreviewTextInput" FontSize="{StaticResource DefaultFontSize}"  />
+                <TextBox Margin="4,0,0,0" x:Name="tbCowboy" TextChanged="CowboyHat_TextChanged" PreviewTextInput="IntegerMax100_PreviewTextInput" FontSize="{StaticResource DefaultFontSize}"  />
 
                 <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Rank:"/>
                 <TextBox Margin="4,0,0,0" x:Name="tbRank" TextChanged="Rank_TextChanged" PreviewTextInput="Integer_PreviewTextInput" FontSize="{StaticResource DefaultFontSize}"  />
@@ -48,6 +49,10 @@
                     <ComboBoxItem Content="Hat Attack"/>
                 </ComboBox>
 
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0" VerticalAlignment="Center">
+                    <Label FontWeight="SemiBold" Margin="0,5,5,0" FontSize="{StaticResource DefaultFontSize}" Content="Background: "/>
+                    <local:ColorPickerControl Height="30" Width="30" Margin="4,5,0,0" x:Name="MyColorPicker" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </StackPanel>
 
                 <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Items:"/>
                 <local:ItemBlockOptionsControl x:Name="ItemBlockOptionsControl" HorizontalAlignment="Stretch" Height="auto"/>
@@ -57,7 +62,7 @@
 
 
             </StackPanel>
+        </ScrollViewer>
+    </Border>
 
-        </Border>
-    </ScrollViewer>
 </Window>

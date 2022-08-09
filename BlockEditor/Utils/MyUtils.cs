@@ -41,11 +41,11 @@ namespace BlockEditor.Utils
                 return;
 
             var padddingX = window.Left + 60;
-            var padddingY = window.Top + window.Height / 5;
+            var padddingY = window.Top + window.ActualHeight / 7;
 
             w.Left = padddingX;
             w.Top = padddingY;
-            w.MaxHeight = 4 * window.Height / 5 - 1;
+            w.MaxHeight = 6 * window.ActualHeight / 7 - 100;
         }
     }
 }

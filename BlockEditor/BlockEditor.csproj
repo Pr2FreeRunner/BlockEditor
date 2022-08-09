@@ -4,7 +4,8 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>Resources\Icon.ico</ApplicationIcon>
+	<UseWindowsForms>true</UseWindowsForms>
+	<ApplicationIcon>Resources\Icon.ico</ApplicationIcon>
     <StartupObject />
   </PropertyGroup>
 
