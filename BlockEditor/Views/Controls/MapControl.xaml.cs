@@ -136,6 +136,31 @@ namespace BlockEditor.Views.Controls
                     if (ZoomControl.ViewModel.ZoomOutCommand.CanExecute(null))
                         ZoomControl.ViewModel.ZoomOutCommand.Execute(null);
                 }
+                else if (ctrl && e.Key == Key.A)
+                {
+                    if (MapButtons.ViewModel.AccountCommand.CanExecute(null))
+                        MapButtons.ViewModel.AccountCommand.Execute(null);
+                }
+                else if (ctrl && e.Key == Key.S)
+                {
+                    if (MapButtons.ViewModel.SaveCommand.CanExecute(null))
+                        MapButtons.ViewModel.SaveCommand.Execute(null);
+                }
+                else if (ctrl && e.Key == Key.L)
+                {
+                    if (MapButtons.ViewModel.LoadCommand.CanExecute(null))
+                        MapButtons.ViewModel.LoadCommand.Execute(null);
+                }
+                else if (ctrl && e.Key == Key.T)
+                {
+                    if (MapButtons.ViewModel.TestCommand.CanExecute(null))
+                        MapButtons.ViewModel.TestCommand.Execute(null);
+                }
+                else if (ctrl && e.Key == Key.N)
+                {
+                    if (MapButtons.ViewModel.NewCommand.CanExecute(null))
+                        MapButtons.ViewModel.NewCommand.Execute(null);
+                }
                 else if (IsSelectionKey(e, ctrl))
                 {
                     var startPoint = ViewModel.BlockSelection.UserSelection.MapRegion.Start;

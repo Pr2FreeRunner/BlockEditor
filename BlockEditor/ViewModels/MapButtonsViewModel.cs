@@ -23,7 +23,7 @@ namespace BlockEditor.ViewModels
         public RelayCommand SaveCommand { get; set; }
         public RelayCommand NewCommand { get; set; }
         public RelayCommand TestCommand { get; set; }
-        public RelayCommand LoginCommand { get; set; }
+        public RelayCommand AccountCommand { get; set; }
 
 
         public MapButtonsViewModel()
@@ -32,7 +32,7 @@ namespace BlockEditor.ViewModels
             SaveCommand = new RelayCommand(SaveExecute);
             NewCommand = new RelayCommand(NewExecute);
             TestCommand = new RelayCommand(TestExecute);
-            LoginCommand = new RelayCommand(LoginExecute);
+            AccountCommand = new RelayCommand(LoginExecute);
 
         }
 
@@ -117,7 +117,7 @@ namespace BlockEditor.ViewModels
             try
             {
                 var text   = "Are you sure you want to clear this level?" + Environment.NewLine + Environment.NewLine + "All unsaved data will be lost.";
-                var result = UserQuestionWindow.Show(text, "Confirm", false);
+                var result = UserQuestionWindow.Show(text, "New Level", false);
 
                 if(result != UserQuestionWindow.QuestionResult.Yes)
                     return;

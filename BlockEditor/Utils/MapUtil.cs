@@ -100,7 +100,7 @@ namespace BlockEditor.Helpers
                 + Environment.NewLine + Environment.NewLine
                 + "Is it okej to overwrite the existing level with this save?";
 
-            var result = UserQuestionWindow.Show(text, "Confirm", false);
+            var result = UserQuestionWindow.Show(text, "Overwrite", false);
 
             args.TryAgain = result == UserQuestionWindow.QuestionResult.Yes;
         }
