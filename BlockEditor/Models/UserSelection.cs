@@ -24,10 +24,7 @@ namespace BlockEditor.Models
             ImageRegion.Reset();
         }
 
-        public bool HasSelectedRegion()
-        {
-            return MapRegion.IsComplete() && ImageRegion.IsComplete();
-        }
+        public bool HasSelectedRegion => MapRegion.IsComplete() && ImageRegion.IsComplete();
 
         private int?[,] GetSelection(Map map)
         {

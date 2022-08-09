@@ -170,7 +170,7 @@ namespace BlockEditor.Helpers
             return new Pen(Color.FromArgb(80, r, g, b), 1);
         }
 
-        public static List<SimpleBlock> GetFloodFill(Map map, MyPoint? startPoint, int id)
+        public static List<SimpleBlock> GetFloodFill(Map map, MyPoint? startPoint, int id, MyRegion region)
         {
             var result  = new List<SimpleBlock>();
             var blocks  = new Stack<MyPoint>();
@@ -185,6 +185,12 @@ namespace BlockEditor.Helpers
             var startBlock = map.Blocks.GetBlock(startPoint);
             var maxBlocks  = Blocks.LIMIT - map.Blocks.BlockCount;
 
+            if (region != null || region.IsComplete())
+            {
+                lowerLimit = region.Start.Value;
+                upperLimit = region.End.Value;
+            }
+
             while (blocks.Count > 0)
             {
                 var point = blocks.Pop();
@@ -197,10 +203,10 @@ namespace BlockEditor.Helpers
 
                 visited.Add(point);
 
-                if (point.X < lowerLimit.X && point.X >= upperLimit.X)
+                if (point.X < lowerLimit.X || point.X >= upperLimit.X)
                     continue;
 
-                if (point.Y < lowerLimit.Y && point.Y >= upperLimit.Y)
+                if (point.Y < lowerLimit.Y || point.Y >= upperLimit.Y)
                     continue;
 
                 var currentBlock = map.Blocks.GetBlock(point.X, point.Y);
