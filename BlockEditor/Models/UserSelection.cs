@@ -24,6 +24,11 @@ namespace BlockEditor.Models
             ImageRegion.Reset();
         }
 
+        public bool HasSelectedRegion()
+        {
+            return MapRegion.IsComplete() && ImageRegion.IsComplete();
+        }
+
         private int?[,] GetSelection(Map map)
         {
             if (map == null || MapRegion == null || !MapRegion.IsComplete())
@@ -52,11 +57,9 @@ namespace BlockEditor.Models
 
         public void OnMouseDown(MyPoint? image, MyPoint? map)
         {
+            Reset();
             MapRegion.Point1   = map;
             ImageRegion.Point1 = image;
-
-            MapRegion.Point2   = null;
-            ImageRegion.Point2 = null;
         }
 
         public void OnMouseUp(MyPoint? image, MyPoint? map)
@@ -69,7 +72,6 @@ namespace BlockEditor.Models
         {
             var selection = GetSelection(map);
             OnNewSelection?.Invoke(selection);
-            Reset();
         }
 
 

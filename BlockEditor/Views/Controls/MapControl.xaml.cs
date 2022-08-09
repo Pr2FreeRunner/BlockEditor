@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using BlockEditor.Helpers;
 using BlockEditor.ViewModels;
 using BlockEditor.Models;
+using static BlockEditor.Models.UserMode;
 
 namespace BlockEditor.Views.Controls
 {
@@ -174,9 +175,9 @@ namespace BlockEditor.Views.Controls
                     if (e.Key == Key.Delete)
                         ViewModel.OnCleanUserMode();
                     else
-                        ViewModel.Mode = UserMode.AddSelection;
+                        ViewModel.Mode.Value = UserModes.AddSelection;
                 }
-                else if (ViewModel.Mode == UserMode.AddSelection && e.Key == Key.R)
+                else if (ViewModel.Mode.Value == UserModes.AddSelection && e.Key == Key.R)
                 {
                     ViewModel.BlockSelection.Rotate();
                 }
@@ -227,7 +228,7 @@ namespace BlockEditor.Views.Controls
 
         private bool IsSelectionKey(KeyEventArgs e, bool ctrl)
         {
-            var isSelectionMode = ViewModel.Mode == UserMode.Selection;
+            var isSelectionMode = ViewModel.Mode.Value == UserModes.Selection;
             var isCopy = ctrl && (e.Key == Key.C || e.Key == Key.X);
             var isDelete = e.Key == Key.Delete;
 
