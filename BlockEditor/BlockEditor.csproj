@@ -17,11 +17,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\GUI\BlockCount.png" />
     <None Remove="Resources\GUI\Bucket.png" />
     <None Remove="Resources\GUI\Settings.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\GUI\BlockCount.png" />
     <Resource Include="Resources\GUI\Bucket.png" />
     <Resource Include="Resources\GUI\Settings.png" />
   </ItemGroup>

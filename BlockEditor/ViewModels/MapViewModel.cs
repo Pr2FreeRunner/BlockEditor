@@ -33,6 +33,7 @@ namespace BlockEditor.ViewModels
                 RaisePropertyChanged(nameof(IsAddShapeMode));
                 RaisePropertyChanged(nameof(IsBlockInfoMode));
                 RaisePropertyChanged(nameof(IsMapInfoMode));
+                RaisePropertyChanged(nameof(IsBlockCountMode));
 
 
                 if (_mode != UserMode.Fill || _mode != UserMode.BlockInfo)
@@ -52,7 +53,9 @@ namespace BlockEditor.ViewModels
         public bool IsAddShapeMode => Mode == UserMode.AddShape;
         public bool IsFillMode => Mode == UserMode.Fill; 
         public bool IsBlockInfoMode => Mode == UserMode.BlockInfo;
+        public bool IsBlockCountMode => Mode == UserMode.BlockCount;
         public bool IsMapInfoMode => Mode == UserMode.MapInfo;
+
 
 
         public bool IsOverwrite {
@@ -66,6 +69,8 @@ namespace BlockEditor.ViewModels
         public RelayCommand AddShapeCommand { get; }
         public RelayCommand BlockInfoCommand { get; }
         public RelayCommand MapInfoCommand { get; }
+        public RelayCommand BlockCountCommand { get; }
+
 
 
         public MapViewModel(Action cleanBlockSelection)
@@ -80,7 +85,7 @@ namespace BlockEditor.ViewModels
             AddShapeCommand      = new RelayCommand((_) => OnAddShapeClick());
             BlockInfoCommand     = new RelayCommand((_) => OnBlockInfoClick());
             MapInfoCommand       = new RelayCommand((_) => OnMapInfoClick());
-
+            BlockCountCommand    = new RelayCommand((_) => OnBlockCountClick());
             BlockSelection.OnSelectionClick += OnSelectionClick;
             Game.Engine.OnFrame += OnFrameUpdate;
         }
@@ -140,6 +145,25 @@ namespace BlockEditor.ViewModels
             else
             {
                 Mouse.OverrideCursor = null;
+                Mode = UserMode.None;
+            }
+        }
+        public void OnBlockCountClick()
+        {
+            if (Mode != UserMode.BlockCount)
+            {
+                BlockSelection?.Reset();
+
+                if (Game.Map == null)
+                    return;
+
+                Mode = UserMode.BlockCount;
+                var w = new BlockCountWindow(Game.Map);
+                w.Closing += (s, e) => { if (Mode == UserMode.BlockCount) Mode = UserMode.None; };
+                w.ShowDialog();
+            }
+            else
+            {
                 Mode = UserMode.None;
             }
         }

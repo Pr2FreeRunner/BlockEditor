@@ -64,13 +64,6 @@ namespace BlockEditor.Models
         {
             Level = level ?? GetDefaultLevel();
             Blocks = MyConverters.ToBlocks(Level.Blocks);
-
-            var s = "";
-
-            foreach(var h in level.BadHats)
-                s += h.ToString() + " ";
-
-            MessageUtil.ShowInfo(s);
         }
 
 

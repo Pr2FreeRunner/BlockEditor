@@ -184,6 +184,11 @@ namespace BlockEditor.Views.Controls
                     if (ViewModel.AddShapeCommand.CanExecute(null))
                         ViewModel.AddShapeCommand.Execute(null);
                 }
+                else if (e.Key == Key.C)
+                {
+                    if (ViewModel.BlockCountCommand.CanExecute(null))
+                        ViewModel.BlockCountCommand.Execute(null);
+                }
                 else if (e.Key == Key.O)
                 {
                     ViewModel.IsOverwrite = !ViewModel.IsOverwrite;
