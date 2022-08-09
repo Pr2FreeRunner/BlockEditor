@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlockEditor.Utils;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -16,6 +17,9 @@ namespace BlockEditor.Views.Controls
 
         public void SetColor(string input)
         {
+            if(MyUtils.TryParse(input, out var result))
+                input = result.ToString("X6");
+
             SetColor(ParseInput(input));
         }
 

@@ -8,6 +8,7 @@ using BlockEditor.Utils;
 using BlockEditor.Views.Controls;
 using System.Linq;
 using System.Windows.Controls;
+using BlockEditor.Helpers;
 
 namespace BlockEditor.Views.Windows
 {
@@ -136,6 +137,16 @@ namespace BlockEditor.Views.Windows
 
         private void OnNewColor(string text)
         {
+            try
+            {
+                var value = Convert.ToInt32(text, 16);
+                text = value.ToString();
+            }
+            catch
+            {
+                MessageUtil.ShowError("Failed to convert color to PR2 block option format.");
+            }
+
             OnOptionsChanged(text);
         }
 
