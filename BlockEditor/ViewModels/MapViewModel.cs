@@ -56,7 +56,6 @@ namespace BlockEditor.ViewModels
         public bool IsBlockCountMode => Mode == UserMode.BlockCount;
         public bool IsMapInfoMode => Mode == UserMode.MapInfo;
 
-
         public bool IsOverwrite {
             get { return Game.Map?.Blocks?.Overwrite ?? false; }
             set { Game.Map.Blocks.Overwrite = value; RaisePropertyChanged(); }
@@ -146,6 +145,7 @@ namespace BlockEditor.ViewModels
                 Mode = UserMode.None;
             }
         }
+     
         public void OnBlockCountClick()
         {
             if (Mode != UserMode.BlockCount)
@@ -176,7 +176,7 @@ namespace BlockEditor.ViewModels
                     return;
 
                 Mode = UserMode.MapInfo;
-                var w = new MapInfoWindow(Game.Map);
+                var w = new MapInfoWindow(Game.Map, Game.Engine.RefreshGui);
                 w.Closing += (s, e) =>  { if(Mode == UserMode.MapInfo) Mode = UserMode.None; };
                 w.ShowDialog();
             }

@@ -45,6 +45,16 @@ namespace BlockEditor.Models
             _timer.Enabled = true;
         }
 
+        public void RefreshGui()
+        {
+            if(!Pause)
+                return;
+
+            Pause = false;
+            Thread.Sleep(FPS * 4);
+            Pause = true;
+        }
+
         public void Stop()
         {
             _timer.Stop();

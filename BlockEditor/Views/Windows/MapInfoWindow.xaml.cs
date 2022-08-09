@@ -13,12 +13,12 @@ namespace BlockEditor.Views.Windows
     public partial class MapInfoWindow : Window
     {
         private Map _map;
+        private Action _refreshGui;
 
-
-
-        public MapInfoWindow(Map map)
+        public MapInfoWindow(Map map, Action refreshGui)
         {
             _map = map;
+            _refreshGui = refreshGui;
             InitializeComponent();
 
             if(map == null)
@@ -39,6 +39,7 @@ namespace BlockEditor.Views.Windows
                 return;
 
             _map.Level.BackgroundColor = color;
+            _refreshGui?.Invoke();
         }
 
         private void OnHatChanged(List<int> hats)
@@ -130,16 +131,6 @@ namespace BlockEditor.Views.Windows
                 return;
 
             _map.Level.Title = tb.Text;
-        }
-
-        private void Background_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var tb = sender as TextBox;
-
-            if (tb == null)
-                return;
-
-            //_map.Backend.BackgroundColor = tb.Text;
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
