@@ -45,6 +45,7 @@ namespace BlockEditor.Utils
 
             w.Left = padddingX;
             w.Top = padddingY;
+            w.MaxHeight = 4 * window.Height / 5 - 1;
         }
     }
 }

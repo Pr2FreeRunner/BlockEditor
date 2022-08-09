@@ -26,6 +26,15 @@ namespace BlockEditor.Views.Windows
             MyUtils.SetPopUpWindowPosition(this);
             Init();
             ItemBlockOptionsControl.OnItemChanged += OnItemBlockOptionChanged;
+            HatsControl.OnHatChanged += OnHatChanged;
+        }
+
+        private void OnHatChanged(List<int> hats)
+        {
+            if(hats == null)
+                return;
+
+            _map.Level.BadHats = hats;
         }
 
         private void Init()
