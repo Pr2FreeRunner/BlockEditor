@@ -10,8 +10,7 @@ namespace BlockEditor.Models
     public class BlockSelection
     {
 
-        public RelayCommand RotateRightCommand { get; }
-        public RelayCommand RotateLeftCommand { get; }
+        public RelayCommand RotateCommand { get; }
         public UserSelection UserSelection { get; }
 
         public event Action OnSelectionClick;
@@ -47,10 +46,9 @@ namespace BlockEditor.Models
 
         public BlockSelection(Action cleanBlockSelection)
         {
-            RotateRightCommand    = new RelayCommand((_) => RotateLeft(), (_) => CanRotate());
-            RotateLeftCommand     = new RelayCommand((_) => RotateRight(),  (_) => CanRotate());
-            UserSelection         = new UserSelection();
-            _cleanBlockSelection  = cleanBlockSelection;
+            RotateCommand        = new RelayCommand((_) => Rotate(), (_) => CanRotate());
+            UserSelection        = new UserSelection();
+            _cleanBlockSelection = cleanBlockSelection;
 
             UserSelection.OnNewSelection += OnUserSelection;
         }
@@ -75,21 +73,7 @@ namespace BlockEditor.Models
                 SelectedBlock = null;
         }
 
-        public void RotateLeft()
-        {
-            if (!CanRotate())
-                return;
-
-            var temp = SelectedBlocks;
-            var rotations = 3;
-
-            for (int i = 0; i < rotations; i++)
-                temp = ArrayUtil.RotateRight(temp);
-
-            SelectedBlocks = temp;
-        }
-
-        public void RotateRight()
+        public void Rotate()
         {
             if (!CanRotate())
                 return;

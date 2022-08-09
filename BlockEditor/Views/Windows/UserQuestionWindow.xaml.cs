@@ -61,5 +61,14 @@ namespace BlockEditor.Views.Windows
         {
             OpenWindows.Remove(this);
         }
+
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Escape)
+            {
+                _result = QuestionResult.Cancel;
+                Close();
+            }
+        }
     }
 }

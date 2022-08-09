@@ -176,13 +176,9 @@ namespace BlockEditor.Views.Controls
                     else
                         ViewModel.Mode = UserMode.AddSelection;
                 }
-                else if (ViewModel.Mode == UserMode.AddSelection && e.Key == Key.L)
-                {
-                    ViewModel.BlockSelection.RotateLeft();
-                }
                 else if (ViewModel.Mode == UserMode.AddSelection && e.Key == Key.R)
                 {
-                    ViewModel.BlockSelection.RotateRight();
+                    ViewModel.BlockSelection.Rotate();
                 }
                 else if (e.Key == Key.S)
                 {

@@ -57,7 +57,6 @@ namespace BlockEditor.ViewModels
         public bool IsMapInfoMode => Mode == UserMode.MapInfo;
 
 
-
         public bool IsOverwrite {
             get { return Game.Map?.Blocks?.Overwrite ?? false; }
             set { Game.Map.Blocks.Overwrite = value; RaisePropertyChanged(); }
@@ -70,7 +69,6 @@ namespace BlockEditor.ViewModels
         public RelayCommand BlockInfoCommand { get; }
         public RelayCommand MapInfoCommand { get; }
         public RelayCommand BlockCountCommand { get; }
-
 
 
         public MapViewModel(Action cleanBlockSelection)

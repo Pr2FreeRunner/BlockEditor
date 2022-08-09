@@ -2,7 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Windows;
-
+using System.Windows.Input;
 
 namespace BlockEditor.Views.Windows
 {
@@ -78,6 +78,12 @@ namespace BlockEditor.Views.Windows
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             OpenWindows.Remove(this);
+        }
+
+        private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if(e.Key == Key.Escape)
+                Close();
         }
     }
 }
