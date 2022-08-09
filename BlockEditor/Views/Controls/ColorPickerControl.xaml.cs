@@ -19,7 +19,7 @@ namespace BlockEditor.Views.Controls
             SetColor(ParseInput(input));
         }
 
-        public void SetColor(System.Drawing.Color c)
+        public void SetColor(System.Drawing.Color? c)
         {
             SetColor(Convert(c));
         }
@@ -29,16 +29,19 @@ namespace BlockEditor.Views.Controls
             ColorButton.Background = new SolidColorBrush(c);
         }
 
-        private Color ParseInput(string input)
+        private System.Drawing.Color? ParseInput(string input)
         {
-            var fallback = Colors.Black;
+            System.Drawing.Color? fallback = null;
 
             if (string.IsNullOrWhiteSpace(input))
                 return fallback;
 
             try
             {
-                return Convert(System.Drawing.ColorTranslator.FromHtml(input));
+                if(!input.StartsWith("#"))
+                    input = "#" + input;
+
+                return System.Drawing.ColorTranslator.FromHtml(input);
             }
             catch
             {
@@ -60,10 +63,12 @@ namespace BlockEditor.Views.Controls
             }
         }
 
-        private Color Convert(System.Drawing.Color c)
+        private Color Convert(System.Drawing.Color? c)
         {
-            return Color.FromArgb(255, c.R, c.G, c.B);
+            if(c == null)
+                return Colors.Transparent;
 
+            return Color.FromArgb(255, c.Value.R, c.Value.G, c.Value.B);
         }
 
         private System.Drawing.Color Convert(Color c)

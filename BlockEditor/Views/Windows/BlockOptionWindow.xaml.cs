@@ -7,6 +7,7 @@ using LevelModel.Models.Components;
 using BlockEditor.Utils;
 using BlockEditor.Views.Controls;
 using System.Linq;
+using System.Windows.Controls;
 
 namespace BlockEditor.Views.Windows
 {
@@ -73,6 +74,31 @@ namespace BlockEditor.Views.Windows
                     c.OnBlockOptionChanged += OnOptionsChanged;
                     OptionPanel.Children.Add(c);
                 }
+                else if(_block.ID == Block.TELEPORT)
+                {
+                    var panel = new StackPanel();
+                    panel.Orientation = Orientation.Horizontal;
+                    panel.VerticalAlignment = VerticalAlignment.Center;
+                    panel.Margin= new Thickness(10, 20,10,10);
+                  
+                    var label = new TextBlock();
+                    label.Text = "Color: ";
+                    label.VerticalAlignment = VerticalAlignment.Center;
+                    label.FontSize = 14;
+                    label.Margin = new Thickness(0,0,10,20);
+                    
+                    var c = new ColorPickerControl();
+                    c.VerticalAlignment = VerticalAlignment.Center;
+                    c.SetColor(_block.Options);
+                    c.Margin = new Thickness(5, 0, 10, 20);
+                    c.OnNewColor += OnNewColor;
+                    c.Width = 30;
+                    c.Height = 30;
+                    
+                    panel.Children.Add(label);
+                    panel.Children.Add(c);
+                    OptionPanel.Children.Add(panel);
+                }
                 else
                 {
                     var c = new BlockOptionsControl();
@@ -106,6 +132,11 @@ namespace BlockEditor.Views.Windows
             var b = new SimpleBlock(_block.ID, _block.Position.Value, ignoreOption ? string.Empty : text);
             _map.Blocks.Add(b);
 
+        }
+
+        private void OnNewColor(string text)
+        {
+            OnOptionsChanged(text);
         }
 
 
