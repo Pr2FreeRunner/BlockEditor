@@ -1,9 +1,7 @@
-﻿
-using BlockEditor.Helpers;
-using System;
+﻿using System;
 using System.IO;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
+using BlockEditor.Helpers;
 
 namespace BlockEditor.Models
 {
