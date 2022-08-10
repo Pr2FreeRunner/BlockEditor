@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="BlockEditor" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="Name" Type="System.String" Scope="User">
+    <Setting Name="Username" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Token" Type="System.String" Scope="User">
@@ -10,6 +10,9 @@
     </Setting>
     <Setting Name="Zoom" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Pr2BuildVersion" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

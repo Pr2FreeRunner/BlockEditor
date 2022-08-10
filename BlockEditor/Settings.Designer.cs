@@ -26,12 +26,12 @@ namespace BlockEditor {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Name {
+        public string Username {
             get {
-                return ((string)(this["Name"]));
+                return ((string)(this["Username"]));
             }
             set {
-                this["Name"] = value;
+                this["Username"] = value;
             }
         }
         
@@ -56,6 +56,18 @@ namespace BlockEditor {
             }
             set {
                 this["Zoom"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Pr2BuildVersion {
+            get {
+                return ((string)(this["Pr2BuildVersion"]));
+            }
+            set {
+                this["Pr2BuildVersion"] = value;
             }
         }
     }

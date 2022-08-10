@@ -14,6 +14,7 @@ namespace BlockEditor.Views.Windows
 
         static MainWindow()
         {
+            MySettings.Init();
             BlockImages.Init();
             UserMode.Init();
         }

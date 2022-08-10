@@ -25,8 +25,7 @@ namespace BlockEditor.Views.Controls
             ZoomControl.ViewModel.OnZoomChanged += (zoom) => ViewModel.OnZoomChanged(zoom);
             BlocksControl.OnSelectedBlockID += ViewModel.OnSelectedBlockID;
             this.Loaded += windowLoaded;
-
-            ZoomControl.ViewModel.Init();
+            ZoomControl.ViewModel.Zoom = MySettings.Zoom;
         }
 
         private void CleanBlocksControlSelection()
