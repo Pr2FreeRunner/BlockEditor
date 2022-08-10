@@ -12,6 +12,12 @@ namespace BlockEditor.Views.Windows
             InitializeComponent();
         }
 
+        static MainWindow()
+        {
+            BlockImages.Init();
+            UserMode.Init();
+        }
+
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
             MyMapControl.ViewModel.Game.Engine.Pause = false;

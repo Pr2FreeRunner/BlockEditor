@@ -14,8 +14,6 @@ namespace BlockEditor
     {
         public App()
         {
-            BlockImages.Init();
-            UserMode.Init();
         }
 
 
