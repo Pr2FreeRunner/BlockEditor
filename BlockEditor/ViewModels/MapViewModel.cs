@@ -337,6 +337,11 @@ namespace BlockEditor.ViewModels
             OnCleanUserMode();
             Game.GoToStartPosition();
 
+            if(map.BlocksOutsideBoundries > 0)
+                MessageUtil.ShowWarning($"This map has {map.BlocksOutsideBoundries} blocks outside the PR2 boundaries." 
+                    + Environment.NewLine + Environment.NewLine
+                    + "These blocks will be ignored.");
+
             Game.Engine.Pause = false;
         }
 

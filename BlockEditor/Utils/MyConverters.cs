@@ -10,9 +10,10 @@ namespace BlockEditor.Helpers
     public static class MyConverters
     {
 
-        public static Blocks ToBlocks(IList<Block> pr2Blocks)
+        public static Blocks ToBlocks(IList<Block> pr2Blocks, out int blocksOutsideBoundries)
         {
             var blocks = new Blocks();
+            blocksOutsideBoundries = 0;
 
             if (pr2Blocks == null)
                 return blocks;
@@ -24,6 +25,9 @@ namespace BlockEditor.Helpers
             {
                 posX += b.X;
                 posY += b.Y;
+
+                if(posX < 0 || posY < 0 || posX > Blocks.SIZE || posY > Blocks.SIZE)
+                    blocksOutsideBoundries++;
 
                 blocks.Add(new SimpleBlock(b.Id, posX, posY, b.Options));
             }

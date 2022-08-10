@@ -18,6 +18,8 @@ namespace BlockEditor.Models
 
         public Blocks Blocks { get; }
 
+        public readonly int BlocksOutsideBoundries;
+
         public Color Background
         {
             get
@@ -56,14 +58,15 @@ namespace BlockEditor.Models
         {
             Level  = GetDefaultLevel();
             Level.Title = string.Empty;
-            Blocks    = MyConverters.ToBlocks(Level.Blocks);
+            Blocks    = MyConverters.ToBlocks(Level.Blocks, out _);
             BlockSize = BlockImages.DEFAULT_BLOCK_SIZE;
         }
 
         public Map(Level level)
         {
             Level = level ?? GetDefaultLevel();
-            Blocks = MyConverters.ToBlocks(Level.Blocks);
+            Blocks = MyConverters.ToBlocks(Level.Blocks, out var blocksOutsideBoundries);
+            BlocksOutsideBoundries= blocksOutsideBoundries;
         }
 
 
