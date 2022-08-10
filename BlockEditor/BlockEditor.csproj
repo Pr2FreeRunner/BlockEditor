@@ -20,13 +20,20 @@
   <ItemGroup>
     <None Remove="Resources\GUI\BlockCount.png" />
     <None Remove="Resources\GUI\Bucket.png" />
+    <None Remove="Resources\GUI\BucketCursor.cur" />
     <None Remove="Resources\GUI\Settings.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\GUI\BlockCount.png" />
-    <Resource Include="Resources\GUI\Bucket.png" />
-    <Resource Include="Resources\GUI\Settings.png" />
+    <Resource Include="Resources\GUI\BlockCount.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\GUI\Bucket.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\GUI\Settings.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

@@ -47,8 +47,7 @@ namespace BlockEditor.Models
         {
             try
             {
-                var folder = @"Resources/Cursors";
-
+                var folder = Path.Combine(Directory.GetCurrentDirectory(), "Resources", "Cursors");
                 BucketCursor = new Cursor(Path.Combine(folder, "BucketCursor.cur"));
             }
             catch (Exception ex)
