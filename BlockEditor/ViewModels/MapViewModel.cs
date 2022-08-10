@@ -43,12 +43,12 @@ namespace BlockEditor.ViewModels
         public RelayCommand BlockCountCommand { get; }
 
 
-        public MapViewModel(Action cleanBlockSelection)
+        public MapViewModel(Action cleanBlockControl)
         {
             Game = new Game();
             Mode = new UserMode();
 
-            BlockSelection       = new BlockSelection(cleanBlockSelection);
+            BlockSelection       = new BlockSelection(cleanBlockControl);
             StartPositionCommand = new RelayCommand((_) => Game.GoToStartPosition());
             FillCommand          = new RelayCommand((_) => OnFillClick());
             SelectCommand        = new RelayCommand((_) => OnSelectionClick());
@@ -67,7 +67,7 @@ namespace BlockEditor.ViewModels
         {
             if(Mode.Value != UserModes.Selection)
             {
-                BlockSelection.Reset(false); 
+                BlockSelection.Reset(); 
                 Mode.Value = UserModes.Selection;
             }
             else
@@ -80,6 +80,7 @@ namespace BlockEditor.ViewModels
         {
             if (Mode.Value!= UserModes.Fill)
             {
+                BlockSelection.Reset(false);
                 Mode.Value= UserModes.Fill;
             }
             else
@@ -90,6 +91,8 @@ namespace BlockEditor.ViewModels
 
         public void OnAddShapeClick()
         {
+            BlockSelection.Reset(false);
+
             var selectedId = SelectBlockWindow.Show("Add Shape");
             var region = BlockSelection.UserSelection.MapRegion;
 
@@ -236,10 +239,10 @@ namespace BlockEditor.ViewModels
                     if (e.ChangedButton != MouseButton.Left)
                         break;
 
-                    var selectedId = BlockSelection.SelectedBlock;
+                    var selectedId = SelectBlockWindow.Show("Flood Fill");
                     
                     if(selectedId == null)
-                        throw new Exception("Select a block to flood fill.");
+                        return;
 
                     if(Block.IsStartBlock(selectedId))
                         throw new Exception("Flood fill with start block is not allowed.");

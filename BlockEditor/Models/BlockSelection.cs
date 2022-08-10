@@ -42,13 +42,13 @@ namespace BlockEditor.Models
             set { _selectedBlock = value; }
         }
 
-        private Action _cleanBlockSelection { get; }
+        private Action _cleanBlockControl { get; }
 
-        public BlockSelection(Action cleanBlockSelection)
+        public BlockSelection(Action cleanBlockControl)
         {
             RotateCommand        = new RelayCommand((_) => Rotate(), (_) => CanRotate());
             UserSelection        = new UserSelection();
-            _cleanBlockSelection = cleanBlockSelection;
+            _cleanBlockControl = cleanBlockControl;
 
             UserSelection.OnNewSelection += OnUserSelection;
         }
@@ -63,14 +63,14 @@ namespace BlockEditor.Models
             return SelectedBlocks != null;
         }
 
-        public void Reset(bool cleanSelectedBlock = true)
+        public void Reset(bool userSelection = true)
         {
-            _cleanBlockSelection?.Invoke();
-            UserSelection.Reset();
+            _cleanBlockControl?.Invoke();
             SelectedBlocks = null;
+            SelectedBlock = null;
 
-            if(cleanSelectedBlock)
-                SelectedBlock = null;
+            if(userSelection)
+                UserSelection.Reset();
         }
 
         public void Rotate()

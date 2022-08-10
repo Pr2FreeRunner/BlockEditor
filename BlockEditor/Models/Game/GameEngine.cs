@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Timers;
 using System.Windows;
@@ -47,7 +46,7 @@ namespace BlockEditor.Models
 
         public void RefreshGui()
         {
-            if(!Pause)
+            if(!Pause == false)
                 return;
 
             Pause = false;
