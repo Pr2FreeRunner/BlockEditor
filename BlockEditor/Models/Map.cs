@@ -58,15 +58,14 @@ namespace BlockEditor.Models
         {
             Level  = GetDefaultLevel();
             Level.Title = string.Empty;
-            Blocks    = MyConverters.ToBlocks(Level.Blocks, out _);
+            Blocks    = MyConverters.ToBlocks(Level.Blocks, out BlocksOutsideBoundries);
             BlockSize = BlockImages.DEFAULT_BLOCK_SIZE;
         }
 
         public Map(Level level)
         {
             Level = level ?? GetDefaultLevel();
-            Blocks = MyConverters.ToBlocks(Level.Blocks, out var blocksOutsideBoundries);
-            BlocksOutsideBoundries= blocksOutsideBoundries;
+            Blocks = MyConverters.ToBlocks(Level.Blocks, out BlocksOutsideBoundries);
         }
 
 

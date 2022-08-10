@@ -1,5 +1,7 @@
-﻿using BlockEditor.Models;
+﻿using BlockEditor.Helpers;
+using BlockEditor.Models;
 using BlockEditor.Views.Windows;
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
@@ -46,6 +48,20 @@ namespace BlockEditor.Utils
             w.Left = padddingX;
             w.Top = padddingY;
             w.MaxHeight = 6 * window.ActualHeight / 7 - 100;
+        }
+
+        public static void BlocksOutsideBoundries(int count)
+        {
+            if(count == 0)
+                return;
+
+            var plural = count > 1;
+            var blocks = plural ? "blocks" : "block";
+            var these  = plural ? "These" : "This";
+
+            MessageUtil.ShowWarning($"This map has {count} {blocks} outside the PR2 boundaries."
+                        + Environment.NewLine + Environment.NewLine
+                        + $"{these} {blocks} will be ignored.");
         }
     }
 }
