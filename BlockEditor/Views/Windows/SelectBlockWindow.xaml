@@ -16,8 +16,6 @@
         Closing="Window_Closing">
 
     <Border CornerRadius="15" BorderThickness="2" VerticalAlignment="Top" BorderBrush="{StaticResource StandardBorderBrush}" Background="{StaticResource StandardBackground}">
-
-
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>

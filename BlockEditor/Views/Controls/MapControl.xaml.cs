@@ -6,6 +6,7 @@ using BlockEditor.Helpers;
 using BlockEditor.ViewModels;
 using BlockEditor.Models;
 using static BlockEditor.Models.UserMode;
+using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Views.Controls
 {
@@ -17,7 +18,7 @@ namespace BlockEditor.Views.Controls
         public MapControl()
         {
             InitializeComponent();
-            BlocksControl.Init(3);
+            BlocksControl.Init(BlockSize.Zoom125, 3);
             this.DataContext = ViewModel = new MapViewModel(CleanBlocksControlSelection);
 
             MapButtons.ViewModel.OnLoadMap += ViewModel.OnLoadMap;

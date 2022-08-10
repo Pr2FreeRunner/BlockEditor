@@ -99,7 +99,7 @@
                              x:Name="BlocksControl" 
                              Grid.RowSpan="99" 
                              VerticalAlignment="Center"
-                             Width="200"
+                             HorizontalAlignment="Center"
                              Margin="8"/>
 
         <myControls:MapButtonsControl x:Name="MapButtons"

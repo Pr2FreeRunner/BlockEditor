@@ -9,9 +9,9 @@
              Height="auto">
     <Border 
             CornerRadius="12,12,12,12" 
-            HorizontalAlignment="Center" 
-            VerticalAlignment="Center"
-            Padding="1,5,1,5"
+            Padding="1,5,1,5"             
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
             BorderThickness="1" 
             BorderBrush="{StaticResource StandardBorderColor}">
         

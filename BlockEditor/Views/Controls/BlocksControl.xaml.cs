@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using static BlockEditor.Models.BlockImages;
 using System;
 using System.Linq;
+using BlockEditor.Utils;
 
 namespace BlockEditor.Views.Controls
 {
@@ -18,17 +19,20 @@ namespace BlockEditor.Views.Controls
         private Border _selectedBorder { get; set; }
 
         private Color _selectedColor;
+        private int _paddingX;
 
         public BlocksControl()
         {
             InitializeComponent();
             _selectedColor = Colors.White;
+            _paddingX = 3;
         }
 
-        public void Init(int columnCount, bool whiteSelection = true)
+        public void Init(BlockSize size, int columnCount, bool whiteSelection = true)
         {
+            _paddingX = size > BlockSize.Zoom100 ? 3 : 2;
             _selectedColor = whiteSelection ? Colors.White : Colors.Black;
-            var images = GetAllImageBlocks(BlockSize.Zoom100).ToList();
+            var images = GetAllImageBlocks(size).ToList();
             var rowCount = images.Count / columnCount + 1;
 
             for (int i = 0; i < columnCount; i++)
@@ -55,15 +59,19 @@ namespace BlockEditor.Views.Controls
         private Border CreateBorder(BlockImage block)
         {
             var border = new Border();
-            border.Margin = new Thickness(3, 6, 3, 6);
+            border.Margin = new Thickness(_paddingX, 6, _paddingX, 6);
             border.BorderThickness = new Thickness(3);
             border.MouseDown += Border_MouseDown;
+            border.HorizontalAlignment = HorizontalAlignment.Stretch;
+            border.VerticalAlignment = VerticalAlignment.Stretch;
 
             var image  = new Image();
 
             image.Source = block.Image;
             image.Tag = block.ID;
             border.Child = image;
+            image.HorizontalAlignment = HorizontalAlignment.Stretch;
+            image.VerticalAlignment = VerticalAlignment.Stretch;
 
             return border;
         }

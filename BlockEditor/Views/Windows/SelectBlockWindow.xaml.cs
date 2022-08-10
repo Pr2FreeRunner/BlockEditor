@@ -1,7 +1,7 @@
 ﻿using BlockEditor.Models;
-using LevelModel.Models.Components;
 using System.Windows;
 using System.Windows.Input;
+using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Views.Windows
 {
@@ -13,7 +13,7 @@ namespace BlockEditor.Views.Windows
         public SelectBlockWindow(string title)
         {
             InitializeComponent();
-            MyBlockControl.Init(11, false);
+            MyBlockControl.Init(BlockSize.Zoom75, 11, false);
 
             tbTitle.Text = title;
             this.Title = "Select Block";
