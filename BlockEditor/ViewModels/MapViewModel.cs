@@ -108,7 +108,8 @@ namespace BlockEditor.ViewModels
                 throw new OverwriteException();
 
             Game.AddBlocks(blocks);
-            BlockSelection.UserSelection.Reset();
+            BlockSelection.Reset();
+            Mode.Value = UserModes.None;
         }
 
         public void OnBlockInfoClick()

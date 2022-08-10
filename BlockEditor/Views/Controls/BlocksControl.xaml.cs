@@ -30,7 +30,7 @@ namespace BlockEditor.Views.Controls
 
         public void Init(BlockSize size, int columnCount, bool whiteSelection = true)
         {
-            _paddingX = size > BlockSize.Zoom100 ? 3 : 2;
+            _paddingX = size > BlockSize.Zoom100 ? 3 : 1;
             _selectedColor = whiteSelection ? Colors.White : Colors.Black;
             var images = GetAllImageBlocks(size).ToList();
             var rowCount = images.Count / columnCount + 1;
