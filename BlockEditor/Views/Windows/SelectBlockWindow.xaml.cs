@@ -8,11 +8,13 @@ namespace BlockEditor.Views.Windows
     public partial class SelectBlockWindow : Window
     {
 
-        private SimpleBlock _selectedBlock { get; set; }
+        private int? _selectedBlock { get; set; }
 
         public SelectBlockWindow(string title)
         {
             InitializeComponent();
+            MyBlockControl.Init(11, false);
+
             tbTitle.Text = title;
             this.Title = "Select Block";
             btnOk.IsEnabled = false;
@@ -22,19 +24,11 @@ namespace BlockEditor.Views.Windows
 
         private void OnBlockSelected(int? b)
         {
-            if(b == null)
-            {
-                _selectedBlock = new SimpleBlock(b.Value);
-                btnOk.IsEnabled =  true;
-            }
-            else
-            {
-                _selectedBlock = SimpleBlock.None;
-                btnOk.IsEnabled = false;
-            }
+            _selectedBlock = b;
+            btnOk.IsEnabled =  b != null;
         }
 
-        public static SimpleBlock Show(string title)
+        public static int? Show(string title)
         {
             var current = Mouse.OverrideCursor;
 
@@ -66,7 +60,23 @@ namespace BlockEditor.Views.Windows
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
+            _selectedBlock = null;
             Close();
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            _selectedBlock = null;
+            Close();
+        }
+
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Escape)
+            {
+                _selectedBlock = null;
+                Close();
+            }
         }
     }
 }

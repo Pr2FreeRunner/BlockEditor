@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              Background="Transparent"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d"
+             Width="auto"
+             Height="auto">
     <Border 
             CornerRadius="12,12,12,12" 
             HorizontalAlignment="Center" 
             VerticalAlignment="Center"
-            Margin="8"
             Padding="1,5,1,5"
             BorderThickness="1" 
             BorderBrush="{StaticResource StandardBorderColor}">
@@ -25,13 +25,12 @@
         </Border.Background>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <WrapPanel x:Name="BlockContainer" 
+            <Grid x:Name="BlockContainer" 
                         Grid.Row="0"
                         Grid.Column="0"
                         HorizontalAlignment="Left" 
-                        VerticalAlignment="Top"
-                        MaxWidth="180" ItemWidth="60">
-            </WrapPanel>
+                        VerticalAlignment="Top">
+            </Grid>
         </ScrollViewer>
 
     </Border>

@@ -6,6 +6,7 @@ using System.Windows.Controls;
 
 using static BlockEditor.Models.BlockImages;
 using System;
+using System.Linq;
 
 namespace BlockEditor.Views.Controls
 {
@@ -16,23 +17,38 @@ namespace BlockEditor.Views.Controls
 
         private Border _selectedBorder { get; set; }
 
+        private Color _selectedColor;
 
         public BlocksControl()
         {
             InitializeComponent();
-
-            AddBlocks();
+            _selectedColor = Colors.White;
         }
 
-
-        private void AddBlocks()
+        public void Init(int columnCount, bool whiteSelection = true)
         {
-            foreach (var image in BlockImages.GetAllImageBlocks(BlockSize.Zoom100))
+            _selectedColor = whiteSelection ? Colors.White : Colors.Black;
+            var images = GetAllImageBlocks(BlockSize.Zoom100).ToList();
+            var rowCount = images.Count / columnCount + 1;
+
+            for (int i = 0; i < columnCount; i++)
+                BlockContainer.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+
+            for (int i = 0; i < rowCount; i++)
+                BlockContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+
+            var count = 0;
+            foreach (var image in images)
             {
                 if (image == null)
                     continue;
 
-                BlockContainer.Children.Add(CreateBorder(image));
+                var border = CreateBorder(image);
+                Grid.SetColumn(border, count % columnCount);
+                Grid.SetRow(border, count / columnCount);
+
+                BlockContainer.Children.Add(border);
+                count++;
             }
         }
 
@@ -58,7 +74,7 @@ namespace BlockEditor.Views.Controls
                 return;
 
             if (border.BorderBrush == null)
-                border.BorderBrush = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                border.BorderBrush = new SolidColorBrush(_selectedColor);
             else
                 _selectedBorder.BorderBrush = null;
         }

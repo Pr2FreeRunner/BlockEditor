@@ -90,11 +90,11 @@ namespace BlockEditor.ViewModels
 
         public void OnAddShapeClick()
         {
-            var selectedId = BlockSelection.SelectedBlock;
+            var selectedId = SelectBlockWindow.Show("Add Shape");
             var region = BlockSelection.UserSelection.MapRegion;
 
             if (selectedId == null)
-                throw new Exception("Select a block to add a shape.");
+                return;
 
             if (!ShapeBuilderUtil.PickShape())
                 return;

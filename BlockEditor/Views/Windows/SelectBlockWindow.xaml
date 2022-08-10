@@ -5,32 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="clr-namespace:BlockEditor.Views.Controls"
         mc:Ignorable="d"
         Title="Select Block"
-        WindowStartupLocation="CenterScreen" 
+        Width="700"
         SizeToContent="WidthAndHeight"
-        MinWidth="400"
-        MinHeight="100"
-        WindowStyle="SingleBorderWindow"
         ResizeMode="NoResize"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True" 
+        Background="Transparent"
+        PreviewKeyDown="Window_PreviewKeyDown"
         Closing="Window_Closing">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
+    <Border CornerRadius="15" BorderThickness="2" VerticalAlignment="Top" BorderBrush="{StaticResource StandardBorderBrush}" Background="{StaticResource StandardBackground}">
 
-        </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" FontSize="20" FontWeight="SemiBold" HorizontalAlignment="Center" Text="My Title" Name="tbTitle" />
-        <TextBlock Grid.Row="1" FontSize="14" FontWeight="Normal" Margin="20" HorizontalAlignment="Center" Text="Select Block"  />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
 
-        <controls:BlocksControl Grid.Row="2" x:Name="MyBlockControl" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="20,0,20,20" />
+            </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="20,5,20, 10" HorizontalAlignment="Right">
-            <Button Width="100" Height="25" Content="Ok" IsDefault="True" Margin="5" x:Name="btnOk" Click="btnOk_Click" />
-            <Button Width="100" Height="25" Content="Cancel" IsCancel="True" Margin="5" Click="btnCancel_Click" />
-        </StackPanel>
-    </Grid>
+            <TextBlock Grid.Row="0" FontSize="20" FontWeight="SemiBold" HorizontalAlignment="Center" Text="My Title" Margin="0,5,0,0" Name="tbTitle" />
+            <Button Style="{StaticResource CloseBtn}" Click="CloseButton_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10,10,15,0"/>
 
+            <TextBlock Grid.Row="1" FontSize="14" FontWeight="Normal" Margin="20,14,20,0" HorizontalAlignment="Center" Text="Select Block"  />
+
+            <controls:BlocksControl Grid.Row="2" x:Name="MyBlockControl" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="20,0,20,20" />
+
+            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="20,5,20, 10" HorizontalAlignment="Right">
+                <Button Width="100" Height="25" Content="Ok" IsDefault="True" Margin="5" x:Name="btnOk" Click="btnOk_Click" />
+                <Button Width="100" Height="25" Content="Cancel" IsCancel="True" Margin="5" Click="btnCancel_Click" />
+            </StackPanel>
+        </Grid>
+    </Border>
 </Window>

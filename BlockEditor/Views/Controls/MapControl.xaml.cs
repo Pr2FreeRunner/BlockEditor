@@ -17,6 +17,7 @@ namespace BlockEditor.Views.Controls
         public MapControl()
         {
             InitializeComponent();
+            BlocksControl.Init(3);
             this.DataContext = ViewModel = new MapViewModel(CleanBlocksControlSelection);
 
             MapButtons.ViewModel.OnLoadMap += ViewModel.OnLoadMap;
