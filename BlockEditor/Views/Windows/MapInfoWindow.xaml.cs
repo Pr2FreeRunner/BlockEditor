@@ -55,6 +55,7 @@ namespace BlockEditor.Views.Windows
             var culture = CultureInfo.InvariantCulture;
 
             tbId.Text = _map.Level.LevelID != default(int) ? _map.Level.LevelID.ToString(culture) : string.Empty;
+            tbVersion.Text = _map.Level.Version.ToString(culture);
             tbtTitle.Text = _map.Level.Title;
             tbTime.Text = _map.Level.MaxTime.ToString(culture);
             tbCowboy.Text = _map.Level.CowboyChance.ToString(culture);

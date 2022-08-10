@@ -46,7 +46,7 @@ namespace BlockEditor.Models
 
         public void RefreshGui()
         {
-            if(!Pause == false)
+            if(!Pause)
                 return;
 
             Pause = false;
