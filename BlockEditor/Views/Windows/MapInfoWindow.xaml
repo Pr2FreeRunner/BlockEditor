@@ -22,11 +22,14 @@
             <StackPanel Orientation="Vertical" Margin="5,0,5,5" VerticalAlignment="Center">
                 <Grid>
                     <Button Style="{StaticResource CloseBtn}" Margin="0,2,0,0" Click="CloseButton_Click" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-                    <Label Content="Map Info" Margin="0" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <Label Content="Map Info" Margin="0" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Grid>
 
-                <Label Content="Title:" Margin="0,-20,0,0" FontWeight="SemiBold"/>
-                <TextBox x:Name="tbtTitle" Margin="4,0,0,0" TextChanged="Title_TextChanged" FontSize="{StaticResource DefaultFontSize}" />
+                <Label Content="Level ID:" Margin="0,-16,0,0" FontWeight="SemiBold"/>
+                <TextBox x:Name="tbId" Margin="4,0,0,0" IsReadOnly="true" FontSize="12"/>
+                
+                <Label Content="Title:" Margin="0,5,0,0" FontWeight="SemiBold"/>
+                <TextBox x:Name="tbtTitle" Margin="4,0,0,0" TextChanged="Title_TextChanged" FontSize="12" />
 
                 <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Time:"/>
                 <TextBox x:Name="tbTime" Margin="4,0,0,0" TextChanged="Time_TextChanged" PreviewTextInput="Integer_PreviewTextInput" FontSize="{StaticResource DefaultFontSize}"  />

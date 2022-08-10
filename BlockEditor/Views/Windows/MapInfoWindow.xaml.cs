@@ -52,11 +52,14 @@ namespace BlockEditor.Views.Windows
 
         private void Init()
         {
+            var culture = CultureInfo.InvariantCulture;
+
+            tbId.Text = _map.Level.LevelID != default(int) ? _map.Level.LevelID.ToString(culture) : string.Empty;
             tbtTitle.Text = _map.Level.Title;
-            tbTime.Text = _map.Level.MaxTime.ToString(CultureInfo.InvariantCulture);
-            tbCowboy.Text = _map.Level.CowboyChance.ToString(CultureInfo.InvariantCulture);
-            tbRank.Text = _map.Level.RankLimit.ToString(CultureInfo.InvariantCulture);
-            tbGravity.Text = _map.Level.Gravity.ToString(CultureInfo.InvariantCulture);
+            tbTime.Text = _map.Level.MaxTime.ToString(culture);
+            tbCowboy.Text = _map.Level.CowboyChance.ToString(culture);
+            tbRank.Text = _map.Level.RankLimit.ToString(culture);
+            tbGravity.Text = _map.Level.Gravity.ToString(culture);
             tbMode.Text = _map.Level.GameMode?.FullName ?? string.Empty;
 
             ItemBlockOptionsControl.SetItems(_map.Level.Items);
@@ -185,5 +188,6 @@ namespace BlockEditor.Views.Windows
         {
             OpenWindows.Remove(this);
         }
+
     }
 }
