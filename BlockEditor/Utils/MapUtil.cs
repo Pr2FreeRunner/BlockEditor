@@ -185,7 +185,7 @@ namespace BlockEditor.Helpers
             var startBlock = map.Blocks.GetBlock(startPoint);
             var maxBlocks  = Blocks.LIMIT - map.Blocks.BlockCount;
 
-            if (region != null || region.IsComplete())
+            if (region != null && region.IsComplete())
             {
                 lowerLimit = region.Start.Value;
                 upperLimit = region.End.Value;

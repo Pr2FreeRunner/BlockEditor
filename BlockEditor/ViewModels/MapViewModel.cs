@@ -81,11 +81,9 @@ namespace BlockEditor.ViewModels
             if (Mode.Value!= UserModes.Fill)
             {
                 Mode.Value= UserModes.Fill;
-                Mouse.OverrideCursor = Cursors.UpArrow;
             }
             else
             {
-                Mouse.OverrideCursor = null;
                 Mode.Value= UserModes.None;
             }
         }
@@ -116,11 +114,9 @@ namespace BlockEditor.ViewModels
             {
                 BlockSelection?.Reset();
                 Mode.Value= UserModes.BlockInfo;
-                Mouse.OverrideCursor = Cursors.Cross;
             }
             else
             {
-                Mouse.OverrideCursor = null;
                 Mode.Value= UserModes.None;
             }
         }
@@ -177,7 +173,7 @@ namespace BlockEditor.ViewModels
         public void OnCleanUserMode()
         {
             BlockSelection?.Reset();
-            Mode.Value= UserModes.None;
+            Mode.Value = UserModes.None;
             Mouse.OverrideCursor = null;
         }
 
