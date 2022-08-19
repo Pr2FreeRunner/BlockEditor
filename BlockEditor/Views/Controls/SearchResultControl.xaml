@@ -7,7 +7,6 @@
              HorizontalAlignment="Stretch"
              Height="25"
              Margin="5"
-             KeyDown="UserControl_KeyDown"
         >
     <Button Name="btnTitle" Content="Trapwork Title" 
             Click="btnTitle_Click" 
