@@ -234,13 +234,10 @@ namespace BlockEditor.ViewModels
                     }
                     else if (e.RightButton == MouseButtonState.Pressed)
                     { 
-                        var start = BlockSelection.UserSelection.MapRegion.Start;
-                        var end   = BlockSelection.UserSelection.MapRegion.End;
-
-                        if(BlockSelection.UserSelection.MapRegion.IsInside(index))
+                        if(!BlockSelection.UserSelection.MapRegion.IsInside(index))
                             break;
 
-                        Game.DeleteSelection(start, end);
+                        Game.DeleteSelection(BlockSelection.UserSelection.MapRegion);
                         OnCleanUserMode();
                     }
 

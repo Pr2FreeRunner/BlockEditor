@@ -2,6 +2,7 @@
 using BlockEditor.Utils;
 using BlockEditor.ViewModels;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace BlockEditor.Models
@@ -96,16 +97,16 @@ namespace BlockEditor.Models
             UserOperations.Execute(op);
         }
 
-        public void DeleteSelection(MyPoint? start, MyPoint? end)
+        public void DeleteSelection(MyRegion region)
         {
-            if (start == null || end == null || Map == null)
+            if (region == null || !region.IsComplete() || Map == null)
                 return;
 
             var blocks = new List<SimpleBlock>();
 
-            for (int x = start.Value.X; x < end.Value.X; x++)
+            for (int x = region.Start.Value.X; x < region.End.Value.X; x++)
             {
-                for (int y = start.Value.Y; y < end.Value.Y; y++)
+                for (int y = region.Start.Value.Y; y < region.End.Value.Y; y++)
                 {
                     var block = Map.Blocks.GetBlock(x, y);
 

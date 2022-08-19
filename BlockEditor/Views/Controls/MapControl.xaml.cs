@@ -171,13 +171,10 @@ namespace BlockEditor.Views.Controls
                 }
                 else if (IsSelectionKey(e, ctrl))
                 {
-                    var startPoint = ViewModel.BlockSelection.UserSelection.MapRegion.Start;
-                    var endPoint = ViewModel.BlockSelection.UserSelection.MapRegion.End;
-
                     ViewModel.BlockSelection.UserSelection.CreateSelection(ViewModel.Game.Map);
 
                     if (e.Key == Key.X || e.Key == Key.Delete)
-                        ViewModel.Game.DeleteSelection(startPoint, endPoint);
+                        ViewModel.Game.DeleteSelection(ViewModel.BlockSelection.UserSelection.MapRegion);
 
                     if (e.Key == Key.Delete)
                         ViewModel.OnCleanUserMode();
