@@ -219,7 +219,7 @@ namespace BlockEditor.Views.Windows
             if (!IsOKToSearch())
                 return;
 
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter && searchTextbox.IsFocused)
             {
                 Search_Click(null, null);
                 e.Handled = true;

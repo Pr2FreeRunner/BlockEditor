@@ -33,7 +33,7 @@ namespace BlockEditor.Views.Windows
         private void SetSpecificBlockCount(Map map)
         {
             var builder = new StringBuilder();
-            var blocks  = GetBlockCount(map).ToList();
+            var blocks  = GetBlockCount(map).ToList().OrderByDescending(x => x.Item1).ToList();
             var first   = true;
 
             var maxCount = blocks.Max(t => t.Item1);
