@@ -7,7 +7,7 @@ namespace BlockEditor.Models
         private readonly Map _map;
         private readonly SimpleBlock _block;
         private SimpleBlock _oldBlock;
-
+        private MyPoint? _oldStartPosition;
 
         public AddBlockOperation(Map map, SimpleBlock b)
         {
@@ -25,6 +25,9 @@ namespace BlockEditor.Models
             if (!_oldBlock.IsEmpty() && _oldBlock.ID == _block.ID)
                 return false;
 
+            if (Block.IsStartBlock(_block.ID))
+                _oldStartPosition = _map.Blocks.StartBlocks.GetPosition(_block.ID);
+
             _map?.Blocks.Add(_block);
 
             return true;
@@ -39,6 +42,9 @@ namespace BlockEditor.Models
                 return false;
 
             _map.Blocks.Delete(_block);
+
+            if(_oldStartPosition != null && Block.IsStartBlock(_block.ID))
+                _map.Blocks.Add(new SimpleBlock(_block.ID, _oldStartPosition.Value));
            
             if(!_oldBlock.IsEmpty())
                 _map.Blocks.Add(_oldBlock);
