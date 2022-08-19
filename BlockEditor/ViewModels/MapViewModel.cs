@@ -279,6 +279,7 @@ namespace BlockEditor.ViewModels
                         
                         if (!b.IsEmpty() && !Game.Map.Blocks.Overwrite)
                             throw new OverwriteException();
+
                         var region = BlockSelection.UserSelection.HasSelectedRegion ? BlockSelection.UserSelection.MapRegion : null;
                         Game.AddBlocks(MapUtil.GetFloodFill(Game.Map, index, selectedId.Value, region));
                     }

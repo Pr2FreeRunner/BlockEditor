@@ -1,9 +1,14 @@
-﻿using BlockEditor.Models;
+﻿using BlockEditor.Helpers;
+using BlockEditor.Models;
 using BlockEditor.Utils;
+using LevelModel.Models;
 using LevelModel.Models.Components;
+using LevelModel.Models.Components.Art;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -14,6 +19,7 @@ namespace BlockEditor.Views.Windows
     {
         private Map _map;
         private Action _refreshGui;
+        private int _page = 1;
 
         public MapInfoWindow(Map map, Action refreshGui)
         {
@@ -26,11 +32,9 @@ namespace BlockEditor.Views.Windows
 
             OpenWindows.Add(this);
             MyUtils.SetPopUpWindowPosition(this);
+
             Init();
-            ItemBlockOptionsControl.OnItemChanged += OnItemBlockOptionChanged;
-            HatsControl.OnHatChanged += OnHatChanged;
-            MyColorPicker.SetColor(map.Background);
-            MyColorPicker.OnNewColor += OnNewColor;
+            UpdateButtons();
         }
 
         private void OnNewColor(string color)
@@ -56,14 +60,23 @@ namespace BlockEditor.Views.Windows
 
             tbId.Text = _map.Level.LevelID != default(int) ? _map.Level.LevelID.ToString(culture) : string.Empty;
             tbVersion.Text = _map.Level.Version.ToString(culture);
-            tbtTitle.Text = _map.Level.Title;
+            tbtTitle.Text = _map.Level.Title ?? string.Empty;
             tbTime.Text = _map.Level.MaxTime.ToString(culture);
             tbCowboy.Text = _map.Level.CowboyChance.ToString(culture);
             tbRank.Text = _map.Level.RankLimit.ToString(culture);
             tbGravity.Text = _map.Level.Gravity.ToString(culture);
+            tbUserId.Text = _map.Level.UserID != 0 ? _map.Level.UserID.ToString(culture) : string.Empty;
             tbMode.Text = _map.Level.GameMode?.FullName ?? string.Empty;
+            tbDrawArt.Text = GetDrawArtSize().ToString(culture);
+            tbTextArt.Text = GetTextArtSize().ToString(culture);
 
             ItemBlockOptionsControl.SetItems(_map.Level.Items);
+            HatsControl.SetBadHats(_map.Level.BadHats);
+            MyColorPicker.SetColor(_map.Background);
+
+            ItemBlockOptionsControl.OnItemChanged += OnItemBlockOptionChanged;
+            HatsControl.OnHatChanged += OnHatChanged;
+            MyColorPicker.OnNewColor += OnNewColor;
         }
 
         private void OnItemBlockOptionChanged(List<Item> items)
@@ -190,5 +203,103 @@ namespace BlockEditor.Views.Windows
             OpenWindows.Remove(this);
         }
 
+        private void UpdateButtons()
+        {
+            btnRightPage.IsEnabled = _page < 3;
+            btnLeftPage.IsEnabled  = _page > 1;
+            PageText.Text = _page.ToString(CultureInfo.InvariantCulture);
+
+            Page1.Visibility = _page == 1 ? Visibility.Visible : Visibility.Collapsed;
+            Page2.Visibility = _page == 2 ? Visibility.Visible : Visibility.Collapsed;
+            Page3.Visibility = _page == 3 ? Visibility.Visible : Visibility.Collapsed;
+
+        }
+
+        private int GetSize(string s)
+        {
+            return Encoding.UTF8.GetByteCount(s);
+        }
+
+        private int GetDrawArtSize()
+        {
+            return GetSize(_map.Level.DrawArt00.ToPr2String())
+                 + GetSize(_map.Level.DrawArt0.ToPr2String())
+                 + GetSize(_map.Level.DrawArt1.ToPr2String())
+                 + GetSize(_map.Level.DrawArt2.ToPr2String())
+                 + GetSize(_map.Level.DrawArt3.ToPr2String());
+        }
+
+        private int GetTextArtSize()
+        {
+            return GetSize(_map.Level.TextArt00.ToPr2String())
+                 + GetSize(_map.Level.TextArt0.ToPr2String())
+                 + GetSize(_map.Level.TextArt1.ToPr2String())
+                 + GetSize(_map.Level.TextArt2.ToPr2String())
+                 + GetSize(_map.Level.TextArt3.ToPr2String());
+        }
+
+
+        private void OnPreviousPage(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                _page--;
+
+                UpdateButtons();
+            }
+            catch (Exception ex)
+            {
+                MessageUtil.ShowError(ex.Message);
+            }
+
+        }
+
+        private void OnNextPage(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                _page++;
+
+                UpdateButtons();
+            }
+            catch (Exception ex)
+            {
+                MessageUtil.ShowError(ex.Message);
+            }
+        }
+
+        private void RemoveDrawArt_Click(object sender, RoutedEventArgs e)
+        {
+            var result = UserQuestionWindow.Show("Do you wish to delete all Draw-Art?", "Delete", false);
+
+            if(result != UserQuestionWindow.QuestionResult.Yes)
+                return;
+
+            _map.Level.DrawArt00?.Clear();
+            _map.Level.DrawArt0?.Clear();
+            _map.Level.DrawArt1?.Clear();
+            _map.Level.DrawArt2?.Clear();
+            _map.Level.DrawArt3?.Clear();
+
+            tbDrawArt.Text = GetDrawArtSize().ToString(CultureInfo.InvariantCulture);
+            UpdateButtons();
+        }
+
+        private void RemoveTextArt_Click(object sender, RoutedEventArgs e)
+        {
+            var result = UserQuestionWindow.Show("Do you wish to delete all Text-Art?", "Delete", false);
+
+            if (result != UserQuestionWindow.QuestionResult.Yes)
+                return;
+
+            _map.Level.TextArt00?.Clear();
+            _map.Level.TextArt0?.Clear();
+            _map.Level.TextArt1?.Clear();
+            _map.Level.TextArt2?.Clear();
+            _map.Level.TextArt3?.Clear();
+
+            tbTextArt.Text = GetTextArtSize().ToString(CultureInfo.InvariantCulture);
+            UpdateButtons();
+        }
     }
 }
