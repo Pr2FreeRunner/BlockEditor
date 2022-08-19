@@ -1,4 +1,6 @@
-﻿using BlockEditor.Models;
+﻿using BlockEditor.Helpers;
+using BlockEditor.Models;
+using LevelModel.Models.Components;
 using System.Windows;
 using System.Windows.Input;
 using static BlockEditor.Models.BlockImages;
@@ -13,7 +15,7 @@ namespace BlockEditor.Views.Windows
         public SelectBlockWindow(string title)
         {
             InitializeComponent();
-            MyBlockControl.Init(BlockSize.Zoom75, 11, false);
+            MyBlockControl.Init(BlockSize.Zoom75, 11, whiteSelection: false);
 
             tbTitle.Text = title;
             this.Title = "Select Block";
@@ -28,7 +30,7 @@ namespace BlockEditor.Views.Windows
             btnOk.IsEnabled =  b != null;
         }
 
-        public static int? Show(string title)
+        public static int? Show(string title, bool startblocks)
         {
             var current = Mouse.OverrideCursor;
 
@@ -39,6 +41,12 @@ namespace BlockEditor.Views.Windows
                 var w = new SelectBlockWindow(title);
 
                 w.ShowDialog();
+
+                if(!startblocks && Block.IsStartBlock(w._selectedBlock))
+                {
+                    MessageUtil.ShowError("Selecting a start-block is not allowed, redo it!");
+                    return Show(title, startblocks);
+                }
 
                 return w._selectedBlock;
             }

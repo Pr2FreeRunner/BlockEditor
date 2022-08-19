@@ -96,7 +96,7 @@ namespace BlockEditor.ViewModels
         {
             BlockSelection.Reset(false);
 
-            var selectedId = SelectBlockWindow.Show("Add Shape");
+            var selectedId = SelectBlockWindow.Show("Add Shape", false);
             var region = BlockSelection.UserSelection.MapRegion;
 
             if (selectedId == null)
@@ -112,7 +112,6 @@ namespace BlockEditor.ViewModels
 
             Game.AddBlocks(blocks);
             BlockSelection.Reset();
-            Mode.Value = UserModes.None;
         }
 
         public void OnReplaceClick()
@@ -123,12 +122,12 @@ namespace BlockEditor.ViewModels
                 throw new OverwriteException();
 
             var region = BlockSelection.UserSelection.MapRegion;
-            var id1 = SelectBlockWindow.Show("Block to Replace:");
+            var id1 = SelectBlockWindow.Show("Block to Replace:", false);
 
             if (id1 == null)
                 return;
 
-            var id2 = SelectBlockWindow.Show("Block to Add:");
+            var id2 = SelectBlockWindow.Show("Block to Add:", false);
             if (id2 == null)
                 return;
 
@@ -138,7 +137,6 @@ namespace BlockEditor.ViewModels
 
                 Game.AddBlocks(blocks);
                 BlockSelection.Reset();
-                Mode.Value = UserModes.None;
             }
         }
 
@@ -270,7 +268,7 @@ namespace BlockEditor.ViewModels
                     if (e.ChangedButton != MouseButton.Left)
                         break;
 
-                    var selectedId = SelectBlockWindow.Show("Flood Fill");
+                    var selectedId = SelectBlockWindow.Show("Flood Fill", false);
                     
                     if(selectedId == null)
                         return;

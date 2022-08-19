@@ -8,6 +8,7 @@ using static BlockEditor.Models.BlockImages;
 using System;
 using System.Linq;
 using BlockEditor.Utils;
+using LevelModel.Models.Components;
 
 namespace BlockEditor.Views.Controls
 {

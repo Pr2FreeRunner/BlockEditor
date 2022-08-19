@@ -164,11 +164,6 @@ namespace BlockEditor.Views.Controls
                     if (MapButtons.ViewModel.TestCommand.CanExecute(null))
                         MapButtons.ViewModel.TestCommand.Execute(null);
                 }
-                else if (ctrl && e.Key == Key.R)
-                {
-                    if (ViewModel.ReplaceCommand.CanExecute(null))
-                        ViewModel.ReplaceCommand.Execute(null);
-                }
                 else if (ctrl && e.Key == Key.N)
                 {
                     if (MapButtons.ViewModel.NewCommand.CanExecute(null))
@@ -230,6 +225,11 @@ namespace BlockEditor.Views.Controls
                 else if (e.Key == Key.F)
                 {
                     ViewModel.OnFillClick();
+                }
+                else if (e.Key == Key.R)
+                {
+                    if (ViewModel.ReplaceCommand.CanExecute(null))
+                        ViewModel.ReplaceCommand.Execute(null);
                 }
             }
             catch (Exception ex)
