@@ -115,6 +115,20 @@ namespace BlockEditor.Views.Controls
             }
         }
 
+        public void UserControl_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta > 0)
+            {
+                if (ZoomControl.ViewModel.ZoomInCommand.CanExecute(null))
+                    ZoomControl.ViewModel.ZoomInCommand.Execute(null);
+            }
+            else if (e.Delta < 0)
+            {
+                if (ZoomControl.ViewModel.ZoomOutCommand.CanExecute(null))
+                    ZoomControl.ViewModel.ZoomOutCommand.Execute(null);
+            }
+        }
+
         public void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             try

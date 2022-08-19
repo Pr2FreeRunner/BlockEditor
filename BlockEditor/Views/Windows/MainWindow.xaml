@@ -8,7 +8,8 @@
         WindowState="Maximized"
         Title="Block Editor"
         PreviewKeyDown="Window_PreviewKeyDown"  
-        Activated="Window_Activated">
+        Activated="Window_Activated"
+        PreviewMouseWheel="Window_PreviewMouseWheel">
     <Grid>
         <myControls:MapControl x:Name="MyMapControl"/>
     </Grid>

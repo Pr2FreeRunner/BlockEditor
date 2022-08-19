@@ -40,5 +40,10 @@ namespace BlockEditor.Views.Windows
         {
             MyMapControl.UserControl_PreviewKeyDown(sender, e);
         }
+
+        private void Window_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            MyMapControl.UserControl_PreviewMouseWheel(sender, e);
+        }
     }
 }
