@@ -1,4 +1,5 @@
-﻿using BlockEditor.Utils;
+﻿using BlockEditor.Helpers;
+using BlockEditor.Utils;
 using BlockEditor.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
@@ -141,13 +142,16 @@ namespace BlockEditor.Models
             var p = Map.Blocks.GetStartPosition();
 
             if (p == null)
+            {
+                MessageUtil.ShowWarning("The map contains no start position.");
                 return;
+            }
 
             var size = Map.BlockSize.GetPixelSize();
             var x = p.Value.X * size - (GameImage.Width / 2);
             var y = p.Value.Y * size - (GameImage.Height / 2);
 
-            Camera.Position = new MyPoint(x, y); ;
+            Camera.Position = new MyPoint(x, y);
         }
 
     }

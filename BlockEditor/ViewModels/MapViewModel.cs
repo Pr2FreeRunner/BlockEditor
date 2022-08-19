@@ -41,6 +41,8 @@ namespace BlockEditor.ViewModels
         public RelayCommand BlockInfoCommand { get; }
         public RelayCommand MapInfoCommand { get; }
         public RelayCommand BlockCountCommand { get; }
+        public RelayCommand ReplaceCommand { get; }
+
 
 
         public MapViewModel(Action cleanBlockControl)
@@ -56,6 +58,7 @@ namespace BlockEditor.ViewModels
             BlockInfoCommand     = new RelayCommand((_) => OnBlockInfoClick());
             MapInfoCommand       = new RelayCommand((_) => OnMapInfoClick());
             BlockCountCommand    = new RelayCommand((_) => OnBlockCountClick());
+            ReplaceCommand       = new RelayCommand((_) => OnReplaceClick());
             BlockSelection.OnSelectionClick += OnSelectionClick;
             Game.Engine.OnFrame += OnFrameUpdate;
         }
@@ -110,6 +113,33 @@ namespace BlockEditor.ViewModels
             Game.AddBlocks(blocks);
             BlockSelection.Reset();
             Mode.Value = UserModes.None;
+        }
+
+        public void OnReplaceClick()
+        {
+            BlockSelection.Reset(false);
+
+            if (!Game.Map.Blocks.Overwrite)
+                throw new OverwriteException();
+
+            var region = BlockSelection.UserSelection.MapRegion;
+            var id1 = SelectBlockWindow.Show("Block to Replace:");
+
+            if (id1 == null)
+                return;
+
+            var id2 = SelectBlockWindow.Show("Block to Add:");
+            if (id2 == null)
+                return;
+
+            using (new TempCursor(Cursors.Wait))
+            {
+                var blocks = MapUtil.ReplaceBlock(Game.Map, id1.Value, id2.Value, region);
+
+                Game.AddBlocks(blocks);
+                BlockSelection.Reset();
+                Mode.Value = UserModes.None;
+            }
         }
 
         public void OnBlockInfoClick()

@@ -223,5 +223,35 @@ namespace BlockEditor.Helpers
 
             return result;
         }
+
+        public static List<SimpleBlock> ReplaceBlock(Map map, int id1, int id2, MyRegion region)
+        {
+            var result = new List<SimpleBlock>();
+
+            if (map == null)
+                return result;
+
+            var lowerLimit = new MyPoint(0, 0);
+            var upperLimit = new MyPoint(Blocks.SIZE, Blocks.SIZE);
+
+            if (region != null && region.IsComplete())
+            {
+                lowerLimit = region.Start.Value;
+                upperLimit = region.End.Value;
+            }
+
+            for (int x = lowerLimit.X; x < upperLimit.X; x++)
+            {
+                for (int y = lowerLimit.Y; y < upperLimit.Y; y++)
+                {
+                    var b = map.Blocks.GetBlock(x, y);
+
+                    if(b.ID == id1)
+                        result.Add(new SimpleBlock(id2, x, y));
+                }
+            }
+
+            return result;
+        }
     }
 }

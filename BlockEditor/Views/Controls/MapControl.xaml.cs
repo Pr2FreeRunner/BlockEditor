@@ -65,6 +65,12 @@ namespace BlockEditor.Views.Controls
             try
             {
                 ViewModel.OnPreviewMouseDown(sender, e);
+
+                if (MySettings.FirstTimeLoad)
+                {
+                    MessageUtil.ShowInfo("Hint:  You can delete a block by right-clicking it.");
+                    MySettings.FirstTimeLoad = false;
+                }
             }
             catch (Exception ex)
             {
@@ -157,6 +163,11 @@ namespace BlockEditor.Views.Controls
                 {
                     if (MapButtons.ViewModel.TestCommand.CanExecute(null))
                         MapButtons.ViewModel.TestCommand.Execute(null);
+                }
+                else if (ctrl && e.Key == Key.R)
+                {
+                    if (ViewModel.ReplaceCommand.CanExecute(null))
+                        ViewModel.ReplaceCommand.Execute(null);
                 }
                 else if (ctrl && e.Key == Key.N)
                 {

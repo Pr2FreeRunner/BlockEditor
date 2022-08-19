@@ -55,7 +55,23 @@ namespace BlockEditor.Models
 
                 return startBlock;
             }
+
             return SimpleBlock.None;
+        }
+
+        public void Remove(int id)
+        {
+            if(Player1.ID == id)
+                Player1 = new SimpleBlock(Block.START_BLOCK_P1);
+
+            if (Player2.ID == id)
+                Player2 = new SimpleBlock(Block.START_BLOCK_P2);
+
+            if (Player3.ID == id)
+                Player3 = new SimpleBlock(Block.START_BLOCK_P3);
+
+            if (Player4.ID == id)
+                Player4 = new SimpleBlock(Block.START_BLOCK_P4);
         }
 
     }

@@ -50,6 +50,8 @@
                         <ToggleButton Height="34" IsChecked="{Binding Mode.IsFillMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                         <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="../../Resources/GUI/Bucket.png" />
                     </Grid>
+                    <Button  Height="34" Margin="5,7,5,7" Width="40" Content="R"  FontSize="25" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding ReplaceCommand}" ToolTip="Replace Block&#x0a;Hotkey:  R"/>
+
 
                     <Grid Width="40" Height="34" Margin="30,7,5,7" ToolTip="Block Count Info&#x0a;Hotkey:  C">
                         <Grid.InputBindings>

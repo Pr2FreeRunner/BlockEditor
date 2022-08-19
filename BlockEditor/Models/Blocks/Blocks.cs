@@ -54,10 +54,10 @@ namespace BlockEditor.Models
 
             var block = _blocks[x, y];
 
-            if (block.IsEmpty())
-                return SimpleBlock.None;
+            if (!block.IsEmpty())
+                return block;
 
-            return block;
+            return StartBlocks.GetBlock(new MyPoint(x, y));
         }
 
         public SimpleBlock GetBlock(MyPoint? point)
@@ -148,7 +148,10 @@ namespace BlockEditor.Models
             if (!GetBlock(x, y).IsEmpty())
                 BlockCount--;
 
-            _blocks[x, y] = new SimpleBlock();
+            if(Block.IsStartBlock(block.ID))
+                StartBlocks.Remove(block.ID);
+            else
+                _blocks[x, y] = new SimpleBlock();
         }
 
         public MyPoint? GetStartPosition()

@@ -21,6 +21,13 @@ namespace BlockEditor.Models
             set { _token = value; Save(); }
         }
 
+        private static bool _firstTimeLoad;
+        public static bool FirstTimeLoad
+        {
+            get { return _firstTimeLoad; }
+            set { _firstTimeLoad = value; Save(); }
+        }
+
 
         private static BlockSize _zoom;
         public static BlockSize Zoom
@@ -49,6 +56,7 @@ namespace BlockEditor.Models
                 Settings.Default["Username"] = Username;
                 Settings.Default["Token"] = Token;
                 Settings.Default["Pr2BuildVersion"] = Pr2BuildVersion;
+                Settings.Default["FirstTimeLoad"] = FirstTimeLoad;
                 Settings.Default["Zoom"] = (int)Zoom;
 
                 Settings.Default.Save();
@@ -73,8 +81,9 @@ namespace BlockEditor.Models
             {
                 _username = Settings.Default["Username"] as string ?? string.Empty;
                 _token = Settings.Default["Token"] as string ?? string.Empty;
-                _pr2BuildVersion = HandleBuildVersion(Settings.Default["Pr2BuildVersion"] as string);
+                _firstTimeLoad = (bool) Settings.Default["FirstTimeLoad"];
                 _zoom = (BlockSize)(Settings.Default["Zoom"] ?? BlockImages.DEFAULT_BLOCK_SIZE);
+                _pr2BuildVersion = HandleBuildVersion(Settings.Default["Pr2BuildVersion"] as string);
             }
             catch (Exception ex)
             {
