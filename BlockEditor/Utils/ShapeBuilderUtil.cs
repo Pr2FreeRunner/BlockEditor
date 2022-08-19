@@ -44,7 +44,7 @@ namespace BlockEditor.Utils
 
         public static bool PickShape()
         {
-            var window  = new PickShapeWindow(Type, Fill);
+            var window  = new PickShapeWindow(Type);
             var success = window.ShowDialog();
 
             if(success != true)

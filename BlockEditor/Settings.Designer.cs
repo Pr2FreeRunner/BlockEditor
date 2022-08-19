@@ -82,5 +82,17 @@ namespace BlockEditor {
                 this["FirstTimeLoad"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FillShape {
+            get {
+                return ((bool)(this["FillShape"]));
+            }
+            set {
+                this["FillShape"] = value;
+            }
+        }
     }
 }

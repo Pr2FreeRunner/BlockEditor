@@ -28,6 +28,13 @@ namespace BlockEditor.Models
             set { _firstTimeLoad = value; Save(); }
         }
 
+        private static bool _fillShape;
+        public static bool FillShape
+        {
+            get { return _fillShape; }
+            set { _fillShape = value; Save(); }
+        }
+
 
         private static BlockSize _zoom;
         public static BlockSize Zoom
@@ -57,6 +64,7 @@ namespace BlockEditor.Models
                 Settings.Default["Token"] = Token;
                 Settings.Default["Pr2BuildVersion"] = Pr2BuildVersion;
                 Settings.Default["FirstTimeLoad"] = FirstTimeLoad;
+                Settings.Default["FillShape"] = FillShape;
                 Settings.Default["Zoom"] = (int)Zoom;
 
                 Settings.Default.Save();
@@ -82,6 +90,7 @@ namespace BlockEditor.Models
                 _username = Settings.Default["Username"] as string ?? string.Empty;
                 _token = Settings.Default["Token"] as string ?? string.Empty;
                 _firstTimeLoad = (bool) Settings.Default["FirstTimeLoad"];
+                _fillShape = (bool)Settings.Default["FillShape"];
                 _zoom = (BlockSize)(Settings.Default["Zoom"] ?? BlockImages.DEFAULT_BLOCK_SIZE);
                 _pr2BuildVersion = HandleBuildVersion(Settings.Default["Pr2BuildVersion"] as string);
             }

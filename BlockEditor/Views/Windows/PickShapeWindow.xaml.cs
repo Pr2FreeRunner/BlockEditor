@@ -9,14 +9,13 @@ namespace BlockEditor.Views.Windows
     public partial class PickShapeWindow : Window
     {
         public ShapeType Result { get; private set; }
-        public bool Fill { get; set; }
+        public bool Fill => MySettings.FillShape;
 
-        public PickShapeWindow(ShapeType fallback, bool fill)
+        public PickShapeWindow(ShapeType fallback)
         {
             InitializeComponent();
             Result = fallback;
-            FillCheckbox.IsChecked = fill;
-
+            FillCheckbox.IsChecked = Fill;
             OpenWindows.Add(this);
         }
 
@@ -55,17 +54,16 @@ namespace BlockEditor.Views.Windows
                 DialogResult = false;
                 Close();
             }
-
-            if (e.Key == Key.Space)
-            {
-                DialogResult = true;
-                Close();
-            }
         }
 
         private void FillCheckbox_Checked(object sender, RoutedEventArgs e)
         {
-            Fill = !Fill;
+            MySettings.FillShape = true;
+        }
+
+        private void FillCheckbox_UnChecked(object sender, RoutedEventArgs e)
+        {
+            MySettings.FillShape = false;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

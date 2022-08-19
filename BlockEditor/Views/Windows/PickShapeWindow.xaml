@@ -20,16 +20,15 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Margin="5,10,5,20" Orientation="Vertical" HorizontalAlignment="Center">
+        <StackPanel Grid.Row="0" Margin="5,10,5,25" Orientation="Vertical" HorizontalAlignment="Center">
             <TextBlock Text="Pick Shape" FontSize="25"  Margin="0,0,0,10" HorizontalAlignment="Center"/>
-            <CheckBox Checked="FillCheckbox_Checked" Unchecked="FillCheckbox_Checked"  Margin="5,10,0,20" x:Name="FillCheckbox" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold"  Content="Fill Shape" />
+            <CheckBox Checked="FillCheckbox_Checked" Unchecked="FillCheckbox_UnChecked"  Margin="5,10,0,20" x:Name="FillCheckbox" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold"  Content="Fill Shape" />
 
             <Button FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="150" Height="25" Content="Rectangle"  Margin="5" Click="btnRectangle_Click" />
             <Button FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="150" Height="25" Content="Square"     Margin="5" Click="btnSquare_Click" />
             <Button FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="150" Height="25" Content="Circle"     Margin="5" Click="btnCircle_Click" />
             <Button FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="150" Height="25" Content="Ellipse"     Margin="5" Click="btnEllipse_Click" />
 
-            <TextBlock Margin="0,15,0,5"  FontSize="12"  Text="Hint: Hit space key to use same as last time."/>
         </StackPanel>
     </Grid>
 </Window>
