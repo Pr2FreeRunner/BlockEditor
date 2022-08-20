@@ -216,10 +216,29 @@ namespace BlockEditor.Views.Windows
             if(e.Key == Key.Escape)
                 Close();
 
-            if (!IsOKToSearch())
-                return;
-
-            if (e.Key == Key.Enter && searchTextbox.IsFocused)
+            var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+            
+            if(ctrl && e.Key == Key.M)
+            {
+                SearchByComboBox.SelectedIndex = (int)SearchBy.MyLevels;
+            }
+            else if (ctrl && e.Key == Key.N)
+            {
+                SearchByComboBox.SelectedIndex = (int)SearchBy.Newest;
+            }
+            else if (ctrl && e.Key == Key.U)
+            {
+                SearchByComboBox.SelectedIndex = (int)SearchBy.Username;
+            }
+            else if (ctrl && e.Key == Key.I)
+            {
+                SearchByComboBox.SelectedIndex = (int)SearchBy.ID;
+            }
+            else if (ctrl && e.Key == Key.L)
+            {
+                SearchByComboBox.SelectedIndex = (int)SearchBy.LocalFile;
+            }
+            else if (e.Key == Key.Enter && searchTextbox.IsFocused && IsOKToSearch())
             {
                 Search_Click(null, null);
                 e.Handled = true;
