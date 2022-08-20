@@ -165,7 +165,15 @@ namespace BlockEditor.Views.Windows
         {
             try
             {
-                Build();
+                var id = SelectBlockWindow.Show("Block to Replace:", false);
+
+                if(id == null)
+                    return;
+
+                Build(id.Value);
+
+                DialogResult = true;
+                Close();
             }
             catch (Exception ex)
             {
@@ -173,7 +181,7 @@ namespace BlockEditor.Views.Windows
             }
         }
 
-        private void Build()
+        private void Build(int blockId)
         {
             var info = new BuildDTO()
             {
@@ -181,10 +189,12 @@ namespace BlockEditor.Views.Windows
                 Title = string.Empty,
             };
 
+            info.ImageInfo.BlockType = blockId;
             info.ImageInfo.Type = ImageDTO.ImageType.Blocks;
             info.ImageInfo.Size = _size.Value;
             info.ImageInfo.ColorToIgnore = GetIgnoreColor();
             info.ImageInfo.Image = LoadImage(_imagePath);
+            info.ImageInfo.Position = ImageDTO.ImagePosition.Custom;
 
             var level = Builders.PR2Builder.BuildLevel(info);
             var blocks = MyConverters.ToBlocks(level.Blocks, out var blocksOutsideBoundries);
@@ -235,8 +245,7 @@ namespace BlockEditor.Views.Windows
             UpdateButtons();
         }
 
-
-        protected SKBitmap LoadImage(string path)
+        private SKBitmap LoadImage(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
                 return null;
@@ -252,5 +261,6 @@ namespace BlockEditor.Views.Windows
                 return null;
             }
         }
+
     }
 }
