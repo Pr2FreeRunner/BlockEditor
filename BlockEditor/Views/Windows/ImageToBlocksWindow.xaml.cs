@@ -12,6 +12,8 @@ using System.IO;
 using BlockEditor.Helpers;
 using System.Collections.Generic;
 using LevelModel.Models;
+using LevelModel.Models.Components;
+using System.Linq;
 
 namespace BlockEditor.Views.Windows
 {
@@ -23,12 +25,11 @@ namespace BlockEditor.Views.Windows
         private static string _ignoreColor;
         private static string _imagePath;
 
-        public List<SimpleBlock> Result { get; set; }
+        public BuildDTO BuildInfo { get; set; }
 
         public ImageToBlocksWindow()
         {
             InitializeComponent();
-            Result = new List<SimpleBlock>();
 
             OpenWindows.Add(this);
             MyUtils.SetPopUpWindowPosition(this);
@@ -70,9 +71,10 @@ namespace BlockEditor.Views.Windows
             var culture = CultureInfo.InvariantCulture;
 
             tbPosX.Text = _posX?.ToString(culture) ?? "100";
-            tbPosX.Text = _posY?.ToString(culture) ?? "100";
+            tbPosY.Text = _posY?.ToString(culture) ?? "100";
             cbIgnoreColor.Text = _ignoreColor?.ToString(culture) ?? "";
             cbSize.Text = _size?.ToString(culture) ?? "";
+            tbPath.Text = _imagePath ?? string.Empty;
         }
 
         private void Integer_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -123,12 +125,12 @@ namespace BlockEditor.Views.Windows
 
         private void Size_TextChanged(object sender, SelectionChangedEventArgs e)
         {
-            var cb = sender as ComboBox;
+            var text = ((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Content as string;
 
-            if (cb == null)
+            if (text == null)
                 return;
 
-            if (MyUtils.TryParse(cb.Text, out var result) && result > 0 && result <= 8)
+            if (MyUtils.TryParse(text, out var result) && result >= 0 && result <= 8)
                 _size = result;
             else
                 _size = null;
@@ -138,17 +140,17 @@ namespace BlockEditor.Views.Windows
 
         private void IgnoreColor_TextChanged(object sender, SelectionChangedEventArgs e)
         {
-            var cb = sender as ComboBox;
+            var text = ((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Content as string;
 
-            if (cb == null)
+            if (text == null)
                 return;
 
-            if (string.Equals(cb.Text, "Black", StringComparison.InvariantCultureIgnoreCase))
-                _ignoreColor = cb.Text;
-            else if (string.Equals(cb.Text, "White", StringComparison.InvariantCultureIgnoreCase))
-                _ignoreColor = cb.Text;
-            else if (string.Equals(cb.Text, "None", StringComparison.InvariantCultureIgnoreCase))
-                _ignoreColor = cb.Text;
+            if (string.Equals(text, "Black", StringComparison.InvariantCultureIgnoreCase))
+                _ignoreColor = text;
+            else if (string.Equals(text, "White", StringComparison.InvariantCultureIgnoreCase))
+                _ignoreColor = text;
+            else if (string.Equals(text, "None", StringComparison.InvariantCultureIgnoreCase))
+                _ignoreColor = text;
             else
                 _ignoreColor = string.Empty;
 
@@ -165,12 +167,23 @@ namespace BlockEditor.Views.Windows
         {
             try
             {
-                var id = SelectBlockWindow.Show("Block to Replace:", false);
+                var id = SelectBlockWindow.Show("Block to Add:", false);
 
-                if(id == null)
+                if (id == null)
                     return;
 
-                Build(id.Value);
+                BuildInfo = new BuildDTO()
+                {
+                    Type = BuildDTO.BuildType.Image,
+                    Title = string.Empty,
+                };
+
+                BuildInfo.ImageInfo.BlockType = id.Value;
+                BuildInfo.ImageInfo.Type = ImageDTO.ImageType.Blocks;
+                BuildInfo.ImageInfo.Size = _size.Value;
+                BuildInfo.ImageInfo.ColorToIgnore = GetIgnoreColor();
+                BuildInfo.ImageInfo.Image = LoadImage(_imagePath);
+                BuildInfo.ImageInfo.Position = ImageDTO.ImagePosition.Custom;
 
                 DialogResult = true;
                 Close();
@@ -179,40 +192,6 @@ namespace BlockEditor.Views.Windows
             {
                 MessageUtil.ShowError(ex.Message);
             }
-        }
-
-        private void Build(int blockId)
-        {
-            var info = new BuildDTO()
-            {
-                Type = BuildDTO.BuildType.Image,
-                Title = string.Empty,
-            };
-
-            info.ImageInfo.BlockType = blockId;
-            info.ImageInfo.Type = ImageDTO.ImageType.Blocks;
-            info.ImageInfo.Size = _size.Value;
-            info.ImageInfo.ColorToIgnore = GetIgnoreColor();
-            info.ImageInfo.Image = LoadImage(_imagePath);
-            info.ImageInfo.Position = ImageDTO.ImagePosition.Custom;
-
-            var level = Builders.PR2Builder.BuildLevel(info);
-            var blocks = MyConverters.ToBlocks(level.Blocks, out var blocksOutsideBoundries);
-
-            for (int x = 0; x < Blocks.SIZE; x++)
-            {
-                for (int y = 0; y < Blocks.SIZE; y++)
-                {
-                    var b = blocks.GetBlock(x, y);
-
-                    if(b.IsEmpty())
-                        continue;
-
-                    Result.Add(b);
-                }
-            }
-
-            MyUtils.BlocksOutsideBoundries(blocksOutsideBoundries);
         }
 
         private ImageDTO.IgnoreColor GetIgnoreColor()
@@ -255,12 +234,47 @@ namespace BlockEditor.Views.Windows
                 using (var stream = new SKManagedStream(File.OpenRead(path)))
                     return SKBitmap.Decode(stream);
             }
-            catch (FileNotFoundException) 
-            { 
+            catch (FileNotFoundException)
+            {
                 MessageBox.Show("Image file not found...");
                 return null;
             }
         }
 
+        public static void ShiftPosition(List<Block> blocks)
+        {
+            if(blocks == null || !blocks.Any())
+                return;
+
+            bool first = true;
+            int edgeX  = 0;
+            int edgeY  = 0;
+            int posX   = 0;
+            int posY   = 0;
+
+            foreach (var b in blocks)
+            {
+                if(first)
+                {
+                    first = false;
+                    posX = edgeX = b.X;
+                    posY = edgeY = b.X;
+                    continue;
+                }
+
+                posX += b.X;
+                posY += b.Y;
+
+                if(posX < edgeX)
+                    edgeX = posX;
+
+                if (posY < edgeY)
+                    edgeY = posY;
+            }
+
+            var start = blocks.First();
+            start.X = start.X + _posX.Value - edgeX;
+            start.Y = start.Y + _posY.Value - edgeY;
+        }
     }
 }
