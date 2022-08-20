@@ -9,7 +9,6 @@
         WindowStyle="None"
         Width="435"
         Height="520"
-        PreviewKeyDown="Window_PreviewKeyDown"
         Closing="Window_Closing">
 
     <Border Background="{StaticResource LightBackground}" 
@@ -29,104 +28,53 @@
 
             <Grid Grid.Row="0">
                 <Button Style="{StaticResource CloseBtn}" Margin="0,2,0,0" Click="CloseButton_Click" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-                <Label Content="Map Info" Margin="0" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Label Content="Image to Blocks" Margin="0" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Grid>
 
-            <Grid Grid.Row="1" Margin="5,0,5,5">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
 
-                <StackPanel x:Name="Page1" Grid.Row="0" Visibility="Visible" Orientation="Vertical" VerticalAlignment="Top">
-                    <Label Content="Title:" Margin="0,5,0,0" FontWeight="SemiBold"/>
-                    <TextBox x:Name="tbtTitle" Margin="4,0,0,0" TextChanged="Title_TextChanged" FontSize="12" />
+            <StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Top">
+                <Label Content="Image Filepath:" Margin="0,5,0,0" FontWeight="SemiBold"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" x:Name="tbPath" FontSize="12" Margin="4,3,0,3"/>
+                    <Button  Grid.Column="1" Content="&#128193;" FontSize="16" Width="40" Margin="5,0,0,0" Click="Path_Click"/>
+                </Grid>
 
-                    <Label Margin="0,7,0,0" FontWeight="SemiBold" Content="Time:"/>
-                    <TextBox x:Name="tbTime" Margin="4,0,0,0" TextChanged="Time_TextChanged" PreviewTextInput="Integer_PreviewTextInput" FontSize="{StaticResource DefaultFontSize}"  />
-
-                    <Label Margin="0,7,0,0" FontWeight="SemiBold" Content="Chance of Cowboy:"/>
-                    <TextBox Margin="4,0,0,0" x:Name="tbCowboy" TextChanged="CowboyHat_TextChanged" PreviewTextInput="IntegerMax100_PreviewTextInput" FontSize="{StaticResource DefaultFontSize}"  />
-
-                    <Label Margin="0,7,0,0" FontWeight="SemiBold" Content="Rank:"/>
-                    <TextBox Margin="4,0,0,0" x:Name="tbRank" TextChanged="Rank_TextChanged" PreviewTextInput="Integer_PreviewTextInput" FontSize="{StaticResource DefaultFontSize}"  />
-
-                    <Label Margin="0,7,0,0" FontWeight="SemiBold" Content="Gravity:"/>
-                    <TextBox Margin="4,0,0,0" x:Name="tbGravity" TextChanged="Gravity_TextChanged" PreviewTextInput="Double_PreviewTextInput" FontSize="{StaticResource DefaultFontSize}"  />
-
-                    <Label Margin="0,7,0,0" FontWeight="SemiBold" Content="Game Mode:"/>
-                    <ComboBox Margin="4,0,0,0" x:Name="tbMode" SelectionChanged="Mode_TextChanged" FontSize="{StaticResource DefaultFontSize}">
-                        <ComboBoxItem Content="Race"/>
-                        <ComboBoxItem Content="Deathmatch"/>
-                        <ComboBoxItem Content="Objective"/>
-                        <ComboBoxItem Content="Aliens Eggs"/>
-                        <ComboBoxItem Content="Hat Attack"/>
-                    </ComboBox>
-
-                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0" VerticalAlignment="Center">
-                        <Label FontWeight="SemiBold" Margin="0,5,5,0" FontSize="{StaticResource DefaultFontSize}" Content="Background: "/>
-                        <local:ColorPickerControl Height="30" Width="30" Margin="4,5,0,0" x:Name="MyColorPicker" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    </StackPanel>
+                <Label Content="X-Position:" Margin="0,5,0,0" FontWeight="SemiBold"/>
+                <TextBox x:Name="tbPosX" Margin="4,0,0,0" TextChanged="tbPosX_TextChanged" PreviewTextInput="Integer_PreviewTextInput" FontSize="12" />
 
 
-                </StackPanel>
+                <Label Content="Y-Position:" Margin="0,5,0,0" FontWeight="SemiBold"/>
+                <TextBox x:Name="tbPosY" Margin="4,0,0,0" TextChanged="tbPosY_TextChanged" PreviewTextInput="Integer_PreviewTextInput" FontSize="12" />
 
-                <StackPanel x:Name="Page2" Visibility="Collapsed" Grid.Row="0" Orientation="Vertical" VerticalAlignment="Top">
-                    <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Items:"/>
-                    <local:ItemBlockOptionsControl x:Name="ItemBlockOptionsControl" HorizontalAlignment="Stretch" Height="auto"/>
 
-                    <Label Margin="0,20,0,0" FontWeight="SemiBold" Content="Hats:"/>
-                    <local:HatsControl x:Name="HatsControl" HorizontalAlignment="Stretch" Height="auto"/>
-                </StackPanel>
+                <Label Margin="0,7,0,0" FontWeight="SemiBold" Content="Size:"/>
+                <ComboBox Margin="4,0,0,0" x:Name="cbSize" SelectionChanged="Size_TextChanged" FontSize="{StaticResource DefaultFontSize}">
+                    <ComboBoxItem Content="1"/>
+                    <ComboBoxItem Content="2"/>
+                    <ComboBoxItem Content="3"/>
+                    <ComboBoxItem Content="4"/>
+                    <ComboBoxItem Content="6"/>
+                    <ComboBoxItem Content="7"/>
+                    <ComboBoxItem Content="8"/>
+                </ComboBox>
 
-                <StackPanel x:Name="Page3" Visibility="Collapsed" Grid.Row="0" Orientation="Vertical" VerticalAlignment="Top">
-                    <Label Content="Level ID:" Margin="0,5,0,0" FontWeight="SemiBold"/>
-                    <TextBox x:Name="tbId" Margin="4,0,0,0" IsReadOnly="true" FontSize="12"/>
+                <Label Margin="0,7,0,0" FontWeight="SemiBold" Content="Color to Ignore:"/>
+                <ComboBox Margin="4,0,0,0" x:Name="cbIgnoreColor" SelectionChanged="IgnoreColor_TextChanged" FontSize="{StaticResource DefaultFontSize}">
+                    <ComboBoxItem Content="Black"/>
+                    <ComboBoxItem Content="White"/>
+                    <ComboBoxItem Content="None"/>
+                </ComboBox>
 
-                    <Label Content="Version:" Margin="0,8,0,0" FontWeight="SemiBold"/>
-                    <TextBox x:Name="tbVersion" Margin="4,0,0,0" IsReadOnly="true" FontSize="12"/>
+            </StackPanel>
 
-                    <Label Content="User ID:" Margin="0,8,0,0" FontWeight="SemiBold"/>
-                    <TextBox x:Name="tbUserId" Margin="4,0,0,0" IsReadOnly="true" FontSize="12"/>
-
-                    <Label Content="Draw Art Size:" Margin="0,8,0,-2" FontWeight="SemiBold"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" x:Name="tbDrawArt" IsReadOnly="true" FontSize="12" Margin="4,3,0,3"/>
-                        <Button Grid.Column="1" Content="&#128465;" Width="40" FontSize="16" Margin="5,0,0,0" Click="RemoveDrawArt_Click"/>
-                    </Grid>
-
-                    <Label Content="Text Art Size:" Margin="0,8,0,-2" FontWeight="SemiBold"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" x:Name="tbTextArt" IsReadOnly="true" FontSize="12" Margin="4,3,0,3"/>
-                        <Button  Grid.Column="1" Content="&#128465;" FontSize="16" Width="40" Margin="5,0,0,0" Click="RemoveTextArt_Click"/>
-                    </Grid>
-                </StackPanel>
-
-            </Grid>
-
-            <Border Grid.Row="2" 
-                    CornerRadius="15"
-                    Background="Transparent"
-                    VerticalAlignment="Center" 
-                    HorizontalAlignment="Center" 
-                    Margin="0,5,0,5" 
-                    BorderThickness="0">
-
-                <StackPanel Orientation="Horizontal">
-                    <Button Name="btnLeftPage" Width="30" Height="30" Content="&#9664;" Click="OnPreviousPage"/>
-                    <TextBlock Text="1" FontWeight="SemiBold" FontSize="16" Name="PageText" Margin="15,0,15,0" VerticalAlignment="Center"/>
-                    <Button Name="btnRightPage" Width="30" Height="30" Content="&#9654;" Click="OnNextPage"/>
-                </StackPanel>
-            </Border>
-
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="20,5,20, 10" HorizontalAlignment="Right">
+                <Button Width="100" Height="25" Content="OK" x:Name="btnOk" IsDefault="True" Margin="5" Click="btnOk_Click" />
+                <Button Width="100" Height="25" Content="Cancel" IsCancel="True" Margin="5" Name="btnCancel" Click="btnCancel_Click" />
+            </StackPanel>
         </Grid>
 
     </Border>

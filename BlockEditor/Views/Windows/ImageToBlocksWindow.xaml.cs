@@ -1,34 +1,34 @@
-﻿using BlockEditor.Helpers;
-using BlockEditor.Models;
+﻿using BlockEditor.Models;
 using BlockEditor.Utils;
-using LevelModel.Models;
-using LevelModel.Models.Components;
-using LevelModel.Models.Components.Art;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Builders.DataStructures.DTO;
+using Microsoft.Win32;
+using SkiaSharp;
+using System.IO;
+using BlockEditor.Helpers;
+using System.Collections.Generic;
+using LevelModel.Models;
 
 namespace BlockEditor.Views.Windows
 {
     public partial class ImageToBlocksWindow : Window
     {
-        private Map _map;
-        private Action _refreshGui;
-        private int _page = 1;
+        private static int? _posX;
+        private static int? _posY;
+        private static int? _size;
+        private static string _ignoreColor;
+        private static string _imagePath;
 
-        public ImageToBlocksWindow(Map map, Action refreshGui)
+        public List<SimpleBlock> Result { get; set; }
+
+        public ImageToBlocksWindow()
         {
-            _map = map;
-            _refreshGui = refreshGui;
             InitializeComponent();
-
-            if(map == null)
-                throw new ArgumentException("map");
+            Result = new List<SimpleBlock>();
 
             OpenWindows.Add(this);
             MyUtils.SetPopUpWindowPosition(this);
@@ -37,160 +37,52 @@ namespace BlockEditor.Views.Windows
             UpdateButtons();
         }
 
-        private void OnNewColor(string color)
+        private void UpdateButtons()
         {
-            if(string.IsNullOrWhiteSpace(color))
-                return;
-
-            _map.Level.BackgroundColor = color;
-            _refreshGui?.Invoke();
+            btnOk.IsEnabled = IsInputValid();
         }
 
-        private void OnHatChanged(List<int> hats)
+        private bool IsInputValid()
         {
-            if(hats == null)
-                return;
+            if (_posX == null)
+                return false;
 
-            _map.Level.BadHats = hats;
+            if (_posY == null)
+                return false;
+
+            if (_size == null)
+                return false;
+
+            if (string.IsNullOrWhiteSpace(_ignoreColor))
+                return false;
+
+            if (string.IsNullOrWhiteSpace(_imagePath))
+                return false;
+
+            if (!File.Exists(_imagePath))
+                return false;
+
+            return true;
         }
 
         private void Init()
         {
             var culture = CultureInfo.InvariantCulture;
 
-            tbId.Text = _map.Level.LevelID != default(int) ? _map.Level.LevelID.ToString(culture) : string.Empty;
-            tbVersion.Text = _map.Level.Version.ToString(culture);
-            tbtTitle.Text = _map.Level.Title ?? string.Empty;
-            tbTime.Text = _map.Level.MaxTime.ToString(culture);
-            tbCowboy.Text = _map.Level.CowboyChance.ToString(culture);
-            tbRank.Text = _map.Level.RankLimit.ToString(culture);
-            tbGravity.Text = _map.Level.Gravity.ToString(culture);
-            tbUserId.Text = _map.Level.UserID != 0 ? _map.Level.UserID.ToString(culture) : string.Empty;
-            tbMode.Text = _map.Level.GameMode?.FullName ?? string.Empty;
-            tbDrawArt.Text = GetDrawArtSize().ToString(culture);
-            tbTextArt.Text = GetTextArtSize().ToString(culture);
-
-            ItemBlockOptionsControl.SetItems(_map.Level.Items);
-            HatsControl.SetBadHats(_map.Level.BadHats);
-            MyColorPicker.SetColor(_map.Background);
-
-            ItemBlockOptionsControl.OnItemChanged += OnItemBlockOptionChanged;
-            HatsControl.OnHatChanged += OnHatChanged;
-            MyColorPicker.OnNewColor += OnNewColor;
-        }
-
-        private void OnItemBlockOptionChanged(List<Item> items)
-        {
-            if(items == null)
-                return;
-
-            _map.Level.Items = items;
+            tbPosX.Text = _posX?.ToString(culture) ?? "100";
+            tbPosX.Text = _posY?.ToString(culture) ?? "100";
+            cbIgnoreColor.Text = _ignoreColor?.ToString(culture) ?? "";
+            cbSize.Text = _size?.ToString(culture) ?? "";
         }
 
         private void Integer_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            var textBox    = sender as TextBox;
-            var fullText   = textBox.Text.Insert(textBox.SelectionStart, e.Text);
-            var culture    = CultureInfo.InvariantCulture;
+            var textBox = sender as TextBox;
+            var fullText = textBox.Text.Insert(textBox.SelectionStart, e.Text);
+            var culture = CultureInfo.InvariantCulture;
             bool isInteger = int.TryParse(fullText, NumberStyles.Integer, culture, out var result);
 
             e.Handled = !isInteger || result < 0;
-        }
-
-        private void IntegerMax100_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            var textBox = sender as TextBox;
-            var fullText = textBox.Text.Insert(textBox.SelectionStart, e.Text);
-            var culture = CultureInfo.InvariantCulture;
-            bool isInteger = int.TryParse(fullText, NumberStyles.Integer, culture, out var result);
-
-            e.Handled = !isInteger || result < 0 || result > 100;
-        }
-
-
-        private void Double_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            var textBox = sender as TextBox;
-            var fullText = textBox.Text.Insert(textBox.SelectionStart, e.Text);
-            var culture = CultureInfo.InvariantCulture;
-            bool isInteger = !double.TryParse(fullText, NumberStyles.Any, culture, out var result);
-
-            e.Handled = isInteger && result >= 0;
-        }
-
-        private void Time_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var tb = sender as TextBox;
-
-            if (tb == null)
-                return;
-
-            if (MyUtils.TryParse(tb.Text, out var result))
-                _map.Level.MaxTime = result;
-        }
-
-        private void CowboyHat_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var tb = sender as TextBox;
-
-            if(tb == null)
-                return;
-
-            if(MyUtils.TryParse(tb.Text, out var result))
-                _map.Level.CowboyChance = result;
-        }
-
-        private void Title_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var tb = sender as TextBox;
-
-            if (tb == null)
-                return;
-
-            _map.Level.Title = tb.Text;
-        }
-
-        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Escape)
-                Close();
-        }
-
-        private void Rank_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var tb = sender as TextBox;
-
-            if (tb == null)
-                return;
-
-            if (MyUtils.TryParse(tb.Text, out var result))
-                _map.Level.RankLimit = result;
-        }
-
-        private void Gravity_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var tb = sender as TextBox;
-
-            if (tb == null)
-                return;
-
-            if (MyUtils.TryParseDouble(tb.Text, out var result))
-                _map.Level.Gravity = result;
-        }
-
-        private void Mode_TextChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var text = ((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Content as string;
-
-            if (text == null)
-                return;
-
-            var g = new GameMode(text);
-
-            if (string.IsNullOrWhiteSpace(g.FullName))
-                return;
-
-            _map.Level.GameMode = g;
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -203,103 +95,162 @@ namespace BlockEditor.Views.Windows
             OpenWindows.Remove(this);
         }
 
-        private void UpdateButtons()
+        private void tbPosX_TextChanged(object sender, TextChangedEventArgs e)
         {
-            btnRightPage.IsEnabled = _page < 3;
-            btnLeftPage.IsEnabled  = _page > 1;
-            PageText.Text = _page.ToString(CultureInfo.InvariantCulture);
+            var tb = sender as TextBox;
 
-            Page1.Visibility = _page == 1 ? Visibility.Visible : Visibility.Collapsed;
-            Page2.Visibility = _page == 2 ? Visibility.Visible : Visibility.Collapsed;
-            Page3.Visibility = _page == 3 ? Visibility.Visible : Visibility.Collapsed;
+            if (tb == null)
+                return;
 
+            if (MyUtils.TryParse(tb.Text, out var result))
+                _posX = result;
+
+            UpdateButtons();
         }
 
-        private int GetSize(string s)
+        private void tbPosY_TextChanged(object sender, TextChangedEventArgs e)
         {
-            return Encoding.UTF8.GetByteCount(s);
+            var tb = sender as TextBox;
+
+            if (tb == null)
+                return;
+
+            if (MyUtils.TryParse(tb.Text, out var result))
+                _posY = result;
+
+            UpdateButtons();
         }
 
-        private int GetDrawArtSize()
+        private void Size_TextChanged(object sender, SelectionChangedEventArgs e)
         {
-            return GetSize(_map.Level.DrawArt00.ToPr2String())
-                 + GetSize(_map.Level.DrawArt0.ToPr2String())
-                 + GetSize(_map.Level.DrawArt1.ToPr2String())
-                 + GetSize(_map.Level.DrawArt2.ToPr2String())
-                 + GetSize(_map.Level.DrawArt3.ToPr2String());
+            var cb = sender as ComboBox;
+
+            if (cb == null)
+                return;
+
+            if (MyUtils.TryParse(cb.Text, out var result) && result > 0 && result <= 8)
+                _size = result;
+            else
+                _size = null;
+
+            UpdateButtons();
         }
 
-        private int GetTextArtSize()
+        private void IgnoreColor_TextChanged(object sender, SelectionChangedEventArgs e)
         {
-            return GetSize(_map.Level.TextArt00.ToPr2String())
-                 + GetSize(_map.Level.TextArt0.ToPr2String())
-                 + GetSize(_map.Level.TextArt1.ToPr2String())
-                 + GetSize(_map.Level.TextArt2.ToPr2String())
-                 + GetSize(_map.Level.TextArt3.ToPr2String());
+            var cb = sender as ComboBox;
+
+            if (cb == null)
+                return;
+
+            if (string.Equals(cb.Text, "Black", StringComparison.InvariantCultureIgnoreCase))
+                _ignoreColor = cb.Text;
+            else if (string.Equals(cb.Text, "White", StringComparison.InvariantCultureIgnoreCase))
+                _ignoreColor = cb.Text;
+            else if (string.Equals(cb.Text, "None", StringComparison.InvariantCultureIgnoreCase))
+                _ignoreColor = cb.Text;
+            else
+                _ignoreColor = string.Empty;
+
+            UpdateButtons();
         }
 
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
+        }
 
-        private void OnPreviousPage(object sender, RoutedEventArgs e)
+        private void btnOk_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                _page--;
-
-                UpdateButtons();
+                Build();
             }
             catch (Exception ex)
             {
                 MessageUtil.ShowError(ex.Message);
             }
-
         }
 
-        private void OnNextPage(object sender, RoutedEventArgs e)
+        private void Build()
         {
+            var info = new BuildDTO()
+            {
+                Type = BuildDTO.BuildType.Image,
+                Title = string.Empty,
+            };
+
+            info.ImageInfo.Type = ImageDTO.ImageType.Blocks;
+            info.ImageInfo.Size = _size.Value;
+            info.ImageInfo.ColorToIgnore = GetIgnoreColor();
+            info.ImageInfo.Image = LoadImage(_imagePath);
+
+            var level = Builders.PR2Builder.BuildLevel(info);
+            var blocks = MyConverters.ToBlocks(level.Blocks, out var blocksOutsideBoundries);
+
+            for (int x = 0; x < Blocks.SIZE; x++)
+            {
+                for (int y = 0; y < Blocks.SIZE; y++)
+                {
+                    var b = blocks.GetBlock(x, y);
+
+                    if(b.IsEmpty())
+                        continue;
+
+                    Result.Add(b);
+                }
+            }
+
+            MyUtils.BlocksOutsideBoundries(blocksOutsideBoundries);
+        }
+
+        private ImageDTO.IgnoreColor GetIgnoreColor()
+        {
+            if (string.Equals(_ignoreColor, "Black", StringComparison.InvariantCultureIgnoreCase))
+                return ImageDTO.IgnoreColor.Black;
+            else if (string.Equals(_ignoreColor, "White", StringComparison.InvariantCultureIgnoreCase))
+                return ImageDTO.IgnoreColor.White;
+            else if (string.Equals(_ignoreColor, "None", StringComparison.InvariantCultureIgnoreCase))
+                return ImageDTO.IgnoreColor.None;
+
+            throw new Exception("Invalid 'Color to Ignore' configuration");
+        }
+
+        private void Path_Click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog();
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                tbPath.Text = openFileDialog.FileName;
+                _imagePath = openFileDialog.FileName;
+            }
+            else
+            {
+                tbPath.Text = string.Empty;
+                _imagePath = string.Empty;
+            }
+
+            UpdateButtons();
+        }
+
+
+        protected SKBitmap LoadImage(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                return null;
+
             try
             {
-                _page++;
-
-                UpdateButtons();
+                using (var stream = new SKManagedStream(File.OpenRead(path)))
+                    return SKBitmap.Decode(stream);
             }
-            catch (Exception ex)
-            {
-                MessageUtil.ShowError(ex.Message);
+            catch (FileNotFoundException) 
+            { 
+                MessageBox.Show("Image file not found...");
+                return null;
             }
-        }
-
-        private void RemoveDrawArt_Click(object sender, RoutedEventArgs e)
-        {
-            var result = UserQuestionWindow.Show("Do you wish to delete all Draw-Art?", "Delete", false);
-
-            if(result != UserQuestionWindow.QuestionResult.Yes)
-                return;
-
-            _map.Level.DrawArt00?.Clear();
-            _map.Level.DrawArt0?.Clear();
-            _map.Level.DrawArt1?.Clear();
-            _map.Level.DrawArt2?.Clear();
-            _map.Level.DrawArt3?.Clear();
-
-            tbDrawArt.Text = GetDrawArtSize().ToString(CultureInfo.InvariantCulture);
-            UpdateButtons();
-        }
-
-        private void RemoveTextArt_Click(object sender, RoutedEventArgs e)
-        {
-            var result = UserQuestionWindow.Show("Do you wish to delete all Text-Art?", "Delete", false);
-
-            if (result != UserQuestionWindow.QuestionResult.Yes)
-                return;
-
-            _map.Level.TextArt00?.Clear();
-            _map.Level.TextArt0?.Clear();
-            _map.Level.TextArt1?.Clear();
-            _map.Level.TextArt2?.Clear();
-            _map.Level.TextArt3?.Clear();
-
-            tbTextArt.Text = GetTextArtSize().ToString(CultureInfo.InvariantCulture);
-            UpdateButtons();
         }
     }
 }
