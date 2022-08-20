@@ -148,6 +148,14 @@ namespace BlockEditor.Models
                 return;
             }
 
+            GoToPosition(p.Value);
+        }
+
+        public void GoToPosition(MyPoint? p)
+        {
+            if(p == null)
+                return;
+
             var size = Map.BlockSize.GetPixelSize();
             var x = p.Value.X * size - (GameImage.Width / 2);
             var y = p.Value.Y * size - (GameImage.Height / 2);

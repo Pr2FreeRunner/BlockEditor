@@ -256,9 +256,9 @@ namespace BlockEditor.Views.Windows
             {
                 if(first)
                 {
+                    b.X = 0;
+                    b.Y = 0;
                     first = false;
-                    posX = edgeX = b.X;
-                    posY = edgeY = b.X;
                     continue;
                 }
 
@@ -273,8 +273,8 @@ namespace BlockEditor.Views.Windows
             }
 
             var start = blocks.First();
-            start.X = start.X + _posX.Value - edgeX;
-            start.Y = start.Y + _posY.Value - edgeY;
+            start.X = _posX.Value - edgeX;
+            start.Y = _posY.Value - edgeY;
         }
     }
 }

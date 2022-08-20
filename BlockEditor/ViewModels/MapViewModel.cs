@@ -136,24 +136,12 @@ namespace BlockEditor.ViewModels
             {
                 var pr2Blocks = Builders.PR2Builder.BuildLevel(w.BuildInfo).Blocks.Skip(8).ToList();
                 ImageToBlocksWindow.ShiftPosition(pr2Blocks);
-                var mapBlocks = MyConverters.ToBlocks(pr2Blocks, out var blocksOutsideBoundries);
-                var result = new List<SimpleBlock>();
-
-                for (int x = 0; x < Blocks.SIZE; x++)
-                {
-                    for (int y = 0; y < Blocks.SIZE; y++)
-                    {
-                        var b = mapBlocks.GetBlock(x, y);
-
-                        if (b.IsEmpty())
-                            continue;
-
-                        result.Add(b);
-                    }
-                }
+                var blocks  = MyConverters.ToBlocks(pr2Blocks, out var blocksOutsideBoundries).GetBlocks();
+                var position = blocks.First().Position;
 
                 MyUtils.BlocksOutsideBoundries(blocksOutsideBoundries);
-                Game.AddBlocks(result);
+                Game.AddBlocks(blocks);
+                Game.GoToPosition(position);
             }
         }
 
