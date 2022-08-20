@@ -391,6 +391,7 @@ namespace BlockEditor.ViewModels
             Game.Map.BlockSize = size;
 
             Game.UserOperations.Clear();
+            (App.Current.MainWindow as MainWindow)?.TitleChanged(Game.Map.Level.Title);
             OnCleanUserMode();
             Game.GoToStartPosition();
 

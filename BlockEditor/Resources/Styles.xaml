@@ -2,16 +2,16 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=System.Runtime">
 
     <LinearGradientBrush x:Key="StandardBackground" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#c4ecb3" Offset="0.0" />
-        <GradientStop Color="#daeadb" Offset="0.47" />
-        <GradientStop Color="#daeadb" Offset="0.53" />
-        <GradientStop Color="#c4ecb3" Offset="1.0" />
+        <GradientStop Color="#a1e187" Offset="0.0" />
+        <GradientStop Color="#cdeccf" Offset="0.47" />
+        <GradientStop Color="#cdeccf" Offset="0.53" />
+        <GradientStop Color="#a1e187" Offset="1.0" />
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="LightBackground" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#c4ecb3" Offset="0.0" />
+        <GradientStop Color="#b1dd9e" Offset="0.0" />
         <GradientStop Color="WhiteSmoke" Offset="0.5" />
-        <GradientStop Color="#c4ecb3" Offset="1.0" />
+        <GradientStop Color="#b1dd9e" Offset="1.0" />
     </LinearGradientBrush>
 
 
@@ -19,6 +19,7 @@
     <Color           x:Key="StandardBackgroundLight">#D5EAF1</Color>
     <SolidColorBrush x:Key="StandardForeground" Color="Black" />
     <SolidColorBrush x:Key="StandardBackgroundMouseOver" Color="#97e973" />
+    <SolidColorBrush x:Key="DarkBackgroundMouseOver" Color="#66bf3e" />
     <SolidColorBrush x:Key="StandardBorderBrush" Color="DimGray" />
     <SolidColorBrush x:Key="StandardBackgroundDisable" Color="LightGray" />
     <SolidColorBrush x:Key="StandardForegroundDisable" Color="#898989" />
@@ -112,7 +113,66 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
+    <Style x:Key="xBtn" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Foreground" Value="Black"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border CornerRadius="50" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0.7" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" />
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"   Value="True">
+                            <Setter Property="Foreground" Value="Black" />
+                            <Setter Property="BorderBrush" Value="Black" />
+                            <Setter Property="Background" Value="Red" />
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Foreground" Value="Black" />
+                            <Setter Property="BorderBrush" Value="Black" />
+                            <Setter Property="Background" Value="#b70000" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="plusBtn" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border CornerRadius="50" BorderThickness="1" BorderBrush="DarkGreen" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-7,0,0" />
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"   Value="True">
+                            <Setter Property="Background" Value="{StaticResource StandardBackgroundMouseOver}" />
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{StaticResource DarkBackgroundMouseOver}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
     <Style TargetType="{x:Type ToggleButton}">
         <Setter Property="Background" Value="{StaticResource StandardBackground}" />
         <Setter Property="Foreground" Value="{StaticResource StandardForeground}" />
