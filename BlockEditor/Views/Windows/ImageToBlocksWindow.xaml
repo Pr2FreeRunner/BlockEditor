@@ -8,7 +8,7 @@
         AllowsTransparency="True"
         WindowStyle="None"
         Width="435"
-        Height="520"
+        Height="430"
         Closing="Window_Closing">
 
     <Border Background="{StaticResource LightBackground}" 
