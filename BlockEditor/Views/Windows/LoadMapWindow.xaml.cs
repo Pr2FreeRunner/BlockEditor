@@ -50,6 +50,7 @@ namespace BlockEditor.Views.Windows
                     continue;
 
                 var item     = new ComboBoxItem();
+                item.ToolTip = "HotKey:  Ctrl + " + type.ToString().First();
                 item.Content = InsertSpaceBeforeCapitalLetter(type.ToString());
                 SearchByComboBox.Items.Add(item);
             }
