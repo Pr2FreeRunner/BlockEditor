@@ -15,13 +15,13 @@ using System.Windows.Input;
 
 namespace BlockEditor.Views.Windows
 {
-    public partial class MapInfoWindow : Window
+    public partial class ImageToBlocksWindow : Window
     {
         private Map _map;
         private Action _refreshGui;
         private int _page = 1;
 
-        public MapInfoWindow(Map map, Action refreshGui)
+        public ImageToBlocksWindow(Map map, Action refreshGui)
         {
             _map = map;
             _refreshGui = refreshGui;
@@ -69,7 +69,6 @@ namespace BlockEditor.Views.Windows
             tbMode.Text = _map.Level.GameMode?.FullName ?? string.Empty;
             tbDrawArt.Text = GetDrawArtSize().ToString(culture);
             tbTextArt.Text = GetTextArtSize().ToString(culture);
-            tbNote.Text = _map.Level.Note ?? string.Empty;
 
             ItemBlockOptionsControl.SetItems(_map.Level.Items);
             HatsControl.SetBadHats(_map.Level.BadHats);
@@ -301,16 +300,6 @@ namespace BlockEditor.Views.Windows
 
             tbTextArt.Text = GetTextArtSize().ToString(CultureInfo.InvariantCulture);
             UpdateButtons();
-        }
-
-        private void Note_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var tb = sender as TextBox;
-
-            if (tb == null)
-                return;
-
-            _map.Level.Note = tb.Text;
         }
     }
 }
