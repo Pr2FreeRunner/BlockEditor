@@ -70,8 +70,8 @@ namespace BlockEditor.Views.Windows
         {
             var culture = CultureInfo.InvariantCulture;
 
-            tbPosX.Text = _posX?.ToString(culture) ?? "100";
-            tbPosY.Text = _posY?.ToString(culture) ?? "100";
+            tbPosX.Text = _posX?.ToString(culture) ?? "350";
+            tbPosY.Text = _posY?.ToString(culture) ?? "350";
             cbIgnoreColor.Text = _ignoreColor?.ToString(culture) ?? "";
             cbSize.Text = _size?.ToString(culture) ?? "";
             tbPath.Text = _imagePath ?? string.Empty;

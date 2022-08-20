@@ -44,7 +44,7 @@ namespace BlockEditor.Models
             return false;
         }
 
-        public SimpleBlock GetBlock(int x, int y)
+        public SimpleBlock GetBlock(int x, int y, bool startBlocks = true)
         {
             if (x < 0 || y < 0)
                 return SimpleBlock.None;
@@ -52,12 +52,12 @@ namespace BlockEditor.Models
             if (x >= SIZE || y >= SIZE)
                 return SimpleBlock.None;
 
-            var block = _blocks[x, y];
+            var block = StartBlocks.GetBlock(new MyPoint(x, y));
 
-            if (!block.IsEmpty())
+            if (!block.IsEmpty() && startBlocks)
                 return block;
 
-            return StartBlocks.GetBlock(new MyPoint(x, y));
+            return _blocks[x, y];
         }
 
         public SimpleBlock GetBlock(MyPoint? point)

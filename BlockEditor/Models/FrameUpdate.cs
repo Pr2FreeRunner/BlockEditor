@@ -80,7 +80,7 @@ namespace BlockEditor.Models
             {
                 for (int x = minBlockX; x < minBlockX + blockCountX; x++)
                 {
-                    var block = _game.Map.Blocks.GetBlock(x, y);
+                    var block = _game.Map.Blocks.GetBlock(x, y, false);
 
                     if(block.IsEmpty())
                         continue;
