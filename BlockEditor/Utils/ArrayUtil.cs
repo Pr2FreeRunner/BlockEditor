@@ -132,7 +132,6 @@ namespace BlockEditor.Utils
             return CreateSubArray(matrix, startRow, startColumn, endRow, endColumn);
         }
 
-
         public static T[,] CreateSubArray<T>(T[,] matrix, int startRow, int startColumn, int endRow, int endColumn)
         {
             if (matrix == null)
@@ -156,5 +155,21 @@ namespace BlockEditor.Utils
             return result;
         }
 
+        public static T[,] VerticalFlip<T>(T[,] matrix)
+        {
+            if (matrix == null)
+                return null;
+
+            var size0 = matrix.GetLength(0);
+            var size1 = matrix.GetLength(1);
+
+            var result = new T[size0, size1];
+
+            for (int i = 0; i < size0; ++i)
+                for (int j = 0; j < size1; ++j)
+                    result[i, j] = matrix[i, size1 - j - 1];
+
+            return result;
+        }
     }
 }

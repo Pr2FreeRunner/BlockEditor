@@ -45,6 +45,9 @@ namespace BlockEditor.ViewModels
         public RelayCommand BlockCountCommand { get; }
         public RelayCommand ReplaceCommand { get; }
         public RelayCommand AddImageCommand { get; }
+        public RelayCommand RotateCommand { get; }
+        public RelayCommand VerticalFlipCommand { get; }
+
 
 
         public MapViewModel()
@@ -62,6 +65,8 @@ namespace BlockEditor.ViewModels
             BlockCountCommand = new RelayCommand((_) => OnBlockCountClick());
             ReplaceCommand = new RelayCommand((_) => OnReplaceClick());
             AddImageCommand = new RelayCommand((_) => OnAddImageClick());
+            RotateCommand = BlockSelection.RotateCommand;
+            VerticalFlipCommand = BlockSelection.VerticalFlipCommand;
 
             Game.Engine.OnFrame += OnFrameUpdate;
         }

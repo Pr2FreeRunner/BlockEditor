@@ -9,6 +9,8 @@ namespace BlockEditor.Models
     {
 
         public static RelayCommand RotateCommand { get; }
+        public static RelayCommand VerticalFlipCommand { get; }
+
 
         private static readonly object _lock = new object();
         private static int?[,] _selectedBlocks;
@@ -57,6 +59,7 @@ namespace BlockEditor.Models
         static BlockSelection()
         {
             RotateCommand = new RelayCommand((_) => Rotate(), (_) => CanRotate());
+            VerticalFlipCommand = new RelayCommand((_) => VerticalFlip(), (_) => CanRotate());
         }
 
         public static void OnNewSelection(int?[,] selection)
@@ -82,6 +85,14 @@ namespace BlockEditor.Models
                 return;
 
             SelectedBlocks = ArrayUtil.RotateRight(SelectedBlocks);
+        }
+
+        public static void VerticalFlip()
+        {
+            if (!CanRotate())
+                return;
+
+            SelectedBlocks = ArrayUtil.VerticalFlip(SelectedBlocks);
         }
 
         internal static void ActivatePreviousSelection()
