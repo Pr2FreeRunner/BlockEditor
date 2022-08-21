@@ -26,7 +26,14 @@ namespace BlockEditor.Models
                 return false;
 
             if (Block.IsStartBlock(_block.ID))
+            {
+                var oldStartBlock = _map.Blocks.GetBlock(_block.Position, true);
+
+                if(oldStartBlock.ID == _block.ID)
+                    return false; 
+
                 _oldStartPosition = _map.Blocks.StartBlocks.GetPosition(_block.ID);
+            }
 
             _map?.Blocks.Add(_block);
 
