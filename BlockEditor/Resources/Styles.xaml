@@ -225,7 +225,7 @@
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="MinWidth" Value="80" />
+        <Setter Property="MinWidth" Value="20" />
         <Setter Property="MinHeight" Value="20" />
         <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
         <Setter Property="AllowDrop" Value="true" />

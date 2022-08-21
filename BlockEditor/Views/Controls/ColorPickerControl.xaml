@@ -7,7 +7,7 @@
              MinHeight="20">
     
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Horizontal">
-        <TextBox VerticalAlignment="Center" Width="85" 
+        <TextBox VerticalAlignment="Center" Width="70" 
                  TextChanged="tbColor_TextChanged" 
                  Margin="0,0,10,0"
                  PreviewTextInput="HexOnly_PreviewTextInput"

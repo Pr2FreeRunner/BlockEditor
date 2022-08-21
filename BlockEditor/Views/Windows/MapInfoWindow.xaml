@@ -65,7 +65,7 @@
 
                     <StackPanel Orientation="Horizontal" Margin="0,12,0,0" VerticalAlignment="Center">
                         <Label FontWeight="SemiBold" Margin="0,5,5,0" FontSize="{StaticResource DefaultFontSize}" Content="Background: "/>
-                        <local:ColorPickerControl Height="30" Width="30" Margin="4,5,0,0" x:Name="MyColorPicker" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <local:ColorPickerControl Height="30" Margin="4,5,0,0" x:Name="MyColorPicker" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </StackPanel>
 
 
