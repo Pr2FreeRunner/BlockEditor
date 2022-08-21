@@ -61,6 +61,12 @@ namespace BlockEditor.Views.Windows
 
             BlockSelection.SelectedBlocks = null;
             BlockSelection.SelectedBlock = id;
+
+            foreach (var child in TabPanel.Children)
+            {
+                if(child is MyTabControl tab && tab != null)
+                    tab.MapControl.ViewModel.Mode.Value = UserMode.UserModes.None;
+            }
         }
 
         public void TitleChanged(string title)
