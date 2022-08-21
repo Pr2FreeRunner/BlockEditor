@@ -86,14 +86,13 @@ namespace BlockEditor.Views.Windows
                     label.Text = "Color: ";
                     label.VerticalAlignment = VerticalAlignment.Center;
                     label.FontSize = 14;
-                    label.Margin = new Thickness(0,0,10,20);
+                    label.Margin = new Thickness(0,0,0,20);
                     
                     var c = new ColorPickerControl();
                     c.VerticalAlignment = VerticalAlignment.Center;
                     c.SetColor(_block.Options);
                     c.Margin = new Thickness(5, 0, 10, 20);
                     c.OnNewColor += OnNewColor;
-                    c.Width = 30;
                     c.Height = 30;
                     
                     panel.Children.Add(label);

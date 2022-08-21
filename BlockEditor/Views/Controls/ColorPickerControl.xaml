@@ -3,11 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              VerticalAlignment="Stretch"
              HorizontalAlignment="Stretch"
-             MinWidth="20"
+             Width="auto"
              MinHeight="20">
     
-    <Grid>
-        <Button x:Name="ColorButton" Click="ColorButton_Click"/>
-    </Grid>
+    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Horizontal">
+        <TextBox VerticalAlignment="Center" Width="85" 
+                 TextChanged="tbColor_TextChanged" 
+                 Margin="0,0,10,0"
+                 PreviewTextInput="HexOnly_PreviewTextInput"
+                 x:Name="tbColor" 
+                 FontSize="14" 
+                 Text="#121212" />
+        <Button VerticalAlignment="Center" Width="28" Height="20" x:Name="ColorButton" Click="ColorButton_Click"/>
+    </StackPanel>
     
 </UserControl>
