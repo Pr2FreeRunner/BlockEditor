@@ -208,6 +208,11 @@ namespace BlockEditor.Views.Controls
                     if (ViewModel.StartPositionCommand.CanExecute(null))
                         ViewModel.StartPositionCommand.Execute(null);
                 }
+                else if (e.Key == Key.T)
+                {
+                    if (ViewModel.RemoveBlockCommand.CanExecute(null))
+                        ViewModel.RemoveBlockCommand.Execute(null);
+                }
                 else if (e.Key == Key.M)
                 {
                     if (ViewModel.MapInfoCommand.CanExecute(null))

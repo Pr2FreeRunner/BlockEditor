@@ -50,6 +50,7 @@
                     </Grid>
                     <Button Height="34" Margin="5,7,5,7" Width="40" Content="&#9935;"  FontSize="22" FontWeight="Normal"   FontFamily="Segoe UI" Command="{Binding ReplaceCommand}" ToolTip="Replace Block&#x0a;Hotkey:  R"/>
                     <Button Height="34" Margin="5,7,5,7" Width="40" Content="⚝" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding AddImageCommand}" ToolTip="Add Image&#x0a;Hotkey:  I"/>
+                    <Button Height="34" Margin="5,7,5,7" Width="40" Content="&#128465;" FontSize="18" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding RemoveBlockCommand}" ToolTip="Remove Block Type&#x0a;Hotkey:  T"/>
                     <Button Height="34" Width="40" Margin="5,7,5,7" Content="&#8982;"  FontSize="25" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding StartPositionCommand}" ToolTip="Go to Start Position&#x0a;Hotkey:  G"/>
 
                     <Grid Width="40" Height="34" Margin="30,7,5,7" ToolTip="Block Count Info&#x0a;Hotkey:  C">

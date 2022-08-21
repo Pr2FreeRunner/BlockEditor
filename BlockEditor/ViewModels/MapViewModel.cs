@@ -50,7 +50,7 @@ namespace BlockEditor.ViewModels
         public RelayCommand RotateCommand { get; }
         public RelayCommand VerticalFlipCommand { get; }
         public RelayCommand HorizontalFlipCommand { get; }
-
+        public RelayCommand RemoveBlockCommand { get; }
 
 
 
@@ -72,6 +72,8 @@ namespace BlockEditor.ViewModels
             RotateCommand = new RelayCommand((_) => OnRotateClick());
             VerticalFlipCommand = new RelayCommand((_) => OnVerticalFlipClick());
             HorizontalFlipCommand = new RelayCommand((_) => OnHorizontalFlipClick());
+            RemoveBlockCommand = new RelayCommand((_) => OnRemoveBlockClick());
+
 
 
             Game.Engine.OnFrame += OnFrameUpdate;
@@ -136,7 +138,6 @@ namespace BlockEditor.ViewModels
                 }
             }
         }
-
 
         public void OnRotateClick()
         {
@@ -228,6 +229,29 @@ namespace BlockEditor.ViewModels
                 MyUtils.BlocksOutsideBoundries(blocksOutsideBoundries);
                 Game.AddBlocks(blocks);
                 Game.GoToPosition(position);
+            }
+        }
+
+        public void OnRemoveBlockClick()
+        {
+            BlockSelection.Reset();
+
+            if (!Game.Map.Blocks.Overwrite)
+                throw new OverwriteException();
+
+            var region = UserSelection.MapRegion;
+            var id1 = SelectBlockWindow.Show("Block Type to Remove:", false);
+
+            if (id1 == null)
+                return;
+
+            using (new TempCursor(Cursors.Wait))
+            {
+                var blocks = MapUtil.RemoveBlocks(Game.Map, new List<int>() { id1.Value }, region);
+
+                Game.RemoveBlocks(blocks);
+                BlockSelection.Reset();
+                UserSelection.Reset();
             }
         }
 

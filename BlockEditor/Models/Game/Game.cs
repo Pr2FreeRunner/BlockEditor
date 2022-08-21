@@ -62,7 +62,19 @@ namespace BlockEditor.Models
             var op = new AddBlocksOperation(Map, blocks);
             UserOperations.Execute(op);
         }
- 
+
+        internal void RemoveBlocks(IEnumerable<SimpleBlock> blocks)
+        {
+            if (blocks == null || Map == null)
+                return;
+
+            if (!blocks.Any())
+                return;
+
+            var op = new DeleteBlocksOperation(Map, blocks);
+            UserOperations.Execute(op);
+        }
+
         internal void AddSelection(MyPoint? index, int?[,] selectedBlocks)
         {
             if (index == null || selectedBlocks == null || Map == null)
