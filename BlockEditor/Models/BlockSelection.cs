@@ -1,24 +1,18 @@
 ﻿using BlockEditor.Helpers;
 using BlockEditor.Utils;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BlockEditor.Models
 {
 
-    public class BlockSelection
+    public static class BlockSelection
     {
 
-        public RelayCommand RotateCommand { get; }
-        public UserSelection UserSelection { get; }
+        public static RelayCommand RotateCommand { get; }
 
-        public event Action OnSelectionClick;
-
-
-        private int?[,] _selectedBlocks;
-        private readonly object _lock = new object();
-        public int?[,] SelectedBlocks
+        private static readonly object _lock = new object();
+        private static int?[,] _selectedBlocks;
+        public static int?[,] SelectedBlocks
         {
             get
             {
@@ -35,45 +29,35 @@ namespace BlockEditor.Models
             }
         }
 
-        private int? _selectedBlock;
-        public int? SelectedBlock 
+        private static int? _selectedBlock;
+        public static int? SelectedBlock 
         { 
             get { return _selectedBlock; }
             set { _selectedBlock = value; }
         }
 
-        private Action _cleanBlockControl { get; }
-
-        public BlockSelection(Action cleanBlockControl)
+        static BlockSelection()
         {
-            RotateCommand        = new RelayCommand((_) => Rotate(), (_) => CanRotate());
-            UserSelection        = new UserSelection();
-            _cleanBlockControl = cleanBlockControl;
-
-            UserSelection.OnNewSelection += OnUserSelection;
+            RotateCommand = new RelayCommand((_) => Rotate(), (_) => CanRotate());
         }
 
-        private void OnUserSelection(int?[,] selection)
+        public static void OnNewSelection(int?[,] selection)
         {
             SelectedBlocks = selection;
         }
 
-        private bool CanRotate()
+        private static bool CanRotate()
         {
             return SelectedBlocks != null;
         }
 
-        public void Reset(bool userSelection = true)
+        public static void Reset(bool userSelection = true)
         {
-            _cleanBlockControl?.Invoke();
             SelectedBlocks = null;
             SelectedBlock = null;
-
-            if(userSelection)
-                UserSelection.Reset();
         }
 
-        public void Rotate()
+        public static void Rotate()
         {
             if (!CanRotate())
                 return;

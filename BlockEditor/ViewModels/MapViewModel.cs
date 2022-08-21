@@ -27,7 +27,7 @@ namespace BlockEditor.ViewModels
         }
 
         public UserMode Mode { get; }
-        public BlockSelection BlockSelection { get; }
+        public UserSelection UserSelection { get; }
 
         public Game Game { get; }
         public bool IsOverwrite
@@ -49,23 +49,22 @@ namespace BlockEditor.ViewModels
 
 
 
-        public MapViewModel(Action cleanBlockControl)
+        public MapViewModel()
         {
             Game = new Game();
             Mode = new UserMode();
 
-            BlockSelection = new BlockSelection(cleanBlockControl);
+            UserSelection = new UserSelection();
             StartPositionCommand = new RelayCommand((_) => Game.GoToStartPosition());
             FillCommand = new RelayCommand((_) => OnFillClick());
             SelectCommand = new RelayCommand((_) => OnSelectionClick());
-            AddShapeCommand = new RelayCommand((_) => OnAddShapeClick(), (_) => BlockSelection.UserSelection.HasSelectedRegion);
+            AddShapeCommand = new RelayCommand((_) => OnAddShapeClick(), (_) => UserSelection.HasSelectedRegion);
             BlockInfoCommand = new RelayCommand((_) => OnBlockInfoClick());
             MapInfoCommand = new RelayCommand((_) => OnMapInfoClick());
             BlockCountCommand = new RelayCommand((_) => OnBlockCountClick());
             ReplaceCommand = new RelayCommand((_) => OnReplaceClick());
             AddImageCommand = new RelayCommand((_) => OnAddImageClick());
 
-            BlockSelection.OnSelectionClick += OnSelectionClick;
             Game.Engine.OnFrame += OnFrameUpdate;
         }
 
@@ -77,6 +76,8 @@ namespace BlockEditor.ViewModels
             if (Mode.Value != UserModes.Selection)
             {
                 BlockSelection.Reset();
+                UserSelection.Reset();
+
                 Mode.Value = UserModes.Selection;
             }
             else
@@ -89,7 +90,7 @@ namespace BlockEditor.ViewModels
         {
             if (Mode.Value != UserModes.Fill)
             {
-                BlockSelection.Reset(false);
+                BlockSelection.Reset();
                 Mode.Value = UserModes.Fill;
             }
             else
@@ -100,10 +101,10 @@ namespace BlockEditor.ViewModels
 
         public void OnAddShapeClick()
         {
-            BlockSelection.Reset(false);
+            BlockSelection.Reset();
 
             var selectedId = SelectBlockWindow.Show("Add Shape", false);
-            var region = BlockSelection.UserSelection.MapRegion;
+            var region = UserSelection.MapRegion;
 
             if (selectedId == null)
                 return;
@@ -123,7 +124,8 @@ namespace BlockEditor.ViewModels
 
         public void OnAddImageClick()
         {
-            BlockSelection.Reset();
+            BlockSelection.Reset(); 
+            UserSelection.Reset();
             Mode.Value = UserModes.None;
 
             var w = new ImageToBlocksWindow();
@@ -147,12 +149,12 @@ namespace BlockEditor.ViewModels
 
         public void OnReplaceClick()
         {
-            BlockSelection.Reset(false);
+            BlockSelection.Reset();
 
             if (!Game.Map.Blocks.Overwrite)
                 throw new OverwriteException();
 
-            var region = BlockSelection.UserSelection.MapRegion;
+            var region = UserSelection.MapRegion;
             var id1 = SelectBlockWindow.Show("Block to Replace:", false);
 
             if (id1 == null)
@@ -168,6 +170,7 @@ namespace BlockEditor.ViewModels
 
                 Game.AddBlocks(blocks);
                 BlockSelection.Reset();
+                UserSelection.Reset();
             }
         }
 
@@ -175,7 +178,8 @@ namespace BlockEditor.ViewModels
         {
             if (Mode.Value != UserModes.BlockInfo)
             {
-                BlockSelection?.Reset();
+                BlockSelection.Reset();
+                UserSelection.Reset();
                 Mode.Value = UserModes.BlockInfo;
             }
             else
@@ -188,7 +192,8 @@ namespace BlockEditor.ViewModels
         {
             if (Mode.Value != UserModes.BlockCount)
             {
-                BlockSelection?.Reset();
+                BlockSelection.Reset();
+                UserSelection.Reset();
 
                 if (Game.Map == null)
                     return;
@@ -208,7 +213,8 @@ namespace BlockEditor.ViewModels
         {
             if (Mode.Value != UserModes.MapInfo)
             {
-                BlockSelection?.Reset();
+                BlockSelection.Reset();
+                UserSelection.Reset();
 
                 if (Game.Map == null)
                     return;
@@ -233,16 +239,19 @@ namespace BlockEditor.ViewModels
                 Mode.Value = UserModes.AddBlock;
         }
 
-        public void OnCleanUserMode()
+        public void OnCleanUserMode(bool clearBlockSelection)
         {
-            BlockSelection?.Reset();
+            if(clearBlockSelection)
+                BlockSelection.Reset();
+
+            UserSelection.Reset();
             Mode.Value = UserModes.None;
             Mouse.OverrideCursor = null;
         }
 
         public void OnFrameUpdate()
         {
-            new FrameUpdate(Game, _mousePosition, BlockSelection);
+            new FrameUpdate(Game, _mousePosition, UserSelection);
 
             RaisePropertyChanged(nameof(MapContent));
         }
@@ -261,24 +270,17 @@ namespace BlockEditor.ViewModels
 
                     if (e.LeftButton == MouseButtonState.Pressed)
                     {
-                        BlockSelection.UserSelection.OnMouseDown(p, index);
+                        UserSelection.OnMouseDown(p, index);
                     }
                     else if (e.RightButton == MouseButtonState.Pressed)
                     {
-                        if (!BlockSelection.UserSelection.MapRegion.IsInside(index))
+                        if (!UserSelection.MapRegion.IsInside(index))
                             break;
 
-                        Game.DeleteSelection(BlockSelection.UserSelection.MapRegion);
-                        OnCleanUserMode();
+                        Game.DeleteSelection(UserSelection.MapRegion);
+                        OnCleanUserMode(true);
                     }
 
-                    break;
-
-                case UserModes.AddSelection:
-                    if (e.ChangedButton != MouseButton.Left)
-                        break;
-
-                    Game.AddSelection(index, BlockSelection.SelectedBlocks);
                     break;
 
                 case UserModes.BlockInfo:
@@ -311,16 +313,23 @@ namespace BlockEditor.ViewModels
                         if (!b.IsEmpty() && !Game.Map.Blocks.Overwrite)
                             throw new OverwriteException();
 
-                        var region = BlockSelection.UserSelection.HasSelectedRegion ? BlockSelection.UserSelection.MapRegion : null;
+                        var region = UserSelection.HasSelectedRegion ? UserSelection.MapRegion : null;
                         Game.AddBlocks(MapUtil.GetFloodFill(Game.Map, index, selectedId.Value, region));
                     }
                     break;
 
                 default:
                     if (e.ChangedButton == MouseButton.Right)
+                    {
                         Game.DeleteBlock(index);
+                    }
                     else if (e.ChangedButton == MouseButton.Left)
-                        Game.AddBlock(index, BlockSelection.SelectedBlock);
+                    {
+                        if(BlockSelection.SelectedBlocks != null)
+                            Game.AddSelection(index, BlockSelection.SelectedBlocks);
+                        else
+                            Game.AddBlock(index, BlockSelection.SelectedBlock);
+                    }
                     break;
             }
         }
@@ -332,19 +341,18 @@ namespace BlockEditor.ViewModels
 
             switch (Mode.Value)
             {
-                case UserModes.AddBlock:
+                default:
                     if (e.RightButton == MouseButtonState.Pressed)
+                    {
                         Game.DeleteBlock(index);
+                    }
                     else if (e.LeftButton == MouseButtonState.Pressed)
-                        Game.AddBlock(index, BlockSelection.SelectedBlock);
-                    break;
-
-
-                case UserModes.AddSelection:
-                    if (e.LeftButton != MouseButtonState.Pressed)
-                        break;
-
-                    Game.AddSelection(index, BlockSelection.SelectedBlocks);
+                    {
+                        if (BlockSelection.SelectedBlocks != null)
+                            Game.AddSelection(index, BlockSelection.SelectedBlocks);
+                        else
+                            Game.AddBlock(index, BlockSelection.SelectedBlock);
+                    }
                     break;
             }
         }
@@ -364,7 +372,7 @@ namespace BlockEditor.ViewModels
                     if (e.ChangedButton != MouseButton.Left)
                         break;
 
-                    BlockSelection.UserSelection.OnMouseUp(p, index);
+                    UserSelection.OnMouseUp(p, index);
                     break;
             }
         }
@@ -392,7 +400,7 @@ namespace BlockEditor.ViewModels
 
             Game.UserOperations.Clear();
             (App.Current.MainWindow as MainWindow)?.TitleChanged(Game.Map.Level.Title);
-            OnCleanUserMode();
+            OnCleanUserMode(true);
             Game.GoToStartPosition();
 
             MyUtils.BlocksOutsideBoundries(map.BlocksOutsideBoundries);

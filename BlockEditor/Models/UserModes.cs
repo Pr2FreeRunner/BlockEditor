@@ -8,7 +8,7 @@ namespace BlockEditor.Models
 
     public class UserMode : NotificationObject
     {
-        public enum UserModes { None, AddBlock, Selection, AddSelection, Fill, BlockInfo, MapInfo, BlockCount }
+        public enum UserModes { None, AddBlock, Selection, Fill, BlockInfo, MapInfo, BlockCount }
 
         private static Cursor BucketCursor;
 

@@ -9,9 +9,6 @@ namespace BlockEditor.Models
         public MyRegion MapRegion { get; }
         public MyRegion ImageRegion { get; }
 
-        public event Action<int?[,]> OnNewSelection;
-
-
         public UserSelection()
         {
             MapRegion = new MyRegion();
@@ -68,7 +65,7 @@ namespace BlockEditor.Models
         public void CreateSelection(Map map)
         {
             var selection = GetSelection(map);
-            OnNewSelection?.Invoke(selection);
+            BlockSelection.OnNewSelection(selection);
         }
 
 

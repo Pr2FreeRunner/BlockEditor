@@ -13,7 +13,6 @@ namespace BlockEditor.Models
 {
     public class Map
     {
-        public event Action<string> OnTitleChanged;
 
         public Level Level { get; }
 

@@ -19,7 +19,7 @@ namespace BlockEditor.Views.Controls
         {
             InitializeComponent();
             BlocksControl.Init(BlockSize.Zoom125, 3);
-            this.DataContext = ViewModel = new MapViewModel(CleanBlocksControlSelection);
+            this.DataContext = ViewModel = new MapViewModel();
 
             MapButtons.ViewModel.OnLoadMap += ViewModel.OnLoadMap;
             MapButtons.ViewModel.OnSaveMap += () => MapUtil.Save(ViewModel.Game.Map);
@@ -137,7 +137,7 @@ namespace BlockEditor.Views.Controls
 
                 if (e.Key == Key.Escape)
                 {
-                    ViewModel.OnCleanUserMode();
+                    ViewModel.OnCleanUserMode(true);
                     return;
                 }
                 else if (ctrl && e.Key == Key.Z)
@@ -185,19 +185,16 @@ namespace BlockEditor.Views.Controls
                 }
                 else if (IsSelectionKey(e, ctrl))
                 {
-                    ViewModel.BlockSelection.UserSelection.CreateSelection(ViewModel.Game.Map);
+                    ViewModel.UserSelection.CreateSelection(ViewModel.Game.Map);
 
                     if (e.Key == Key.X || e.Key == Key.Delete)
-                        ViewModel.Game.DeleteSelection(ViewModel.BlockSelection.UserSelection.MapRegion);
+                        ViewModel.Game.DeleteSelection(ViewModel.UserSelection.MapRegion);
 
-                    if (e.Key == Key.Delete)
-                        ViewModel.OnCleanUserMode();
-                    else
-                        ViewModel.Mode.Value = UserModes.AddSelection;
+                    ViewModel.OnCleanUserMode(e.Key == Key.Delete);
                 }
-                else if (ViewModel.Mode.Value == UserModes.AddSelection && e.Key == Key.R)
+                else if (BlockSelection.SelectedBlocks != null && e.Key == Key.R)
                 {
-                    ViewModel.BlockSelection.Rotate();
+                    BlockSelection.Rotate();
                 }
                 else if (e.Key == Key.S)
                 {

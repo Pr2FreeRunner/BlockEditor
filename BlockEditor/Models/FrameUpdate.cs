@@ -8,18 +8,18 @@ namespace BlockEditor.Models
     {
 
         private MyPoint? _mousePosition;
-        private BlockSelection _selection;
+        private UserSelection _userSelection;
         private Graphics _graphics;
         private Game _game;
 
-        public FrameUpdate(Game game, MyPoint? mousePosition, BlockSelection selection)
+        public FrameUpdate(Game game, MyPoint? mousePosition, UserSelection selection)
         {
             if (game?.GameImage == null || game?.Map == null || game?.Camera == null)
                 return;
 
             _game = game;
             _mousePosition = mousePosition;
-            _selection = selection;
+            _userSelection = selection;
             _graphics = CreateGraphics();
 
             Update();
@@ -119,13 +119,13 @@ namespace BlockEditor.Models
 
         private void DrawSelectedBlock()
         {
-            if(_selection == null)
+            if(_userSelection == null)
                 return;
 
             if (_mousePosition == null)
                 return;
 
-            var id = _selection.SelectedBlock;
+            var id = BlockSelection.SelectedBlock;
 
             var block = BlockImages.GetImageBlock(_game.Map.BlockSize, id)?.SemiTransparentBitmap;
 
@@ -140,13 +140,13 @@ namespace BlockEditor.Models
 
         private void DrawSelectedBlocks()
         {
-            if (_selection == null)
+            if (_userSelection == null)
                 return;
 
             if (_mousePosition == null)
                 return;
 
-            var blocks = _selection.SelectedBlocks;
+            var blocks = BlockSelection.SelectedBlocks;
 
             if (blocks == null)
                 return;
@@ -179,11 +179,11 @@ namespace BlockEditor.Models
 
         private void DrawSelectedRectangle()
         {
-            if(_selection == null)
+            if(_userSelection == null)
                 return;
 
-            var start = _selection.UserSelection.ImageRegion?.Start;
-            var end   = _selection.UserSelection.ImageRegion?.End ?? _mousePosition;
+            var start = _userSelection.ImageRegion?.Start;
+            var end   = _userSelection.ImageRegion?.End ?? _mousePosition;
 
             if (start == null || end == null)
                 return;

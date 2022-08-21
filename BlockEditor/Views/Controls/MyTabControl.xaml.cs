@@ -22,8 +22,6 @@ namespace BlockEditor.Views.Controls
             InitializeComponent();
             MapControl = new MapControl();
             tbTitle.Text = GetDefaultTitle();
-
-            MapControl.ViewModel.Game.Map.OnTitleChanged += Map_OnTitleChanged;
         }
 
         private string GetDefaultTitle()
