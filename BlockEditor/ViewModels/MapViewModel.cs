@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -10,6 +11,7 @@ using BlockEditor.Models;
 using BlockEditor.Utils;
 using BlockEditor.Views.Windows;
 using LevelModel.Models.Components;
+using SkiaSharp;
 using static BlockEditor.Models.BlockImages;
 using static BlockEditor.Models.UserMode;
 
@@ -47,6 +49,8 @@ namespace BlockEditor.ViewModels
         public RelayCommand AddImageCommand { get; }
         public RelayCommand RotateCommand { get; }
         public RelayCommand VerticalFlipCommand { get; }
+        public RelayCommand HorizontalFlipCommand { get; }
+
 
 
 
@@ -66,7 +70,9 @@ namespace BlockEditor.ViewModels
             ReplaceCommand = new RelayCommand((_) => OnReplaceClick());
             AddImageCommand = new RelayCommand((_) => OnAddImageClick());
             RotateCommand = BlockSelection.RotateCommand;
-            VerticalFlipCommand = BlockSelection.VerticalFlipCommand;
+            VerticalFlipCommand = new RelayCommand((_) => OnVerticalFlipClick());
+            HorizontalFlipCommand = new RelayCommand((_) => OnHorizontalFlipClick());
+
 
             Game.Engine.OnFrame += OnFrameUpdate;
         }
@@ -102,6 +108,63 @@ namespace BlockEditor.ViewModels
             }
         }
 
+        public void OnVerticalFlipClick()
+        {
+            if (BlockSelection.VerticalFlipCommand.CanExecute(null))
+            {
+                BlockSelection.VerticalFlipCommand.Execute(null);
+            }
+            else
+            {
+                using (new TempCursor(Cursors.Wait))
+                {
+                    Game.Engine.PauseConfirmed();
+                    Game.Map.Blocks.VerticalFlip();
+
+                    var r = UserQuestionWindow.Show("Do you wish to convert Up-Arrow to Down-Arrow and vice versa?", "Vertical Flip");
+
+                    if(r == UserQuestionWindow.QuestionResult.Yes)
+                    {
+                        var replace = new List<int>() { Block.ARROW_UP, Block.ARROW_DOWN };
+                        var add = new List<int>() { Block.ARROW_DOWN, Block.ARROW_UP };
+                        var blocks = MapUtil.ReplaceBlock(Game.Map, replace, add, null);
+                        Game.AddBlocks(blocks);
+                    }
+
+                    Game.GoToStartPosition();
+                    Game.Engine.Pause = false;
+                }
+            }
+        }
+
+        public void OnHorizontalFlipClick()
+        {
+            if (BlockSelection.HorizontalFlipCommand.CanExecute(null))
+            {
+                BlockSelection.HorizontalFlipCommand.Execute(null);
+            }
+            else
+            {
+                using (new TempCursor(Cursors.Wait))
+                {
+                    Game.Engine.PauseConfirmed();
+                    Game.Map.Blocks.HorizontalFlip();
+
+                    var r = UserQuestionWindow.Show("Do you wish to convert Left-Arrow to Right-Arrow and vice versa?", "Horizontal Flip");
+
+                    if (r == UserQuestionWindow.QuestionResult.Yes)
+                    {
+                        var replace = new List<int>() { Block.ARROW_LEFT, Block.ARROW_RIGHT };
+                        var add = new List<int>() { Block.ARROW_RIGHT, Block.ARROW_LEFT };
+                        var blocks = MapUtil.ReplaceBlock(Game.Map, replace, add, null);
+                        Game.AddBlocks(blocks);
+                    }
+                    Game.GoToStartPosition();
+                    Game.Engine.Pause = false;
+                }
+            }
+        }
+
         public void OnAddShapeClick()
         {
             BlockSelection.Reset();
@@ -126,7 +189,7 @@ namespace BlockEditor.ViewModels
 
         public void OnAddImageClick()
         {
-            BlockSelection.Reset(); 
+            BlockSelection.Reset();
             UserSelection.Reset();
             Mode.Value = UserModes.None;
 
@@ -140,7 +203,7 @@ namespace BlockEditor.ViewModels
             {
                 var pr2Blocks = Builders.PR2Builder.BuildLevel(w.BuildInfo).Blocks.Skip(8).ToList();
                 ImageToBlocksWindow.ShiftPosition(pr2Blocks);
-                var blocks  = MyConverters.ToBlocks(pr2Blocks, out var blocksOutsideBoundries).GetBlocks();
+                var blocks = MyConverters.ToBlocks(pr2Blocks, out var blocksOutsideBoundries).GetBlocks();
                 var position = blocks.First().Position;
 
                 MyUtils.BlocksOutsideBoundries(blocksOutsideBoundries);
@@ -168,7 +231,7 @@ namespace BlockEditor.ViewModels
 
             using (new TempCursor(Cursors.Wait))
             {
-                var blocks = MapUtil.ReplaceBlock(Game.Map, id1.Value, id2.Value, region);
+                var blocks = MapUtil.ReplaceBlock(Game.Map, new List<int>() {id1.Value}, new List<int>() {id2.Value}, region);
 
                 Game.AddBlocks(blocks);
                 BlockSelection.Reset();
@@ -234,7 +297,7 @@ namespace BlockEditor.ViewModels
 
         public void OnCleanUserMode(bool clearBlockSelection)
         {
-            if(clearBlockSelection)
+            if (clearBlockSelection)
                 BlockSelection.Reset();
 
             UserSelection.Reset();
@@ -318,7 +381,7 @@ namespace BlockEditor.ViewModels
                     }
                     else if (e.ChangedButton == MouseButton.Left)
                     {
-                        if(BlockSelection.SelectedBlocks != null)
+                        if (BlockSelection.SelectedBlocks != null)
                             Game.AddSelection(index, BlockSelection.SelectedBlocks);
                         else
                             Game.AddBlock(index, BlockSelection.SelectedBlock);

@@ -171,5 +171,22 @@ namespace BlockEditor.Utils
 
             return result;
         }
+
+        public static T[,] HorizontalFlip<T>(T[,] matrix)
+        {
+            if (matrix == null)
+                return null;
+
+            var size0 = matrix.GetLength(0);
+            var size1 = matrix.GetLength(1);
+
+            var result = new T[size0, size1];
+
+            for (int i = 0; i < size0; ++i)
+                for (int j = 0; j < size1; ++j)
+                    result[i, j] = matrix[size0 - i - 1, j];
+
+            return result;
+        }
     }
 }

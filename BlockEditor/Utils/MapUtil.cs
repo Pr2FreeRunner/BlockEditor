@@ -226,15 +226,16 @@ namespace BlockEditor.Helpers
             return result;
         }
 
-        public static List<SimpleBlock> ReplaceBlock(Map map, int id1, int id2, MyRegion region)
+        public static List<SimpleBlock> ReplaceBlock(Map map, List<int> replace, List<int> add, MyRegion region)
         {
             var result = new List<SimpleBlock>();
 
-            if (map == null)
+            if (map == null || replace == null || add == null || replace.Count != add.Count)
                 return result;
 
             var lowerLimit = new MyPoint(0, 0);
             var upperLimit = new MyPoint(Blocks.SIZE, Blocks.SIZE);
+            var notFound   = -1;
 
             if (region != null && region.IsComplete())
             {
@@ -247,9 +248,10 @@ namespace BlockEditor.Helpers
                 for (int y = lowerLimit.Y; y < upperLimit.Y; y++)
                 {
                     var b = map.Blocks.GetBlock(x, y);
+                    var index = replace.IndexOf(b.ID);
 
-                    if(b.ID == id1)
-                        result.Add(new SimpleBlock(id2, x, y));
+                    if(index != notFound)
+                        result.Add(new SimpleBlock(add[index], x, y));
                 }
             }
 

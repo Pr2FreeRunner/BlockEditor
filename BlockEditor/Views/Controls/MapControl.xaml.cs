@@ -143,7 +143,7 @@ namespace BlockEditor.Views.Controls
                 }
                 else if (ctrl && e.Key == Key.OemPlus)
                 {
-                    if(ZoomControl.ViewModel.ZoomInCommand.CanExecute(null))
+                    if (ZoomControl.ViewModel.ZoomInCommand.CanExecute(null))
                         ZoomControl.ViewModel.ZoomInCommand.Execute(null);
                 }
                 else if (ctrl && e.Key == Key.OemMinus)
@@ -185,9 +185,9 @@ namespace BlockEditor.Views.Controls
 
                     ViewModel.OnCleanUserMode(e.Key == Key.Delete);
                 }
-                else if(ctrl && e.Key == Key.V)
+                else if (ctrl && e.Key == Key.V)
                 {
-                    BlockSelection.ActivatePreviousSelection();;
+                    BlockSelection.ActivatePreviousSelection(); ;
                 }
                 else if (BlockSelection.SelectedBlocks != null && e.Key == Key.R)
                 {
@@ -232,6 +232,11 @@ namespace BlockEditor.Views.Controls
                 {
                     if (ViewModel.VerticalFlipCommand.CanExecute(null))
                         ViewModel.VerticalFlipCommand.Execute(null);
+                }
+                else if (e.Key == Key.H)
+                {
+                    if (ViewModel.HorizontalFlipCommand.CanExecute(null))
+                        ViewModel.HorizontalFlipCommand.Execute(null);
                 }
                 else if (e.Key == Key.O)
                 {

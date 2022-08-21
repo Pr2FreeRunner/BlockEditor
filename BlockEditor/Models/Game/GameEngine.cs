@@ -31,6 +31,11 @@ namespace BlockEditor.Models
 
         public event Action OnFrame;
 
+        public void PauseConfirmed()
+        {
+            Pause = false;
+            Thread.Sleep(GameEngine.FPS * 5); // wait for engine to pause
+        }
 
         public GameEngine()
         {
