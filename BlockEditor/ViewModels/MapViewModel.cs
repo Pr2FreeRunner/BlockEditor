@@ -69,7 +69,7 @@ namespace BlockEditor.ViewModels
             BlockCountCommand = new RelayCommand((_) => OnBlockCountClick());
             ReplaceCommand = new RelayCommand((_) => OnReplaceClick());
             AddImageCommand = new RelayCommand((_) => OnAddImageClick());
-            RotateCommand = BlockSelection.RotateCommand;
+            RotateCommand = new RelayCommand((_) => OnRotateClick());
             VerticalFlipCommand = new RelayCommand((_) => OnVerticalFlipClick());
             HorizontalFlipCommand = new RelayCommand((_) => OnHorizontalFlipClick());
 
@@ -131,6 +131,25 @@ namespace BlockEditor.ViewModels
                         Game.AddBlocks(blocks);
                     }
 
+                    Game.GoToStartPosition();
+                    Game.Engine.Pause = false;
+                }
+            }
+        }
+
+
+        public void OnRotateClick()
+        {
+            if (BlockSelection.RotateCommand.CanExecute(null))
+            {
+                BlockSelection.RotateCommand.Execute(null);
+            }
+            else
+            {
+                using (new TempCursor(Cursors.Wait))
+                {
+                    Game.Engine.PauseConfirmed();
+                    Game.Map.Blocks.Rotate();
                     Game.GoToStartPosition();
                     Game.Engine.Pause = false;
                 }

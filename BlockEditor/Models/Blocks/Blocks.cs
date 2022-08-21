@@ -283,5 +283,57 @@ namespace BlockEditor.Models
                 StartBlocks.Player4 = new SimpleBlock(Block.START_BLOCK_P4, SIZE - x - 1, y);
             }
         }
+
+        public void Rotate()
+        {
+            _blocks = ArrayUtil.RotateRight(_blocks);
+
+            // update the blocks internal positon
+            for (int i = 0; i < SIZE; i++)
+            {
+                for (int j = 0; j < SIZE; j++)
+                {
+                    var b = _blocks[i, j];
+
+                    if (b.IsEmpty())
+                        continue;
+
+                    _blocks[i, j] = new SimpleBlock(b.ID, i, j);
+                }
+            }
+
+            if (!StartBlocks.Player1.IsEmpty())
+            {
+                var x = StartBlocks.Player1.Position.Value.X;
+                var y = StartBlocks.Player1.Position.Value.Y;
+
+                StartBlocks.Player1 = new SimpleBlock(Block.START_BLOCK_P1, SIZE - y - 1, x);
+            }
+
+            if (!StartBlocks.Player2.IsEmpty())
+            {
+                var x = StartBlocks.Player2.Position.Value.X;
+                var y = StartBlocks.Player2.Position.Value.Y;
+
+                StartBlocks.Player2 = new SimpleBlock(Block.START_BLOCK_P2, SIZE - y - 1, x);
+            }
+
+            if (!StartBlocks.Player3.IsEmpty())
+            {
+                var x = StartBlocks.Player3.Position.Value.X;
+                var y = StartBlocks.Player3.Position.Value.Y;
+
+                StartBlocks.Player3 = new SimpleBlock(Block.START_BLOCK_P3, SIZE - y - 1, x);
+            }
+
+            if (!StartBlocks.Player4.IsEmpty())
+            {
+                var x = StartBlocks.Player4.Position.Value.X;
+                var y = StartBlocks.Player4.Position.Value.Y;
+
+                StartBlocks.Player4 = new SimpleBlock(Block.START_BLOCK_P4, SIZE - y - 1, x);
+            }
+        }
+
     }
 }

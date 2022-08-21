@@ -37,13 +37,10 @@
 
                     <ToggleButton Height="34" IsChecked="{Binding Mode.IsSelectionMode, Mode=OneWay}" Margin="25,7,5,7" Width="60" Content="Select" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding SelectCommand}" ToolTip="Select Multiple Blocks &#x0a;Hotkey:  S"/>
 
-                    <Button Margin="35,7,5,7" Height="34" Width="40" Content="↺" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding RotateCommand}"  ToolTip="Rotate Blocks &#x0a;Hotkey:  R"/>
-                    <Button  Height="34" Margin="5,7,5,7" Width="40" Content="&#9638;"  FontSize="25" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding AddShapeCommand}" ToolTip="Add Shape&#x0a;Hotkey:  A"/>
-
-                    <Button Height="34" Width="40" Margin="30,7,5,7" Content="&#8982;"  FontSize="25" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding StartPositionCommand}" ToolTip="Go to Start Position&#x0a;Hotkey:  G"/>
-                    <Button Margin="5,7,5,7" Height="34" Width="40" Content="🗘" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding VerticalFlipCommand}"  ToolTip="Vertical Flip &#x0a;Hotkey:  V"/>
-                    <Button Margin="5,7,5,7" Height="34" Width="40" Content="⇆" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding HorizontalFlipCommand}"  ToolTip="Vertical Flip &#x0a;Hotkey:  H"/>
-
+                    <Button  Height="34" Margin="35,7,5,7" Width="40" Content="&#9638;"  FontSize="25" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding AddShapeCommand}" ToolTip="Add Shape&#x0a;Hotkey:  A"/>
+                    <Button Margin="5,7,5,7" Height="34" Width="40" Content="↺" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding RotateCommand}"  ToolTip="Rotate Blocks &#x0a;Hotkey:  R"/>
+                    <Button Margin="5,7,5,7" Height="34" Width="40" Content="⭥" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding VerticalFlipCommand}"  ToolTip="Vertical Flip &#x0a;Hotkey:  V"/>
+                    <Button Margin="5,7,5,7" Height="34" Width="40" Content="⇆" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding HorizontalFlipCommand}"  ToolTip="Horizontal Flip &#x0a;Hotkey:  H"/>
                     <Grid Width="40" Height="34" Margin="5,7,5,7" ToolTip="Flood Fill&#x0a;Hotkey:  F">
                         <Grid.InputBindings>
                             <MouseBinding Gesture="LeftClick" Command="{Binding FillCommand}" />
@@ -53,7 +50,7 @@
                     </Grid>
                     <Button Height="34" Margin="5,7,5,7" Width="40" Content="&#9935;"  FontSize="22" FontWeight="Normal"   FontFamily="Segoe UI" Command="{Binding ReplaceCommand}" ToolTip="Replace Block&#x0a;Hotkey:  R"/>
                     <Button Height="34" Margin="5,7,5,7" Width="40" Content="⚝" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding AddImageCommand}" ToolTip="Add Image&#x0a;Hotkey:  I"/>
-
+                    <Button Height="34" Width="40" Margin="5,7,5,7" Content="&#8982;"  FontSize="25" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding StartPositionCommand}" ToolTip="Go to Start Position&#x0a;Hotkey:  G"/>
 
                     <Grid Width="40" Height="34" Margin="30,7,5,7" ToolTip="Block Count Info&#x0a;Hotkey:  C">
                         <Grid.InputBindings>
