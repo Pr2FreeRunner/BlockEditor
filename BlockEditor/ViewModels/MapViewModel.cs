@@ -47,8 +47,6 @@ namespace BlockEditor.ViewModels
         public RelayCommand AddImageCommand { get; }
 
 
-
-
         public MapViewModel()
         {
             Game = new Game();
@@ -120,7 +118,6 @@ namespace BlockEditor.ViewModels
             Game.AddBlocks(blocks);
             BlockSelection.Reset();
         }
-
 
         public void OnAddImageClick()
         {
