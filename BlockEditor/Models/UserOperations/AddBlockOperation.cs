@@ -20,7 +20,7 @@ namespace BlockEditor.Models
             if(_map?.Blocks == null || _block.IsEmpty())
                 return false;
 
-            _oldBlock = _map.Blocks.GetBlock(_block.Position);
+            _oldBlock = _map.Blocks.GetBlock(_block.Position, false);
 
             if (!_oldBlock.IsEmpty() && _oldBlock.ID == _block.ID)
                 return false;
@@ -43,8 +43,13 @@ namespace BlockEditor.Models
 
             _map.Blocks.Delete(_block);
 
-            if(_oldStartPosition != null && Block.IsStartBlock(_block.ID))
+            if(Block.IsStartBlock(_block.ID))
+            {
+                if(_oldStartPosition == null)
+                    return false;
+
                 _map.Blocks.Add(new SimpleBlock(_block.ID, _oldStartPosition.Value));
+            }
            
             if(!_oldBlock.IsEmpty())
                 _map.Blocks.Add(_oldBlock);

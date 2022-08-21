@@ -62,12 +62,12 @@ namespace BlockEditor.Models
             return _blocks[x, y];
         }
 
-        public SimpleBlock GetBlock(MyPoint? point)
+        public SimpleBlock GetBlock(MyPoint? point, bool startBlocks = true)
         {
             if (point == null)
                 return new SimpleBlock();
 
-            return GetBlock(point.Value.X, point.Value.Y);
+            return GetBlock(point.Value.X, point.Value.Y, startBlocks);
         }
 
 
