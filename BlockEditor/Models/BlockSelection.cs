@@ -24,8 +24,24 @@ namespace BlockEditor.Models
 
                 lock (_lock)
                 {
+                    PreviouselectedBlocks = _selectedBlocks;
                     _selectedBlocks = temp;
                 }
+            }
+        }
+
+        private static int?[,] _previousSelectedBlocks;
+        public static int?[,] PreviouselectedBlocks
+        {
+            get
+            {
+                return _previousSelectedBlocks;
+            }
+            set
+            {
+                if(value == null)
+                    return;
+                _previousSelectedBlocks = value;
             }
         }
 
@@ -68,6 +84,13 @@ namespace BlockEditor.Models
             SelectedBlocks = ArrayUtil.RotateRight(SelectedBlocks);
         }
 
-  
+        internal static void ActivatePreviousSelection()
+        {
+            if(SelectedBlocks != null)
+                return;
+
+            Reset();
+            SelectedBlocks = PreviouselectedBlocks;
+        }
     }
 }

@@ -185,6 +185,10 @@ namespace BlockEditor.Views.Controls
 
                     ViewModel.OnCleanUserMode(e.Key == Key.Delete);
                 }
+                else if(ctrl && e.Key == Key.V)
+                {
+                    BlockSelection.ActivatePreviousSelection();;
+                }
                 else if (BlockSelection.SelectedBlocks != null && e.Key == Key.R)
                 {
                     BlockSelection.Rotate();
