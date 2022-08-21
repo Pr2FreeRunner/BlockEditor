@@ -18,21 +18,14 @@ namespace BlockEditor.Views.Controls
         public MapControl()
         {
             InitializeComponent();
-            BlocksControl.Init(BlockSize.Zoom125, 3);
             this.DataContext = ViewModel = new MapViewModel();
 
             MapButtons.ViewModel.OnLoadMap += ViewModel.OnLoadMap;
             MapButtons.ViewModel.OnSaveMap += () => MapUtil.Save(ViewModel.Game.Map);
             MapButtons.ViewModel.OnTestMap += () => MapUtil.TestInTasTool(ViewModel.Game.Map);
             ZoomControl.ViewModel.OnZoomChanged += (zoom) => ViewModel.OnZoomChanged(zoom);
-            BlocksControl.OnSelectedBlockID += ViewModel.OnSelectedBlockID;
             this.Loaded += windowLoaded;
             ZoomControl.ViewModel.Zoom = MySettings.Zoom;
-        }
-
-        private void CleanBlocksControlSelection()
-        {
-            BlocksControl.RemoveSelection();
         }
 
         private void windowLoaded(object sender, RoutedEventArgs e)

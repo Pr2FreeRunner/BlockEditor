@@ -227,15 +227,6 @@ namespace BlockEditor.ViewModels
             }
         }
 
-        internal void OnSelectedBlockID(int? id)
-        {
-            BlockSelection.SelectedBlocks = null;
-            BlockSelection.SelectedBlock = id;
-
-            if (id != null && Mode.Value != UserModes.Fill && Mode.Value != UserModes.Selection)
-                Mode.Value = UserModes.AddBlock;
-        }
-
         public void OnCleanUserMode(bool clearBlockSelection)
         {
             if(clearBlockSelection)

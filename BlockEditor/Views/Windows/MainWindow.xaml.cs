@@ -1,9 +1,9 @@
-﻿using BlockEditor.Models;
-using BlockEditor.Views.Controls;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using System.Linq;
+using BlockEditor.Models;
+using BlockEditor.Views.Controls;
+using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Views.Windows
 {
@@ -48,7 +48,19 @@ namespace BlockEditor.Views.Windows
         public MainWindow()
         {
             InitializeComponent();
+            BlocksControl.Init(BlockSize.Zoom125, 3);
+            BlocksControl.OnSelectedBlockID += OnSelectedBlockId;
+            BlockSelection.CleanUserBlockControl = BlocksControl.RemoveSelection;
             CreateNewTab();
+        }
+
+        private void OnSelectedBlockId(int? id)
+        {
+            if(_currentMap == null)
+                return;
+
+            BlockSelection.SelectedBlocks = null;
+            BlockSelection.SelectedBlock = id;
         }
 
         public void TitleChanged(string title)

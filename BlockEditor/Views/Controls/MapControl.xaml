@@ -13,7 +13,6 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />
             <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -78,7 +77,7 @@
             </Grid>
 
         </Border>
-        
+
         <Grid 
             Grid.Column="0"
             Grid.Row="1" 
@@ -89,21 +88,13 @@
             PreviewMouseUp="Map_PreviewMouseUp"
             SizeChanged="Map_SizeChanged"
             Name="GamePanel">
-            
+
             <Image 
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 Source="{Binding MapContent, Mode=OneWay}" />
 
         </Grid>
-
-
-        <myControls:BlocksControl Grid.Column="2" Grid.Row="1" 
-                             x:Name="BlocksControl" 
-                             Grid.RowSpan="99" 
-                             VerticalAlignment="Center"
-                             HorizontalAlignment="Center"
-                             Margin="8"/>
 
         <myControls:MapButtonsControl x:Name="MapButtons"
             Grid.Column="0"  

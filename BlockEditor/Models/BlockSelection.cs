@@ -36,6 +36,8 @@ namespace BlockEditor.Models
             set { _selectedBlock = value; }
         }
 
+        public static Action CleanUserBlockControl { get; set; }
+
         static BlockSelection()
         {
             RotateCommand = new RelayCommand((_) => Rotate(), (_) => CanRotate());
@@ -51,10 +53,11 @@ namespace BlockEditor.Models
             return SelectedBlocks != null;
         }
 
-        public static void Reset(bool userSelection = true)
+        public static void Reset()
         {
             SelectedBlocks = null;
             SelectedBlock = null;
+            CleanUserBlockControl?.Invoke();
         }
 
         public static void Rotate()
