@@ -20,5 +20,35 @@
     <Setting Name="FillShape" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="Hotkey0" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="Hotkey1" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">101</Value>
+    </Setting>
+    <Setting Name="Hotkey2" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">102</Value>
+    </Setting>
+    <Setting Name="Hotkey3" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">103</Value>
+    </Setting>
+    <Setting Name="Hotkey4" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">104</Value>
+    </Setting>
+    <Setting Name="Hotkey5" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">105</Value>
+    </Setting>
+    <Setting Name="Hotkey6" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">106</Value>
+    </Setting>
+    <Setting Name="Hotkey7" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">107</Value>
+    </Setting>
+    <Setting Name="Hotkey8" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">108</Value>
+    </Setting>
+    <Setting Name="Hotkey9" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">109</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

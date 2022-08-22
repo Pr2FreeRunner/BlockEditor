@@ -77,9 +77,6 @@ namespace BlockEditor.ViewModels
             DeleteBlockCommand = new RelayCommand((_) => OnDeleteBlockClick());
             SettingsCommand = new RelayCommand((_) => OnSettingsClick());
 
-
-
-
             Game.Engine.OnFrame += OnFrameUpdate;
         }
 
@@ -136,8 +133,7 @@ namespace BlockEditor.ViewModels
             UserSelection.Reset();
             Mode.Value = UserModes.Settings;
 
-            MessageUtil.ShowInfo("Settings are not done yet...");
-            // windoiw
+            new SettingsWindow().ShowDialog();
 
             Mode.Value = UserModes.None;
         }

@@ -94,5 +94,125 @@ namespace BlockEditor {
                 this["FillShape"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int Hotkey0 {
+            get {
+                return ((int)(this["Hotkey0"]));
+            }
+            set {
+                this["Hotkey0"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("101")]
+        public int Hotkey1 {
+            get {
+                return ((int)(this["Hotkey1"]));
+            }
+            set {
+                this["Hotkey1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("102")]
+        public int Hotkey2 {
+            get {
+                return ((int)(this["Hotkey2"]));
+            }
+            set {
+                this["Hotkey2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("103")]
+        public int Hotkey3 {
+            get {
+                return ((int)(this["Hotkey3"]));
+            }
+            set {
+                this["Hotkey3"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("104")]
+        public int Hotkey4 {
+            get {
+                return ((int)(this["Hotkey4"]));
+            }
+            set {
+                this["Hotkey4"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("105")]
+        public int Hotkey5 {
+            get {
+                return ((int)(this["Hotkey5"]));
+            }
+            set {
+                this["Hotkey5"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("106")]
+        public int Hotkey6 {
+            get {
+                return ((int)(this["Hotkey6"]));
+            }
+            set {
+                this["Hotkey6"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("107")]
+        public int Hotkey7 {
+            get {
+                return ((int)(this["Hotkey7"]));
+            }
+            set {
+                this["Hotkey7"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("108")]
+        public int Hotkey8 {
+            get {
+                return ((int)(this["Hotkey8"]));
+            }
+            set {
+                this["Hotkey8"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("109")]
+        public int Hotkey9 {
+            get {
+                return ((int)(this["Hotkey9"]));
+            }
+            set {
+                this["Hotkey9"] = value;
+            }
+        }
     }
 }

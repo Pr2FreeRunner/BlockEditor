@@ -12,7 +12,7 @@ namespace BlockEditor.Views.Windows
 
         private int? _selectedBlock { get; set; }
 
-        public SelectBlockWindow(string title)
+        private SelectBlockWindow(string title)
         {
             InitializeComponent();
             MyBlockControl.Init(BlockSize.Zoom75, 11, whiteSelection: false);

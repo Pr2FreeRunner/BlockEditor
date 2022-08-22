@@ -174,6 +174,7 @@ namespace BlockEditor.Views.Windows
             if (_currentMap == null)
                 return;
 
+            BlocksControl.OnKeyDown(e.Key);
             _currentMap.UserControl_PreviewKeyDown(sender, e);
         }
 

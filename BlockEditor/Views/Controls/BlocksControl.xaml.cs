@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using BlockEditor.Utils;
 using LevelModel.Models.Components;
+using System.Collections.Generic;
 
 namespace BlockEditor.Views.Controls
 {
@@ -121,6 +122,30 @@ namespace BlockEditor.Views.Controls
         public void RemoveSelection()
         {
             CreateSelection(null, null);
+        }
+
+        public void OnKeyDown(Key k)
+        {
+            var id = MySettings.GetBlockId(k);
+
+            if(id == null)
+                return;
+
+            foreach (var child in BlockContainer.Children)
+            {
+                var border = child as Border;
+                var blockId = (border?.Child as Image).Tag as int?;
+
+                if(blockId == null)
+                    continue;
+
+                if(blockId.Value == id)
+                {
+                    CreateSelection(border, id);
+                    return;
+                }
+            }
+
         }
     }
 }
