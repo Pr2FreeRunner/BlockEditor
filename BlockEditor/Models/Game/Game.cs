@@ -1,6 +1,7 @@
 ﻿using BlockEditor.Helpers;
 using BlockEditor.Utils;
 using BlockEditor.ViewModels;
+using LevelModel.Models.Components;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -150,13 +151,13 @@ namespace BlockEditor.Models
             UserOperations.Execute(op);
         }
 
-        public void GoToStartPosition()
+        public void GoToStartPosition(int id = Block.START_BLOCK_P1)
         {
-            var p = Map.Blocks.GetStartPosition();
+            var p = Map.Blocks.StartBlocks.GetPosition(id);
 
             if (p == null)
             {
-                MessageUtil.ShowWarning("The map contains no start position.");
+                MessageUtil.ShowWarning("The start block was not found.");
                 return;
             }
 

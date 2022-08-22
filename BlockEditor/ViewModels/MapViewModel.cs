@@ -60,7 +60,7 @@ namespace BlockEditor.ViewModels
             Mode = new UserMode();
 
             UserSelection = new UserSelection();
-            StartPositionCommand = new RelayCommand((_) => Game.GoToStartPosition());
+            StartPositionCommand = new RelayCommand((_) => OnGoToStartPositionClick());
             FillCommand = new RelayCommand((_) => OnFillClick());
             SelectCommand = new RelayCommand((_) => OnSelectionClick());
             AddShapeCommand = new RelayCommand((_) => OnAddShapeClick(), (_) => UserSelection.HasSelectedRegion);
@@ -81,6 +81,20 @@ namespace BlockEditor.ViewModels
 
 
         #region Events
+
+        private void OnGoToStartPositionClick()
+        {
+            Mode.Value = UserModes.None;
+            BlockSelection.Reset();
+
+            var window  = new PickStartBlock();
+            var success = window.ShowDialog();
+
+            if (success != true || window.Result == null)
+                return;
+
+            Game.GoToStartPosition(window.Result.Value);
+        }
 
         private void OnSelectionClick()
         {

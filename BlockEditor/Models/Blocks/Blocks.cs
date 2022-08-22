@@ -156,11 +156,6 @@ namespace BlockEditor.Models
                 _blocks[x, y] = new SimpleBlock();
         }
 
-        public MyPoint? GetStartPosition()
-        {
-            return StartBlocks?.Player1.Position;
-        }
-
         public IEnumerable<SimpleBlock> GetBlocks()
         {
             if (_blocks == null)
