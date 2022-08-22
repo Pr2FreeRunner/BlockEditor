@@ -19,7 +19,6 @@ namespace BlockEditor.Views.Windows
 
             tbTitle.Text = title;
             this.Title = "Select Block";
-            btnOk.IsEnabled = false;
             MyBlockControl.OnSelectedBlockID += OnBlockSelected;
             OpenWindows.Add(this);
         }
@@ -27,7 +26,7 @@ namespace BlockEditor.Views.Windows
         private void OnBlockSelected(int? b)
         {
             _selectedBlock = b;
-            btnOk.IsEnabled =  b != null;
+            Close();
         }
 
         public static int? Show(string title, bool startblocks)
@@ -59,17 +58,6 @@ namespace BlockEditor.Views.Windows
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             OpenWindows.Remove(this);
-        }
-
-        private void btnOk_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            _selectedBlock = null;
-            Close();
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

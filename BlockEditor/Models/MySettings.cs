@@ -161,7 +161,6 @@ namespace BlockEditor.Models
                 Settings.Default["Hotkey8"] = Hotkey8;
                 Settings.Default["Hotkey9"] = Hotkey9;
 
-
                 Settings.Default.Save();
             }
             catch (Exception ex)

@@ -30,12 +30,8 @@
 
             <TextBlock Grid.Row="1" FontSize="14" FontWeight="Normal" Margin="20,14,20,0" HorizontalAlignment="Center" Text="Select Block"  />
 
-            <controls:BlocksControl Grid.Row="2" x:Name="MyBlockControl" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="20,0,20,20" />
+            <controls:BlocksControl Grid.Row="2" x:Name="MyBlockControl" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="20,0,20,30" />
 
-            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="20,5,20, 10" HorizontalAlignment="Right">
-                <Button Width="100" Height="25" Content="Ok" IsDefault="True" Margin="5" x:Name="btnOk" Click="btnOk_Click" />
-                <Button Width="100" Height="25" Content="Cancel" IsCancel="True" Margin="5" Click="btnCancel_Click" />
-            </StackPanel>
         </Grid>
     </Border>
 </Window>
