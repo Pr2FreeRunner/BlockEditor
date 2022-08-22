@@ -8,6 +8,13 @@
         <GradientStop Color="#a1e187" Offset="1.0" />
     </LinearGradientBrush>
 
+    <LinearGradientBrush x:Key="WhiteBackground" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="WhiteSmoke" Offset="0.0" />
+        <GradientStop Color="White" Offset="0.47" />
+        <GradientStop Color="White" Offset="0.53" />
+        <GradientStop Color="WhiteSmoke" Offset="1.0" />
+    </LinearGradientBrush>
+
     <LinearGradientBrush x:Key="LightBackground" StartPoint="0,0" EndPoint="0,1">
         <GradientStop Color="#b1dd9e" Offset="0.0" />
         <GradientStop Color="WhiteSmoke" Offset="0.5" />
@@ -67,6 +74,45 @@
                         <Trigger Property="IsPressed" Value="True">
                             <Setter Property="BorderBrush" Value="{StaticResource ToggleButtonSelected}" />
                             <Setter Property="BorderThickness" Value="1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="WhiteBtn" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource WhiteBackground}" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border CornerRadius="10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                        <Grid>
+                            <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-1,0,0" />
+                        </Grid>
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="4" Color="Gray" Direction="270" Opacity=".5" ShadowDepth="0.8" />
+                        </Border.Effect>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Button.IsEnabled"    Value="false">
+                            <Setter Property="Background"       Value="{StaticResource StandardBackgroundDisable}" />
+                            <Setter Property="Foreground"       Value="{StaticResource StandardForegroundDisable}" />
+                            <Setter Property="BorderThickness"  Value="0.2" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"   Value="True">
+                            <Setter Property="Background" Value="LightGray" />
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="BorderThickness" Value="2"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
