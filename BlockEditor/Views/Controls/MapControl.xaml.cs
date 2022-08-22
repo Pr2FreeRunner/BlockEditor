@@ -208,10 +208,10 @@ namespace BlockEditor.Views.Controls
                     if (ViewModel.StartPositionCommand.CanExecute(null))
                         ViewModel.StartPositionCommand.Execute(null);
                 }
-                else if (e.Key == Key.T)
+                else if (e.Key == Key.D)
                 {
-                    if (ViewModel.RemoveBlockCommand.CanExecute(null))
-                        ViewModel.RemoveBlockCommand.Execute(null);
+                    if (ViewModel.DeleteBlockCommand.CanExecute(null))
+                        ViewModel.DeleteBlockCommand.Execute(null);
                 }
                 else if (e.Key == Key.M)
                 {

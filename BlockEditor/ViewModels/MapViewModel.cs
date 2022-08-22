@@ -50,7 +50,7 @@ namespace BlockEditor.ViewModels
         public RelayCommand RotateCommand { get; }
         public RelayCommand VerticalFlipCommand { get; }
         public RelayCommand HorizontalFlipCommand { get; }
-        public RelayCommand RemoveBlockCommand { get; }
+        public RelayCommand DeleteBlockCommand { get; }
 
 
 
@@ -72,7 +72,7 @@ namespace BlockEditor.ViewModels
             RotateCommand = new RelayCommand((_) => OnRotateClick());
             VerticalFlipCommand = new RelayCommand((_) => OnVerticalFlipClick());
             HorizontalFlipCommand = new RelayCommand((_) => OnHorizontalFlipClick());
-            RemoveBlockCommand = new RelayCommand((_) => OnRemoveBlockClick());
+            DeleteBlockCommand = new RelayCommand((_) => OnDeleteBlockClick());
 
 
 
@@ -246,7 +246,7 @@ namespace BlockEditor.ViewModels
             }
         }
 
-        public void OnRemoveBlockClick()
+        public void OnDeleteBlockClick()
         {
             BlockSelection.Reset();
 

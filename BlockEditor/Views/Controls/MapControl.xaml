@@ -41,23 +41,23 @@
                     <Button Margin="5,7,5,7" Height="34" Width="40" Content="↺" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding RotateCommand}"  ToolTip="Rotate Blocks &#x0a;Hotkey:  R"/>
                     <Button Margin="5,7,5,7" Height="34" Width="40" Content="⭥" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding VerticalFlipCommand}"  ToolTip="Vertical Flip &#x0a;Hotkey:  V"/>
                     <Button Margin="5,7,5,7" Height="34" Width="40" Content="⇆" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding HorizontalFlipCommand}"  ToolTip="Horizontal Flip &#x0a;Hotkey:  H"/>
-                    <Grid Width="40" Height="34" Margin="5,7,5,7" ToolTip="Flood Fill&#x0a;Hotkey:  F">
+                    <Grid Focusable="false" Width="40" Height="34" Margin="5,7,5,7" ToolTip="Flood Fill&#x0a;Hotkey:  F">
                         <Grid.InputBindings>
                             <MouseBinding Gesture="LeftClick" Command="{Binding FillCommand}" />
                         </Grid.InputBindings>
-                        <ToggleButton Height="34" IsChecked="{Binding Mode.IsFillMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        <ToggleButton Height="34" Command="{Binding FillCommand}" IsChecked="{Binding Mode.IsFillMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                         <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="../../Resources/GUI/Bucket.png" />
                     </Grid>
                     <Button Height="34" Margin="5,7,5,7" Width="40" Content="&#9935;"  FontSize="22" FontWeight="Normal"   FontFamily="Segoe UI" Command="{Binding ReplaceCommand}" ToolTip="Replace Block&#x0a;Hotkey:  R"/>
                     <Button Height="34" Margin="5,7,5,7" Width="40" Content="⚝" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding AddImageCommand}" ToolTip="Add Image&#x0a;Hotkey:  I"/>
-                    <Button Height="34" Margin="5,7,5,7" Width="40" Content="&#128465;" FontSize="18" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding RemoveBlockCommand}" ToolTip="Remove Block Type&#x0a;Hotkey:  T"/>
+                    <Button Height="34" Margin="5,7,5,7" Width="40" Content="&#128465;" FontSize="18" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding DeleteBlockCommand}" ToolTip="Delete Block Type&#x0a;Hotkey:  D"/>
                     <Button Height="34" Width="40" Margin="5,7,5,7" Content="&#8982;"  FontSize="25" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding StartPositionCommand}" ToolTip="Go to Start Position&#x0a;Hotkey:  G"/>
 
                     <Grid Width="40" Height="34" Margin="30,7,5,7" ToolTip="Block Count Info&#x0a;Hotkey:  C">
                         <Grid.InputBindings>
                             <MouseBinding Gesture="LeftClick" Command="{Binding BlockCountCommand}" />
                         </Grid.InputBindings>
-                        <ToggleButton  Height="34" IsChecked="{Binding Mode.IsBlockCountMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        <ToggleButton  Height="34"  Command="{Binding BlockCountCommand}" IsChecked="{Binding Mode.IsBlockCountMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                         <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="../../Resources/GUI/BlockCount.png" />
                     </Grid>
                     <ToggleButton Height="34" Width="40"  IsChecked="{Binding Mode.IsBlockInfoMode, Mode=OneWay}" Margin="5,7,5,7" Content="&#128712;"  FontSize="26" FontFamily="Segoe UI" Command="{Binding BlockInfoCommand}" ToolTip="Block Info&#x0a;Hotkey:  B"/>
@@ -65,7 +65,7 @@
                         <Grid.InputBindings>
                             <MouseBinding Gesture="LeftClick" Command="{Binding MapInfoCommand}" />
                         </Grid.InputBindings>
-                        <ToggleButton  Height="34" IsChecked="{Binding Mode.IsMapInfoMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        <ToggleButton  Height="34" Command="{Binding MapInfoCommand}"        IsChecked="{Binding Mode.IsMapInfoMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                         <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="../../Resources/GUI/Settings.png" />
                     </Grid>
 
