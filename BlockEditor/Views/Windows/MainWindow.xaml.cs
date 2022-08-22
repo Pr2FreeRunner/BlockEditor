@@ -13,6 +13,7 @@ namespace BlockEditor.Views.Windows
         private MapControl _currentMap;
         private MyTabControl _currentTab;
         private int tabNumber = 1;
+        public static readonly DateTime StartTime;
 
         public MyTabControl CurrentTab { 
             get 
@@ -40,6 +41,8 @@ namespace BlockEditor.Views.Windows
 
         static MainWindow()
         {
+            StartTime = DateTime.UtcNow;
+
             MySettings.Init();
             BlockImages.Init();
             UserMode.Init();
@@ -194,6 +197,14 @@ namespace BlockEditor.Views.Windows
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             SetBlockImageSize(e.NewSize.Height);
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var endTime = DateTime.UtcNow;
+            var timeDiff = endTime - StartTime;
+
+            MySettings.PlayTime += (int)Math.Round(timeDiff.TotalMinutes);
         }
     }
 }

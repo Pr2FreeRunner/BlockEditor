@@ -9,7 +9,8 @@
         PreviewKeyDown="Window_PreviewKeyDown"  
         Activated="Window_Activated"
         PreviewMouseWheel="Window_PreviewMouseWheel"
-        SizeChanged="Window_SizeChanged">
+        SizeChanged="Window_SizeChanged"
+        Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

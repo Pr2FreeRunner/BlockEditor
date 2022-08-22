@@ -39,7 +39,10 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel x:Name="Page1" Grid.Row="0" Visibility="Visible" Orientation="Vertical" VerticalAlignment="Top">
-                    <Label Content="Editor Size:" Margin="0,4,0,0" FontWeight="SemiBold"/>
+                    <Label Content="Play Time:" Margin="0,4,0,0" FontWeight="SemiBold"/>
+                    <TextBox IsReadOnly="True" x:Name="tbPlayTime" Margin="4,0,0,0" FontSize="12" />
+
+                    <Label Content="Map Size:" Margin="0,4,0,0" FontWeight="SemiBold"/>
                     <TextBox IsReadOnly="True" x:Name="tbSize" Margin="4,0,0,0" FontSize="12" />
 
                     <Label Margin="0,7,0,0" FontWeight="SemiBold" Content="Block Limit:"/>

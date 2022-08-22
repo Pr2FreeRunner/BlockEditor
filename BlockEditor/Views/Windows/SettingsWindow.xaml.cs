@@ -36,6 +36,7 @@ namespace BlockEditor.Views.Windows
             tbFps.Text = GameEngine.FPS.ToString(culture);
             tbSize.Text = Blocks.SIZE.ToString(culture);
             tbLimit.Text = Blocks.LIMIT.ToString(culture);
+            tbPlayTime.Text = GetPlayTime(culture);
 
             BlockImage0.Source = GetImage(Key.D0);
             BlockImage1.Source = GetImage(Key.D1);
@@ -47,6 +48,26 @@ namespace BlockEditor.Views.Windows
             BlockImage7.Source = GetImage(Key.D7);
             BlockImage8.Source = GetImage(Key.D8);
             BlockImage9.Source = GetImage(Key.D9);
+        }
+
+        private string GetPlayTime(CultureInfo culture)
+        {
+            var endTime = DateTime.UtcNow;
+            var timeDiff = endTime - MainWindow.StartTime;
+            var playTime = MySettings.PlayTime + (int)Math.Round(timeDiff.TotalMinutes);
+            var result = "";
+
+            if(playTime > 60)
+                result += ((int)Math.Floor(playTime / 60.0)).ToString(culture) + "h & ";
+
+            var mins = (int)Math.Floor(playTime % 60.0);
+
+            if(mins <= 1)
+                result += mins.ToString(culture) + "min";
+            else
+                result += mins.ToString(culture) + "mins";
+
+            return result;
         }
 
         private BitmapSource GetImage(Key k)

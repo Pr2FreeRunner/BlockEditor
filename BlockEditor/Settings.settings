@@ -50,5 +50,8 @@
     <Setting Name="Hotkey9" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">109</Value>
     </Setting>
+    <Setting Name="PlayTime" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

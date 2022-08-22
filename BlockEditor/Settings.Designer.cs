@@ -214,5 +214,17 @@ namespace BlockEditor {
                 this["Hotkey9"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int PlayTime {
+            get {
+                return ((int)(this["PlayTime"]));
+            }
+            set {
+                this["PlayTime"] = value;
+            }
+        }
     }
 }

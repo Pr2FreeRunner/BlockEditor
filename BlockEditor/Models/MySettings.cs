@@ -110,6 +110,12 @@ namespace BlockEditor.Models
 
 
 
+        private static int _playTime;
+        public static int PlayTime
+        {
+            get { return _playTime; }
+            set { _playTime = value; Save(); }
+        }
 
 
         private static BlockSize _zoom;
@@ -142,6 +148,8 @@ namespace BlockEditor.Models
                 Settings.Default["FirstTimeLoad"] = FirstTimeLoad;
                 Settings.Default["FillShape"] = FillShape;
                 Settings.Default["Zoom"] = (int)Zoom;
+                Settings.Default["PlayTime"] = PlayTime;
+
                 Settings.Default["Hotkey0"] = Hotkey0;
                 Settings.Default["Hotkey1"] = Hotkey1;
                 Settings.Default["Hotkey2"] = Hotkey2;
@@ -152,6 +160,7 @@ namespace BlockEditor.Models
                 Settings.Default["Hotkey7"] = Hotkey7;
                 Settings.Default["Hotkey8"] = Hotkey8;
                 Settings.Default["Hotkey9"] = Hotkey9;
+
 
                 Settings.Default.Save();
             }
@@ -179,6 +188,7 @@ namespace BlockEditor.Models
                 _fillShape = (bool)Settings.Default["FillShape"];
                 _zoom = (BlockSize)(Settings.Default["Zoom"] ?? BlockImages.DEFAULT_BLOCK_SIZE);
                 _pr2BuildVersion = HandleBuildVersion(Settings.Default["Pr2BuildVersion"] as string);
+                _playTime = (int)(Settings.Default["PlayTime"] ?? 0);
 
                 _hotkey0 = (int)(Settings.Default["Hotkey0"] ?? Block.BASIC_WHITE);
                 _hotkey1 = (int)(Settings.Default["Hotkey1"] ?? Block.BASIC_WHITE);
