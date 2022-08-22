@@ -36,6 +36,10 @@ namespace BlockEditor.Views.Controls
             var images = GetAllImageBlocks(size).ToList();
             var rowCount = images.Count / columnCount + 1;
 
+            BlockContainer.Children.Clear();
+            BlockContainer.RowDefinitions.Clear();
+            BlockContainer.ColumnDefinitions.Clear();
+
             for (int i = 0; i < columnCount; i++)
                 BlockContainer.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
 

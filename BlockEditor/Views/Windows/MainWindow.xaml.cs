@@ -48,10 +48,43 @@ namespace BlockEditor.Views.Windows
         public MainWindow()
         {
             InitializeComponent();
-            BlocksControl.Init(BlockSize.Zoom125, 3);
+            SetBlockImageSize();
             BlocksControl.OnSelectedBlockID += OnSelectedBlockId;
             BlockSelection.CleanUserBlockControl = BlocksControl.RemoveSelection;
             CreateNewTab();
+        }
+
+        private BlockSize GetBlockSize(double height = double.NaN)
+        {
+            if (double.IsNaN(height))
+                height = this.Height;
+
+            if (double.IsNaN(height))
+                height = SystemParameters.WorkArea.Size.Height;
+
+            if (double.IsNaN(height))
+                return BlockSize.Zoom110;
+
+            if (height < 750)
+                return BlockSize.Zoom50;
+            if (height < 800)
+                return BlockSize.Zoom75;
+            if(height < 900)
+                return BlockSize.Zoom90;
+            if(height < 930)
+                return BlockSize.Zoom100;
+            if (height < 1000)
+                return BlockSize.Zoom110;
+            if (height < 1200)
+                return BlockSize.Zoom125;
+
+            return BlockSize.Zoom150;
+        }
+
+        private void SetBlockImageSize(double height = double.NaN)
+        {
+            var blockSize = GetBlockSize(height);
+            BlocksControl.Init(blockSize, 3);
         }
 
         private void OnSelectedBlockId(int? id)
@@ -155,6 +188,11 @@ namespace BlockEditor.Views.Windows
         private void NewTab_Click(object sender, RoutedEventArgs e)
         {
             CreateNewTab();
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            SetBlockImageSize(e.NewSize.Height);
         }
     }
 }
