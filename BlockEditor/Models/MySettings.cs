@@ -205,16 +205,16 @@ namespace BlockEditor.Models
         {
             switch (k)
             {
-                case Key.D0: return MySettings.Hotkey0;
-                case Key.D1: return MySettings.Hotkey1;
-                case Key.D2: return MySettings.Hotkey2;
-                case Key.D3: return MySettings.Hotkey3;
-                case Key.D4: return MySettings.Hotkey4;
-                case Key.D5: return MySettings.Hotkey5;
-                case Key.D6: return MySettings.Hotkey6;
-                case Key.D7: return MySettings.Hotkey7;
-                case Key.D8: return MySettings.Hotkey8;
-                case Key.D9: return MySettings.Hotkey9;
+                case Key.D0: case Key.NumPad0: return MySettings.Hotkey0;
+                case Key.D1: case Key.NumPad1: return MySettings.Hotkey1;
+                case Key.D2: case Key.NumPad2: return MySettings.Hotkey2;
+                case Key.D3: case Key.NumPad3: return MySettings.Hotkey3;
+                case Key.D4: case Key.NumPad4: return MySettings.Hotkey4;
+                case Key.D5: case Key.NumPad5: return MySettings.Hotkey5;
+                case Key.D6: case Key.NumPad6: return MySettings.Hotkey6;
+                case Key.D7: case Key.NumPad7: return MySettings.Hotkey7;
+                case Key.D8: case Key.NumPad8: return MySettings.Hotkey8;
+                case Key.D9: case Key.NumPad9: return MySettings.Hotkey9;
 
                 default: return null;
             }
@@ -224,16 +224,16 @@ namespace BlockEditor.Models
         {
             switch (k)
             {
-                case Key.D0: MySettings.Hotkey0 = id; break;
-                case Key.D1: MySettings.Hotkey1 = id; break;
-                case Key.D2: MySettings.Hotkey2 = id; break;
-                case Key.D3: MySettings.Hotkey3 = id; break;
-                case Key.D4: MySettings.Hotkey4 = id; break;
-                case Key.D5: MySettings.Hotkey5 = id; break;
-                case Key.D6: MySettings.Hotkey6 = id; break;
-                case Key.D7: MySettings.Hotkey7 = id; break;
-                case Key.D8: MySettings.Hotkey8 = id; break;
-                case Key.D9: MySettings.Hotkey9 = id; break;
+                case Key.D0: case Key.NumPad0: MySettings.Hotkey0 = id; break;
+                case Key.D1: case Key.NumPad1: MySettings.Hotkey1 = id; break;
+                case Key.D2: case Key.NumPad2: MySettings.Hotkey2 = id; break;
+                case Key.D3: case Key.NumPad3: MySettings.Hotkey3 = id; break;
+                case Key.D4: case Key.NumPad4: MySettings.Hotkey4 = id; break;
+                case Key.D5: case Key.NumPad5: MySettings.Hotkey5 = id; break;
+                case Key.D6: case Key.NumPad6: MySettings.Hotkey6 = id; break;
+                case Key.D7: case Key.NumPad7: MySettings.Hotkey7 = id; break;
+                case Key.D8: case Key.NumPad8: MySettings.Hotkey8 = id; break;
+                case Key.D9: case Key.NumPad9: MySettings.Hotkey9 = id; break;
             }
         }
     }
