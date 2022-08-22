@@ -51,6 +51,8 @@ namespace BlockEditor.ViewModels
         public RelayCommand VerticalFlipCommand { get; }
         public RelayCommand HorizontalFlipCommand { get; }
         public RelayCommand DeleteBlockCommand { get; }
+        public RelayCommand SettingsCommand { get; }
+
 
 
 
@@ -73,6 +75,8 @@ namespace BlockEditor.ViewModels
             VerticalFlipCommand = new RelayCommand((_) => OnVerticalFlipClick());
             HorizontalFlipCommand = new RelayCommand((_) => OnHorizontalFlipClick());
             DeleteBlockCommand = new RelayCommand((_) => OnDeleteBlockClick());
+            SettingsCommand = new RelayCommand((_) => OnSettingsClick());
+
 
 
 
@@ -86,6 +90,7 @@ namespace BlockEditor.ViewModels
         {
             Mode.Value = UserModes.None;
             BlockSelection.Reset();
+            UserSelection.Reset();
 
             var window  = new PickStartBlock();
             var success = window.ShowDialog();
@@ -122,6 +127,19 @@ namespace BlockEditor.ViewModels
             {
                 Mode.Value = UserModes.None;
             }
+        }
+
+
+        public void OnSettingsClick()
+        {
+            BlockSelection.Reset();
+            UserSelection.Reset();
+            Mode.Value = UserModes.Settings;
+
+            MessageUtil.ShowInfo("Settings are not done yet...");
+            // windoiw
+
+            Mode.Value = UserModes.None;
         }
 
         public void OnVerticalFlipClick()

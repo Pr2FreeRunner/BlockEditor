@@ -243,6 +243,11 @@ namespace BlockEditor.Views.Controls
                     if (ViewModel.HorizontalFlipCommand.CanExecute(null))
                         ViewModel.HorizontalFlipCommand.Execute(null);
                 }
+                else if (e.Key == Key.E)
+                {
+                    if (ViewModel.SettingsCommand.CanExecute(null))
+                        ViewModel.SettingsCommand.Execute(null);
+                }
                 else if (e.Key == Key.O)
                 {
                     ViewModel.IsOverwrite = !ViewModel.IsOverwrite;

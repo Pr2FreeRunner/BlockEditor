@@ -6,7 +6,6 @@
              xmlns:myControls="clr-namespace:BlockEditor.Views.Controls"
              mc:Ignorable="d" 
              Loaded="OnLoaded"
-             d:DesignHeight="450" d:DesignWidth="800"
              Focusable="true">
 
     <Grid>
@@ -61,15 +60,16 @@
                         <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="../../Resources/GUI/BlockCount.png" />
                     </Grid>
                     <ToggleButton Height="34" Width="40"  IsChecked="{Binding Mode.IsBlockInfoMode, Mode=OneWay}" Margin="5,7,5,7" Content="&#128712;"  FontSize="26" FontFamily="Segoe UI" Command="{Binding BlockInfoCommand}" ToolTip="Block Info&#x0a;Hotkey:  B"/>
-                    <Grid Width="40" Height="34" Margin="5,7,5,7" ToolTip="Map Info&#x0a;Hotkey:  M">
+                    <ToggleButton Height="34" Width="40"  IsChecked="{Binding Mode.IsMapInfoMode, Mode=OneWay}" Margin="5,7,5,7" Content="🔧" FontSize="22" FontFamily="Segoe UI" Command="{Binding MapInfoCommand}" ToolTip="Map Info&#x0a;Hotkey:  M"/>
+
+                    <Grid Width="40" Height="34" Margin="5,7,5,7" ToolTip="Editor Settings&#x0a;Hotkey:  E">
                         <Grid.InputBindings>
-                            <MouseBinding Gesture="LeftClick" Command="{Binding MapInfoCommand}" />
+                            <MouseBinding Gesture="LeftClick" Command="{Binding SettingsCommand}" />
                         </Grid.InputBindings>
-                        <ToggleButton  Height="34" Command="{Binding MapInfoCommand}"        IsChecked="{Binding Mode.IsMapInfoMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        <ToggleButton  Height="34" Command="{Binding SettingsCommand}" IsChecked="{Binding Mode.IsSettingsMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                         <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="../../Resources/GUI/Settings.png" />
                     </Grid>
 
-                    
                     <CheckBox IsChecked="{Binding IsOverwrite, Mode=TwoWay}" Margin="50,7,25,7" Height="25" VerticalContentAlignment="Center" Width="100" Content="Overwrite"  FontSize="15" FontWeight="SemiBold" FontFamily="Segoe UI" ToolTip="Overwrite block&#x0a;Hotkey:  O"/>
 
                 </StackPanel>
