@@ -197,7 +197,7 @@ namespace BlockEditor.Helpers
             var upperLimit = new MyPoint(Blocks.SIZE, Blocks.SIZE);
             var visited    = new List<MyPoint>();
             var startBlock = map.Blocks.GetBlock(startPoint);
-            var maxBlocks  = Blocks.LIMIT - map.Blocks.BlockCount;
+            var maxBlocks  = Math.Min(Blocks.LIMIT - map.Blocks.BlockCount, 5_001);
 
             if (region != null && region.IsComplete())
             {
@@ -210,7 +210,9 @@ namespace BlockEditor.Helpers
                 var point = blocks.Pop();
 
                 if(maxBlocks <= result.Count)
-                    throw new BlockLimitException("Operation Canceled" + Environment.NewLine + Environment.NewLine);
+                    throw new Exception("Too many blocks...only use the flood-fill tool in a closed region." 
+                        + Environment.NewLine + Environment.NewLine
+                        + "Operation has been cancelled.");
 
                 if(visited.Contains(point))
                     continue;
