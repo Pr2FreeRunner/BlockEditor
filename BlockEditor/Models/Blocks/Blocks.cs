@@ -305,7 +305,7 @@ namespace BlockEditor.Models
                 var x = StartBlocks.Player1.Position.Value.X;
                 var y = StartBlocks.Player1.Position.Value.Y;
 
-                StartBlocks.Player1 = new SimpleBlock(Block.START_BLOCK_P1, SIZE - y - 1, x);
+                StartBlocks.Player1 = new SimpleBlock(Block.START_BLOCK_P1, y, SIZE - x - 1);
             }
 
             if (!StartBlocks.Player2.IsEmpty())
@@ -313,7 +313,7 @@ namespace BlockEditor.Models
                 var x = StartBlocks.Player2.Position.Value.X;
                 var y = StartBlocks.Player2.Position.Value.Y;
 
-                StartBlocks.Player2 = new SimpleBlock(Block.START_BLOCK_P2, SIZE - y - 1, x);
+                StartBlocks.Player2 = new SimpleBlock(Block.START_BLOCK_P2, y, SIZE - x - 1);
             }
 
             if (!StartBlocks.Player3.IsEmpty())
@@ -321,7 +321,7 @@ namespace BlockEditor.Models
                 var x = StartBlocks.Player3.Position.Value.X;
                 var y = StartBlocks.Player3.Position.Value.Y;
 
-                StartBlocks.Player3 = new SimpleBlock(Block.START_BLOCK_P3, SIZE - y - 1, x);
+                StartBlocks.Player3 = new SimpleBlock(Block.START_BLOCK_P3, y, SIZE - x - 1);
             }
 
             if (!StartBlocks.Player4.IsEmpty())
@@ -329,7 +329,7 @@ namespace BlockEditor.Models
                 var x = StartBlocks.Player4.Position.Value.X;
                 var y = StartBlocks.Player4.Position.Value.Y;
 
-                StartBlocks.Player4 = new SimpleBlock(Block.START_BLOCK_P4, SIZE - y - 1, x);
+                StartBlocks.Player4 = new SimpleBlock(Block.START_BLOCK_P4, y, SIZE - x - 1);
             }
         }
 
