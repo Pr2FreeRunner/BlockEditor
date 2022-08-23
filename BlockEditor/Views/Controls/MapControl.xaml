@@ -5,10 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:myControls="clr-namespace:BlockEditor.Views.Controls"
              mc:Ignorable="d" 
-             Loaded="OnLoaded"
-             Focusable="true">
+             Loaded="OnLoaded">
 
-    <Grid>
+    <Grid Focusable="False">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />
             <ColumnDefinition Width="3*" />
@@ -20,17 +19,17 @@
             <RowDefinition Height="88" />
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="99"
+        <Border Focusable="False" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="99"
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                 Background="{StaticResource LightBackground}">
 
-            <Grid>
+            <Grid Focusable="False">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
                 
-                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <StackPanel Focusable="False" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                     <Button  Height="34" Width="30" Margin="10,7,5,7" Content="&#128896;" FontWeight="SemiBold" FontSize="22" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.UndoCommand}" ToolTip="Undo &#x0a;Hotkey:  Ctrl + Z"/>
                     <Button  Height="34" Width="30" Margin="5,7,5,7"  Content="&#128898;" FontWeight="SemiBold" FontSize="22" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.RedoCommand}" ToolTip="Redo &#x0a;HotKey:  Ctrl + Y"/>
 
@@ -100,7 +99,8 @@
             Grid.Column="0"  
             Grid.Row="2"
             HorizontalAlignment="Stretch"
-            Margin="50,10,50,20"/>
+            Margin="50,10,50,20"
+            Focusable="False"/>
 
         <myControls:ZoomControl Grid.Row="2" Grid.Column="1" 
                            VerticalAlignment="Center" 

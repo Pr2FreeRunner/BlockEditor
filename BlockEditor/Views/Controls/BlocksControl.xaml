@@ -7,7 +7,8 @@
              mc:Ignorable="d"
              Width="auto"
              Height="auto">
-    <Border 
+    
+    <Border
             CornerRadius="12,12,12,12" 
             Padding="1,5,1,5"             
             HorizontalAlignment="Stretch"
@@ -24,7 +25,7 @@
             </LinearGradientBrush>
         </Border.Background>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <ScrollViewer Focusable="false" VerticalScrollBarVisibility="Auto" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Grid x:Name="BlockContainer" 
                         Grid.Row="0"
                         Grid.Column="0"

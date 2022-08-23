@@ -5,9 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
              VerticalAlignment="Stretch"
-             HorizontalAlignment="Stretch">
+             HorizontalAlignment="Stretch"
+             Focusable="False">
 
-    <Border CornerRadius="12,12,12,12" BorderThickness="1" BorderBrush="{StaticResource StandardBorderColor}" Padding="0,4">
+    <Border Focusable="False" CornerRadius="12,12,12,12" BorderThickness="1" BorderBrush="{StaticResource StandardBorderColor}" Padding="0,4">
 
         <Border.Background>
             <LinearGradientBrush StartPoint="0 1" EndPoint="1 1" Opacity="0.25">
@@ -18,7 +19,7 @@
             </LinearGradientBrush>
         </Border.Background>
 
-        <Grid>
+        <Grid Focusable="False">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
