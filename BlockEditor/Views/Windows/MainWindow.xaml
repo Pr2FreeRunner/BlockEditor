@@ -10,7 +10,8 @@
         Activated="Window_Activated"
         PreviewMouseWheel="Window_PreviewMouseWheel"
         SizeChanged="Window_SizeChanged"
-        Closing="Window_Closing">
+        Closing="Window_Closing"
+        KeyboardNavigation.DirectionalNavigation="Once">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
