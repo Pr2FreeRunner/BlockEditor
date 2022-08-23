@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Windows.Input;
+using System.Linq;
 
 namespace BlockEditor.Helpers
 {
@@ -39,6 +40,8 @@ namespace BlockEditor.Helpers
             }
         }
 
+
+
         private static void Upload(Map map, bool publish)
         {
             using(new TempCursor(Cursors.Wait))
@@ -48,6 +51,15 @@ namespace BlockEditor.Helpers
                     if (!CurrentUser.IsLoggedIn())
                     {
                         MessageUtil.ShowError("Requires user to login.");
+                        return;
+                    }
+
+                    if (map.Blocks.StartBlocks.GetBlocks().Any(b => b.IsEmpty()))
+                    {
+                        MessageUtil.ShowError("Missing player start blocks..." 
+                            + Environment.NewLine 
+                            + Environment.NewLine 
+                            + "Add the start blocks before you upload!");
                         return;
                     }
 
