@@ -125,8 +125,14 @@ namespace BlockEditor.Helpers
             if (map == null)
                 return;
 
+            string note = string.Empty;
             try
             {
+                if(map.Level.Note != null)
+                    note = map.Level.Note;
+
+                map.Level.Note = string.Empty;
+
                 var content  = map.ToPr2String(string.Empty, string.Empty, false);
                 var filepath = Path.GetTempPath() + Guid.NewGuid().ToString() + ".txt";
 
@@ -137,6 +143,10 @@ namespace BlockEditor.Helpers
             catch (Exception ex)
             {
                 MessageUtil.ShowError(ex.Message);
+            }
+            finally
+            {
+                map.Level.Note = note;
             }
         }
 
