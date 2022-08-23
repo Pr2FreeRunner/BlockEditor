@@ -49,7 +49,7 @@ namespace BlockEditor {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("7")]
         public int Zoom {
             get {
                 return ((int)(this["Zoom"]));
