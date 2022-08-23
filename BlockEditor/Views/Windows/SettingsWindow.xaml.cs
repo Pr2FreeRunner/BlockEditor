@@ -37,6 +37,7 @@ namespace BlockEditor.Views.Windows
             tbSize.Text = Blocks.SIZE.ToString(culture);
             tbLimit.Text = Blocks.LIMIT.ToString(culture);
             tbPlayTime.Text = GetPlayTime(culture);
+            tbVersion.Text = MySettings.BlockEditorVersion;
 
             BlockImage0.Source = GetImage(Key.D0);
             BlockImage1.Source = GetImage(Key.D1);

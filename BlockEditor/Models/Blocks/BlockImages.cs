@@ -301,7 +301,7 @@ namespace BlockEditor.Models
             graphics.DrawEllipse(pen, rec);
 
             var outlineColor = System.Drawing.Color.Black;
-            if (color.Value.R * 0.2126 + color.Value.G * 0.7152 + color.Value.B * 0.0722 < 50)
+            if (color.Value.R * 0.30 + color.Value.G * 0.50 + color.Value.B * 0.2 < 35)
                 outlineColor = System.Drawing.Color.White;
 
             // outter

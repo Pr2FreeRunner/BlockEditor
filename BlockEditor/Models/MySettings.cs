@@ -118,6 +118,13 @@ namespace BlockEditor.Models
         }
 
 
+        private static string _blockEditorVersion;
+        public static string BlockEditorVersion
+        {
+            get { return _blockEditorVersion; }
+        }
+
+
         private static BlockSize _zoom;
         public static BlockSize Zoom
         {
@@ -145,6 +152,7 @@ namespace BlockEditor.Models
                 Settings.Default["Username"] = Username;
                 Settings.Default["Token"] = Token;
                 Settings.Default["Pr2BuildVersion"] = Pr2BuildVersion;
+                Settings.Default["BlockEditorVersion"] = BlockEditorVersion;
                 Settings.Default["FirstTimeLoad"] = FirstTimeLoad;
                 Settings.Default["FillShape"] = FillShape;
                 Settings.Default["Zoom"] = (int)Zoom;
@@ -160,6 +168,7 @@ namespace BlockEditor.Models
                 Settings.Default["Hotkey7"] = Hotkey7;
                 Settings.Default["Hotkey8"] = Hotkey8;
                 Settings.Default["Hotkey9"] = Hotkey9;
+
 
                 Settings.Default.Save();
             }
@@ -188,6 +197,7 @@ namespace BlockEditor.Models
                 _zoom = (BlockSize)(Settings.Default["Zoom"] ?? BlockImages.DEFAULT_BLOCK_SIZE);
                 _pr2BuildVersion = HandleBuildVersion(Settings.Default["Pr2BuildVersion"] as string);
                 _playTime = (int)(Settings.Default["PlayTime"] ?? 0);
+                _blockEditorVersion = Settings.Default["BlockEditorVersion"] as string ?? string.Empty;
 
                 _hotkey0 = (int)(Settings.Default["Hotkey0"] ?? Block.BASIC_WHITE);
                 _hotkey1 = (int)(Settings.Default["Hotkey1"] ?? Block.BASIC_WHITE);

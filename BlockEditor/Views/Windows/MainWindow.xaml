@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="clr-namespace:BlockEditor.Views.Controls"
         mc:Ignorable="d"
         WindowState="Maximized"
-        Title="Block Editor  v1.0"
+        Title="Block Editor"
         PreviewKeyDown="Window_PreviewKeyDown"  
         Activated="Window_Activated"
         PreviewMouseWheel="Window_PreviewMouseWheel"

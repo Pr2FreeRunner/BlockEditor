@@ -18,7 +18,7 @@
             CornerRadius="15"
             VerticalAlignment="Stretch"
             HorizontalAlignment="Stretch"
-            Padding="10">
+            Padding="10,10,10,5">
 
         <Grid>
             <Grid.RowDefinitions>
@@ -32,13 +32,16 @@
                 <Label Content="Block Editor Settings" Margin="0" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Grid>
 
-            <Grid Grid.Row="1" Margin="5,0,5,5">
+            <Grid Grid.Row="1" Margin="5,0,5,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
                 <StackPanel x:Name="Page1" Grid.Row="0" Visibility="Visible" Orientation="Vertical" VerticalAlignment="Top">
+                    <Label Content="Version:" Margin="0,0,0,0" FontWeight="SemiBold"/>
+                    <TextBox IsReadOnly="True" x:Name="tbVersion" Margin="4,0,0,0" FontSize="12" />
+                    
                     <Label Content="Play Time:" Margin="0,4,0,0" FontWeight="SemiBold"/>
                     <TextBox IsReadOnly="True" x:Name="tbPlayTime" Margin="4,0,0,0" FontSize="12" />
 
@@ -129,11 +132,6 @@
                         </StackPanel>
 
                     </Grid>
-
-                </StackPanel>
-
-                <StackPanel x:Name="Page2" Visibility="Collapsed" Grid.Row="0" Orientation="Vertical" VerticalAlignment="Top">
-
                 </StackPanel>
             </Grid>
         </Grid>

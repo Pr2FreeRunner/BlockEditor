@@ -23,9 +23,6 @@ namespace BlockEditor.Views.Controls
 
         public void SetColor(string input)
         {
-            if(MyUtils.TryParse(input, out var result))
-                input = result.ToString("X6");
-
             SetColor(ColorUtil.GetColorFromBlockOption(input));
         }
 
