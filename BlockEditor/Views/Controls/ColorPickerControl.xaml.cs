@@ -8,6 +8,7 @@ using System.Windows.Media;
 
 namespace BlockEditor.Views.Controls
 {
+
     public partial class ColorPickerControl : UserControl
     {
         public event Action<string> OnNewColor;
@@ -25,12 +26,12 @@ namespace BlockEditor.Views.Controls
             if(MyUtils.TryParse(input, out var result))
                 input = result.ToString("X6");
 
-            SetColor(ParseInput(input));
+            SetColor(ColorUtil.GetColorFromBlockOption(input));
         }
 
         public void SetColor(System.Drawing.Color? c)
         {
-            SetColor(Convert(c));
+            SetColor(ColorUtil.Convert(c));
         }
 
         public void SetColor(Color? c)
@@ -55,27 +56,7 @@ namespace BlockEditor.Views.Controls
                 else
                     tbColor.Text = "#" + c.Value.ToString().Substring(3);
 
-                OnNewColor?.Invoke(System.Drawing.ColorTranslator.ToHtml(Convert(c.Value)).Substring(1));
-            }
-        }
-
-        private System.Drawing.Color? ParseInput(string input)
-        {
-            System.Drawing.Color? fallback = null;
-
-            if (string.IsNullOrWhiteSpace(input) || string.Equals(input, "#", StringComparison.InvariantCultureIgnoreCase))
-                return fallback;
-
-            try
-            {
-                if(!input.StartsWith("#"))
-                    input = "#" + input;
-
-                return System.Drawing.ColorTranslator.FromHtml(input);
-            }
-            catch
-            {
-                return fallback;
+                OnNewColor?.Invoke(System.Drawing.ColorTranslator.ToHtml(ColorUtil.Convert(c.Value)).Substring(1));
             }
         }
 
@@ -85,23 +66,9 @@ namespace BlockEditor.Views.Controls
 
             if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                Color? color = Convert(colorDialog.Color);
+                Color? color = ColorUtil.Convert(colorDialog.Color);
                 SetColor(color);
             }
-        }
-
-        private Color? Convert(System.Drawing.Color? c)
-        {
-            if(c == null)
-                return null;
-
-            return Color.FromArgb(255, c.Value.R, c.Value.G, c.Value.B);
-        }
-
-        private System.Drawing.Color Convert(Color c)
-        {
-            return System.Drawing.Color.FromArgb(255, c.R, c.G, c.B);
-
         }
 
         private void tbColor_TextChanged(object sender, TextChangedEventArgs e)
@@ -111,7 +78,7 @@ namespace BlockEditor.Views.Controls
 
             var textBox = sender as TextBox;
             _ingoreNextUpdate = true;
-            SetColor(ParseInput(textBox.Text));
+            SetColor(ColorUtil.GetColorFromHex(textBox.Text));
         }
 
         private void HexOnly_PreviewTextInput(object sender, TextCompositionEventArgs e)

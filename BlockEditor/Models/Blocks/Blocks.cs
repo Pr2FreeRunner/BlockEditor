@@ -93,6 +93,9 @@ namespace BlockEditor.Models
                     if (BlockCount >= LIMIT)
                         throw new BlockLimitException();
 
+                    if(block.ID == Block.TELEPORT)
+                        BlockImages.AddTeleportBlock(block.Options);
+
                     _blocks[block.Position.Value.X, block.Position.Value.Y] = block;
                     BlockCount++;
                 }

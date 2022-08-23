@@ -20,15 +20,16 @@ namespace BlockEditor.Views.Windows
         private SimpleBlock _block;
         private readonly Map _map;
         private readonly string _mapItemOptions;
+        private Action _refreshGui;
 
-        public BlockOptionWindow(Map map, MyPoint? index)
+        public BlockOptionWindow(Map map, MyPoint? index, Action refreshGui)
         {
             InitializeComponent();
 
             if (map == null || index == null)
                 return;
 
-
+            _refreshGui = refreshGui;
             _map = map;
             _block = GetBlock(index.Value);
             _mapItemOptions = ItemBlockOptionsControl.GetOptions(map.Level.Items.Select(i => i.ID));
@@ -182,6 +183,7 @@ namespace BlockEditor.Views.Windows
             }
 
             OnOptionsChanged(text);
+            _refreshGui?.Invoke();
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

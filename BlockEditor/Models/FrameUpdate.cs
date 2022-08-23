@@ -1,4 +1,5 @@
 ﻿using BlockEditor.Helpers;
+using LevelModel.Models.Components;
 using System;
 using System.Drawing;
 
@@ -103,7 +104,12 @@ namespace BlockEditor.Models
             if(b.IsEmpty())
                 return;
 
-            var image = BlockImages.GetImageBlock(_game.Map.BlockSize, b.ID);
+            BlockImage image = null;
+
+            if(b.ID == Block.TELEPORT)
+                image = BlockImages.GetTeleportImageBlock(_game.Map.BlockSize, b.Options);
+            else
+                image = BlockImages.GetImageBlock(_game.Map.BlockSize, b.ID);
             
             if (image == null)
                 return;
