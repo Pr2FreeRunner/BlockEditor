@@ -78,13 +78,7 @@ namespace BlockEditor.Utils
 
         public static IEnumerable<SearchResult> SearchNewest(int page)
         {
-            if (!CurrentUser.IsLoggedIn())
-            {
-                MessageUtil.ShowError("Requires user to login");
-                yield break;
-            }
-
-            var data = PR2Accessor.Newest(page, CurrentUser.Token);
+            var data = PR2Accessor.Newest(page, string.Empty);
 
             if (IsSlowDownResponse(data))
             {

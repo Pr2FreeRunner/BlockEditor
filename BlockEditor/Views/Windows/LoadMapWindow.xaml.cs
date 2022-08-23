@@ -46,9 +46,6 @@ namespace BlockEditor.Views.Windows
                 if(type == SearchBy.MyLevels && CurrentUser.IsLoggedIn() == false)
                     continue;
 
-                if (type == SearchBy.Newest && CurrentUser.IsLoggedIn() == false)
-                    continue;
-
                 var item     = new ComboBoxItem();
                 item.ToolTip = "HotKey:  Ctrl + " + type.ToString().First();
                 item.Content = InsertSpaceBeforeCapitalLetter(type.ToString());
