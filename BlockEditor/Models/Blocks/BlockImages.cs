@@ -269,6 +269,7 @@ namespace BlockEditor.Models
 
             return false;
         }
+
         public static void AddTeleportBlock(string option)
         {
             if(string.IsNullOrWhiteSpace(option))
@@ -299,15 +300,19 @@ namespace BlockEditor.Models
             var rec  = new Rectangle(loc, size);
             graphics.DrawEllipse(pen, rec);
 
+            var outlineColor = System.Drawing.Color.Black;
+            if (color.Value.R * 0.2126 + color.Value.G * 0.7152 + color.Value.B * 0.0722 < 50)
+                outlineColor = System.Drawing.Color.White;
+
             // outter
-            var pen2 = new System.Drawing.Pen(System.Drawing.Color.Black, 2);
+            var pen2 = new System.Drawing.Pen(outlineColor, 2);
             var size2 = new Size((int)(image.Width * 0.5 + 7), (int)(image.Height * 0.5) + 7);
             var loc2 = new System.Drawing.Point((int)(image.Width * 0.2 - 2), (int)(image.Height * 0.2 - 3));
             var rec2 = new Rectangle(loc2, size2);
             graphics.DrawEllipse(pen2, rec2);
 
             // inner
-            var pen3 = new System.Drawing.Pen(System.Drawing.Color.Black, 2);
+            var pen3 = new System.Drawing.Pen(outlineColor, 2);
             var size3 = new Size((int)(image.Width * 0.5 - 6), (int)(image.Height * 0.5) - 6);
             var loc3 = new System.Drawing.Point((int)(image.Width * 0.2 + 5), (int)(image.Height * 0.2 + 4));
             var rec3 = new Rectangle(loc3, size3);
