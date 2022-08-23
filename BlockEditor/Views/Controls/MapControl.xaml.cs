@@ -168,16 +168,6 @@ namespace BlockEditor.Views.Controls
                     if (MapButtons.ViewModel.LoadCommand.CanExecute(null))
                         MapButtons.ViewModel.LoadCommand.Execute(null);
                 }
-                else if (ctrl && e.Key == Key.T)
-                {
-                    if (MapButtons.ViewModel.TestCommand.CanExecute(null))
-                        MapButtons.ViewModel.TestCommand.Execute(null);
-                }
-                else if (ctrl && e.Key == Key.N)
-                {
-                    if (MapButtons.ViewModel.NewCommand.CanExecute(null))
-                        MapButtons.ViewModel.NewCommand.Execute(null);
-                }
                 else if (IsSelectionKey(e, ctrl))
                 {
                     ViewModel.UserSelection.CreateSelection(ViewModel.Game.Map);
@@ -191,78 +181,24 @@ namespace BlockEditor.Views.Controls
                 {
                     BlockSelection.ActivatePreviousSelection();
                 }
-                else if (e.Key == Key.R)
-                {
-                    if (ViewModel.RotateCommand.CanExecute(null))
-                        ViewModel.RotateCommand.Execute(null);
-                }
-                else if (e.Key == Key.S)
-                {
-                    if (ViewModel.SelectCommand.CanExecute(null))
-                        ViewModel.SelectCommand.Execute(null);
-                }
-                else if (e.Key == Key.B)
+                else if (ctrl && e.Key == Key.B)
                 {
                     if (ViewModel.BlockInfoCommand.CanExecute(null))
                         ViewModel.BlockInfoCommand.Execute(null);
-                }
-                else if (e.Key == Key.G)
-                {
-                    if (ViewModel.StartPositionCommand.CanExecute(null))
-                        ViewModel.StartPositionCommand.Execute(null);
-                }
-                else if (e.Key == Key.D)
-                {
-                    if (ViewModel.DeleteBlockCommand.CanExecute(null))
-                        ViewModel.DeleteBlockCommand.Execute(null);
-                }
-                else if (e.Key == Key.M)
+                }              
+                else if (ctrl && e.Key == Key.M)
                 {
                     if (ViewModel.MapInfoCommand.CanExecute(null))
                         ViewModel.MapInfoCommand.Execute(null);
                 }
-                else if (e.Key == Key.I)
-                {
-                    if (ViewModel.AddImageCommand.CanExecute(null))
-                        ViewModel.AddImageCommand.Execute(null);
-                }
-                else if (e.Key == Key.A)
-                {
-                    if (ViewModel.AddShapeCommand.CanExecute(null))
-                        ViewModel.AddShapeCommand.Execute(null);
-                }
-                else if (e.Key == Key.C)
-                {
-                    if (ViewModel.BlockCountCommand.CanExecute(null))
-                        ViewModel.BlockCountCommand.Execute(null);
-                }
-                else if (e.Key == Key.V)
-                {
-                    if (ViewModel.VerticalFlipCommand.CanExecute(null))
-                        ViewModel.VerticalFlipCommand.Execute(null);
-                }
-                else if (e.Key == Key.H)
-                {
-                    if (ViewModel.HorizontalFlipCommand.CanExecute(null))
-                        ViewModel.HorizontalFlipCommand.Execute(null);
-                }
-                else if (e.Key == Key.E)
-                {
-                    if (ViewModel.SettingsCommand.CanExecute(null))
-                        ViewModel.SettingsCommand.Execute(null);
-                }
-                else if (e.Key == Key.O)
+                else if (ctrl && e.Key == Key.O)
                 {
                     ViewModel.IsOverwrite = !ViewModel.IsOverwrite;
                 }
-                else if (e.Key == Key.F)
+                else if (e.Key == Key.LeftShift || e.Key == Key.RightShift)
                 {
-                    ViewModel.OnFillClick();
-                }
-                else if (e.Key == Key.J)
-                {
-                    if (ViewModel.ReplaceCommand.CanExecute(null))
-                        ViewModel.ReplaceCommand.Execute(null);
+                    if (ViewModel.SelectCommand.CanExecute(null))
+                        ViewModel.SelectCommand.Execute(null);
                 }
             }
             catch (Exception ex)

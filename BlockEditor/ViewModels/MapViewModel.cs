@@ -100,11 +100,11 @@ namespace BlockEditor.ViewModels
 
         private void OnSelectionClick()
         {
+            BlockSelection.Reset();
+            UserSelection.Reset();
+
             if (Mode.Value != UserModes.Selection)
             {
-                BlockSelection.Reset();
-                UserSelection.Reset();
-
                 Mode.Value = UserModes.Selection;
             }
             else
