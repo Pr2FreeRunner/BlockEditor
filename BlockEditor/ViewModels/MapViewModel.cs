@@ -151,12 +151,12 @@ namespace BlockEditor.ViewModels
                 if (r1 != UserQuestionWindow.QuestionResult.Yes)
                     return;
 
-                    using (new TempCursor(Cursors.Wait))
+                var r2 = UserQuestionWindow.Show("Do you wish to convert Up-Arrow blocks to Down-Arrow blocks and vice versa?", "Vertical Flip", false);
+
+                using (new TempCursor(Cursors.Wait))
                 {
                     Game.Engine.PauseConfirmed();
                     Game.Map.Blocks.VerticalFlip();
-
-                    var r2 = UserQuestionWindow.Show("Do you wish to convert Up-Arrow to Down-Arrow and vice versa?", "Vertical Flip", false);
 
                     if (r2 == UserQuestionWindow.QuestionResult.Yes)
                     {
@@ -208,12 +208,12 @@ namespace BlockEditor.ViewModels
                 if (r1 != UserQuestionWindow.QuestionResult.Yes)
                     return;
 
+                var r2 = UserQuestionWindow.Show("Do you wish to convert Left-Arrow blocks to Right-Arrow blocks and vice versa?", "Horizontal Flip", false);
+                
                 using (new TempCursor(Cursors.Wait))
                 {
                     Game.Engine.PauseConfirmed();
                     Game.Map.Blocks.HorizontalFlip();
-
-                    var r2 = UserQuestionWindow.Show("Do you wish to convert Left-Arrow to Right-Arrow and vice versa?", "Horizontal Flip", false);
 
                     if (r2 == UserQuestionWindow.QuestionResult.Yes)
                     {
