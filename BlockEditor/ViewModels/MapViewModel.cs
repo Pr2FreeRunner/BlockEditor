@@ -146,20 +146,26 @@ namespace BlockEditor.ViewModels
             }
             else
             {
-                using (new TempCursor(Cursors.Wait))
+                var r1 = UserQuestionWindow.Show("Do you wish vertically flip the whole map?", "Vertical Flip", false);
+
+                if (r1 != UserQuestionWindow.QuestionResult.Yes)
+                    return;
+
+                    using (new TempCursor(Cursors.Wait))
                 {
                     Game.Engine.PauseConfirmed();
                     Game.Map.Blocks.VerticalFlip();
 
-                    var r = UserQuestionWindow.Show("Do you wish to convert Up-Arrow to Down-Arrow and vice versa?", "Vertical Flip", false);
+                    var r2 = UserQuestionWindow.Show("Do you wish to convert Up-Arrow to Down-Arrow and vice versa?", "Vertical Flip", false);
 
-                    if (r == UserQuestionWindow.QuestionResult.Yes)
+                    if (r2 == UserQuestionWindow.QuestionResult.Yes)
                     {
                         var replace = new List<int>() { Block.ARROW_UP, Block.ARROW_DOWN };
                         var add = new List<int>() { Block.ARROW_DOWN, Block.ARROW_UP };
                         var blocks = MapUtil.ReplaceBlock(Game.Map, replace, add, null);
                         Game.AddBlocks(blocks);
                     }
+
                     Game.GoToStartPosition();
                     Game.Engine.Pause = false;
                 }
@@ -174,6 +180,11 @@ namespace BlockEditor.ViewModels
             }
             else
             {
+                var r = UserQuestionWindow.Show("Do you wish rotate the map?", "Rotate Blocks", false);
+
+                if (r != UserQuestionWindow.QuestionResult.Yes)
+                    return;
+
                 using (new TempCursor(Cursors.Wait))
                 {
                     Game.Engine.PauseConfirmed();
@@ -192,14 +203,19 @@ namespace BlockEditor.ViewModels
             }
             else
             {
+                var r1 = UserQuestionWindow.Show("Do you wish horizontally flip the map?", "Horizontal Flip", false);
+
+                if (r1 != UserQuestionWindow.QuestionResult.Yes)
+                    return;
+
                 using (new TempCursor(Cursors.Wait))
                 {
                     Game.Engine.PauseConfirmed();
                     Game.Map.Blocks.HorizontalFlip();
 
-                    var r = UserQuestionWindow.Show("Do you wish to convert Left-Arrow to Right-Arrow and vice versa?", "Horizontal Flip", false);
+                    var r2 = UserQuestionWindow.Show("Do you wish to convert Left-Arrow to Right-Arrow and vice versa?", "Horizontal Flip", false);
 
-                    if (r == UserQuestionWindow.QuestionResult.Yes)
+                    if (r2 == UserQuestionWindow.QuestionResult.Yes)
                     {
                         var replace = new List<int>() { Block.ARROW_LEFT, Block.ARROW_RIGHT };
                         var add = new List<int>() { Block.ARROW_RIGHT, Block.ARROW_LEFT };
