@@ -331,6 +331,7 @@ namespace BlockEditor.Models
 
                 StartBlocks.Player4 = new SimpleBlock(Block.START_BLOCK_P4, y, SIZE - x - 1);
             }
+
         }
 
     }
