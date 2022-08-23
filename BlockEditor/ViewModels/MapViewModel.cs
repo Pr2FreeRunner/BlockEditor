@@ -540,8 +540,7 @@ namespace BlockEditor.ViewModels
             if (map == null)
                 return;
 
-            Game.Engine.Pause = true;
-            Thread.Sleep(GameEngine.FPS * 5); // make sure engine has been stopped
+            Game.Engine.PauseConfirmed();
 
             var size = Game.Map.BlockSize;
             Game.Map = map;
