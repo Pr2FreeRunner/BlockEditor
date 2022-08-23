@@ -112,6 +112,11 @@ namespace BlockEditor.Views.Controls
 
         public void UserControl_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
+            var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+
+            if(!ctrl)
+                return;
+
             if (e.Delta > 0)
             {
                 if (ZoomControl.ViewModel.ZoomInCommand.CanExecute(null))
