@@ -59,7 +59,7 @@ namespace BlockEditor.Helpers
                         MessageUtil.ShowError("Missing player start blocks..." 
                             + Environment.NewLine 
                             + Environment.NewLine 
-                            + "Add the start blocks before you upload!");
+                            + "Add the start blocks before you upload.");
                         return;
                     }
 
