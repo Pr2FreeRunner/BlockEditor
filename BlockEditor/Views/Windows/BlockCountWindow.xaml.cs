@@ -36,8 +36,8 @@ namespace BlockEditor.Views.Windows
             var blocks  = GetBlockCount(map).ToList().OrderByDescending(x => x.Item1).ToList();
             var first   = true;
 
-            var maxCount = blocks.Max(t => t.Item1);
-            var maxName  = blocks.Max(t => t.Item2.Length);
+            var maxCount = blocks.Any() ? blocks.Max(t => t.Item1) : 0;
+            var maxName  = blocks.Any() ? blocks.Max(t => t.Item2.Length) : 0;
 
             var countPadding = maxCount < 100 ? 2 : maxCount < 1000 ? 3 : maxCount < 10000 ? 4 : 5;
             var namePadding  = maxName + 2;
@@ -57,7 +57,7 @@ namespace BlockEditor.Views.Windows
 
         private IEnumerable<Tuple<int, string>> GetBlockCount(Map map)
         {
-            var blocks = map.Blocks.GetBlocks().Concat(map.Blocks.StartBlocks.GetBlocks()).GroupBy(b => b.ID);
+            var blocks = map.Blocks.GetBlocks(true).GroupBy(b => b.ID);
 
             for (int i = Block.BASIC_BROWN; i <= Block.MaxBlockId; i++)
             {

@@ -159,7 +159,7 @@ namespace BlockEditor.Models
                 _blocks[x, y] = new SimpleBlock();
         }
 
-        public IEnumerable<SimpleBlock> GetBlocks()
+        public IEnumerable<SimpleBlock> GetBlocks(bool startBlocks = false)
         {
             if (_blocks == null)
                 yield break;
@@ -177,6 +177,16 @@ namespace BlockEditor.Models
                 }
             }
 
+            if (!startBlocks)
+                yield break;
+
+            foreach (var start in StartBlocks.GetBlocks())
+            {
+                if (start.IsEmpty())
+                    continue;
+
+                yield return start;
+            }
 
         }
 
