@@ -151,7 +151,7 @@ namespace BlockEditor.ViewModels
                     Game.Engine.PauseConfirmed();
                     Game.Map.Blocks.VerticalFlip();
 
-                    var r = UserQuestionWindow.Show("Do you wish to convert Up-Arrow to Down-Arrow and vice versa?", "Vertical Flip");
+                    var r = UserQuestionWindow.Show("Do you wish to convert Up-Arrow to Down-Arrow and vice versa?", "Vertical Flip", false);
 
                     if (r == UserQuestionWindow.QuestionResult.Yes)
                     {
@@ -159,9 +159,8 @@ namespace BlockEditor.ViewModels
                         var add = new List<int>() { Block.ARROW_DOWN, Block.ARROW_UP };
                         var blocks = MapUtil.ReplaceBlock(Game.Map, replace, add, null);
                         Game.AddBlocks(blocks);
-                        Game.GoToStartPosition();
                     }
-
+                    Game.GoToStartPosition();
                     Game.Engine.Pause = false;
                 }
             }
@@ -198,7 +197,7 @@ namespace BlockEditor.ViewModels
                     Game.Engine.PauseConfirmed();
                     Game.Map.Blocks.HorizontalFlip();
 
-                    var r = UserQuestionWindow.Show("Do you wish to convert Left-Arrow to Right-Arrow and vice versa?", "Horizontal Flip");
+                    var r = UserQuestionWindow.Show("Do you wish to convert Left-Arrow to Right-Arrow and vice versa?", "Horizontal Flip", false);
 
                     if (r == UserQuestionWindow.QuestionResult.Yes)
                     {
