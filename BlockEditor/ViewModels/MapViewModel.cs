@@ -89,7 +89,7 @@ namespace BlockEditor.ViewModels
             BlockSelection.Reset();
             UserSelection.Reset();
 
-            var window  = new PickStartBlock();
+            var window = new PickStartBlock();
             var success = window.ShowDialog();
 
             if (success != true || window.Result == null)
@@ -153,7 +153,7 @@ namespace BlockEditor.ViewModels
 
                     var r = UserQuestionWindow.Show("Do you wish to convert Up-Arrow to Down-Arrow and vice versa?", "Vertical Flip");
 
-                    if(r == UserQuestionWindow.QuestionResult.Yes)
+                    if (r == UserQuestionWindow.QuestionResult.Yes)
                     {
                         var replace = new List<int>() { Block.ARROW_UP, Block.ARROW_DOWN };
                         var add = new List<int>() { Block.ARROW_DOWN, Block.ARROW_UP };
@@ -285,28 +285,34 @@ namespace BlockEditor.ViewModels
 
         public void OnReplaceClick()
         {
-            BlockSelection.Reset();
+            var currentOverWrite = Game.Map.Blocks.Overwrite;
+            Game.Map.Blocks.Overwrite = true;
 
-            if (!Game.Map.Blocks.Overwrite)
-                throw new OverwriteException();
-
-            var region = UserSelection.MapRegion;
-            var id1 = SelectBlockWindow.Show("Block to Replace:", false);
-
-            if (id1 == null)
-                return;
-
-            var id2 = SelectBlockWindow.Show("Block to Add:", false);
-            if (id2 == null)
-                return;
-
-            using (new TempCursor(Cursors.Wait))
+            try
             {
-                var blocks = MapUtil.ReplaceBlock(Game.Map, new List<int>() {id1.Value}, new List<int>() {id2.Value}, region);
-
-                Game.AddBlocks(blocks);
                 BlockSelection.Reset();
-                UserSelection.Reset();
+                var region = UserSelection.MapRegion;
+                var id1 = SelectBlockWindow.Show("Block to Replace:", false);
+
+                if (id1 == null)
+                    return;
+
+                var id2 = SelectBlockWindow.Show("Block to Add:", false);
+                if (id2 == null)
+                    return;
+
+                using (new TempCursor(Cursors.Wait))
+                {
+                    var blocks = MapUtil.ReplaceBlock(Game.Map, new List<int>() { id1.Value }, new List<int>() { id2.Value }, region);
+
+                    Game.AddBlocks(blocks);
+                    BlockSelection.Reset();
+                    UserSelection.Reset();
+                }
+            }
+            finally
+            {
+                Game.Map.Blocks.Overwrite = currentOverWrite;
             }
         }
 
