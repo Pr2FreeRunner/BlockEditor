@@ -193,7 +193,8 @@ namespace BlockEditor.Views.Controls
                 }
                 else if (e.Key == Key.R)
                 {
-                    BlockSelection.Rotate();
+                    if (ViewModel.RotateCommand.CanExecute(null))
+                        ViewModel.RotateCommand.Execute(null);
                 }
                 else if (e.Key == Key.S)
                 {
