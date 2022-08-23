@@ -205,8 +205,9 @@ namespace BlockEditor.ViewModels
                         var add = new List<int>() { Block.ARROW_RIGHT, Block.ARROW_LEFT };
                         var blocks = MapUtil.ReplaceBlock(Game.Map, replace, add, null);
                         Game.AddBlocks(blocks);
-                        Game.GoToStartPosition();
                     }
+
+                    Game.GoToStartPosition();
                     Game.Engine.Pause = false;
                 }
             }

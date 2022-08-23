@@ -189,9 +189,9 @@ namespace BlockEditor.Views.Controls
                 }
                 else if (ctrl && e.Key == Key.V)
                 {
-                    BlockSelection.ActivatePreviousSelection(); ;
+                    BlockSelection.ActivatePreviousSelection();
                 }
-                else if (BlockSelection.SelectedBlocks != null && e.Key == Key.R)
+                else if (e.Key == Key.R)
                 {
                     BlockSelection.Rotate();
                 }
@@ -258,7 +258,7 @@ namespace BlockEditor.Views.Controls
                 {
                     ViewModel.OnFillClick();
                 }
-                else if (e.Key == Key.R)
+                else if (e.Key == Key.J)
                 {
                     if (ViewModel.ReplaceCommand.CanExecute(null))
                         ViewModel.ReplaceCommand.Execute(null);
