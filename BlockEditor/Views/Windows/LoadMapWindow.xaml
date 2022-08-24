@@ -51,18 +51,11 @@
             </ScrollViewer>
         </Border>
 
-        <Border Grid.Row="2" 
-                CornerRadius="15"
-                Background="{StaticResource StandardBackground}"
-                VerticalAlignment="Center" 
-                HorizontalAlignment="Center" 
-                Margin="15,15,15,10" Padding="12">
-            <StackPanel Orientation="Horizontal">
-                <Button Name="btnLeftPage" Width="30" Height="30" Content="&#9664;" Click="OnPreviousPage"/>
-                <TextBlock Text="1" FontWeight="SemiBold" FontSize="16" Name="PageText" Margin="15,0,15,0" VerticalAlignment="Center"/>
-                <Button Name="btnRightPage" Width="30" Height="30" Content="&#9654;" Click="OnNextPage"/>
-            </StackPanel>
-        </Border>
+        <StackPanel Grid.Row="2"  Orientation="Horizontal" HorizontalAlignment="Center" Margin="15,20,15,15">
+            <Button FontSize="16" Name="btnLeftPage" Width="42" Height="40" Content="&#9664;" Click="OnPreviousPage"/>
+            <TextBlock Text="1" FontWeight="SemiBold" FontSize="16" Name="PageText" Margin="18,0,18,0" VerticalAlignment="Center"/>
+            <Button FontSize="16" Name="btnRightPage" Width="42" Height="40" Content="&#9654;" Click="OnNextPage"/>
+        </StackPanel>
     </Grid>
 
 </Window>

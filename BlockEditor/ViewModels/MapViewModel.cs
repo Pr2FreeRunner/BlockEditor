@@ -38,7 +38,7 @@ namespace BlockEditor.ViewModels
             set { Game.Map.Blocks.Overwrite = value; RaisePropertyChanged(); }
         }
 
-        public RelayCommand StartPositionCommand { get; }
+        public RelayCommand NavigatorCommand { get; }
         public RelayCommand FillCommand { get; }
         public RelayCommand SelectCommand { get; }
         public RelayCommand AddShapeCommand { get; }
@@ -62,7 +62,7 @@ namespace BlockEditor.ViewModels
             Mode = new UserMode();
 
             UserSelection = new UserSelection();
-            StartPositionCommand = new RelayCommand((_) => OnGoToStartPositionClick());
+            NavigatorCommand = new RelayCommand((_) => OnNavigatorClick(SimpleBlock.None));
             FillCommand = new RelayCommand((_) => OnFillClick());
             SelectCommand = new RelayCommand((_) => OnSelectionClick());
             AddShapeCommand = new RelayCommand((_) => OnAddShapeClick(), (_) => UserSelection.HasSelectedRegion);
@@ -83,19 +83,33 @@ namespace BlockEditor.ViewModels
 
         #region Events
 
-        private void OnGoToStartPositionClick()
+        private void OnNavigatorClick(SimpleBlock block)
         {
             Mode.Value = UserModes.None;
             BlockSelection.Reset();
             UserSelection.Reset();
+            int? id = null;
+            Predicate<SimpleBlock> filter = null;
 
-            var window = new PickStartBlock();
-            var success = window.ShowDialog();
+            if(block.IsEmpty()) 
+            { 
+                id = SelectBlockWindow.Show("Navigator", true);
 
-            if (success != true || window.Result == null)
-                return;
+                if (id == null)
+                    return;
 
-            Game.GoToStartPosition(window.Result.Value);
+                filter = (b) => b.ID == id.Value;
+            }
+            else
+            {
+                id = block.ID;
+                filter = (b) => b.ID == id.Value && string.Equals(b.Options, block.Options, StringComparison.InvariantCultureIgnoreCase);
+            }
+
+            if (Block.IsStartBlock(id.Value))
+                Game.GoToStartPosition(id.Value);
+            else
+                NavigatorWindow.Show(Game, filter, id.Value, block.Position);
         }
 
         private void OnSelectionClick()
@@ -439,8 +453,20 @@ namespace BlockEditor.ViewModels
                     if (p == null)
                         break;
 
-                    using (new TempCursor(null))
-                        new BlockOptionWindow(Game.Map, index, Game.Engine.RefreshGui).ShowDialog();
+                    bool navigate = false;
+                    using (new TempCursor(null)) 
+                    { 
+                        var w = new BlockOptionWindow(Game.Map, index, Game.Engine.RefreshGui);
+                        w.ShowDialog();
+
+                        navigate = w.StartNavigation;
+                    }
+
+                    if(navigate)
+                    {
+                        Mode.Value = UserModes.None;
+                        OnNavigatorClick(Game.Map.Blocks.GetBlock(index));
+                    }
                     break;
 
                 case UserModes.Fill:

@@ -22,6 +22,8 @@ namespace BlockEditor.Views.Windows
         private readonly string _mapItemOptions;
         private Action _refreshGui;
 
+        public bool StartNavigation { get; set; }
+
         public BlockOptionWindow(Map map, MyPoint? index, Action refreshGui)
         {
             InitializeComponent();
@@ -53,14 +55,12 @@ namespace BlockEditor.Views.Windows
         {
             if (_block.IsEmpty())
             {
-                lblBlockName.Text = "None";
                 lblPosX.Text = index.X.ToString(_culture);
                 lblPosY.Text = index.Y.ToString(_culture);
             }
             else
             {
                 BlockImage.Source = BlockImages.GetImageBlock(BlockImages.BlockSize.Zoom150, _block.ID).Image;
-                lblBlockName.Text = Block.GetBlockName(_block.ID);
                 lblPosX.Text = _block.Position.Value.X.ToString(_culture);
                 lblPosY.Text = _block.Position.Value.Y.ToString(_culture);
 
@@ -97,11 +97,11 @@ namespace BlockEditor.Views.Windows
                     c.OnNewColor += OnNewColor;
                     c.Height = 30;
 
-                    var b = new WhiteButton("Count connected blocks");
+                    var b = new WhiteButton("Navigate to connected blocks");
                     b.HorizontalAlignment = HorizontalAlignment.Left;
                     b.VerticalAlignment = VerticalAlignment.Center;
-                    b.OnClick += btnConnected_Click;
-                    b.Width = 170;
+                    b.OnClick += btnNavigate_Click;
+                    b.Width = 210;
                     b.Height = 24;
                     b.Margin = new Thickness(10, 0, 0, 10);
 
@@ -109,6 +109,7 @@ namespace BlockEditor.Views.Windows
                     panel.Children.Add(c);
                     OptionPanel.Children.Add(panel);
                     OptionPanel.Children.Add(b);
+
 
                 }
                 else
@@ -146,6 +147,12 @@ namespace BlockEditor.Views.Windows
                 MessageUtil.ShowInfo($"There is 1 connected teleport block.");
             else
                 MessageUtil.ShowInfo($"There are {count - 1} connected teleport blocks.");
+        }
+
+        private void btnNavigate_Click()
+        {
+            StartNavigation = true;
+            Close();
         }
 
         private void Window_Deactivated(object sender, EventArgs e)

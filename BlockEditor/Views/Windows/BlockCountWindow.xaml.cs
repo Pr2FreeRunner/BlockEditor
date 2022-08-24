@@ -88,5 +88,6 @@ namespace BlockEditor.Views.Windows
         {
             Close();
         }
+
     }
 }

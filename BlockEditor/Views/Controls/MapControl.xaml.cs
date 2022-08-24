@@ -196,6 +196,11 @@ namespace BlockEditor.Views.Controls
                     if (ViewModel.MapInfoCommand.CanExecute(null))
                         ViewModel.MapInfoCommand.Execute(null);
                 }
+                else if (ctrl && e.Key == Key.N)
+                {
+                    if (ViewModel.NavigatorCommand.CanExecute(null))
+                        ViewModel.NavigatorCommand.Execute(null);
+                }
                 else if (ctrl && e.Key == Key.O)
                 {
                     ViewModel.IsOverwrite = !ViewModel.IsOverwrite;
