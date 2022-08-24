@@ -68,6 +68,31 @@ namespace BlockEditor.Models
             BlockSelection.OnNewSelection(selection);
         }
 
+        public bool SelectedRegionContainsBlocks(Map map)
+        {
+            if(map == null)
+                return false;
+
+            var selection = GetSelection(map);
+
+            if(selection == null)
+                return false;
+
+            var length0 = selection.GetLength(0);
+            var length1 = selection.GetLength(1);
+
+            for (int i = 0; i < length0; i++)
+            {
+                for (int j = 0; j < length1; j++)
+                {
+                    if (selection[i, j] != null)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
 
     }
 }

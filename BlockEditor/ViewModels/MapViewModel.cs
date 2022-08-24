@@ -549,7 +549,9 @@ namespace BlockEditor.ViewModels
 
                     UserSelection.OnMouseUp(p, index);
 
-                    if(MySettings.FirstUserSelection && UserSelection.HasSelectedRegion)
+                    if(MySettings.FirstUserSelection 
+                        && UserSelection.HasSelectedRegion 
+                        && UserSelection.SelectedRegionContainsBlocks(Game.Map))
                     {
                         MessageUtil.ShowInfo("Hint:  To copy the blocks inside the selected region press Ctrl + C");
                         MySettings.FirstUserSelection = false;
