@@ -102,7 +102,7 @@ namespace BlockEditor.Views.Windows
                     b.VerticalAlignment = VerticalAlignment.Center;
                     b.OnClick += btnNavigate_Click;
                     b.Width = 210;
-                    b.Height = 24;
+                    b.Height = 27;
                     b.Margin = new Thickness(10, 0, 0, 10);
 
                     panel.Children.Add(label);
