@@ -24,6 +24,9 @@ namespace BlockEditor.Views.Windows
             txtResponse.Text = MapTitle = map.Level.Title;
             btnPr2.IsEnabled = CurrentUser.IsLoggedIn();
 
+            if (btnPr2.IsEnabled)
+                btnPr2.Focus();
+
             OpenWindows.Add(this);
         }
 
@@ -33,6 +36,9 @@ namespace BlockEditor.Views.Windows
             saveLevelGrid.Visibility = Visibility.Visible;
 
             UpdateButtons();
+
+            if (btnSave.IsEnabled)
+                btnSave.Focus();
         }
 
         private void btnLocalFile_Click(object sender, RoutedEventArgs e)
