@@ -522,6 +522,12 @@ namespace BlockEditor.ViewModels
                         break;
 
                     UserSelection.OnMouseUp(p, index);
+
+                    if(MySettings.FirstUserSelection && UserSelection.HasSelectedRegion)
+                    {
+                        MessageUtil.ShowInfo("Hint:  To copy the blocks inside the selected region press Ctrl + C");
+                        MySettings.FirstUserSelection = false;
+                    }
                     break;
             }
         }
