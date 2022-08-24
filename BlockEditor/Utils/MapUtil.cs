@@ -10,6 +10,7 @@ using System.Globalization;
 using System.IO;
 using System.Windows.Input;
 using System.Linq;
+using LevelModel.Models.Components.Art;
 
 namespace BlockEditor.Helpers
 {
@@ -125,13 +126,21 @@ namespace BlockEditor.Helpers
             if (map == null)
                 return;
 
-            string note = string.Empty;
+            var noteText  = map.Level.Note;
+            var textArt1  = map.Level.TextArt1;
+            var textArt2  = map.Level.TextArt2;
+            var textArt3  = map.Level.TextArt3;
+            var textArt0  = map.Level.TextArt0;
+            var textArt00 = map.Level.TextArt00;
+
             try
             {
-                if(map.Level.Note != null)
-                    note = map.Level.Note;
-
-                map.Level.Note = string.Empty;
+                map.Level.Note      = string.Empty;
+                map.Level.TextArt1  = new List<TextArt>();
+                map.Level.TextArt2  = new List<TextArt>();
+                map.Level.TextArt3  = new List<TextArt>();
+                map.Level.TextArt0  = new List<TextArt>();
+                map.Level.TextArt00 = new List<TextArt>();
 
                 var content  = map.ToPr2String(string.Empty, string.Empty, false);
                 var filepath = Path.GetTempPath() + Guid.NewGuid().ToString() + ".txt";
@@ -146,7 +155,12 @@ namespace BlockEditor.Helpers
             }
             finally
             {
-                map.Level.Note = note;
+                map.Level.Note      = noteText;
+                map.Level.TextArt1  = textArt1;
+                map.Level.TextArt2  = textArt2;
+                map.Level.TextArt3  = textArt3;
+                map.Level.TextArt0  = textArt0;
+                map.Level.TextArt00 = textArt00;
             }
         }
 
