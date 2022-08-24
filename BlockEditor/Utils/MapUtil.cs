@@ -208,6 +208,7 @@ namespace BlockEditor.Helpers
             var visited    = new List<MyPoint>();
             var startBlock = map.Blocks.GetBlock(startPoint);
             var maxBlocks  = Math.Min(Blocks.LIMIT - map.Blocks.BlockCount, 5_001);
+            var shownWarning = false;
 
             if (region != null && region.IsComplete())
             {
@@ -218,6 +219,17 @@ namespace BlockEditor.Helpers
             while (blocks.Count > 0)
             {
                 var point = blocks.Pop();
+
+                if(!shownWarning && result.Count >= 1000)
+                {
+                    shownWarning = true;
+                    var r = UserQuestionWindow.Show("Warning: Over 1000 blocks has been added." 
+                        + Environment.NewLine + Environment.NewLine
+                        + "Do you wish to continue?", "Flood Fill", false);
+
+                    if (r != UserQuestionWindow.QuestionResult.Yes)
+                        return new List<SimpleBlock>();
+                }
 
                 if(maxBlocks <= result.Count)
                     throw new Exception("Too many blocks...only use the flood-fill tool in a closed region." 
