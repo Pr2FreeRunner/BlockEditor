@@ -109,8 +109,6 @@ namespace BlockEditor.Views.Windows
                     panel.Children.Add(c);
                     OptionPanel.Children.Add(panel);
                     OptionPanel.Children.Add(b);
-
-
                 }
                 else
                 {
