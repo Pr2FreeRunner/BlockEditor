@@ -238,5 +238,17 @@ namespace BlockEditor {
                 this["FirstUserSelection"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FirstConnectTeleports {
+            get {
+                return ((bool)(this["FirstConnectTeleports"]));
+            }
+            set {
+                this["FirstConnectTeleports"] = value;
+            }
+        }
     }
 }

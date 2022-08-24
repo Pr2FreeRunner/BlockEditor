@@ -52,6 +52,8 @@ namespace BlockEditor.ViewModels
         public RelayCommand HorizontalFlipCommand { get; }
         public RelayCommand DeleteBlockCommand { get; }
         public RelayCommand SettingsCommand { get; }
+        public RelayCommand ConnectTeleportsCommand { get; }
+
 
 
 
@@ -76,6 +78,8 @@ namespace BlockEditor.ViewModels
             HorizontalFlipCommand = new RelayCommand((_) => OnHorizontalFlipClick());
             DeleteBlockCommand = new RelayCommand((_) => OnDeleteBlockClick());
             SettingsCommand = new RelayCommand((_) => OnSettingsClick());
+            ConnectTeleportsCommand = new RelayCommand((_) => OnConnectTeleportsClick());
+
 
             Game.Engine.OnFrame += OnFrameUpdate;
         }
@@ -91,8 +95,8 @@ namespace BlockEditor.ViewModels
             int? id = null;
             Predicate<SimpleBlock> filter = null;
 
-            if(block.IsEmpty()) 
-            { 
+            if (block.IsEmpty())
+            {
                 id = SelectBlockWindow.Show("Navigator", true);
 
                 if (id == null)
@@ -127,6 +131,34 @@ namespace BlockEditor.ViewModels
             }
         }
 
+        private void OnConnectTeleportsClick()
+        {
+            BlockSelection.Reset();
+            UserSelection.Reset();
+
+            if (Mode.Value != UserModes.ConnectTeleports)
+            {
+                ConnectTeleports.Start();
+                Mode.Value = UserModes.ConnectTeleports;
+            }
+            else
+            {
+                var overwrite = Game.Map.Blocks.Overwrite;
+
+                try
+                {
+                    var blocks = ConnectTeleports.End();
+                    Game.Map.Blocks.Overwrite = true;
+                    Game.AddBlocks(blocks);
+                    Mode.Value = UserModes.None;
+                }
+                finally
+                {
+                    Game.Map.Blocks.Overwrite = overwrite;
+                }
+            }
+        }
+
         public void OnFillClick()
         {
             if (Mode.Value != UserModes.Fill)
@@ -139,7 +171,6 @@ namespace BlockEditor.ViewModels
                 Mode.Value = UserModes.None;
             }
         }
-
 
         public void OnSettingsClick()
         {
@@ -223,7 +254,7 @@ namespace BlockEditor.ViewModels
                     return;
 
                 var r2 = UserQuestionWindow.Show("Do you wish to convert Left-Arrow blocks to Right-Arrow blocks and vice versa?", "Horizontal Flip", false);
-                
+
                 using (new TempCursor(Cursors.Wait))
                 {
                     Game.Engine.PauseConfirmed();
@@ -429,6 +460,10 @@ namespace BlockEditor.ViewModels
 
             switch (Mode.Value)
             {
+                case UserModes.ConnectTeleports:
+                    ConnectTeleports.Add(Game.Map.Blocks.GetBlock(index));
+                    break;
+
                 case UserModes.Selection:
 
                     if (e.LeftButton == MouseButtonState.Pressed)
@@ -454,15 +489,15 @@ namespace BlockEditor.ViewModels
                         break;
 
                     bool navigate = false;
-                    using (new TempCursor(null)) 
-                    { 
+                    using (new TempCursor(null))
+                    {
                         var w = new BlockOptionWindow(Game.Map, index, Game.Engine.RefreshGui);
                         w.ShowDialog();
 
                         navigate = w.StartNavigation;
                     }
 
-                    if(navigate)
+                    if (navigate)
                     {
                         Mode.Value = UserModes.None;
                         OnNavigatorClick(Game.Map.Blocks.GetBlock(index));
@@ -549,8 +584,8 @@ namespace BlockEditor.ViewModels
 
                     UserSelection.OnMouseUp(p, index);
 
-                    if(MySettings.FirstUserSelection 
-                        && UserSelection.HasSelectedRegion 
+                    if (MySettings.FirstUserSelection
+                        && UserSelection.HasSelectedRegion
                         && UserSelection.SelectedRegionContainsBlocks(Game.Map))
                     {
                         MessageUtil.ShowInfo("Hint:  To copy the blocks inside the selected region press Ctrl + C");

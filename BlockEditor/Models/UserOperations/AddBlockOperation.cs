@@ -1,4 +1,6 @@
 ﻿using LevelModel.Models.Components;
+using static System.Windows.Forms.Design.AxImporter;
+using System;
 
 namespace BlockEditor.Models
 {
@@ -22,7 +24,8 @@ namespace BlockEditor.Models
 
             _oldBlock = _map.Blocks.GetBlock(_block.Position, false);
 
-            if (!_oldBlock.IsEmpty() && _oldBlock.ID == _block.ID)
+            if (!_oldBlock.IsEmpty() && _oldBlock.ID == _block.ID 
+                && string.Equals(_oldBlock.Options, _block.Options, StringComparison.InvariantCultureIgnoreCase))
                 return false;
 
             if (Block.IsStartBlock(_block.ID))

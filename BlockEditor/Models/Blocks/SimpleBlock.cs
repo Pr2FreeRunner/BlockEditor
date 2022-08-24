@@ -62,5 +62,6 @@ namespace BlockEditor.Models
 
             return ID == Block.ITEM_BLUE || ID == Block.ITEM_RED;
         }
+
     }
 }
