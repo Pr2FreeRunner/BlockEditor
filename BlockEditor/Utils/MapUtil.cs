@@ -237,9 +237,9 @@ namespace BlockEditor.Helpers
                 if(!shownWarning && result.Count >= 1000)
                 {
                     shownWarning = true;
-                    var r = UserQuestionWindow.Show("Warning: Over 1000 blocks has been added." 
+                    var r = UserQuestionWindow.ShowWarning("Over 1000 blocks has been added." 
                         + Environment.NewLine + Environment.NewLine
-                        + "Do you wish to continue?", "Flood Fill", false);
+                        + "Do you wish to continue?", false);
 
                     if (r != UserQuestionWindow.QuestionResult.Yes)
                         return new List<SimpleBlock>();

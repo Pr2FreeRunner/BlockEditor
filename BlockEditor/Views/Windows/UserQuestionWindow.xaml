@@ -20,7 +20,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Border CornerRadius="15" Grid.Row="0" Padding="20,30,20,30" Margin="20,20,20,10" BorderThickness="2" BorderBrush="{StaticResource StandardBackgroundMouseOver}">
+        <Border x:Name="MyBorder" CornerRadius="15" Grid.Row="0" Padding="20,30,20,30" Margin="20,20,20,10" BorderThickness="2" BorderBrush="{StaticResource StandardBackgroundMouseOver}">
             <TextBlock HorizontalAlignment="Center" FontSize="14" Text="Question to ask?" Name="txtQuestion" />
         </Border>
 

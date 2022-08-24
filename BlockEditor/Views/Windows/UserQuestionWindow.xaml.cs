@@ -1,6 +1,7 @@
 ﻿using BlockEditor.Models;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace BlockEditor.Views.Windows
 {
@@ -30,6 +31,26 @@ namespace BlockEditor.Views.Windows
                 Mouse.OverrideCursor = null;
 
                 var w = new UserQuestionWindow(text, title, showCancel);
+
+                w.ShowDialog();
+
+                return w._result;
+            }
+            finally
+            {
+                Mouse.OverrideCursor = current;
+            }
+        }
+
+        public static QuestionResult ShowWarning(string text, bool showCancel = true)
+        {
+            var current = Mouse.OverrideCursor;
+            try
+            {
+                Mouse.OverrideCursor = null;
+
+                var w = new UserQuestionWindow(text, "Warning", showCancel);
+                w.MyBorder.BorderBrush = new SolidColorBrush(Colors.Yellow);
 
                 w.ShowDialog();
 
