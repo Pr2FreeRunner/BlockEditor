@@ -40,6 +40,7 @@ namespace BlockEditor.Views.Windows
                 return;
             }
 
+
             new NavigatorWindow(game, positions, blockId, p).ShowDialog();
             
         }
