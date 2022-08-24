@@ -36,7 +36,7 @@ namespace BlockEditor.Views.Windows
 
             if (positions.Count == 0)
             {
-                MessageUtil.ShowInfo("The block was not found in the map.");
+                MessageUtil.ShowWarning("The block was not found.");
                 return;
             }
 
