@@ -164,9 +164,9 @@ namespace BlockEditor.Helpers
 
         public static Pen GetGridPen(Color mapBackground)
         {
-            int r   = 0;
-            int g   = 0;
-            int b   = 0;
+            int r = 0;
+            int g = 0;
+            int b = 0;
 
             if (mapBackground.R < 128)
                 r = 255;
