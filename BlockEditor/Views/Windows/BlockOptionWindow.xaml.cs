@@ -172,15 +172,25 @@ namespace BlockEditor.Views.Windows
             var ignoreOption = _block.IsItem() && string.Equals(text, _mapItemOptions, StringComparison.CurrentCultureIgnoreCase);
 
             _block = new SimpleBlock(_block.ID, _block.Position.Value, ignoreOption ? string.Empty : text);
-            _map.Blocks.Add(_block);
+
+            var overwrite = _map.Blocks.Overwrite;
+            try
+            {
+                _map.Blocks.Overwrite = true;
+                _map.Blocks.Add(_block);
+            }
+            finally
+            {
+                _map.Blocks.Overwrite = overwrite;
+            }
         }
 
         private void OnNewColor(string text)
         {
             try
             {
-                var value = Convert.ToInt32(text, 16);
-                text = value.ToString();
+                if (!string.IsNullOrEmpty(text))
+                    text = Convert.ToInt32(text, 16).ToString();
             }
             catch
             {

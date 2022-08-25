@@ -37,8 +37,8 @@ namespace BlockEditor.Views.Windows
         {
             try
             {
-                var value = Convert.ToInt32(text, 16);
-                text = value.ToString();
+                if(!string.IsNullOrEmpty(text))
+                    text = Convert.ToInt32(text, 16).ToString();
             }
             catch
             {
