@@ -189,9 +189,21 @@ namespace BlockEditor.ViewModels
             {
                 BlockSelection.VerticalFlipCommand.Execute(null);
             }
+            else if (UserSelection.HasSelectedRegion)
+            {
+                string text = "";
+
+                if (UserSelection.SelectedRegionContainsBlocks(Game.Map))
+                    text = "If you wish to flip the blocks inside the selected region, "
+                        + Environment.NewLine + "you first have to select them by using Ctrl + C or Ctrl + X";
+                else
+                    text = "The selected region contains no blocks, there is nothing to flip.";
+
+                MessageUtil.ShowInfo(text);
+            }
             else
             {
-                var r1 = UserQuestionWindow.Show("Do you wish vertically flip the whole map?", "Vertical Flip", false);
+                var r1 = UserQuestionWindow.Show("Do you wish vertically flip the map?", "Vertical Flip", false);
 
                 if (r1 != UserQuestionWindow.QuestionResult.Yes)
                     return;
@@ -223,6 +235,18 @@ namespace BlockEditor.ViewModels
             {
                 BlockSelection.RotateCommand.Execute(null);
             }
+            else if(UserSelection.HasSelectedRegion)
+            {
+                string text = "";
+
+                if (UserSelection.SelectedRegionContainsBlocks(Game.Map))
+                    text = "If you wish to rotate the blocks inside the selected region, "
+                        + Environment.NewLine + "you first have to select them by using Ctrl + C or Ctrl + X";
+                else
+                    text = "The selected region contains no blocks, there is nothing to rotate.";
+
+                MessageUtil.ShowInfo(text);
+            }
             else
             {
                 var r = UserQuestionWindow.Show("Do you wish rotate the map?", "Rotate Blocks", false);
@@ -245,6 +269,18 @@ namespace BlockEditor.ViewModels
             if (BlockSelection.HorizontalFlipCommand.CanExecute(null))
             {
                 BlockSelection.HorizontalFlipCommand.Execute(null);
+            }
+            else if (UserSelection.HasSelectedRegion)
+            {
+                string text = "";
+
+                if (UserSelection.SelectedRegionContainsBlocks(Game.Map))
+                    text = "If you wish to flip the blocks inside the selected region, "
+                        + Environment.NewLine + "you first have to select them by using Ctrl + C or Ctrl + X";
+                else
+                    text = "The selected region contains no blocks, there is nothing to flip.";
+
+                MessageUtil.ShowInfo(text);
             }
             else
             {
