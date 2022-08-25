@@ -157,7 +157,14 @@ namespace BlockEditor.Models
 
         public static void Init()
         {
+            //Reset();
             Load();
+        }
+
+        private static void Reset()
+        {
+            Settings.Default.Reset();
+            Settings.Default.Save();
         }
 
         private static void Save()

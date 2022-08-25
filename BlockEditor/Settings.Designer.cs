@@ -97,7 +97,7 @@ namespace BlockEditor {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        [global::System.Configuration.DefaultSettingValueAttribute("109")]
         public int Hotkey0 {
             get {
                 return ((int)(this["Hotkey0"]));
@@ -109,7 +109,7 @@ namespace BlockEditor {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("101")]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
         public int Hotkey1 {
             get {
                 return ((int)(this["Hotkey1"]));
@@ -121,7 +121,7 @@ namespace BlockEditor {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("102")]
+        [global::System.Configuration.DefaultSettingValueAttribute("101")]
         public int Hotkey2 {
             get {
                 return ((int)(this["Hotkey2"]));
@@ -133,7 +133,7 @@ namespace BlockEditor {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("103")]
+        [global::System.Configuration.DefaultSettingValueAttribute("102")]
         public int Hotkey3 {
             get {
                 return ((int)(this["Hotkey3"]));
@@ -145,7 +145,7 @@ namespace BlockEditor {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("104")]
+        [global::System.Configuration.DefaultSettingValueAttribute("103")]
         public int Hotkey4 {
             get {
                 return ((int)(this["Hotkey4"]));
@@ -157,7 +157,7 @@ namespace BlockEditor {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("105")]
+        [global::System.Configuration.DefaultSettingValueAttribute("104")]
         public int Hotkey5 {
             get {
                 return ((int)(this["Hotkey5"]));
@@ -169,7 +169,7 @@ namespace BlockEditor {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("106")]
+        [global::System.Configuration.DefaultSettingValueAttribute("105")]
         public int Hotkey6 {
             get {
                 return ((int)(this["Hotkey6"]));
@@ -181,7 +181,7 @@ namespace BlockEditor {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("107")]
+        [global::System.Configuration.DefaultSettingValueAttribute("106")]
         public int Hotkey7 {
             get {
                 return ((int)(this["Hotkey7"]));
@@ -193,7 +193,7 @@ namespace BlockEditor {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("108")]
+        [global::System.Configuration.DefaultSettingValueAttribute("107")]
         public int Hotkey8 {
             get {
                 return ((int)(this["Hotkey8"]));
@@ -205,7 +205,7 @@ namespace BlockEditor {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("109")]
+        [global::System.Configuration.DefaultSettingValueAttribute("108")]
         public int Hotkey9 {
             get {
                 return ((int)(this["Hotkey9"]));
