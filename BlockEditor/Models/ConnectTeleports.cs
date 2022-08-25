@@ -3,6 +3,7 @@ using BlockEditor.Views.Windows;
 using LevelModel.Models.Components;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
@@ -38,6 +39,10 @@ namespace BlockEditor.Models
                 return;
 
             if(b.ID != Block.TELEPORT)
+                return;
+
+
+            if(Blocks.Where(x => x.Position.Value == b.Position.Value).Count() > 0)
                 return;
 
             Blocks.Add(b);

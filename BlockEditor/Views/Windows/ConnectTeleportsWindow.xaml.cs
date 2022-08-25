@@ -1,8 +1,11 @@
-﻿using BlockEditor.Models;
+﻿using BlockEditor.Helpers;
+using BlockEditor.Models;
 using BlockEditor.Utils;
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BlockEditor.Views.Windows
 {
@@ -30,9 +33,19 @@ namespace BlockEditor.Views.Windows
             MyColorPicker.OnNewColor += MyColorPicker_OnNewColor;
         }
 
-        private void MyColorPicker_OnNewColor(string obj)
+        private void MyColorPicker_OnNewColor(string text)
         {
-            Option = obj;
+            try
+            {
+                var value = Convert.ToInt32(text, 16);
+                text = value.ToString();
+            }
+            catch
+            {
+                MessageUtil.ShowError("Failed to convert color to PR2 block option format.");
+            }
+
+            Option = text;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
