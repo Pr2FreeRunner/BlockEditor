@@ -35,6 +35,9 @@ namespace BlockEditor.Views.Windows
             startGrid.Visibility = Visibility.Collapsed;
             saveLevelGrid.Visibility = Visibility.Visible;
 
+            if (string.IsNullOrEmpty(MapTitle))
+                txtResponse.Focus();
+
             UpdateButtons();
 
             if (btnSave.IsEnabled)
@@ -90,6 +93,9 @@ namespace BlockEditor.Views.Windows
         {
             if(e.Key == Key.Escape)
                 Close();
+
+            if (e.Key == Key.Enter && saveLevelGrid.Visibility == Visibility.Visible && btnSave.IsEnabled)
+                btnSave_Click(null, null);
         }
     }
 }
