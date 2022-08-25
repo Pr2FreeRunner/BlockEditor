@@ -23,8 +23,6 @@ namespace BlockEditor.Helpers
             if (map == null)
                 return;
 
-            (App.Current.MainWindow as MainWindow)?.DeselectAll();
-
             var save    = new WindowSaveMap(map);
             var success = save.ShowDialog();
 

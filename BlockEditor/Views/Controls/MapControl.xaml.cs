@@ -29,11 +29,6 @@ namespace BlockEditor.Views.Controls
             ZoomControl.ViewModel.Zoom = MySettings.Zoom;
         }
 
-        public void DeselectAll()
-        {
-            btnDeselect.Focus();
-        }
-
         private void windowLoaded(object sender, RoutedEventArgs e)
         {
             try
@@ -144,8 +139,6 @@ namespace BlockEditor.Views.Controls
                 if (e.Key == Key.Escape)
                 {
                     ViewModel.OnCleanUserMode(true);
-                    (App.Current.MainWindow as MainWindow)?.DeselectAll();
-                    return;
                 }
                 else if (ctrl && e.Key == Key.Z)
                 {

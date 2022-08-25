@@ -19,8 +19,6 @@
             <RowDefinition Height="88" />
         </Grid.RowDefinitions>
 
-        <Button IsTabStop="False" Grid.Row="0" Grid.Column="0" Width="1" Margin="0,0,0,0" Height="1" Visibility="Visible" x:Name="btnDeselect" HorizontalAlignment="Right"/>
-        
         <Border Focusable="False" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="99"
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                 Background="{StaticResource LightBackground}">
