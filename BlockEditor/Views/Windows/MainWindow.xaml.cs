@@ -206,5 +206,10 @@ namespace BlockEditor.Views.Windows
 
             MySettings.PlayTime += (int)Math.Round(timeDiff.TotalMinutes);
         }
+
+        internal void DeselectAll()
+        {
+            _currentMap?.DeselectAll();
+        }
     }
 }

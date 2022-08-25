@@ -5,8 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
              VerticalAlignment="Center"
-             HorizontalAlignment="Center">
-    <Border 
+             HorizontalAlignment="Center"
+             Focusable="False" IsTabStop="False">
+    
+    <Border Focusable="False"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             Margin="0,0,0,0"
@@ -16,8 +18,8 @@
             BorderBrush="{StaticResource StandardBorderColor}"
             Background="{StaticResource LightBackground}">
 
-        <StackPanel Orientation="Horizontal">
-            <Button Width="30" Height="30" Content="-" Command="{Binding ZoomOutCommand}"/>
+        <StackPanel Orientation="Horizontal" Focusable="False">
+            <Button Focusable="False" IsTabStop="False" Width="30" Height="30" Content="-" Command="{Binding ZoomOutCommand}"/>
             <TextBlock FontWeight="SemiBold" 
                        Text="{Binding ZoomText, Mode = OneWay}" 
                        TextAlignment="Center"
@@ -25,8 +27,9 @@
                        Margin="12,0,12,0" 
                        VerticalAlignment="Center" 
                        HorizontalAlignment="Center"
-                       MinWidth="38"/>
-            <Button Width="30" Height="30" Content="+" Command="{Binding ZoomInCommand}" />
+                       MinWidth="38"
+                       Focusable="False"/>
+            <Button Focusable="False" IsTabStop="False" Width="30" Height="30" Content="+" Command="{Binding ZoomInCommand}" />
         </StackPanel>
 
     </Border>

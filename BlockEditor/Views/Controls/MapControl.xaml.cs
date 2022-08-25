@@ -7,6 +7,7 @@ using BlockEditor.ViewModels;
 using BlockEditor.Models;
 using static BlockEditor.Models.UserMode;
 using static BlockEditor.Models.BlockImages;
+using BlockEditor.Views.Windows;
 
 namespace BlockEditor.Views.Controls
 {
@@ -26,6 +27,11 @@ namespace BlockEditor.Views.Controls
             ZoomControl.ViewModel.OnZoomChanged += (zoom) => ViewModel.OnZoomChanged(zoom);
             this.Loaded += windowLoaded;
             ZoomControl.ViewModel.Zoom = MySettings.Zoom;
+        }
+
+        public void DeselectAll()
+        {
+            btnDeselect.Focus();
         }
 
         private void windowLoaded(object sender, RoutedEventArgs e)
@@ -138,6 +144,7 @@ namespace BlockEditor.Views.Controls
                 if (e.Key == Key.Escape)
                 {
                     ViewModel.OnCleanUserMode(true);
+                    (App.Current.MainWindow as MainWindow)?.DeselectAll();
                     return;
                 }
                 else if (ctrl && e.Key == Key.Z)
