@@ -36,7 +36,7 @@ namespace BlockEditor.Views.Windows
 
             if (positions.Count == 0)
             {
-                MessageUtil.ShowWarning("The block was not found.");
+                MessageUtil.ShowInfo("The block was not found.");
                 return;
             }
 
