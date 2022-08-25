@@ -124,9 +124,9 @@
                     BorderThickness="0">
 
                 <StackPanel Orientation="Horizontal">
-                    <Button Style="{StaticResource WhiteBtn}" FontSize="16" Name="btnLeftPage" Width="42" Height="40" Content="&#9664;" Click="OnPreviousPage"/>
+                    <Button Style="{StaticResource WhiteBtn}" FontSize="16" Name="btnLeftPage" Width="40" Height="38" Content="&#9664;" Click="OnPreviousPage"/>
                     <TextBlock Text="1" FontWeight="SemiBold" FontSize="16" Name="PageText" Margin="15,0,15,0" VerticalAlignment="Center"/>
-                    <Button Style="{StaticResource WhiteBtn}" FontSize="16" Name="btnRightPage" Width="42" Height="40" Content="&#9654;" Click="OnNextPage"/>
+                    <Button Style="{StaticResource WhiteBtn}" FontSize="16" Name="btnRightPage" Width="40" Height="38" Content="&#9654;" Click="OnNextPage"/>
                 </StackPanel>
             </Border>
 
