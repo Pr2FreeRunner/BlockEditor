@@ -329,6 +329,11 @@ namespace BlockEditor.Models
                 if (block == null)
                     continue;
 
+                var white = GetImageBlock(blockSize, Block.BASIC_WHITE);
+
+                if(white != null && white.Bitmap.Width != block.Bitmap.Width && block.Bitmap.Width != 0)
+                    block.Bitmap = new Bitmap(block.Bitmap, new Size(white.Bitmap.Width, white.Bitmap.Height));
+
                 if (_teleportImages.TryGetValue(blockSize, out var dic))
                     dic.Add(option, item.Item2);
             }
