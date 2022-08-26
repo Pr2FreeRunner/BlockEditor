@@ -47,7 +47,7 @@ namespace BlockEditor.Models
         {
             ID = id;
             Position = p;
-            Options = options;
+            Options = options ?? string.Empty;
         }
 
         public bool IsEmpty()

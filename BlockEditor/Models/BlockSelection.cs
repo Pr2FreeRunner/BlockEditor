@@ -56,6 +56,8 @@ namespace BlockEditor.Models
             set { _selectedBlock = value; }
         }
 
+        public static string SelectedBlockOption { get; set; }
+
         public static Action CleanUserBlockControl { get; set; }
 
         static BlockSelection()
@@ -80,6 +82,7 @@ namespace BlockEditor.Models
         {
             SelectedBlocks = null;
             SelectedBlock = null;
+            SelectedBlockOption = null;
             CleanUserBlockControl?.Invoke();
         }
 

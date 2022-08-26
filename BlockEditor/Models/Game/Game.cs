@@ -43,12 +43,12 @@ namespace BlockEditor.Models
             return Map.GetMapIndex(pos);
         }
 
-        public void AddBlock(MyPoint? index, int? id, bool isMapIndex = false)
+        public void AddBlock(MyPoint? index, int? id, string option = "", bool isMapIndex = false)
         {
             if (index == null || id == null || Map == null)
                 return;
 
-            var op = new AddBlockOperation(Map, new SimpleBlock(id.Value, index.Value));
+            var op = new AddBlockOperation(Map, new SimpleBlock(id.Value, index.Value, option));
             UserOperations.Execute(op);
         }
 

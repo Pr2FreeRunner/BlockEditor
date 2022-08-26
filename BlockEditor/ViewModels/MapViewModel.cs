@@ -580,6 +580,7 @@ namespace BlockEditor.ViewModels
                             {
                                 Game.DeleteBlock(b);
                                 BlockSelection.SelectedBlock = b.ID;
+                                BlockSelection.SelectedBlockOption = b.Options;
                                 Mode.Value = UserModes.MoveBlock;
                             }    
 
@@ -626,7 +627,9 @@ namespace BlockEditor.ViewModels
             switch (Mode.Value)
             {
                 case UserModes.MoveBlock:
-                    Game.AddBlock(index, BlockSelection.SelectedBlock);
+                    if(BlockSelection.SelectedBlock != null)
+                        Game.AddBlock(index, BlockSelection.SelectedBlock.Value, BlockSelection.SelectedBlockOption);
+
                     BlockSelection.Reset();
                     Mode.Value = UserModes.None;
                     break;
