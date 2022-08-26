@@ -404,6 +404,8 @@ namespace BlockEditor.ViewModels
 
                     Game.AddBlocks(blocks);
                     BlockSelection.Reset();
+                    UserSelection.Reset();
+                    Mode.Value = UserModes.None;
                 }
             }
             finally
