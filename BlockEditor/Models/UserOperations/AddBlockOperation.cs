@@ -56,9 +56,9 @@ namespace BlockEditor.Models
             if(Block.IsStartBlock(_block.ID))
             {
                 if(_oldStartPosition == null)
-                    return false;
-
-                _map.Blocks.Add(new SimpleBlock(_block.ID, _oldStartPosition.Value));
+                    _oldStartPosition = _block.Position;
+                else
+                    _map.Blocks.Add(new SimpleBlock(_block.ID, _oldStartPosition.Value));
             }
            
             if(!_oldBlock.IsEmpty())
