@@ -144,6 +144,11 @@ namespace BlockEditor.Models
 
             var block = Map.Blocks.GetBlock(index.Value.X, index.Value.Y);
 
+            DeleteBlock(block);
+        }
+
+        public void DeleteBlock(SimpleBlock block)
+        {
             if (block.IsEmpty())
                 return;
 

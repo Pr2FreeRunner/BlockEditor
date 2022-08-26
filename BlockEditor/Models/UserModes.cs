@@ -8,7 +8,7 @@ namespace BlockEditor.Models
 
     public class UserMode : NotificationObject
     {
-        public enum UserModes { None, Selection, Fill, BlockInfo, MapInfo, BlockCount, Settings, ConnectTeleports }
+        public enum UserModes { None, Selection, Fill, BlockInfo, MapInfo, BlockCount, Settings, ConnectTeleports, MoveBlock }
 
         private static Cursor BucketCursor;
 
@@ -45,7 +45,6 @@ namespace BlockEditor.Models
         public bool IsMapInfoMode => Value == UserModes.MapInfo;
         public bool IsSettingsMode => Value == UserModes.Settings;
         public bool IsConnectTeleportsMode => Value == UserModes.ConnectTeleports;
-
 
 
         public static void Init()

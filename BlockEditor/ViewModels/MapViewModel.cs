@@ -574,8 +574,20 @@ namespace BlockEditor.ViewModels
                     {
                         if (BlockSelection.SelectedBlocks != null)
                             Game.AddSelection(index, BlockSelection.SelectedBlocks);
-                        else
+                        else if(BlockSelection.SelectedBlock != null)
                             Game.AddBlock(index, BlockSelection.SelectedBlock);
+                        else
+                        {
+                            var b = Game.Map.Blocks.GetBlock(index, true);
+
+                            if(!b.IsEmpty())
+                            {
+                                Game.DeleteBlock(b);
+                                BlockSelection.SelectedBlock = b.ID;
+                                Mode.Value = UserModes.MoveBlock;
+                            }    
+
+                        }
                     }
                     break;
             }
@@ -588,6 +600,9 @@ namespace BlockEditor.ViewModels
 
             switch (Mode.Value)
             {
+                case UserModes.MoveBlock:
+                    break;
+
                 default:
                     if (e.RightButton == MouseButtonState.Pressed)
                     {
@@ -614,6 +629,13 @@ namespace BlockEditor.ViewModels
 
             switch (Mode.Value)
             {
+                case UserModes.MoveBlock:
+                    Game.AddBlock(index, BlockSelection.SelectedBlock);
+                    BlockSelection.Reset();
+                    Mode.Value = UserModes.None;
+                    break;
+
+
                 case UserModes.Selection:
 
                     if (e.ChangedButton != MouseButton.Left)
