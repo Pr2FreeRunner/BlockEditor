@@ -55,9 +55,6 @@ namespace BlockEditor.ViewModels
         public RelayCommand ConnectTeleportsCommand { get; }
 
 
-
-
-
         public MapViewModel()
         {
             Game = new Game();
@@ -361,9 +358,6 @@ namespace BlockEditor.ViewModels
         {
             BlockSelection.Reset();
 
-            if (!Game.Map.Blocks.Overwrite)
-                throw new OverwriteException();
-
             var region = UserSelection.MapRegion;
             var id1 = SelectBlockWindow.Show("Block Type to Remove:", false);
 
@@ -377,6 +371,7 @@ namespace BlockEditor.ViewModels
                 Game.RemoveBlocks(blocks);
                 BlockSelection.Reset();
                 UserSelection.Reset();
+                Mode.Value = UserModes.None;
             }
         }
 
