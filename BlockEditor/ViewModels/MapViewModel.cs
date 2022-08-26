@@ -369,10 +369,11 @@ namespace BlockEditor.ViewModels
                 var blocks = MapUtil.RemoveBlocks(Game.Map, new List<int>() { id1.Value }, region);
 
                 Game.RemoveBlocks(blocks);
-                BlockSelection.Reset();
-                UserSelection.Reset();
-                Mode.Value = UserModes.None;
             }
+
+            BlockSelection.Reset();
+            UserSelection.Reset();
+            Mode.Value = UserModes.None;
         }
 
         public void OnReplaceClick()
