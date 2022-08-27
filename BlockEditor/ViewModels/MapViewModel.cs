@@ -205,21 +205,10 @@ namespace BlockEditor.ViewModels
                 if (r1 != UserQuestionWindow.QuestionResult.Yes)
                     return;
 
-                var r2 = UserQuestionWindow.Show("Do you wish to convert Up-Arrow blocks to Down-Arrow blocks and vice versa?", "Vertical Flip", false);
-
                 using (new TempCursor(Cursors.Wait))
                 {
                     Game.Engine.PauseConfirmed();
                     Game.Map.Blocks.VerticalFlip();
-
-                    if (r2 == UserQuestionWindow.QuestionResult.Yes)
-                    {
-                        var replace = new List<int>() { Block.ARROW_UP, Block.ARROW_DOWN };
-                        var add = new List<int>() { Block.ARROW_DOWN, Block.ARROW_UP };
-                        var blocks = MapUtil.ReplaceBlock(Game.Map, replace, add, null);
-                        Game.AddBlocks(blocks);
-                    }
-
                     Game.GoToStartPosition();
                     Game.Engine.Pause = false;
                 }
@@ -281,26 +270,15 @@ namespace BlockEditor.ViewModels
             }
             else
             {
-                var r1 = UserQuestionWindow.Show("Do you wish horizontally flip the map?", "Horizontal Flip", false);
+                var r = UserQuestionWindow.Show("Do you wish horizontally flip the map?", "Horizontal Flip", false);
 
-                if (r1 != UserQuestionWindow.QuestionResult.Yes)
+                if (r != UserQuestionWindow.QuestionResult.Yes)
                     return;
-
-                var r2 = UserQuestionWindow.Show("Do you wish to convert Left-Arrow blocks to Right-Arrow blocks and vice versa?", "Horizontal Flip", false);
 
                 using (new TempCursor(Cursors.Wait))
                 {
                     Game.Engine.PauseConfirmed();
                     Game.Map.Blocks.HorizontalFlip();
-
-                    if (r2 == UserQuestionWindow.QuestionResult.Yes)
-                    {
-                        var replace = new List<int>() { Block.ARROW_LEFT, Block.ARROW_RIGHT };
-                        var add = new List<int>() { Block.ARROW_RIGHT, Block.ARROW_LEFT };
-                        var blocks = MapUtil.ReplaceBlock(Game.Map, replace, add, null);
-                        Game.AddBlocks(blocks);
-                    }
-
                     Game.GoToStartPosition();
                     Game.Engine.Pause = false;
                 }
