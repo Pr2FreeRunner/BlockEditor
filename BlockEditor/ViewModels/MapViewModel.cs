@@ -525,6 +525,16 @@ namespace BlockEditor.ViewModels
                     if (e.ChangedButton != MouseButton.Left)
                         break;
 
+                    if (UserSelection.HasSelectedRegion && !UserSelection.MapRegion.IsInside(index))
+                    {
+                        MessageUtil.ShowInfo("You clicked outside the selected region." 
+                            + Environment.NewLine
+                            + Environment.NewLine
+                            + "Either remove the selected region or click inside it.");
+
+                        return;
+                    }
+
                     var selectedId = SelectBlockWindow.Show("Flood Fill", false);
 
                     if (selectedId == null)
