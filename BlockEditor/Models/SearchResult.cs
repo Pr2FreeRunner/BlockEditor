@@ -21,8 +21,11 @@ namespace BlockEditor.Models
                 if(_rating == null)
                     return null;
 
-                if(_rating.Value > 5)
+                if(_rating.Value >= 100)
                     return _rating.Value / 100.0;
+
+                if (_rating.Value >= 10)
+                    return _rating.Value / 10.0;
 
                 return _rating.Value;
             }
