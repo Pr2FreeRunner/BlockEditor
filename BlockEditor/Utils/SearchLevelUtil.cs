@@ -72,7 +72,7 @@ namespace BlockEditor.Utils
                 if (l == null)
                     continue;
 
-                yield return new SearchResult(l.LevelID, l.Title, l.UserName);
+                yield return new SearchResult(l.LevelID, l.Title, l.UserName, l.PlayCount, l.Rating);
             }
         }
 
@@ -93,7 +93,7 @@ namespace BlockEditor.Utils
                 if (l == null)
                     continue;
 
-                yield return new SearchResult(l.LevelID, l.Title, l.UserName);
+                yield return new SearchResult(l.LevelID, l.Title, l.UserName, l.PlayCount, l.Rating);
             }
         }
 
@@ -120,7 +120,7 @@ namespace BlockEditor.Utils
                 if (l == null)
                     continue;
 
-                yield return new SearchResult(l.LevelID, l.Title, l.UserName);
+                yield return new SearchResult(l.LevelID, l.Title, l.UserName, l.PlayCount, l.Rating);
             }
         }
 
