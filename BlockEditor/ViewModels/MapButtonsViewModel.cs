@@ -36,13 +36,21 @@ namespace BlockEditor.ViewModels
 
         }
 
+        private void ResetUserMode()
+        {
+            (App.Current.MainWindow as MainWindow)?.ResetUserMode();
+        }
+
         private void LoginExecute(object obj)
         {
+            ResetUserMode();
             new LoginWindow().ShowDialog();
         }
 
         private void SaveExecute(object obj)
         {
+            ResetUserMode();
+
             OnSaveMap?.Invoke();
         }
 
@@ -100,6 +108,8 @@ namespace BlockEditor.ViewModels
 
         private void LoadExecute(object obj)
         {
+            ResetUserMode();
+
             var window  = new LoadMapWindow();
             var success = window.ShowDialog();
 
@@ -114,6 +124,8 @@ namespace BlockEditor.ViewModels
 
         private void NewExecute(object obj)
         {
+            ResetUserMode();
+
             try
             {
                 var text   = "Are you sure you want to clear this level?" + Environment.NewLine + Environment.NewLine + "All unsaved data will be lost.";
@@ -134,6 +146,8 @@ namespace BlockEditor.ViewModels
 
         private void TestExecute(object obj)
         {
+            ResetUserMode();
+
             OnTestMap?.Invoke();
         }
     }

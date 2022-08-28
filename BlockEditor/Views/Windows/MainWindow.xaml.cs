@@ -105,6 +105,14 @@ namespace BlockEditor.Views.Windows
             }
         }
 
+        public void ResetUserMode()
+        {
+            if(_currentMap == null)
+                return;
+
+            _currentMap.ViewModel.Mode.Value = UserMode.UserModes.None;
+        }
+
         public void TitleChanged(string title)
         {
             if(CurrentTab == null)

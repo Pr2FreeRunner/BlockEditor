@@ -57,6 +57,7 @@ namespace BlockEditor.Views.Windows
             {
                 lblPosX.Text = index.X.ToString(_culture);
                 lblPosY.Text = index.Y.ToString(_culture);
+                tbBlockOption.Text = String.Empty;
             }
             else
             {
@@ -109,6 +110,24 @@ namespace BlockEditor.Views.Windows
                     panel.Children.Add(c);
                     OptionPanel.Children.Add(panel);
                     OptionPanel.Children.Add(b);
+                }
+                else if(_block.ID == Block.HAPPY_BLOCK || _block.ID == Block.SAD_BLOCK)                
+                {
+                    tbBlockOption.Text = "Stats Change:";
+                    var c = new StatsBlockControl(_block.ID == Block.SAD_BLOCK);
+                    c.SetBlockOptions(_block.Options);
+                    c.Margin = new Thickness(10, 0, 10, 20);
+                    c.OnBlockOptionChanged += OnOptionsChanged;
+                    OptionPanel.Children.Add(c);
+                }
+                else if (_block.ID == Block.CUSTOM_STATS)
+                {
+                    tbBlockOption.Text = string.Empty;
+                    var c = new CustomStatsControl();
+                    c.SetBlockOptions(_block.Options);
+                    c.Margin = new Thickness(10, 0, 10, 20);
+                    c.OnBlockOptionChanged += OnOptionsChanged;
+                    OptionPanel.Children.Add(c);
                 }
                 else
                 {

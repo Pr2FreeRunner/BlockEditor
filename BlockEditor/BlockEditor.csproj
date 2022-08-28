@@ -301,6 +301,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\Controls\BlockOptionsControl - Copy.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Views\Controls\CustomStatsControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Views\Windows\ConnectTeleportsWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

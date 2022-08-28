@@ -46,7 +46,7 @@
                 </StackPanel>
                 
             </Grid>
-            <TextBlock Margin="10,15,0,0" FontWeight="SemiBold" FontSize="{StaticResource DefaultFontSize}" Text="Block Options:"/>
+            <TextBlock x:Name="tbBlockOption" Margin="10,15,0,0" FontWeight="SemiBold" FontSize="{StaticResource DefaultFontSize}" Text="Block Options:"/>
         </StackPanel>
     </Border>
 </Window>

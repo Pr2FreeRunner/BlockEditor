@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="BlockEditor.Views.Controls.CustomStatsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Height="auto"
+             HorizontalAlignment="Stretch"
+             Margin="0">
+
+    <StackPanel HorizontalAlignment="Stretch">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+            <Label FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Content="Speed: " MinWidth="100" VerticalAlignment="Center"/>
+            <TextBox FontSize="{StaticResource DefaultFontSize}" Name="speedTb" TextChanged="TextBox_TextChanged" PreviewTextInput="TB_PreviewTextInput" VerticalAlignment="Center" HorizontalAlignment="Stretch" MinWidth="50"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,5,0,5" HorizontalAlignment="Stretch">
+            <Label FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Content="Jump: " MinWidth="100" VerticalAlignment="Center"/>
+            <TextBox FontSize="{StaticResource DefaultFontSize}" Name="accelTb" TextChanged="TextBox_TextChanged" PreviewTextInput="TB_PreviewTextInput" VerticalAlignment="Center" HorizontalAlignment="Stretch" MinWidth="50"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,5" HorizontalAlignment="Stretch">
+            <Label FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Content="Acceleration: " MinWidth="100" VerticalAlignment="Center"/>
+            <TextBox FontSize="{StaticResource DefaultFontSize}" Name="jumpTb" TextChanged="TextBox_TextChanged" PreviewTextInput="TB_PreviewTextInput" VerticalAlignment="Center" HorizontalAlignment="Stretch" MinWidth="50"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="5,10,0,5">
+            <CheckBox x:Name="cbReset" FontWeight="SemiBold" Content="Reset to starting stats" MinWidth="100" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>
