@@ -16,7 +16,7 @@ namespace BlockEditor.Views.Windows
 
             if (type == MessageWindowType.Warning)
             {
-                MsgBorder.BorderBrush = new SolidColorBrush(Colors.Yellow);
+                MsgBorder.BorderBrush = new SolidColorBrush(Colors.Gold);
                 this.Title = "Warning";
             }
             else if(type == MessageWindowType.Error)
