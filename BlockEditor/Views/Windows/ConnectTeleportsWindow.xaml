@@ -33,13 +33,16 @@
             </Grid>
 
             <StackPanel Grid.Row="1" Margin="10,25,5,5" Orientation="Vertical" VerticalAlignment="Top">
-                <Label Content="Selected Blocks:  0" x:Name="tbCount"  FontSize="{StaticResource DefaultFontSize}"   FontWeight="SemiBold"  HorizontalAlignment="Left"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" >
+                    <Label Content="Selected Blocks:  0" x:Name="tbCount"  FontSize="{StaticResource DefaultFontSize}"   FontWeight="SemiBold" VerticalContentAlignment="Center" />
+                    <Button Style="{StaticResource WhiteBtn}" FontSize="12"  Margin="30,0,5,0"  Name="btnAddMore" Width="84" Height="22" Content="Add More" Click="btnAddMore_Click" VerticalAlignment="Center"/>
+                </StackPanel>
 
                 <StackPanel Margin="0,15,0,10" Orientation="Horizontal">
                     <Label Content="Color:" FontSize="{StaticResource DefaultFontSize}"  FontWeight="SemiBold" Margin="0,0,10,0"  HorizontalAlignment="Left"/>
                     <local:ColorPickerControl x:Name="MyColorPicker"/>
                     </StackPanel>
-                <Button Style="{StaticResource WhiteBtn}" FontSize="{StaticResource DefaultFontSize}"   Margin="0,30,0,12"  Name="btnOK" Width="100" Height="26" Content="OK" Click="btnOk_Click"/>
+                <Button Style="{StaticResource WhiteBtn}" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold"  Margin="0,30,0,12"  Name="btnOK" Width="100" Height="26" Content="OK" Click="btnOk_Click"/>
 
             </StackPanel>
         </Grid>

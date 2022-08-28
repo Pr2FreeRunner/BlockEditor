@@ -48,8 +48,9 @@ namespace BlockEditor.Models
             Blocks.Add(b);
         }
 
-        public static List<SimpleBlock> End()
+        public static List<SimpleBlock> End(out bool addMore)
         {
+            addMore = false;
             var result = new List<SimpleBlock>();
 
             if(Blocks.Count == 0)
@@ -65,7 +66,13 @@ namespace BlockEditor.Models
             if (w.DialogResult != true)
                 return result;
 
-            foreach(var b in Blocks)
+            if(w.AddMore)
+            {
+                addMore = true;
+                return result;
+            }
+
+            foreach (var b in Blocks)
             {
                 if(b.IsEmpty())
                     continue;

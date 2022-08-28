@@ -12,6 +12,7 @@ namespace BlockEditor.Views.Windows
     public partial class ConnectTeleportsWindow : Window
     {
         public string Option { get; set; }
+        public bool AddMore { get; set; }
 
         public ConnectTeleportsWindow(int count)
         {
@@ -27,7 +28,7 @@ namespace BlockEditor.Views.Windows
         private void Init(int count)
         {
             var culture = CultureInfo.InvariantCulture;
-            tbCount.Content = "Selected Block Count: " + count;
+            tbCount.Content = "Selected Block Count:  " + count;
 
             MyColorPicker.SetColor(string.Empty);
             MyColorPicker.OnNewColor += MyColorPicker_OnNewColor;
@@ -67,6 +68,12 @@ namespace BlockEditor.Views.Windows
         {
             if (e.Key == Key.Escape)
                 Close();
+        }
+
+        private void btnAddMore_Click(object sender, RoutedEventArgs e)
+        {
+            AddMore = true;
+            DialogResult = true;
         }
     }
 }

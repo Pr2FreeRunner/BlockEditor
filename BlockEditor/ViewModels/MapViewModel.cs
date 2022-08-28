@@ -140,11 +140,17 @@ namespace BlockEditor.ViewModels
             }
             else
             {
-                var overwrite = Game.Map.Blocks.Overwrite;
+                var blocks = ConnectTeleports.End(out var addMore);
 
+                if (addMore)
+                {
+                    Mode.Value = UserModes.ConnectTeleports; // updates GUI
+                    return;
+                }
+
+                var overwrite = Game.Map.Blocks.Overwrite;
                 try
                 {
-                    var blocks = ConnectTeleports.End();
                     Game.Map.Blocks.Overwrite = true;
                     Game.AddBlocks(blocks);
                     Mode.Value = UserModes.None;
