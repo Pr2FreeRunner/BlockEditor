@@ -236,11 +236,21 @@ namespace BlockEditor.Views.Windows
             {
                 SearchByComboBox.SelectedIndex = (int)SearchBy.LocalFile;
             }
-            else if (e.Key == Key.Enter && searchTextbox.IsFocused && IsOKToSearch())
+            else if (ctrl && e.Key == Key.Enter && SearchResultPanel.Children != null  && SearchResultPanel.Children.Count > 0)
+            {
+                var mapControl  = SearchResultPanel.Children[0] as SearchResultControl;
+
+                if(mapControl == null)
+                    return;
+
+                mapControl.InvokeSelectedLevel();
+            }
+            else if (!ctrl && e.Key == Key.Enter && searchTextbox.IsFocused && IsOKToSearch())
             {
                 Search_Click(null, null);
                 e.Handled = true;
             }
+
 
             UpdateButtons();
         }

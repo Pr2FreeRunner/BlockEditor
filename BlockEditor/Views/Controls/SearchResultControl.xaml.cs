@@ -27,6 +27,11 @@ namespace BlockEditor.Views.Controls
 
         private void btnTitle_Click(object sender, RoutedEventArgs e)
         {
+            InvokeSelectedLevel();
+        }
+
+        public void InvokeSelectedLevel()
+        {
             OnSelectedLevel?.Invoke(_id);
         }
 
