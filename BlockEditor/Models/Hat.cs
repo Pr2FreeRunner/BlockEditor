@@ -18,7 +18,7 @@ namespace BlockEditor.Models
             Top = 9,
             Jump_Start = 10,
             Moon = 11,
-            Theif = 12,
+            Thief = 12,
             Jigg = 13,
             Artifact = 14,
             Jellyfish = 15,
