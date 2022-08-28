@@ -64,6 +64,9 @@ namespace BlockEditor.Helpers
                         return;
                     }
 
+                    if(string.Equals("m3", map.Level.DataVersion, StringComparison.InvariantCultureIgnoreCase))
+                        map.Level.DataVersion = "m4";
+
                     var data = map.ToPr2String(CurrentUser.Name, CurrentUser.Token, publish, false, newest);
 
                     var msg = DataAccess.PR2Accessor.Upload(data, (arg) =>
