@@ -48,8 +48,9 @@
 
             <TextBlock FontSize="{StaticResource DefaultFontSize}" Text="Title of level?" Grid.Row="0" Name="txtQuestion" Margin="20, 20, 20, 10"/>
             <TextBox FontSize="{StaticResource DefaultFontSize}"  Height="25" HorizontalAlignment="Stretch" Grid.Row="1" Name="txtResponse" Margin="20, 0, 20, 0" TextChanged="txtResponse_TextChanged"/>
-            <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Left" Margin="20,20,20,10">
-                <CheckBox Content="Publish" x:Name="publishCheckBox" Checked="CheckBoxChanged" Unchecked="CheckBoxChanged" />
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,20,20,10">
+                <CheckBox Margin="0,0,10,0" Content="Publish" x:Name="publishCheckBox" Checked="PublishCheckboxChanged" Unchecked="PublishCheckboxChanged" />
+                <CheckBox Margin="20,0,10,0" Content="Newest" x:Name="newestCheckBox" Checked="NewestCheckboxChanged" Unchecked="NewestCheckboxChanged" ToolTip="Upload map to Newest page." IsEnabled="False" />
             </StackPanel>
             <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="20,0,20,20" HorizontalAlignment="Right">
                 <Button FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="100" Height="25" Content="Save" Margin="5"  Name="btnSave" Click="btnSave_Click" />

@@ -9,6 +9,7 @@
         SizeToContent="WidthAndHeight"
         MinWidth="400"
         MinHeight="100"
+        MaxWidth="800"
         WindowStyle="SingleBorderWindow"
         ResizeMode="NoResize"
         Closing="Window_Closing">
@@ -20,7 +21,7 @@
         </Grid.RowDefinitions>
 
         <Border x:Name="MsgBorder" CornerRadius="15" Grid.Row="0" Padding="20,30,20,30" Margin="20,20,20,10" BorderThickness="2" BorderBrush="{StaticResource StandardBackgroundMouseOver}">
-            <TextBlock HorizontalAlignment="Center" FontSize="{StaticResource DefaultFontSize}" Text="Message to user" Name="msgText" />
+            <TextBlock HorizontalAlignment="Center" FontSize="{StaticResource DefaultFontSize}" Text="Message to user" Name="msgText" TextWrapping="Wrap"/>
         </Border>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="20,5,20, 10" HorizontalAlignment="Right">

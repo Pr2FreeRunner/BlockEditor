@@ -69,7 +69,7 @@ namespace BlockEditor.Models
         }
 
 
-        public string ToPr2String(string username, string token, bool publish = false, bool overwrite = false)
+        public string ToPr2String(string username, string token, bool publish, bool overwrite, bool newest)
         {
             Level.Blocks = MyConverters.ToPr2Blocks(Blocks);
             Level.Published = publish;
@@ -82,7 +82,8 @@ namespace BlockEditor.Models
                 Level = Level,
                 Username = username,
                 Token = token,
-                OverWrite = overwrite
+                OverWrite = overwrite,
+                Newest = newest
             };
 
             return PR2Converter.LevelToPr2(dto);

@@ -37,13 +37,13 @@ namespace BlockEditor.Helpers
             {
                 map.Level.Title = save.MapTitle;
                 (App.Current.MainWindow as MainWindow)?.TitleChanged(map.Level.Title);
-                Upload(map, save.Publish);
+                Upload(map, save.Publish, save.Newest);
             }
         }
 
 
 
-        private static void Upload(Map map, bool publish)
+        private static void Upload(Map map, bool publish, bool newest)
         {
             using(new TempCursor(Cursors.Wait))
             {
@@ -64,14 +64,14 @@ namespace BlockEditor.Helpers
                         return;
                     }
 
-                    var data = map.ToPr2String(CurrentUser.Name, CurrentUser.Token, publish, false);
+                    var data = map.ToPr2String(CurrentUser.Name, CurrentUser.Token, publish, false, newest);
 
                     var msg = DataAccess.PR2Accessor.Upload(data, (arg) =>
                     {
                         AskToOverwrite(arg);
 
                         if (arg.TryAgain)
-                            arg.NewLevelData = map.ToPr2String(CurrentUser.Name, CurrentUser.Token, publish, true);
+                            arg.NewLevelData = map.ToPr2String(CurrentUser.Name, CurrentUser.Token, publish, true, newest);
                     });
 
                     if(msg != null && msg.Contains("message=", StringComparison.InvariantCultureIgnoreCase))
@@ -96,7 +96,7 @@ namespace BlockEditor.Helpers
                     map.Level.Title = Path.GetFileNameWithoutExtension(filepath);
                     (App.Current.MainWindow as MainWindow)?.TitleChanged(map.Level.Title);
 
-                    var data = map.ToPr2String(string.Empty, string.Empty, false);
+                    var data = map.ToPr2String(string.Empty, string.Empty, false, false, false);
 
                     File.WriteAllText(filepath, data);
 
@@ -142,7 +142,7 @@ namespace BlockEditor.Helpers
                 map.Level.TextArt0  = new List<TextArt>();
                 map.Level.TextArt00 = new List<TextArt>();
 
-                var content  = map.ToPr2String(string.Empty, string.Empty, false);
+                var content  = map.ToPr2String(string.Empty, string.Empty, false, false, false);
                 var filepath = Path.GetTempPath() + Guid.NewGuid().ToString() + ".txt";
 
                 File.WriteAllText(filepath, content);

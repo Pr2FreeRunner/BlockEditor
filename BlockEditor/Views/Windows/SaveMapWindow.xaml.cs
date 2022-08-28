@@ -12,6 +12,8 @@ namespace BlockEditor.Views.Windows
         public string MapTitle { get; set; }
 
         public bool Publish { get; set; }
+        public bool Newest { get; set; }
+
 
         public string LocalFilepath { get; set; }
 
@@ -79,9 +81,17 @@ namespace BlockEditor.Views.Windows
             UpdateButtons();
         }
 
-        private void CheckBoxChanged(object sender, RoutedEventArgs e)
+        private void PublishCheckboxChanged(object sender, RoutedEventArgs e)
         {
             Publish = publishCheckBox.IsChecked.HasValue ? publishCheckBox.IsChecked.Value : false;
+
+            newestCheckBox.IsEnabled = Publish;
+            newestCheckBox.IsChecked = Publish;
+        }
+
+        private void NewestCheckboxChanged(object sender, RoutedEventArgs e)
+        {
+            Newest = newestCheckBox.IsChecked.HasValue ? newestCheckBox.IsChecked.Value : false;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
