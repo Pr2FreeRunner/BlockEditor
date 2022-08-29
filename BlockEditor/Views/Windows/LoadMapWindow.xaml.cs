@@ -197,16 +197,13 @@ namespace BlockEditor.Views.Windows
                 {
                     var searchInfo = GetSearchInfo();
 
-                    if (string.IsNullOrWhiteSpace(searchInfo?.SearchValue))
-                        return;
-
                     Clean();
 
                     switch (_searchBy)
                     {
                         case SearchBy.Title:
                         case SearchBy.Username:
-                            AddSearchResults(Search(searchInfo));
+                            AddSearchResults(SearchLevel(searchInfo));
                             break;
 
                         case SearchBy.ID:

@@ -53,7 +53,7 @@ namespace BlockEditor.Utils
             }
         }
 
-        public static IEnumerable<SearchResult> Search(SearchLevelInfo info)
+        public static IEnumerable<SearchResult> SearchLevel(SearchLevelInfo info)
         {
             if (string.IsNullOrWhiteSpace(info?.SearchValue))
                 yield break;
