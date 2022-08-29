@@ -78,33 +78,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Dependencies\TAS\Newtonsoft.Json.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\Newtonsoft.Json.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\System.Numerics.Vectors.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\System.Numerics.Vectors.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\System.ValueTuple.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\System.ValueTuple.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\TAS.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\TAS.exe.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\TAS.pdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Resources\Blocks\100.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
