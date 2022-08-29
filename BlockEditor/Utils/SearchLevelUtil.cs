@@ -79,7 +79,28 @@ namespace BlockEditor.Utils
 
         public static IEnumerable<SearchResult> SearchNewest(int page)
         {
-            var data = PR2Accessor.Newest(page, string.Empty);
+            var data = PR2Accessor.Newest(page);
+
+            if (IsSlowDownResponse(data))
+            {
+                yield return SearchResult.SLOW_DOWN;
+                yield break;
+            }
+
+            var levels = PR2Parser.SearchResult(data);
+
+            foreach (var l in levels)
+            {
+                if (l == null)
+                    continue;
+
+                yield return new SearchResult(l.LevelID, l.Title, l.UserName, l.PlayCount, l.Rating);
+            }
+        }
+
+        public static IEnumerable<SearchResult> SearchBestWeek(int page)
+        {
+            var data = PR2Accessor.BestWeek(page);
 
             if (IsSlowDownResponse(data))
             {

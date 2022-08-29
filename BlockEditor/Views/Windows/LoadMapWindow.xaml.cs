@@ -19,7 +19,7 @@ namespace BlockEditor.Views.Windows
 
     public partial class LoadMapWindow : Window
     {
-        private enum SearchBy { Username, Title, ID, LocalFile, Newest, MyLevels } 
+        private enum SearchBy { Username, Title, ID, LocalFile, Newest, BestWeek, MyLevels } 
 
         private SearchBy _searchBy;
         private int _page = 1;
@@ -74,9 +74,12 @@ namespace BlockEditor.Views.Windows
                 if(type == SearchBy.MyLevels && CurrentUser.IsLoggedIn() == false)
                     continue;
 
-                var item     = new ComboBoxItem();
-                item.ToolTip = "HotKey:  Ctrl + " + type.ToString().First();
-                item.Content = InsertSpaceBeforeCapitalLetter(type.ToString());
+                var item = new ComboBoxItem();
+                var name = type == SearchBy.BestWeek ? "Week's Best" : type.ToString();
+
+                item.ToolTip = "HotKey:  Ctrl + " + name.First();
+                item.Content = InsertSpaceBeforeCapitalLetter(name);
+
                 SearchByComboBox.Items.Add(item);
             }
 
@@ -149,7 +152,7 @@ namespace BlockEditor.Views.Windows
         private void UpdateButtons()
         {
             var okToSearch = IsOKToSearch();
-            var pageOk     = (okToSearch && (_searchBy == SearchBy.Username || _searchBy == SearchBy.Title)) ||  _searchBy == SearchBy.Newest;
+            var pageOk     = (okToSearch && (_searchBy == SearchBy.Username || _searchBy == SearchBy.Title)) ||  _searchBy == SearchBy.Newest || _searchBy == SearchBy.BestWeek;
             var fullSearch = _searchBy == SearchBy.Username || _searchBy == SearchBy.Title;
 
             btnSearch.IsEnabled     = okToSearch;
@@ -229,6 +232,11 @@ namespace BlockEditor.Views.Windows
                         case SearchBy.Newest:
                             AddSearchResults(SearchNewest(_page));
                             break;
+
+                        case SearchBy.BestWeek:
+                            AddSearchResults(SearchBestWeek(_page));
+                            break;
+
                         default: throw new Exception("Unknown search config....");
                     }
                 }
@@ -258,7 +266,8 @@ namespace BlockEditor.Views.Windows
 
             if (_searchBy == SearchBy.MyLevels 
                          || _searchBy == SearchBy.LocalFile
-                         || _searchBy == SearchBy.Newest)
+                         || _searchBy == SearchBy.Newest
+                         || _searchBy == SearchBy.BestWeek)
             {
                 searchTextbox.Text = string.Empty;
                 Search_Click(null, null);
@@ -285,6 +294,10 @@ namespace BlockEditor.Views.Windows
             else if (ctrl && e.Key == Key.N)
             {
                 SearchByComboBox.SelectedIndex = (int)SearchBy.Newest;
+            }
+            else if (ctrl && e.Key == Key.W)
+            {
+                SearchByComboBox.SelectedIndex = (int)SearchBy.BestWeek;
             }
             else if (ctrl && e.Key == Key.U)
             {
