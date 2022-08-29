@@ -149,7 +149,7 @@ namespace BlockEditor.Views.Windows
         private void UpdateButtons()
         {
             var okToSearch = IsOKToSearch();
-            var pageOk     = (okToSearch && _searchBy == SearchBy.Username) ||  _searchBy == SearchBy.Newest;
+            var pageOk     = (okToSearch && (_searchBy == SearchBy.Username || _searchBy == SearchBy.Title)) ||  _searchBy == SearchBy.Newest;
             var fullSearch = _searchBy == SearchBy.Username || _searchBy == SearchBy.Title;
 
             btnSearch.IsEnabled     = okToSearch;
@@ -203,6 +203,9 @@ namespace BlockEditor.Views.Windows
                     {
                         case SearchBy.Title:
                         case SearchBy.Username:
+                            if(string.IsNullOrWhiteSpace(searchInfo.SearchValue))
+                                return;
+
                             AddSearchResults(SearchLevel(searchInfo));
                             break;
 
@@ -369,22 +372,13 @@ namespace BlockEditor.Views.Windows
             OpenWindows.Remove(this);
         }
 
-
-        #endregion
-
-        private void Mode_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void Order_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         private void Combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Search_Click(null, null);
         }
+
+        #endregion
+
+
     }
 }
