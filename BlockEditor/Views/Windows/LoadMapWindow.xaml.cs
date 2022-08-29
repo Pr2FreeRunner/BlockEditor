@@ -295,6 +295,10 @@ namespace BlockEditor.Views.Windows
             {
                 SearchByComboBox.SelectedIndex = (int)SearchBy.Newest;
             }
+            else if (ctrl && e.Key == Key.T)
+            {
+                SearchByComboBox.SelectedIndex = (int)SearchBy.Title;
+            }
             else if (ctrl && e.Key == Key.W)
             {
                 SearchByComboBox.SelectedIndex = (int)SearchBy.BestWeek;
