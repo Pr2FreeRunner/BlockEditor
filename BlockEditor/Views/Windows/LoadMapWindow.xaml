@@ -32,8 +32,8 @@
 
             <StackPanel Margin="0,0,0,5" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="99" HorizontalAlignment="Center" Orientation="Horizontal">
                 <ComboBox FontSize="{StaticResource DefaultFontSize}" Margin="10,0,10,0" Name="SearchByComboBox" SelectionChanged="SearchBy_SelectionChanged"/>
-                <ComboBox FontSize="{StaticResource DefaultFontSize}" Margin="10,0,10,0" Name="OrderComboBox"/>
-                <ComboBox FontSize="{StaticResource DefaultFontSize}" Margin="10,0,10,0" Name="SearchDirectionComobBox"/>
+                <ComboBox FontSize="{StaticResource DefaultFontSize}" Margin="10,0,10,0" Name="OrderComboBox" SelectionChanged="Combobox_SelectionChanged"/>
+                <ComboBox FontSize="{StaticResource DefaultFontSize}" Margin="10,0,10,0" Name="SearchDirectionComobBox" SelectionChanged="Combobox_SelectionChanged"/>
             </StackPanel>
             <Grid Grid.Row="1" Grid.Column="0"  Margin="0">
                 <Grid.ColumnDefinitions>

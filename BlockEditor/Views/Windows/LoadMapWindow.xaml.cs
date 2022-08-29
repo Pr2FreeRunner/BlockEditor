@@ -195,8 +195,12 @@ namespace BlockEditor.Views.Windows
             {
                 try
                 {
-                    Clean();
                     var searchInfo = GetSearchInfo();
+
+                    if (string.IsNullOrWhiteSpace(searchInfo?.SearchValue))
+                        return;
+
+                    Clean();
 
                     switch (_searchBy)
                     {
@@ -379,6 +383,11 @@ namespace BlockEditor.Views.Windows
         private void Order_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void Combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Search_Click(null, null);
         }
     }
 }
