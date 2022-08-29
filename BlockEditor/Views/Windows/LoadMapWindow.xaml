@@ -11,7 +11,7 @@
         Loaded="Window_Loaded"
         Closing="Window_Closing">
     
-    <Grid Margin="20,20,20,5" Width="450">
+    <Grid Margin="20,6,20,5" Width="450">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -30,7 +30,7 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Margin="0,0,0,7" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="99" HorizontalAlignment="Center" Orientation="Horizontal">
+            <StackPanel Margin="0,0,0,5" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="99" HorizontalAlignment="Center" Orientation="Horizontal">
                 <ComboBox FontSize="{StaticResource DefaultFontSize}" Margin="10,0,10,0" Name="SearchByComboBox" SelectionChanged="SearchBy_SelectionChanged"/>
                 <ComboBox FontSize="{StaticResource DefaultFontSize}" Margin="10,0,10,0" Name="OrderComboBox"/>
                 <ComboBox FontSize="{StaticResource DefaultFontSize}" Margin="10,0,10,0" Name="SearchDirectionComobBox"/>
@@ -50,13 +50,13 @@
             <Button Name="btnSearch" Width="110"  FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Grid.Row="2" Grid.Column="1" Margin="7,0,7,0"  Content="Search" Click="Search_Click"/>
         </Grid>
 
-        <Border Grid.Row="1" Background="{StaticResource StandardBackground}" CornerRadius="20" Margin="0,20,0,0" Padding="5" MaxHeight="395">
+        <Border Grid.Row="1" Background="{StaticResource StandardBackground}" CornerRadius="20" Margin="0,20,0,0" Padding="5" MaxHeight="326">
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Center" HorizontalAlignment="Stretch">
                 <StackPanel CanVerticallyScroll="True" Name="SearchResultPanel" HorizontalAlignment="Stretch" Orientation="Vertical" MinHeight="210"/>
             </ScrollViewer>
         </Border>
 
-        <StackPanel Grid.Row="2"  Orientation="Horizontal" HorizontalAlignment="Center" Margin="15,20,15,15">
+        <StackPanel Grid.Row="2"  Orientation="Horizontal" HorizontalAlignment="Center" Margin="15,10,15,10">
             <Button FontSize="16" Name="btnLeftPage" Width="36" Height="34" Content="&#9664;" Click="OnPreviousPage"/>
             <TextBlock Text="1" FontWeight="SemiBold" FontSize="16" Name="PageText" Margin="18,0,18,0" VerticalAlignment="Center"/>
             <Button FontSize="16" Name="btnRightPage" Width="36" Height="34" Content="&#9654;" Click="OnNextPage"/>
