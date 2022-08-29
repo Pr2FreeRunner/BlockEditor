@@ -1,6 +1,7 @@
 ﻿using BlockEditor.Helpers;
 using BlockEditor.Models;
 using BlockEditor.Views.Controls;
+using DataAccess.DataStructures;
 using LevelModel.Models;
 using System;
 using System.Collections.Generic;
@@ -11,13 +12,14 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using static BlockEditor.Utils.SearchLevelUtil;
+using static DataAccess.DataStructures.SearchLevelInfo;
 
 namespace BlockEditor.Views.Windows
 {
 
     public partial class LoadMapWindow : Window
     {
-        private enum SearchBy { Username, ID, LocalFile, Newest, MyLevels } 
+        private enum SearchBy { Username, Title, ID, LocalFile, Newest, MyLevels } 
 
         private SearchBy _searchBy;
         private int _page = 1;
@@ -31,16 +33,42 @@ namespace BlockEditor.Views.Windows
         {
             InitializeComponent();
             AddSearchByItems();
+            AddSearchModeItems();
+            AddSearchOrderItems();
             UpdateButtons();
+            Clean();
 
             OpenWindows.Add(this);
         }
 
+        private void AddSearchModeItems()
+        {
+            foreach (SearchDirectionEnum type in Enum.GetValues(typeof(SearchDirectionEnum)))
+            {
+                var item = new ComboBoxItem();
+                item.Content = InsertSpaceBeforeCapitalLetter(type.ToString());
+                SearchDirectionComobBox.Items.Add(item);
+            }
+
+            if (SearchDirectionComobBox.Items != null && SearchDirectionComobBox.Items.Count > 0)
+                SearchDirectionComobBox.SelectedIndex = 0;
+        }
+
+        private void AddSearchOrderItems()
+        {
+            foreach (SearchOrderEnum type in Enum.GetValues(typeof(SearchOrderEnum)))
+            {
+                var item = new ComboBoxItem();
+                item.Content = InsertSpaceBeforeCapitalLetter(type.ToString());
+                OrderComboBox.Items.Add(item);
+            }
+
+            if (OrderComboBox.Items != null && OrderComboBox.Items.Count > 0)
+                OrderComboBox.SelectedIndex = 0;
+        }
 
         private void AddSearchByItems()
         {
-            Clean();
-
             foreach (SearchBy type in Enum.GetValues(typeof(SearchBy)))
             {
                 if(type == SearchBy.MyLevels && CurrentUser.IsLoggedIn() == false)
@@ -51,6 +79,9 @@ namespace BlockEditor.Views.Windows
                 item.Content = InsertSpaceBeforeCapitalLetter(type.ToString());
                 SearchByComboBox.Items.Add(item);
             }
+
+            if (SearchByComboBox.Items != null && SearchByComboBox.Items.Count > 0)
+                SearchByComboBox.SelectedIndex = 0;
         }
 
         private string InsertSpaceBeforeCapitalLetter(string input)
@@ -117,21 +148,47 @@ namespace BlockEditor.Views.Windows
 
         private void UpdateButtons()
         {
-            var ok     = IsOKToSearch();
-            var pageOk = (ok && _searchBy == SearchBy.Username) ||  _searchBy == SearchBy.Newest;
+            var okToSearch = IsOKToSearch();
+            var pageOk     = (okToSearch && _searchBy == SearchBy.Username) ||  _searchBy == SearchBy.Newest;
+            var fullSearch = _searchBy == SearchBy.Username || _searchBy == SearchBy.Title;
 
-            btnSearch.IsEnabled = ok;
-            btnRightPage.IsEnabled = pageOk;
-            btnLeftPage.IsEnabled  = pageOk && _page > 1;
+            btnSearch.IsEnabled     = okToSearch;
+            btnRightPage.IsEnabled  = pageOk;
+            btnLeftPage.IsEnabled   = pageOk && _page > 1;
             searchTextbox.IsEnabled = _searchBy != SearchBy.MyLevels 
                                     && _searchBy != SearchBy.LocalFile
                                     && _searchBy != SearchBy.Newest;
 
             PageText.Text = _page.ToString(CultureInfo.InvariantCulture);
+
+            SearchDirectionComobBox.IsEnabled  = fullSearch;
+            OrderComboBox.IsEnabled = fullSearch;
+        }
+
+        private SearchLevelInfo GetSearchInfo()
+        {
+            var value = searchTextbox.Text;
+            var info  = new SearchLevelInfo(value, _page);
+
+            info.Order     = (SearchOrderEnum)OrderComboBox.SelectedIndex;
+            info.Direction = (SearchDirectionEnum)SearchDirectionComobBox.SelectedIndex;
+
+            switch (_searchBy)
+            {
+                case SearchBy.Username:
+                    info.Mode = SearchModeEnum.User;
+                    break;
+
+                case SearchBy.Title:
+                    info.Mode = SearchModeEnum.Title;
+                    break;
+            }
+
+            return info;
         }
 
         #region Events
-        
+
         private void Search_Click(object sender, RoutedEventArgs e)
         {
             using (new TempCursor(Cursors.Wait))
@@ -139,16 +196,17 @@ namespace BlockEditor.Views.Windows
                 try
                 {
                     Clean();
-                    var search = searchTextbox.Text;
+                    var searchInfo = GetSearchInfo();
 
                     switch (_searchBy)
                     {
+                        case SearchBy.Title:
                         case SearchBy.Username:
-                            AddSearchResults(SearchByUsername(search, _page));
+                            AddSearchResults(Search(searchInfo));
                             break;
 
                         case SearchBy.ID:
-                            var id = GetLevelID(search);
+                            var id = GetLevelID(searchInfo.SearchValue);
 
                             if (id == null)
                                 errorText.Content = "Invalid Level ID";
@@ -167,7 +225,7 @@ namespace BlockEditor.Views.Windows
                         case SearchBy.Newest:
                             AddSearchResults(SearchNewest(_page));
                             break;
-                        default: throw new Exception("Something is wrong...");
+                        default: throw new Exception("Unknown search config....");
                     }
                 }
                 catch (Exception ex)
@@ -310,8 +368,17 @@ namespace BlockEditor.Views.Windows
             OpenWindows.Remove(this);
         }
 
+
         #endregion
 
+        private void Mode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
+        }
+
+        private void Order_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

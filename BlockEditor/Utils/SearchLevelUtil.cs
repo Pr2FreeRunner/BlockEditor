@@ -1,6 +1,7 @@
 ﻿using BlockEditor.Helpers;
 using BlockEditor.Models;
 using DataAccess;
+using DataAccess.DataStructures;
 using LevelModel.Models;
 using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
@@ -52,12 +53,12 @@ namespace BlockEditor.Utils
             }
         }
 
-        public static IEnumerable<SearchResult> SearchByUsername(string username, int page)
+        public static IEnumerable<SearchResult> Search(SearchLevelInfo info)
         {
-            if (string.IsNullOrWhiteSpace(username))
+            if (string.IsNullOrWhiteSpace(info?.SearchValue))
                 yield break;
 
-            var data = PR2Accessor.Search(username, page);
+            var data = PR2Accessor.Search(info);
 
             if (IsSlowDownResponse(data))
             {

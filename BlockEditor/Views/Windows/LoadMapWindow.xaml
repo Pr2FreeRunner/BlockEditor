@@ -22,6 +22,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -29,20 +30,24 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Row="0" Grid.Column="0"  Margin="0">
+            <StackPanel Margin="0,0,0,7" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="99" HorizontalAlignment="Center" Orientation="Horizontal">
+                <ComboBox FontSize="{StaticResource DefaultFontSize}" Margin="10,0,10,0" Name="SearchByComboBox" SelectionChanged="SearchBy_SelectionChanged"/>
+                <ComboBox FontSize="{StaticResource DefaultFontSize}" Margin="10,0,10,0" Name="OrderComboBox"/>
+                <ComboBox FontSize="{StaticResource DefaultFontSize}" Margin="10,0,10,0" Name="SearchDirectionComobBox"/>
+            </StackPanel>
+            <Grid Grid.Row="1" Grid.Column="0"  Margin="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Grid.Column="0" Content="Search:" VerticalAlignment="Bottom" Margin="0" Foreground="Green" FontWeight="SemiBold"/>
-                <Label Grid.Column="1" Content="Error" Name="errorText" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Red"/>
+                <Label Grid.Row="1" Grid.Column="0" Content="Search:" VerticalAlignment="Bottom" Margin="0" Foreground="Green" FontWeight="SemiBold"/>
+                <Label Grid.Row="1" Grid.Column="1" Content="Error" Name="errorText" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Red"/>
 
             </Grid>
-            <ComboBox Grid.Row="0" FontSize="{StaticResource DefaultFontSize}" Name="SearchByComboBox" Grid.Column="1" SelectedIndex="0" Margin="7,5,7,7" SelectionChanged="SearchBy_SelectionChanged"/>
 
-            <TextBox Name="searchTextbox" Grid.Row="1" Grid.Column="0" Margin="5,0,0,0" HorizontalAlignment="Stretch" TextChanged="searchTextbox_TextChanged"/>
-            <Button Name="btnSearch"  FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Grid.Row="1" Grid.Column="1" Margin="7,0,7,0"  Content="Search" Click="Search_Click"/>
+            <TextBox Name="searchTextbox" Grid.Row="2" Grid.Column="0" Margin="5,0,0,0" HorizontalAlignment="Stretch" TextChanged="searchTextbox_TextChanged"/>
+            <Button Name="btnSearch" Width="110"  FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Grid.Row="2" Grid.Column="1" Margin="7,0,7,0"  Content="Search" Click="Search_Click"/>
         </Grid>
 
         <Border Grid.Row="1" Background="{StaticResource StandardBackground}" CornerRadius="20" Margin="0,20,0,0" Padding="5" MaxHeight="395">
