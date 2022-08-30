@@ -107,6 +107,8 @@ namespace BlockEditor.Views.Windows
 
         public void ResetUserMode()
         {
+            BlockSelection.Reset();
+
             if(_currentMap == null)
                 return;
 
