@@ -58,6 +58,8 @@ namespace BlockEditor.Views.Windows
         private void Init()
         {
             var culture = CultureInfo.InvariantCulture;
+            var drawArt = GetDrawArtSize();
+            var textArt = GetTextArtSize();
 
             tbId.Text = _map.Level.LevelID != default(int) ? _map.Level.LevelID.ToString(culture) : string.Empty;
             tbVersion.Text = _map.Level.Version.ToString(culture);
@@ -68,11 +70,13 @@ namespace BlockEditor.Views.Windows
             tbGravity.Text = _map.Level.Gravity.ToString(culture);
             tbUserId.Text = _map.Level.UserID != 0 ? _map.Level.UserID.ToString(culture) : string.Empty;
             tbMode.Text = _map.Level.GameMode?.FullName ?? string.Empty;
-            tbDrawArt.Text = GetDrawArtSize().ToString(culture);
-            tbTextArt.Text = GetTextArtSize().ToString(culture);
+            tbDrawArt.Text = drawArt.ToString(culture);
+            tbTextArt.Text = textArt.ToString(culture);
             tbNote.Text = _map.Level.Note ?? string.Empty;
 
             btnUser.IsEnabled = !string.IsNullOrWhiteSpace(tbUserId.Text);
+            btnDrawArt.IsEnabled = drawArt != 0;
+            btnTextArt.IsEnabled = textArt != 0;
 
             ItemBlockOptionsControl.SetItems(_map.Level.Items);
             HatsControl.SetBadHats(_map.Level.BadHats);

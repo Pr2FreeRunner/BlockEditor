@@ -106,7 +106,7 @@
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBox Grid.Column="0" x:Name="tbDrawArt" IsReadOnly="true" FontSize="12" Margin="4,3,0,3"/>
-                        <Button Grid.Column="1" Content="&#128465;" Width="40" FontSize="16" Margin="5,0,0,0" Click="RemoveDrawArt_Click"/>
+                        <Button x:Name="btnDrawArt" Grid.Column="1" Content="&#128465;" Width="40" FontSize="16" Margin="5,0,0,0" Click="RemoveDrawArt_Click"/>
                     </Grid>
 
                     <Label Content="Text Art Size:" Margin="0,8,0,-2" FontWeight="SemiBold"/>
@@ -116,7 +116,7 @@
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBox Grid.Column="0" x:Name="tbTextArt" IsReadOnly="true" FontSize="12" Margin="4,3,0,3"/>
-                        <Button  Grid.Column="1" Content="&#128465;" FontSize="16" Width="40" Margin="5,0,0,0" Click="RemoveTextArt_Click"/>
+                        <Button  x:Name="btnTextArt" Grid.Column="1" Content="&#128465;" FontSize="16" Width="40" Margin="5,0,0,0" Click="RemoveTextArt_Click"/>
                     </Grid>
                 </StackPanel>
 
