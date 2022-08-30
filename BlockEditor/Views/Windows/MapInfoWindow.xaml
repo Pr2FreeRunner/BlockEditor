@@ -96,7 +96,7 @@
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBox Grid.Column="0" x:Name="tbUserId" IsReadOnly="true" FontSize="12" Margin="4,3,0,3"/>
-                        <Button x:Name="btnUser" FontWeight="SemiBold" Grid.Column="1" Content="?" Width="40" FontSize="16" Margin="5,0,0,0" Click="GetUser_Click"/>
+                        <Button x:Name="btnUser" FontWeight="SemiBold" Grid.Column="1" Content="?" Width="40" FontSize="16" Margin="5,0,0,0" Click="GetUser_Click" ToolTip="Get user info"/>
                     </Grid>
 
                     <Label Content="Draw Art Size:" Margin="0,8,0,-2" FontWeight="SemiBold"/>
