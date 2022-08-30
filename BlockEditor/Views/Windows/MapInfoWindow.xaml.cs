@@ -1,6 +1,7 @@
 ﻿using BlockEditor.Helpers;
 using BlockEditor.Models;
 using BlockEditor.Utils;
+using DataAccess;
 using LevelModel.Models;
 using LevelModel.Models.Components;
 using LevelModel.Models.Components.Art;
@@ -70,6 +71,8 @@ namespace BlockEditor.Views.Windows
             tbDrawArt.Text = GetDrawArtSize().ToString(culture);
             tbTextArt.Text = GetTextArtSize().ToString(culture);
             tbNote.Text = _map.Level.Note ?? string.Empty;
+
+            btnUser.IsEnabled = !string.IsNullOrWhiteSpace(tbUserId.Text);
 
             ItemBlockOptionsControl.SetItems(_map.Level.Items);
             HatsControl.SetBadHats(_map.Level.BadHats);
@@ -312,6 +315,26 @@ namespace BlockEditor.Views.Windows
                 return;
 
             _map.Level.Note = tb.Text;
+        }
+
+        private void GetUser_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var info = PR2Accessor.GetUser((uint)_map.Level.UserID);
+
+                if(string.IsNullOrEmpty(info?.Name))
+                {
+                    MessageUtil.ShowInfo("User not found...");
+                    return;
+                }
+
+                MessageUtil.ShowInfo("The user is:  " + info.Name);
+            }
+            catch(Exception ex)
+            {
+                MessageUtil.ShowError(ex.Message);
+            }
         }
     }
 }

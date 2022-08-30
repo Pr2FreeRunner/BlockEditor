@@ -120,7 +120,7 @@ namespace BlockEditor.Models
 
         public static string BlockEditorVersion
         {
-            get { return "2.16"; }
+            get { return "2.17"; }
         }
 
 

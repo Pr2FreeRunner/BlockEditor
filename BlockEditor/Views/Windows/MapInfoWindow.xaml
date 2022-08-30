@@ -90,7 +90,14 @@
                     <TextBox x:Name="tbVersion" Margin="4,0,0,0" IsReadOnly="true" FontSize="12"/>
 
                     <Label Content="User ID:" Margin="0,8,0,0" FontWeight="SemiBold"/>
-                    <TextBox x:Name="tbUserId" Margin="4,0,0,0" IsReadOnly="true" FontSize="12"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" x:Name="tbUserId" IsReadOnly="true" FontSize="12" Margin="4,3,0,3"/>
+                        <Button x:Name="btnUser" FontWeight="SemiBold" Grid.Column="1" Content="?" Width="40" FontSize="16" Margin="5,0,0,0" Click="GetUser_Click"/>
+                    </Grid>
 
                     <Label Content="Draw Art Size:" Margin="0,8,0,-2" FontWeight="SemiBold"/>
                     <Grid>
