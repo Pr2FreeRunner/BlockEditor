@@ -1,5 +1,6 @@
 ﻿using BlockEditor.Models;
 using BlockEditor.Utils;
+using LevelModel.Models;
 using LevelModel.Models.Components;
 using System;
 using System.Collections.Generic;
@@ -26,8 +27,25 @@ namespace BlockEditor.Views.Windows
 
             tbTotal.Text = map.Blocks.BlockCount.ToString(CultureInfo.InvariantCulture);
 
-            using(new TempCursor(Cursors.Wait))
+           
+
+            using (new TempCursor(Cursors.Wait))
+            {
                 SetSpecificBlockCount(map);
+                SetMapDimensions(map);
+            }
+        }
+
+        private void SetMapDimensions(Map map)
+        {
+            if(map == null)
+                return;
+
+            var x = map.Level.Blocks.Select(b => b.X).GetMinAndMax();
+            var y = map.Level.Blocks.Select(b => b.Y).GetMinAndMax();
+
+            tbWidth.Text  = (1 + x.max - x.min).ToString();
+            tbHeight.Text = (1 + y.max - y.min).ToString();
         }
 
         private void SetSpecificBlockCount(Map map)
