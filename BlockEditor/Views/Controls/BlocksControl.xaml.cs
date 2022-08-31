@@ -124,7 +124,7 @@ namespace BlockEditor.Views.Controls
         {
             var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
            
-            if (!ctrl)
+            if (!ctrl || id == null)
             {
                 UnselectBorders(_selectedBorders);
                 _selectedIds.Clear();
@@ -136,8 +136,8 @@ namespace BlockEditor.Views.Controls
             {
                 _selectedIds.Add(id.Value);
                 _selectedBorders.Add(border);
-                OnSelectedBlockID?.Invoke(_selectedIds, ctrl);
                 SelectBorders(_selectedBorders);
+                OnSelectedBlockID?.Invoke(_selectedIds, ctrl);
             }
         }
 
