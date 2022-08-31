@@ -1,8 +1,6 @@
 ﻿using BlockEditor.Helpers;
 using BlockEditor.Models;
 using LevelModel.Models.Components;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using static BlockEditor.Models.BlockImages;
@@ -12,7 +10,7 @@ namespace BlockEditor.Views.Windows
     public partial class SelectBlockWindow : Window
     {
 
-        private List<int> _selectedBlocks { get; set; }
+        private int? _selectedBlock { get; set; }
 
         private SelectBlockWindow(string title)
         {
@@ -21,16 +19,14 @@ namespace BlockEditor.Views.Windows
 
             tbTitle.Text = title;
             this.Title = "Select Block";
-            MyBlockControl.OnSelectedBlockID += OnBlocksSelected;
+            MyBlockControl.OnSelectedBlockID += OnBlockSelected;
             OpenWindows.Add(this);
         }
 
-        private void OnBlocksSelected(List<int> blocks, bool ctrl)
+        private void OnBlockSelected(int? b)
         {
-            _selectedBlocks = blocks;
-
-            if(!ctrl)
-                Close();
+            _selectedBlock = b;
+            Close();
         }
 
         public static int? Show(string title, bool startblocks)
@@ -45,13 +41,13 @@ namespace BlockEditor.Views.Windows
 
                 w.ShowDialog();
 
-                if(!startblocks && w._selectedBlocks.Any(b => Block.IsStartBlock(b)))
+                if(!startblocks && Block.IsStartBlock(w._selectedBlock))
                 {
                     MessageUtil.ShowError("Selecting a start-block is not allowed, redo it!");
                     return Show(title, startblocks);
                 }
 
-                return w._selectedBlocks.First();
+                return w._selectedBlock;
             }
             finally
             {
@@ -66,7 +62,7 @@ namespace BlockEditor.Views.Windows
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            _selectedBlocks = null;
+            _selectedBlock = null;
             Close();
         }
 
@@ -74,7 +70,7 @@ namespace BlockEditor.Views.Windows
         {
             if(e.Key == Key.Escape)
             {
-                _selectedBlocks = null;
+                _selectedBlock = null;
                 Close();
             }
         }

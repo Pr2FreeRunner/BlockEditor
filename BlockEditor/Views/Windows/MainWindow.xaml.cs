@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using BlockEditor.Models;
@@ -54,7 +52,7 @@ namespace BlockEditor.Views.Windows
         {
             InitializeComponent();
             SetBlockImageSize();
-            BlocksControl.OnSelectedBlockID += OnSelectedBlocks;
+            BlocksControl.OnSelectedBlockID += OnSelectedBlockId;
             BlockSelection.CleanUserBlockControl = BlocksControl.RemoveSelection;
             CreateNewTab();
         }
@@ -92,31 +90,13 @@ namespace BlockEditor.Views.Windows
             BlocksControl.Init(blockSize, 3);
         }
 
-        private void OnSelectedBlocks(List<int> ids, bool ctrl)
+        private void OnSelectedBlockId(int? id)
         {
             if(_currentMap == null)
                 return;
 
-            if(ids.Count > 1)
-            {
-                var a = new int?[ids.Count ,1];
-
-                for (int i = 0; i < ids.Count; i++)
-                    a[i, 0] = ids[i];
-
-                BlockSelection.SelectedBlocks = a;
-                BlockSelection.SelectedBlock = null;
-            }
-            else if(ids.Count == 1)
-            {
-                BlockSelection.SelectedBlocks = null;
-                BlockSelection.SelectedBlock = ids.First();
-            }
-            else
-            {
-                BlockSelection.SelectedBlocks = null;
-                BlockSelection.SelectedBlock = null;
-            }
+            BlockSelection.SelectedBlocks = null;
+            BlockSelection.SelectedBlock = id;
 
             foreach (var child in TabPanel.Children)
             {

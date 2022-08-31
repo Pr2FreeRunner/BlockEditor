@@ -10,17 +10,15 @@ using System.Linq;
 using BlockEditor.Utils;
 using LevelModel.Models.Components;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace BlockEditor.Views.Controls
 {
     public partial class BlocksControl : UserControl
     {
 
-        public event Action<List<int>, bool> OnSelectedBlockID;
+        public event Action<int?> OnSelectedBlockID;
 
-        private List<Border> _selectedBorders { get; }
-        private List<int> _selectedIds { get; }
+        private Border _selectedBorder { get; set; }
 
         private Color _selectedColor;
         private int _paddingX;
@@ -29,8 +27,6 @@ namespace BlockEditor.Views.Controls
         {
             InitializeComponent();
             _selectedColor = Colors.White;
-            _selectedIds = new List<int>();
-            _selectedBorders = new List<Border>();
             _paddingX = 3;
         }
 
@@ -86,24 +82,15 @@ namespace BlockEditor.Views.Controls
             return border;
         }
 
-        private void UnselectBorders(List<Border> borders)
+        private void ToggleBorder(Border border)
         {
-            if (borders == null)
+            if (border == null)
                 return;
 
-            foreach (var b in borders)
-                b.BorderBrush = null;
-           
-        }
-
-        private void SelectBorders(List<Border> borders)
-        {
-            if (borders == null)
-                return;
-
-            foreach (var b in borders)
-                b.BorderBrush = new SolidColorBrush(_selectedColor);
-
+            if (border.BorderBrush == null)
+                border.BorderBrush = new SolidColorBrush(_selectedColor);
+            else
+                _selectedBorder.BorderBrush = null;
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -122,23 +109,14 @@ namespace BlockEditor.Views.Controls
 
         private void CreateSelection(Border border, int? id)
         {
-            var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-           
-            if (!ctrl || id == null)
-            {
-                UnselectBorders(_selectedBorders);
-                _selectedIds.Clear();
-                _selectedBorders.Clear();
-            }
+            ToggleBorder(_selectedBorder);
 
+            _selectedBorder = border;
 
             if(id != null)
-            {
-                _selectedIds.Add(id.Value);
-                _selectedBorders.Add(border);
-                SelectBorders(_selectedBorders);
-                OnSelectedBlockID?.Invoke(_selectedIds, ctrl);
-            }
+                OnSelectedBlockID?.Invoke(id);
+
+            ToggleBorder(_selectedBorder);
         }
 
         public void RemoveSelection()
