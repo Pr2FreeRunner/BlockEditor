@@ -30,22 +30,7 @@ namespace BlockEditor.Views.Windows
            
 
             using (new TempCursor(Cursors.Wait))
-            {
                 SetSpecificBlockCount(map);
-                SetMapDimensions(map);
-            }
-        }
-
-        private void SetMapDimensions(Map map)
-        {
-            if(map == null)
-                return;
-
-            var x = map.Level.Blocks.Select(b => b.X).GetMinAndMax();
-            var y = map.Level.Blocks.Select(b => b.Y).GetMinAndMax();
-
-            tbWidth.Text  = (1 + x.max - x.min).ToString();
-            tbHeight.Text = (1 + y.max - y.min).ToString();
         }
 
         private void SetSpecificBlockCount(Map map)
