@@ -19,7 +19,7 @@ namespace BlockEditor.Views.Controls
 
         public event Action<List<int>, bool> OnSelectedBlockID;
 
-        private List<Border> _selectedBorders { get; set; }
+        private List<Border> _selectedBorders { get; }
         private List<int> _selectedIds { get; }
 
         private Color _selectedColor;
