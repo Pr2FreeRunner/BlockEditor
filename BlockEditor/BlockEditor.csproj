@@ -319,7 +319,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Views\Controls\BlockOptionsControl - Copy.xaml">
+    <Page Update="Views\Controls\BlockOptionsControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\Controls\CustomStatsControl.xaml">
