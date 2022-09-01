@@ -79,7 +79,7 @@ namespace BlockEditor.Views.Windows
         private void Init()
         {
             tbPosX.Text = "444.0";
-            tbPosY.Text = "336.0";
+            tbPosY.Text = "337.0";
 
             foreach (ImageType type in Enum.GetValues(typeof(ImageType)))
             {
