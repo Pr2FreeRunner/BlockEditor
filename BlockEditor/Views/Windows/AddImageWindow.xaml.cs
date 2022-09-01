@@ -26,12 +26,12 @@ namespace BlockEditor.Views.Windows
         private static double? _posY;
 
         private static string _path;
-        private static string _posXInput;
-        private static string _posYInput;
+        private static int? _target;
         private static int? _size;
         private static int? _ignoreColor;
         private static int? _sensitivity;
-        private static int? _target;
+        private static string _posXInput;
+        private static string _posYInput;
 
         public BuildDTO BuildInfo { get; set; }
 
