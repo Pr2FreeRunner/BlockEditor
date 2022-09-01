@@ -37,6 +37,7 @@ namespace BlockEditor.Views.Windows
 
         public bool GetPosition { get; set; }
 
+
         public ImageToBlocksWindow(MyPoint? p)
         {
             InitializeComponent();
@@ -47,6 +48,7 @@ namespace BlockEditor.Views.Windows
             Init(p);
             UpdateButtons();
         }
+
 
         private void UpdateButtons()
         {
@@ -299,7 +301,7 @@ namespace BlockEditor.Views.Windows
             }
         }
 
-        public static void ShiftPosition(List<Block> blocks)
+        public void ShiftPosition(List<Block> blocks)
         {
             if(blocks == null || !blocks.Any())
                 return;
