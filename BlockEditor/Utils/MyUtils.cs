@@ -3,6 +3,7 @@ using BlockEditor.Models;
 using BlockEditor.Views.Windows;
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -62,6 +63,17 @@ namespace BlockEditor.Utils
             MessageUtil.ShowWarning($"This map has {count} {blocks} outside the PR2 boundaries."
                         + Environment.NewLine + Environment.NewLine
                         + $"{these} {blocks} will be ignored.");
+        }
+
+        public static string InsertSpaceBeforeCapitalLetter(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return string.Empty;
+
+            if (string.Equals("ID", input, StringComparison.InvariantCultureIgnoreCase))
+                return input;
+
+            return string.Concat(input.ToString().Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
         }
     }
 }

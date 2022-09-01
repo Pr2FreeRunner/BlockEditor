@@ -10,6 +10,7 @@ using BlockEditor.Helpers;
 using BlockEditor.Models;
 using BlockEditor.Utils;
 using BlockEditor.Views.Windows;
+using Builders.DataStructures.DTO;
 using LevelModel.Models.Components;
 using SkiaSharp;
 using static BlockEditor.Models.BlockImages;
@@ -327,14 +328,35 @@ namespace BlockEditor.ViewModels
 
             using (new TempCursor(Cursors.Wait))
             {
-                var pr2Blocks = Builders.PR2Builder.BuildLevel(w.BuildInfo).Blocks.Skip(8).ToList();
-                ImageToBlocksWindow.ShiftPosition(pr2Blocks);
-                var blocks = MyConverters.ToBlocks(pr2Blocks, out var blocksOutsideBoundries).GetBlocks();
-                var position = blocks.First().Position;
+                var level = Builders.PR2Builder.BuildLevel(w.BuildInfo);
 
-                MyUtils.BlocksOutsideBoundries(blocksOutsideBoundries);
-                Game.AddBlocks(blocks);
-                Game.GoToPosition(position);
+                if(level == null)
+                    throw new Exception("Something went wrong....");
+
+                if(w.BuildInfo.ImageInfo.Type == ImageDTO.ImageType.Blocks) 
+                { 
+                    var pr2Blocks = level.Blocks.Skip(8).ToList();
+                    ImageToBlocksWindow.ShiftPosition(pr2Blocks);
+                    var blocks = MyConverters.ToBlocks(pr2Blocks, out var blocksOutsideBoundries).GetBlocks();
+                    var position = blocks.First().Position;
+
+                    MyUtils.BlocksOutsideBoundries(blocksOutsideBoundries);
+                    Game.AddBlocks(blocks);
+                    Game.GoToPosition(position);
+                }
+                else
+                {
+                    w.ShiftPosition(level.DrawArt0);
+                    w.ShiftPosition(level.DrawArt1);
+
+                    foreach (var art in level.DrawArt1)
+                        Game.Map.Level.DrawArt1.Add(art);
+
+                    foreach (var art in level.DrawArt0)
+                        Game.Map.Level.DrawArt0.Add(art);
+
+                    MessageUtil.ShowInfo("The image has been added to the map." + Environment.NewLine + Environment.NewLine + "Note:  Art is not visible inside the Block Editor.");
+                }
             }
         }
 

@@ -332,7 +332,7 @@
     <Page Update="Views\Windows\NavigatorWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
-    <Page Update="Views\Windows\ImageToBlocksWindow.xaml">
+    <Page Update="Views\Windows\AddImageWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\Windows\MapInfoWindow.xaml">

@@ -1,5 +1,6 @@
 ﻿using BlockEditor.Helpers;
 using BlockEditor.Models;
+using BlockEditor.Utils;
 using BlockEditor.Views.Controls;
 using DataAccess.DataStructures;
 using LevelModel.Models;
@@ -46,7 +47,7 @@ namespace BlockEditor.Views.Windows
             foreach (SearchDirectionEnum type in Enum.GetValues(typeof(SearchDirectionEnum)))
             {
                 var item = new ComboBoxItem();
-                item.Content = InsertSpaceBeforeCapitalLetter(type.ToString());
+                item.Content = MyUtils.InsertSpaceBeforeCapitalLetter(type.ToString());
                 SearchDirectionComobBox.Items.Add(item);
             }
 
@@ -59,7 +60,7 @@ namespace BlockEditor.Views.Windows
             foreach (SearchOrderEnum type in Enum.GetValues(typeof(SearchOrderEnum)))
             {
                 var item = new ComboBoxItem();
-                item.Content = InsertSpaceBeforeCapitalLetter(type.ToString());
+                item.Content = MyUtils.InsertSpaceBeforeCapitalLetter(type.ToString());
                 OrderComboBox.Items.Add(item);
             }
 
@@ -78,7 +79,7 @@ namespace BlockEditor.Views.Windows
                 var name = type == SearchBy.BestWeek ? "Week's Best" : type.ToString();
 
                 item.ToolTip = "HotKey:  Ctrl + " + name.First();
-                item.Content = InsertSpaceBeforeCapitalLetter(name);
+                item.Content = MyUtils.InsertSpaceBeforeCapitalLetter(name);
 
                 SearchByComboBox.Items.Add(item);
             }
@@ -87,16 +88,6 @@ namespace BlockEditor.Views.Windows
                 SearchByComboBox.SelectedIndex = 0;
         }
 
-        private string InsertSpaceBeforeCapitalLetter(string input)
-        {
-            if (string.IsNullOrWhiteSpace(input))
-                return string.Empty;
-
-            if (string.Equals("ID", input, StringComparison.InvariantCultureIgnoreCase))
-                return input;
-
-            return string.Concat(input.ToString().Select(x => char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
-        }
 
         private void AddSearchResults(IEnumerable<SearchResult> results)
         {
