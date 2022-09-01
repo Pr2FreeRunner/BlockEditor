@@ -55,16 +55,16 @@ namespace BlockEditor.Views.Windows
             if (_posY == null)
                 return false;
 
-            if (string.IsNullOrWhiteSpace(cbSize.Text))
+            if (string.IsNullOrWhiteSpace((cbSize.SelectedValue as ComboBoxItem)?.Content as string))
                 return false;
 
-            if (string.IsNullOrWhiteSpace(cbIgnoreColor.Text))
+            if (string.IsNullOrWhiteSpace((cbIgnoreColor.SelectedValue as ComboBoxItem)?.Content as string))
                 return false;
 
-            if (string.IsNullOrWhiteSpace(cbSensitivity.Text))
+            if (string.IsNullOrWhiteSpace((cbSensitivity.SelectedValue as ComboBoxItem)?.Content as string))
                 return false;
 
-            if (string.IsNullOrWhiteSpace(cbTarget.Text))
+            if (string.IsNullOrWhiteSpace((cbTarget.SelectedValue as ComboBoxItem)?.Content as string))
                 return false;
 
             if (string.IsNullOrWhiteSpace(tbPath.Text))
@@ -78,8 +78,8 @@ namespace BlockEditor.Views.Windows
 
         private void Init()
         {
-            tbPosX.Text = "350.0";
-            tbPosY.Text = "350.0";
+            tbPosX.Text = "444.0";
+            tbPosY.Text = "336.0";
 
             foreach (ImageType type in Enum.GetValues(typeof(ImageType)))
             {
@@ -115,7 +115,7 @@ namespace BlockEditor.Views.Windows
                 cbSize.Items.Add(item);
             }
 
-            cbSensitivity.SelectedIndex = (int)(ColorSensitivty.VeryHigh - 1);
+            cbSensitivity.SelectedIndex = (int)(ColorSensitivty.High - 1);
         }
 
         private void Double_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -244,6 +244,10 @@ namespace BlockEditor.Views.Windows
             {
                 MessageBox.Show("Image file not found...");
                 return null;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Failed to load Image..." + Environment.NewLine + Environment.NewLine + ex.Message);
             }
         }
 
