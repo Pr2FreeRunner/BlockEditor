@@ -8,7 +8,7 @@ namespace BlockEditor.Models
 
     public class UserMode : NotificationObject
     {
-        public enum UserModes { None, Selection, Fill, BlockInfo, MapInfo, BlockCount, Settings, ConnectTeleports, MoveBlock }
+        public enum UserModes { None, Selection, Fill, BlockInfo, MapInfo, BlockCount, Settings, ConnectTeleports, MoveBlock, GetPosition }
 
         private static Cursor BucketCursor;
 
@@ -74,6 +74,7 @@ namespace BlockEditor.Models
                         Mouse.OverrideCursor = BucketCursor;
                         break;
 
+                    case UserModes.GetPosition:
                     case UserModes.BlockInfo:
                         Mouse.OverrideCursor = Cursors.Cross;
                         break;

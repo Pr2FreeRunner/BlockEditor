@@ -39,6 +39,8 @@ namespace BlockEditor.ViewModels
             set { Game.Map.Blocks.Overwrite = value; RaisePropertyChanged(); }
         }
 
+        private Action<MyPoint?> _getPosition;
+
         public RelayCommand NavigatorCommand { get; }
         public RelayCommand FillCommand { get; }
         public RelayCommand SelectCommand { get; }
@@ -314,14 +316,21 @@ namespace BlockEditor.ViewModels
             BlockSelection.Reset();
         }
 
-        public void OnAddImageClick()
+        public void OnAddImageClick(MyPoint? p = null)
         {
             BlockSelection.Reset();
             UserSelection.Reset();
             Mode.Value = UserModes.None;
 
-            var w = new ImageToBlocksWindow();
+            var w = new ImageToBlocksWindow(p);
             var r = w.ShowDialog();
+
+            if (w.GetPosition)
+            {
+                Mode.Value = UserModes.GetPosition;
+                _getPosition = (x) => OnAddImageClick(x);
+                return;
+            }
 
             if (r != true || w.BuildInfo == null)
                 return;
@@ -499,6 +508,10 @@ namespace BlockEditor.ViewModels
 
             switch (Mode.Value)
             {
+                case UserModes.GetPosition:
+                    _getPosition?.Invoke(index);
+                    break;
+
                 case UserModes.ConnectTeleports:
                     ConnectTeleports.Add(Game.Map.Blocks.GetBlock(index));
                     break;

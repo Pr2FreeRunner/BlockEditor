@@ -24,17 +24,27 @@ namespace BlockEditor.Views.Windows
     {
         private static double? _posX;
         private static double? _posY;
+        private static string _path;
+        private static string _posXInput;
+        private static string _posYInput;
+
+        private static int? _size;
+        private static int? _ignoreColor;
+        private static int? _sensitivity;
+        private static int? _target;
 
         public BuildDTO BuildInfo { get; set; }
 
-        public ImageToBlocksWindow()
+        public bool GetPosition { get; set; }
+
+        public ImageToBlocksWindow(MyPoint? p)
         {
             InitializeComponent();
 
             OpenWindows.Add(this);
             MyUtils.SetPopUpWindowPosition(this);
 
-            Init();
+            Init(p);
             UpdateButtons();
         }
 
@@ -76,11 +86,8 @@ namespace BlockEditor.Views.Windows
             return true;
         }
 
-        private void Init()
+        private void Init(MyPoint? p)
         {
-            tbPosX.Text = "444.0";
-            tbPosY.Text = "337.0";
-
             foreach (ImageType type in Enum.GetValues(typeof(ImageType)))
             {
                 var item = new ComboBoxItem();
@@ -115,7 +122,32 @@ namespace BlockEditor.Views.Windows
                 cbSize.Items.Add(item);
             }
 
-            cbSensitivity.SelectedIndex = (int)(ColorSensitivty.High - 1);
+            if(p != null)
+                tbPosX.Text = p.Value.X.ToString() + ".0";
+            else if(_posXInput != null)
+                tbPosX.Text = _posXInput;
+
+            if (p != null)
+                tbPosY.Text = p.Value.Y.ToString() + ".0";
+            else if (_posY != null)
+                tbPosY.Text = _posYInput;
+
+            if (_target != null)
+                cbTarget.SelectedIndex = _target.Value;
+
+            if (_sensitivity != null)
+                cbSensitivity.SelectedIndex = _sensitivity.Value;
+            else
+                cbSensitivity.SelectedIndex = (int)(ColorSensitivty.High - 1);
+
+            if (_ignoreColor != null)
+                cbIgnoreColor.SelectedIndex = _ignoreColor.Value;
+
+            if (_size != null)
+                cbSize.SelectedIndex = _size.Value;
+
+            if (_path != null)
+                tbPath.Text = _path; 
         }
 
         private void Double_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -128,6 +160,15 @@ namespace BlockEditor.Views.Windows
             e.Handled = !isDouble || result < 0;
         }
 
+        private void SaveInputs()
+        {
+            _path = tbPath.Text;
+            _size = cbSize.SelectedIndex;
+            _target = cbTarget.SelectedIndex;
+            _ignoreColor = cbIgnoreColor.SelectedIndex;
+            _sensitivity = cbSensitivity.SelectedIndex;
+        }
+
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
@@ -135,6 +176,7 @@ namespace BlockEditor.Views.Windows
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            SaveInputs();
             OpenWindows.Remove(this);
         }
 
@@ -146,7 +188,10 @@ namespace BlockEditor.Views.Windows
                 return;
 
             if (MyUtils.TryParseDouble(tb.Text, out var result))
+            {
                 _posX = result;
+                _posXInput = tb.Text;
+            }
 
             UpdateButtons();
         }
@@ -159,7 +204,10 @@ namespace BlockEditor.Views.Windows
                 return;
 
             if (MyUtils.TryParseDouble(tb.Text, out var result))
+            {
                 _posY = result;
+                _posYInput = tb.Text;
+            }
 
             UpdateButtons();
         }
@@ -311,6 +359,19 @@ namespace BlockEditor.Views.Windows
         private void cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateButtons();
+        }
+
+        private void btnPosition_Click(object sender, RoutedEventArgs e)
+        {
+            GetPosition = true;
+            DialogResult = true;
+            Close();
+        }
+
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Escape)
+                Close();
         }
     }
 }

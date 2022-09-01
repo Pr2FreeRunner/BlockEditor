@@ -9,7 +9,8 @@
         WindowStyle="None"
         Width="435"
         SizeToContent="Height"
-        Closing="Window_Closing">
+        Closing="Window_Closing"
+        PreviewKeyDown="Window_PreviewKeyDown">
 
     <Border Background="{StaticResource LightBackground}" 
             BorderBrush="{StaticResource StandardBorderColor}"
@@ -57,20 +58,34 @@
                     <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Color Sensitivity:"/>
                     <ComboBox Margin="4,0,0,0" x:Name="cbSensitivity" SelectionChanged="cb_SelectionChanged" FontSize="{StaticResource DefaultFontSize}"/>
                 </StackPanel>
-                
 
-                <Label Content="X-Position:" Margin="0,5,0,0" FontWeight="SemiBold"/>
-                <TextBox x:Name="tbPosX" Margin="4,0,0,0" TextChanged="tbPosX_TextChanged" PreviewTextInput="Double_PreviewTextInput" FontSize="12" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <Label Content="X-Position:" Margin="0,5,0,0" FontWeight="SemiBold"/>
+                        <TextBox x:Name="tbPosX" Margin="4,0,0,0" TextChanged="tbPosX_TextChanged" PreviewTextInput="Double_PreviewTextInput" FontSize="12" />
 
 
-                <Label Content="Y-Position:" Margin="0,5,0,0" FontWeight="SemiBold"/>
-                <TextBox x:Name="tbPosY" Margin="4,0,0,0" TextChanged="tbPosY_TextChanged" PreviewTextInput="Double_PreviewTextInput" FontSize="12" />
+                        <Label Content="Y-Position:" Margin="0,5,0,0" FontWeight="SemiBold"/>
+                        <TextBox x:Name="tbPosY" Margin="4,0,0,0" TextChanged="tbPosY_TextChanged" PreviewTextInput="Double_PreviewTextInput" FontSize="12" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="20,45,20,20">
+                        <Button Style="{StaticResource WhiteBtn}" Width="100" Height="25" Content="Get Position" Margin="5" Click="btnPosition_Click" />
+                    </StackPanel>
+
+                </Grid>
+               
 
             </StackPanel>
 
             <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="20,15,20,5" HorizontalAlignment="Right">
-                <Button Width="100" Height="25" Content="OK" x:Name="btnOk" IsDefault="True" Margin="5" Click="btnOk_Click" />
-                <Button Width="100" Height="25" Content="Cancel" IsCancel="True" Margin="5" Name="btnCancel" Click="btnCancel_Click" />
+                <Button Style="{StaticResource WhiteBtn}" Width="100" Height="25" Content="OK" x:Name="btnOk" IsDefault="True" Margin="5" Click="btnOk_Click" />
+                <Button Style="{StaticResource WhiteBtn}" Width="100" Height="25" Content="Cancel" IsCancel="True" Margin="5" Name="btnCancel" Click="btnCancel_Click" />
             </StackPanel>
         </Grid>
 
