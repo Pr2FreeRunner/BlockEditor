@@ -4,6 +4,7 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Linq;
 using System.Windows.Input;
 using Builders.DataStructures.DTO;
 using Microsoft.Win32;
@@ -11,12 +12,11 @@ using SkiaSharp;
 using System.IO;
 using BlockEditor.Helpers;
 using System.Collections.Generic;
-using LevelModel.Models;
 using LevelModel.Models.Components;
-using System.Linq;
+using LevelModel.Models.Components.Art;
+
 using static Builders.DataStructures.DTO.ImageDTO;
 using static Builders.DataStructures.DTO.BuildDTO;
-using LevelModel.Models.Components.Art;
 
 namespace BlockEditor.Views.Windows
 {
