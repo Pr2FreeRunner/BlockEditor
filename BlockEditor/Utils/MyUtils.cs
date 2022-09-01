@@ -60,7 +60,7 @@ namespace BlockEditor.Utils
             var blocks = plural ? "blocks" : "block";
             var these  = plural ? "These" : "This";
 
-            MessageUtil.ShowWarning($"This map has {count} {blocks} outside the PR2 boundaries."
+            MessageUtil.ShowWarning($"This map has {count} {blocks} outside the Editor's boundaries."
                         + Environment.NewLine + Environment.NewLine
                         + $"{these} {blocks} will be ignored.");
         }
