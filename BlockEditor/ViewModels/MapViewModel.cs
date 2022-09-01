@@ -509,7 +509,10 @@ namespace BlockEditor.ViewModels
             switch (Mode.Value)
             {
                 case UserModes.GetPosition:
-                    _getPosition?.Invoke(index);
+                    if(_getPosition != null)
+                        _getPosition(index);
+                    else
+                        Mode.Value = UserModes.None;
                     break;
 
                 case UserModes.ConnectTeleports:
