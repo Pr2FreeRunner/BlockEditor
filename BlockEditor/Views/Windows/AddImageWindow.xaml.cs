@@ -100,7 +100,7 @@ namespace BlockEditor.Views.Windows
             var index = cbSize.SelectedIndex;
             cbSize.Items.Clear();
             
-            var count = (target == null || target.Value != ImageType.Blocks) ? 8 : 20;
+            var count = (target == null || target.Value != ImageType.Blocks) ? 8 : 16;
 
             for (int i = 1; i <= count; i++)
             {
