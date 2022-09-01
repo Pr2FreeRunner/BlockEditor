@@ -54,9 +54,8 @@ namespace BlockEditor.Views.Windows
         {
             btnOk.IsEnabled = IsInputValid();
 
-            var target = (ImageType) (cbTarget.SelectedIndex + 1);
-
-            sensitivityPanel.Visibility =  target == ImageType.Blocks ? Visibility.Collapsed : Visibility.Visible;
+            var target = GetTarget();
+            sensitivityPanel.Visibility = target == ImageType.Blocks ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private bool IsInputValid()
@@ -88,6 +87,33 @@ namespace BlockEditor.Views.Windows
             return true;
         }
 
+        private ImageType? GetTarget()
+        {
+            if(cbTarget.SelectedIndex == -1)
+                return null;
+
+            return (ImageType)(cbTarget.SelectedIndex + 1);
+        }
+
+        private void AddSizes(ImageType? target)
+        {
+            var index = cbSize.SelectedIndex;
+            cbSize.Items.Clear();
+            
+            var count = (target == null || target.Value != ImageType.Blocks) ? 8 : 20;
+
+            for (int i = 1; i <= count; i++)
+            {
+                var item = new ComboBoxItem();
+                item.Content = i.ToString();
+
+                cbSize.Items.Add(item);
+            }
+
+            if(index >= 0 && index < count)
+                cbSize.SelectedIndex = index;
+        }
+
         private void Init(MyPoint? p)
         {
             foreach (ImageType type in Enum.GetValues(typeof(ImageType)))
@@ -116,13 +142,7 @@ namespace BlockEditor.Views.Windows
                 cbSensitivity.Items.Add(item);
             }
 
-            for (int i = 1; i <= 8; i++)
-            {
-                var item = new ComboBoxItem();
-                item.Content = i.ToString();
-
-                cbSize.Items.Add(item);
-            }
+            AddSizes(_target == null ? null : (ImageType?) _target.Value);
 
             if(p != null)
                 tbPosX.Text = p.Value.X.ToString() + ".0";
@@ -242,10 +262,13 @@ namespace BlockEditor.Views.Windows
         {
             try
             {
-                var target = (ImageType)(cbTarget.SelectedIndex + 1);
+                var target = GetTarget();
                 int? id = Block.BASIC_WHITE;
 
-                if(target == ImageType.Blocks)
+                if(target == null)
+                    throw new Exception("Invalid input, no target selected.");
+
+                if(target.Value == ImageType.Blocks)
                 {
                     id = SelectBlockWindow.Show("Block to Add:", false);
 
@@ -253,7 +276,7 @@ namespace BlockEditor.Views.Windows
                         return;
                 }
 
-                SetBuildInfo(target, id.Value);
+                SetBuildInfo(target.Value, id.Value);
 
                 DialogResult = true;
                 Close();
@@ -374,6 +397,12 @@ namespace BlockEditor.Views.Windows
         {
             if(e.Key == Key.Escape)
                 Close();
+        }
+
+        private void target_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            AddSizes(GetTarget());
+            UpdateButtons();
         }
     }
 }

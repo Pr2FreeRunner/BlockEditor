@@ -46,7 +46,7 @@
                 </Grid>
 
                 <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Target:"/>
-                <ComboBox Margin="4,0,0,0" x:Name="cbTarget" SelectionChanged="cb_SelectionChanged" FontSize="{StaticResource DefaultFontSize}"/>
+                <ComboBox Margin="4,0,0,0" x:Name="cbTarget" SelectionChanged="target_SelectionChanged" FontSize="{StaticResource DefaultFontSize}"/>
 
                 <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Size:"/>
                 <ComboBox Margin="4,0,0,0" x:Name="cbSize" SelectionChanged="cb_SelectionChanged" FontSize="{StaticResource DefaultFontSize}"/>
