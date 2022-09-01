@@ -24,10 +24,10 @@ namespace BlockEditor.Views.Windows
     {
         private static double? _posX;
         private static double? _posY;
+
         private static string _path;
         private static string _posXInput;
         private static string _posYInput;
-
         private static int? _size;
         private static int? _ignoreColor;
         private static int? _sensitivity;
