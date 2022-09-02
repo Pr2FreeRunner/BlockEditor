@@ -38,6 +38,7 @@ namespace BlockEditor.Views.Windows
             MyUtils.SetPopUpWindowPosition(this);
         }
 
+
         private void Init()
         {
             var mapItem = new ComboBoxItem();
@@ -58,7 +59,6 @@ namespace BlockEditor.Views.Windows
                 cbSelection.SelectedIndex = 0;
             }
         }
-
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
