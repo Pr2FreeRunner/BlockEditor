@@ -85,7 +85,7 @@
         <Setter Property="Background" Value="{StaticResource WhiteBackground}" />
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
-        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="BorderBrush" Value="#646464"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
 
