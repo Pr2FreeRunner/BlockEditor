@@ -358,11 +358,8 @@ namespace BlockEditor.ViewModels
                     w.ShiftPosition(level.DrawArt0);
                     w.ShiftPosition(level.DrawArt1);
 
-                    foreach (var art in level.DrawArt1)
-                        Game.Map.Level.DrawArt1.Add(art);
-
-                    foreach (var art in level.DrawArt0)
-                        Game.Map.Level.DrawArt0.Add(art);
+                    Game.Map.Level.DrawArt1.AddRange(level.DrawArt1);
+                    Game.Map.Level.DrawArt0.AddRange(level.DrawArt0);
 
                     MessageUtil.ShowInfo("The image has been added to the map." + Environment.NewLine + Environment.NewLine + "Note:  Art is not visible inside the Block Editor.");
                 }
