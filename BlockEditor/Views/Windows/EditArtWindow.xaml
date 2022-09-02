@@ -7,7 +7,7 @@
         Background="Transparent"
         AllowsTransparency="True"
         WindowStyle="None"
-        Width="380"
+        Width="400"
         SizeToContent="Height"
         Closing="Window_Closing"
         PreviewKeyDown="Window_PreviewKeyDown">
@@ -32,9 +32,11 @@
             </Grid>
 
             <StackPanel x:Name="Page1" Grid.Row="1" Orientation="Vertical" Margin="20,0,20,0" HorizontalAlignment="Center" Visibility="Visible">
-                <Label Content="What do you wish to do?" FontWeight="SemiBold" Margin="0" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Label Content="What do you wish to do?" FontWeight="SemiBold" Margin="0" FontSize="17" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 <Button Style="{StaticResource WhiteBtn}" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="170" Height="25" Content="Move Art"   Margin="0,30,0,0" Click="btnMoveArt_Click" />
                 <Button Style="{StaticResource WhiteBtn}" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="170" Height="25" Content="Delete Art" Margin="0,20,0,20" Click="btnRemove_Click" />
+                <Label Content="Art is not visible inside the Block Editor." FontWeight="Normal" FontSize="13" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
             </StackPanel>
 
             <StackPanel Grid.Row="1" Orientation="Vertical" x:Name="Page2" Visibility="Collapsed">
@@ -57,10 +59,17 @@
                 <ComboBox Margin="4,0,0,0" x:Name="cbSelection" FontSize="{StaticResource DefaultFontSize}"/>
 
                 <StackPanel x:Name="MovePanel">
-                    <Label Margin="0,10,0,0" FontWeight="SemiBold" Content="X-Movement:"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="0,10,0,0" FontWeight="SemiBold" Content="X-Movement: "/>
+                        <Label Margin="5,10,0,0" FontWeight="Normal" FontSize="12"  Content="(Positive values moves art right)"/>
+                    </StackPanel>
+
                     <TextBox Margin="4,0,0,0" x:Name="tbX"  PreviewTextInput="Double_PreviewTextInput" TextChanged="tbX_TextChanged" FontSize="{StaticResource DefaultFontSize}"  />
 
-                    <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Y-Movement:"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Margin="0,10,0,0" FontWeight="SemiBold" Content="Y-Movement: "/>
+                        <Label Margin="5,10,0,0" FontWeight="Normal" FontSize="12" Content="(Positive values moves art down)"/>
+                    </StackPanel>
                     <TextBox Margin="4,0,0,0" x:Name="tbY" PreviewTextInput="Double_PreviewTextInput" TextChanged="tbY_TextChanged" FontSize="{StaticResource DefaultFontSize}"  />
 
                 </StackPanel>
