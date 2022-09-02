@@ -73,7 +73,7 @@
                         <Image Focusable="False" VerticalAlignment="Center" HorizontalAlignment="Center" Source="../../Resources/GUI/Settings.png" />
                     </Grid>
 
-                    <CheckBox Focusable="False" IsTabStop="False" IsChecked="{Binding IsOverwrite, Mode=TwoWay}" Margin="50,7,25,7" Height="25" VerticalContentAlignment="Center" Width="100" Content="Overwrite"  FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI" ToolTip="Overwrite block&#x0a;Hotkey:  Ctrl + O"/>
+                    <CheckBox Focusable="False" IsTabStop="False" IsChecked="{Binding IsOverwrite, Mode=TwoWay}" Margin="40,7,25,7" Height="25" VerticalContentAlignment="Center" Width="100" Content="Overwrite"  FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI" ToolTip="Overwrite block&#x0a;Hotkey:  Ctrl + O"/>
 
                 </StackPanel>
 
