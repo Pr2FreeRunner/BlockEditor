@@ -234,14 +234,14 @@ namespace BlockEditor.Views.Windows
             var drawArt1  = _map.Level.DrawArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
 
             if (cbTextArt0.IsChecked == true)
-                MoveTextArt(textArt0);
+                MoveAbsoluteArt(textArt0);
             if (cbTextArt1.IsChecked == true)
-                MoveTextArt(textArt1);
+                MoveAbsoluteArt(textArt1);
 
             if (cbDrawArt0.IsChecked == true)
-                MoveDrawArt(drawArt0);
+                MoveAbsoluteArt(drawArt0);
             if (cbDrawArt1.IsChecked == true)
-                MoveDrawArt(drawArt1);
+                MoveAbsoluteArt(drawArt1);
 
             CreateRelativePosition(_map.Level.TextArt0);
             CreateRelativePosition(_map.Level.TextArt1);
@@ -250,17 +250,17 @@ namespace BlockEditor.Views.Windows
         private void MoveArt()
         {
             if (cbTextArt0.IsChecked == true)
-                MoveTextArt(_map.Level.TextArt0);
+                MoveRelativeArt(_map.Level.TextArt0);
             if (cbTextArt1.IsChecked == true)
-                MoveTextArt(_map.Level.TextArt1);
+                MoveRelativeArt(_map.Level.TextArt1);
 
             if (cbDrawArt0.IsChecked == true)
-                MoveDrawArt(_map.Level.DrawArt0);
+                MoveAbsoluteArt(_map.Level.DrawArt0);
             if (cbDrawArt1.IsChecked == true)
-                MoveDrawArt(_map.Level.DrawArt1);
+                MoveAbsoluteArt(_map.Level.DrawArt1);
         }
 
-        private void MoveTextArt(IEnumerable<Art> art)
+        private void MoveRelativeArt(IEnumerable<Art> art)
         {
             if (art == null)
                 return;
@@ -272,7 +272,7 @@ namespace BlockEditor.Views.Windows
             }
         }
 
-        private void MoveDrawArt(IEnumerable<Art> art)
+        private void MoveAbsoluteArt(IEnumerable<Art> art)
         {
             if (art == null)
                 return;
