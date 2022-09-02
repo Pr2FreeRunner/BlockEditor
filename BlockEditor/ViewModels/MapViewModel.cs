@@ -233,6 +233,9 @@ namespace BlockEditor.ViewModels
             var w = new EditArtWindow(Game.Map, UserSelection.MapRegion);
 
             w.ShowDialog();
+
+            if(!string.IsNullOrWhiteSpace(w.Message))
+                MessageUtil.ShowInfo(w.Message);
         }
 
 

@@ -22,6 +22,7 @@ namespace BlockEditor.Views.Windows
         private bool _moveMode = false;
         private const int _regionIndex = 1;
 
+        public string Message { get; set; }
 
         public EditArtWindow(Map map, MyRegion region)
         {
@@ -42,12 +43,12 @@ namespace BlockEditor.Views.Windows
         private void Init()
         {
             var mapItem = new ComboBoxItem();
-            mapItem.Name = "Map";
+            mapItem.Content = "Map";
 
             cbSelection.Items.Add(mapItem);
 
             var regionItem = new ComboBoxItem();
-            regionItem.Name = "Selected Region";
+            regionItem.Content = "Selected Region";
 
             if (HasSelectedRegion())
             {
@@ -142,136 +143,121 @@ namespace BlockEditor.Views.Windows
 
         private void RemoveArt()
         {
-            if (cbTextArt00.IsChecked == true)
-                _map.Level.TextArt00.Clear();
-
             if (cbTextArt0.IsChecked == true)
                 _map.Level.TextArt0.Clear();
 
             if (cbTextArt1.IsChecked == true)
                 _map.Level.TextArt1.Clear();
 
-            if (cbTextArt2.IsChecked == true)
-                _map.Level.TextArt2.Clear();
 
-            if (cbTextArt3.IsChecked == true)
-                _map.Level.TextArt3.Clear();
-
-
-            if (cbDrawArt00.IsChecked == true)
-                _map.Level.DrawArt00.Clear();
 
             if (cbDrawArt0.IsChecked == true)
                 _map.Level.DrawArt0.Clear();
 
             if (cbDrawArt1.IsChecked == true)
                 _map.Level.DrawArt1.Clear();
+        }
 
-            if (cbDrawArt2.IsChecked == true)
-                _map.Level.DrawArt2.Clear();
+        private void CreateAbsolutePosition(List<TextArt> arts)
+        {
+            if(arts == null)
+                return;
 
-            if (cbDrawArt3.IsChecked == true)
-                _map.Level.DrawArt3.Clear();
+            var x = 0;
+            var y = 0;
+
+            foreach (var a in arts)
+            {
+                x += a.X;
+                y += a.Y;
+
+                a.X = x;
+                a.Y = y;
+            }
+        }
+
+        private void CreateRelativePosition(List<TextArt> arts)
+        {
+            if (arts == null)
+                return;
+
+            var previousX = 0;
+            var previousY = 0;
+
+            foreach (var a in arts)
+            {
+                var tempX = a.X;
+                var tempY = a.Y;
+
+                a.X -= previousX;
+                a.Y -= previousY;
+
+                previousX = tempX;
+                previousY = tempY;
+            }
         }
 
         private void RemoveArt(MyRegion region)
         {
-            var textArt00 = _map.Level.TextArt00.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+            CreateAbsolutePosition(_map.Level.TextArt0);
+            CreateAbsolutePosition(_map.Level.TextArt1);
+
             var textArt0 = _map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
             var textArt1 = _map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
-            var textArt2 = _map.Level.TextArt2.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
-            var textArt3 = _map.Level.TextArt3.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
 
-            var drawArt00 = _map.Level.DrawArt00.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
             var drawArt0 = _map.Level.DrawArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
             var drawArt1 = _map.Level.DrawArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
-            var drawArt2 = _map.Level.DrawArt2.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
-            var drawArt3 = _map.Level.DrawArt3.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
 
-            if (cbTextArt00.IsChecked == true)
-                _map.Level.TextArt00.RemoveAll(a => textArt00.Contains(a));
             if (cbTextArt0.IsChecked == true)
                 _map.Level.TextArt0.RemoveAll(a => textArt0.Contains(a));
             if (cbTextArt1.IsChecked == true)
                 _map.Level.TextArt1.RemoveAll(a => textArt1.Contains(a));
-            if (cbTextArt2.IsChecked == true)
-                _map.Level.TextArt2.RemoveAll(a => textArt2.Contains(a));
-            if (cbTextArt3.IsChecked == true)
-                _map.Level.TextArt3.RemoveAll(a => textArt3.Contains(a));
 
-            if (cbDrawArt00.IsChecked == true)
-                _map.Level.DrawArt00.RemoveAll(a => drawArt00.Contains(a));
             if (cbDrawArt0.IsChecked == true)
                 _map.Level.DrawArt0.RemoveAll(a => drawArt0.Contains(a));
             if (cbDrawArt1.IsChecked == true)
                 _map.Level.DrawArt1.RemoveAll(a => drawArt1.Contains(a));
-            if (cbDrawArt2.IsChecked == true)
-                _map.Level.DrawArt2.RemoveAll(a => drawArt2.Contains(a));
-            if (cbDrawArt3.IsChecked == true)
-                _map.Level.DrawArt3.RemoveAll(a => drawArt3.Contains(a));
+
+            CreateRelativePosition(_map.Level.TextArt0);
+            CreateRelativePosition(_map.Level.TextArt1);
         }
 
         private void MoveArt(MyRegion region)
         {
-            var textArt00 = _map.Level.TextArt00.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+            CreateAbsolutePosition(_map.Level.TextArt0);
+            CreateAbsolutePosition(_map.Level.TextArt1);
+
             var textArt0  = _map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
             var textArt1  = _map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
-            var textArt2  = _map.Level.TextArt2.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
-            var textArt3  = _map.Level.TextArt3.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
 
-            var drawArt00 = _map.Level.DrawArt00.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
             var drawArt0  = _map.Level.DrawArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
             var drawArt1  = _map.Level.DrawArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
-            var drawArt2  = _map.Level.DrawArt2.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
-            var drawArt3  = _map.Level.DrawArt3.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
 
-            if (cbTextArt00.IsChecked == true)
-                MoveTextArt(textArt00);
             if (cbTextArt0.IsChecked == true)
                 MoveTextArt(textArt0);
             if (cbTextArt1.IsChecked == true)
                 MoveTextArt(textArt1);
-            if (cbTextArt2.IsChecked == true)
-                MoveTextArt(textArt2);
-            if (cbTextArt3.IsChecked == true)
-                MoveTextArt(textArt3);
 
-            if (cbDrawArt00.IsChecked == true)
-                MoveDrawArt(drawArt00);
             if (cbDrawArt0.IsChecked == true)
                 MoveDrawArt(drawArt0);
             if (cbDrawArt1.IsChecked == true)
                 MoveDrawArt(drawArt1);
-            if (cbDrawArt2.IsChecked == true)
-                MoveDrawArt(drawArt2);
-            if (cbDrawArt3.IsChecked == true)
-                MoveDrawArt(drawArt3);
+
+            CreateRelativePosition(_map.Level.TextArt0);
+            CreateRelativePosition(_map.Level.TextArt1);
         }
 
         private void MoveArt()
         {
-            if (cbTextArt00.IsChecked == true)
-                MoveTextArt(_map.Level.TextArt00);
             if (cbTextArt0.IsChecked == true)
                 MoveTextArt(_map.Level.TextArt0);
             if (cbTextArt1.IsChecked == true)
                 MoveTextArt(_map.Level.TextArt1);
-            if (cbTextArt2.IsChecked == true)
-                MoveTextArt(_map.Level.TextArt2);
-            if (cbTextArt3.IsChecked == true)
-                MoveTextArt(_map.Level.TextArt3);
 
-            if (cbDrawArt00.IsChecked == true)
-                MoveDrawArt(_map.Level.DrawArt00);
             if (cbDrawArt0.IsChecked == true)
                 MoveDrawArt(_map.Level.DrawArt0);
             if (cbDrawArt1.IsChecked == true)
                 MoveDrawArt(_map.Level.DrawArt1);
-            if (cbDrawArt2.IsChecked == true)
-                MoveDrawArt(_map.Level.DrawArt2);
-            if (cbDrawArt3.IsChecked == true)
-                MoveDrawArt(_map.Level.DrawArt3);
-
         }
 
         private void MoveTextArt(IEnumerable<Art> art)
@@ -307,12 +293,12 @@ namespace BlockEditor.Views.Windows
                     if (cbSelection.SelectedIndex == _regionIndex)
                     {
                         MoveArt(_region);
-                        MessageUtil.ShowInfo("The art inside the selected region has been moved.");
+                        Message = "The art inside the selected region has been moved.";
                     }
                     else
                     {
                         MoveArt();
-                        MessageUtil.ShowInfo("The art inside the map has been moved.");
+                        Message = "The art inside the map has been moved.";
                     }
                 }
                 else
@@ -320,19 +306,26 @@ namespace BlockEditor.Views.Windows
                     if (cbSelection.SelectedIndex == _regionIndex)
                     {
                         RemoveArt(_region);
-                        MessageUtil.ShowInfo("The art inside the selected region has been deleted.");
+                        Message = "The art inside the selected region has been deleted.";
                     }
                     else
                     {
                         RemoveArt();
-                        MessageUtil.ShowInfo("The art inside the map has been deleted.");
+                        Message = "The art inside the map has been deleted.";
                     }
                 }
+
+                DialogResult = true;
             }
             catch (Exception ex)
             {
                 MessageUtil.ShowError(ex.Message);
             }
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }
