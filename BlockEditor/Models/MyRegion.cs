@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LevelModel.Models.Components.Art;
+using System;
 
 namespace BlockEditor.Models
 {
@@ -79,6 +80,41 @@ namespace BlockEditor.Models
                 return false;
 
             return true;
+        }
+
+        public bool IsInside(DrawArt a)
+        {
+            if (a == null)
+                return false;
+
+            if (IsComplete() == false)
+                return false;
+
+            var myPoint = new MyPoint(a.X / 30, a.Y / 30);
+
+            if(IsInside(myPoint))
+                return true;
+
+            if(a.Movement == null)
+                return false;
+
+            var x = a.X;
+            var y = a.Y;
+            var count = 0;
+
+            foreach(var m in a.Movement)
+            {
+                if(count % 2 == 0)
+                    x += m;
+                else
+                    y += m;
+
+                count++;
+                if (IsInside(new MyPoint(x / 30, y / 30)))
+                    return true;
+            }
+
+            return false;
         }
 
         public bool IsComplete()
