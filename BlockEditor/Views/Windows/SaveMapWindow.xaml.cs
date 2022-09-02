@@ -7,7 +7,7 @@ using System.Windows.Input;
 namespace BlockEditor.Views.Windows
 {
 
-    public partial class WindowSaveMap : Window
+    public partial class SaveMapWindow : Window
     {
         public string MapTitle { get; set; }
 
@@ -17,7 +17,7 @@ namespace BlockEditor.Views.Windows
 
         public string LocalFilepath { get; set; }
 
-        public WindowSaveMap(Map map)
+        public SaveMapWindow(Map map)
         {
             if(map == null)
                 throw new ArgumentNullException("Map");

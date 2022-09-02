@@ -56,6 +56,8 @@ namespace BlockEditor.ViewModels
         public RelayCommand DeleteBlockCommand { get; }
         public RelayCommand SettingsCommand { get; }
         public RelayCommand ConnectTeleportsCommand { get; }
+        public RelayCommand EditArtCommand { get; }
+
 
 
         public MapViewModel()
@@ -79,6 +81,8 @@ namespace BlockEditor.ViewModels
             DeleteBlockCommand = new RelayCommand((_) => OnDeleteBlockClick());
             SettingsCommand = new RelayCommand((_) => OnSettingsClick());
             ConnectTeleportsCommand = new RelayCommand((_) => OnConnectTeleportsClick());
+            EditArtCommand = new RelayCommand((_) => OnEditArtClick());
+
 
 
             Game.Engine.OnFrame += OnFrameUpdate;
@@ -223,6 +227,14 @@ namespace BlockEditor.ViewModels
                 }
             }
         }
+
+        public void OnEditArtClick()
+        {
+            var w = new EditArtWindow(Game.Map, UserSelection.MapRegion);
+
+            w.ShowDialog();
+        }
+
 
         public void OnRotateClick()
         {

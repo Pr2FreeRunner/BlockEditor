@@ -23,7 +23,7 @@ namespace BlockEditor.Helpers
             if (map == null)
                 return;
 
-            var save    = new WindowSaveMap(map);
+            var save    = new SaveMapWindow(map);
             var success = save.ShowDialog();
 
             if(success != true)

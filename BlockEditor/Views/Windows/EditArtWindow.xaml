@@ -1,0 +1,81 @@
+﻿<Window x:Class="BlockEditor.Views.Windows.EditArtWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        mc:Ignorable="d"
+        Background="Transparent"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        Width="380"
+        SizeToContent="Height"
+        Closing="Window_Closing"
+        PreviewKeyDown="Window_PreviewKeyDown">
+
+    <Border Background="{StaticResource LightBackground}" 
+            BorderBrush="{StaticResource StandardBorderColor}"
+            BorderThickness="2"
+            CornerRadius="15"
+            VerticalAlignment="Stretch"
+            HorizontalAlignment="Stretch"
+            Padding="10">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Button Style="{StaticResource CloseBtn}" Margin="0,2,0,0" Click="CloseButton_Click" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+            </Grid>
+
+            <StackPanel x:Name="Page1" Grid.Row="1" Orientation="Vertical" Margin="20,0,20,0" HorizontalAlignment="Center" Visibility="Visible">
+                <Label Content="What do you wish to do?" FontWeight="SemiBold" Margin="0" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Button Style="{StaticResource WhiteBtn}" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="170" Height="25" Content="Move Art"   Margin="0,30,0,0" Click="btnMoveArt_Click" />
+                <Button Style="{StaticResource WhiteBtn}" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="170" Height="25" Content="Remove Art" Margin="0,20,0,20" Click="btnRemove_Click" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Orientation="Vertical" x:Name="Page2" Visibility="Collapsed">
+                <Label Content="Move Art" x:Name="Page2Title" FontWeight="SemiBold" Margin="0,-10,0,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                <StackPanel  Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Vertical">
+                        <CheckBox Margin="0,10,0,0" Content="Text Art 00" IsChecked="True" x:Name="cbTextArt00"  />
+                        <CheckBox Margin="0,10,0,0" Content="Text Art 0"  IsChecked="True" x:Name="cbTextArt0"  />
+                        <CheckBox Margin="0,10,0,0" Content="Text Art 1"  IsChecked="True" x:Name="cbTextArt1"  />
+                        <CheckBox Margin="0,10,0,0" Content="Text Art 2"  IsChecked="True" x:Name="cbTextArt2"  />
+                        <CheckBox Margin="0,10,0,0" Content="Text Art 3"  IsChecked="True" x:Name="cbTextArt3"  />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Margin="50,0,0,0">
+                        <CheckBox Margin="0,10,0,0" Content="Draw Art 00" IsChecked="True" x:Name="cDrawArt00"  />
+                        <CheckBox Margin="0,10,0,0" Content="Draw Art 0"  IsChecked="True" x:Name="cbDrawArt0"  />
+                        <CheckBox Margin="0,10,0,0" Content="Draw Art 1"  IsChecked="True" x:Name="cbDrawArt1"  />
+                        <CheckBox Margin="0,10,0,0" Content="Draw Art 2"  IsChecked="True" x:Name="cbDrawArt2"  />
+                        <CheckBox Margin="0,10,0,0" Content="Draw Art 3"  IsChecked="True" x:Name="cbDrawArt3"  />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel x:Name="MovePanel">
+                    <Label Margin="0,10,0,0" FontWeight="SemiBold" Content="X-Movement:"/>
+                    <TextBox Margin="4,0,0,0" x:Name="tbX"  PreviewTextInput="Double_PreviewTextInput" TextChanged="tbX_TextChanged" FontSize="{StaticResource DefaultFontSize}"  />
+
+                    <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Y-Movement:"/>
+                    <TextBox Margin="4,0,0,0" x:Name="tbY" PreviewTextInput="Double_PreviewTextInput" TextChanged="tbY_TextChanged" FontSize="{StaticResource DefaultFontSize}"  />
+
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="20,20,20,10" HorizontalAlignment="Center">
+                    <Button Style="{StaticResource WhiteBtn}" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="100" Height="25" x:Name="btnOk" Content="OK" Margin="5,5,15,5" Click="btnOk_Click" />
+                    <Button Style="{StaticResource WhiteBtn}" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="100" Height="25" Content="Cancel" Margin="15,5,5,5" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+
+
+    </Border>
+
+</Window>

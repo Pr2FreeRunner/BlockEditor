@@ -50,6 +50,7 @@
                     <ToggleButton Focusable="False" IsTabStop="False" Height="34" Width="40"  IsChecked="{Binding Mode.IsConnectTeleportsMode, Mode=OneWay}" Margin="5,7,5,7" Content="𐩒" FontSize="26" FontFamily="Segoe UI" Command="{Binding ConnectTeleportsCommand}" ToolTip="Connect Teleports"/>
 
                     <Button Focusable="False" IsTabStop="False" Height="34" Margin="5,7,5,7" Width="40" Content="⚝" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding AddImageCommand}" ToolTip="Add Image"/>
+                    <Button Focusable="False" IsTabStop="False" Height="34" Margin="5,7,5,7" Width="40" Content="✏" FontSize="19" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding EditArtCommand}" ToolTip="Edit Art"/>
                     <Button Focusable="False" IsTabStop="False" Height="34" Margin="5,7,5,7" Width="40" Content="&#128465;" FontSize="18" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding DeleteBlockCommand}" ToolTip="Remove Block Type"/>
                     <Button Focusable="False" IsTabStop="False" Height="34" Width="40" Margin="5,7,5,7" Content="&#8982;"  FontSize="25" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding NavigatorCommand}" ToolTip="Navigator&#x0a;Hotkey:  Ctrl + N"/>
 
