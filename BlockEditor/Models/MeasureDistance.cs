@@ -5,15 +5,15 @@ using System.Text;
 
 namespace BlockEditor.Models
 {
-    public static class MeasureDistance
+    public class MeasureDistance
     {
-        public static MyPoint? MapPoint1 { get; set; }
-        public static MyPoint? MapPoint2 { get; set; }
+        public MyPoint? MapPoint1 { get; set; }
+        public  MyPoint? MapPoint2 { get; set; }
 
-        public static MyPoint? ImagePoint1 { get; set; }
-        public static MyPoint? ImagePoint2 { get; set; }
+        public MyPoint? ImagePoint1 { get; set; }
+        public  MyPoint? ImagePoint2 { get; set; }
 
-        public static void Reset()
+        public void Reset()
         {
             MapPoint1 = null;
             MapPoint2 = null;
@@ -21,7 +21,7 @@ namespace BlockEditor.Models
             ImagePoint2 = null;
         }
 
-        public static string GetDistance()
+        public string GetDistance()
         {
             if(MapPoint1 == null)
                 return string.Empty;

@@ -206,14 +206,14 @@ namespace BlockEditor.Models
 
         private void DrawMeasureDistanceLine()
         {
-            if (MeasureDistance.ImagePoint1 == null)
+            if (_game.MeasureDistance.ImagePoint1 == null)
                 return;
 
-            if (MeasureDistance.MapPoint1 == null)
+            if (_game.MeasureDistance.MapPoint1 == null)
                 return;
 
-            var start = MeasureDistance.ImagePoint1;
-            var end   = MeasureDistance.ImagePoint2 ?? _mousePosition;
+            var start = _game.MeasureDistance.ImagePoint1;
+            var end   = _game.MeasureDistance.ImagePoint2 ?? _mousePosition;
 
             if (start == null || end == null)
                 return;

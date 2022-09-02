@@ -98,7 +98,7 @@ namespace BlockEditor.ViewModels
         private void OnDistanceClick()
         {
             BlockSelection.Reset();
-            MeasureDistance.Reset();
+            Game.MeasureDistance.Reset();
 
             if (Mode.Value != UserModes.Distance)
             {
@@ -519,7 +519,7 @@ namespace BlockEditor.ViewModels
             UserSelection.Reset();
             Mode.Value = UserModes.None;
             Mouse.OverrideCursor = null;
-            MeasureDistance.Reset();
+            Game.MeasureDistance.Reset();
         }
 
         public void OnFrameUpdate()
@@ -540,9 +540,9 @@ namespace BlockEditor.ViewModels
             switch (Mode.Value)
             {
                 case UserModes.Distance:
-                    MeasureDistance.Reset();
-                    MeasureDistance.MapPoint1 = index;
-                    MeasureDistance.ImagePoint1 = p;
+                    Game.MeasureDistance.Reset();
+                    Game.MeasureDistance.MapPoint1 = index;
+                    Game.MeasureDistance.ImagePoint1 = p;
                     break;
 
                 case UserModes.GetPosition:
@@ -696,10 +696,10 @@ namespace BlockEditor.ViewModels
             switch (Mode.Value)
             {
                 case UserModes.Distance:
-                    MeasureDistance.MapPoint2 = index;
-                    MeasureDistance.ImagePoint2 = p;
+                    Game.MeasureDistance.MapPoint2 = index;
+                    Game.MeasureDistance.ImagePoint2 = p;
 
-                    MessageUtil.ShowInfo(MeasureDistance.GetDistance());
+                    MessageUtil.ShowInfo(Game.MeasureDistance.GetDistance());
                     break;
 
                 case UserModes.MoveBlock:

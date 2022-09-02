@@ -21,6 +21,8 @@ namespace BlockEditor.Models
 
         public UserOperationsViewModel UserOperations { get; }
 
+        public MeasureDistance MeasureDistance { get;  }
+
         public Game()
         {
             Map = new Map();
@@ -28,6 +30,7 @@ namespace BlockEditor.Models
             Camera = new Camera();
             GameImage = new GameImage(0, 0);
             UserOperations = new UserOperationsViewModel();
+            MeasureDistance = new MeasureDistance();
         }
 
         public MyPoint? GetMapIndex(MyPoint? p)
