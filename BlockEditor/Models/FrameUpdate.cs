@@ -36,6 +36,7 @@ namespace BlockEditor.Models
             DrawSelectedBlock();
             DrawSelectedBlocks();
             DrawSelectedRectangle();
+            DrawMeasureDistanceLine();
         }
 
         private Graphics CreateGraphics()
@@ -201,6 +202,26 @@ namespace BlockEditor.Models
 
             var rec = new Rectangle(minX, minY, maxX - minX, maxy - minY);
             _game.GameImage.DrawSelectionRectangle(_graphics, rec);
+        }
+
+        private void DrawMeasureDistanceLine()
+        {
+            if (MeasureDistance.ImagePoint1 == null)
+                return;
+
+            if (MeasureDistance.MapPoint1 == null)
+                return;
+
+            var start = MeasureDistance.ImagePoint1;
+            var end   = MeasureDistance.ImagePoint2 ?? _mousePosition;
+
+            if (start == null || end == null)
+                return;
+
+            var p1 = new System.Drawing.Point(start.Value.X, start.Value.Y);
+            var p2 = new System.Drawing.Point(end.Value.X, end.Value.Y);
+
+            _game.GameImage.DrawLine(_graphics, p1, p2);
         }
 
     }

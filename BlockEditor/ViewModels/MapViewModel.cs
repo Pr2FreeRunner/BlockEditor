@@ -18,6 +18,7 @@ using static BlockEditor.Models.UserMode;
 
 namespace BlockEditor.ViewModels
 {
+
     public class MapViewModel : NotificationObject
     {
 
@@ -57,6 +58,8 @@ namespace BlockEditor.ViewModels
         public RelayCommand SettingsCommand { get; }
         public RelayCommand ConnectTeleportsCommand { get; }
         public RelayCommand EditArtCommand { get; }
+        public RelayCommand DistanceCommand { get; }
+
 
 
 
@@ -82,14 +85,30 @@ namespace BlockEditor.ViewModels
             SettingsCommand = new RelayCommand((_) => OnSettingsClick());
             ConnectTeleportsCommand = new RelayCommand((_) => OnConnectTeleportsClick());
             EditArtCommand = new RelayCommand((_) => OnEditArtClick());
-
-
+            DistanceCommand = new RelayCommand((_) => OnDistanceClick());
 
             Game.Engine.OnFrame += OnFrameUpdate;
         }
 
 
+
+
         #region Events
+
+        private void OnDistanceClick()
+        {
+            BlockSelection.Reset();
+            MeasureDistance.Reset();
+
+            if (Mode.Value != UserModes.Distance)
+            {
+                Mode.Value = UserModes.Distance;
+            }
+            else
+            {
+                Mode.Value = UserModes.None;
+            };
+        }
 
         private void OnNavigatorClick(SimpleBlock block)
         {
@@ -237,7 +256,6 @@ namespace BlockEditor.ViewModels
             if(!string.IsNullOrWhiteSpace(w.Message))
                 MessageUtil.ShowInfo(w.Message);
         }
-
 
         public void OnRotateClick()
         {
@@ -501,6 +519,7 @@ namespace BlockEditor.ViewModels
             UserSelection.Reset();
             Mode.Value = UserModes.None;
             Mouse.OverrideCursor = null;
+            MeasureDistance.Reset();
         }
 
         public void OnFrameUpdate()
@@ -520,6 +539,12 @@ namespace BlockEditor.ViewModels
 
             switch (Mode.Value)
             {
+                case UserModes.Distance:
+                    MeasureDistance.Reset();
+                    MeasureDistance.MapPoint1 = index;
+                    MeasureDistance.ImagePoint1 = p;
+                    break;
+
                 case UserModes.GetPosition:
                     if(_getPosition != null)
                         _getPosition(index);
@@ -670,6 +695,13 @@ namespace BlockEditor.ViewModels
 
             switch (Mode.Value)
             {
+                case UserModes.Distance:
+                    MeasureDistance.MapPoint2 = index;
+                    MeasureDistance.ImagePoint2 = p;
+
+                    MessageUtil.ShowInfo(MeasureDistance.GetDistance());
+                    break;
+
                 case UserModes.MoveBlock:
                     if(BlockSelection.SelectedBlock != null)
                         Game.AddBlock(index, BlockSelection.SelectedBlock.Value, BlockSelection.SelectedBlockOption);

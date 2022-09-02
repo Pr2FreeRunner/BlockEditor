@@ -21,7 +21,6 @@ namespace BlockEditor.Models
 
         public UserOperationsViewModel UserOperations { get; }
 
-
         public Game()
         {
             Map = new Map();

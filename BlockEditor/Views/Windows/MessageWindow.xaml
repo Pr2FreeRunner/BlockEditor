@@ -12,7 +12,8 @@
         MaxWidth="800"
         WindowStyle="SingleBorderWindow"
         ResizeMode="NoResize"
-        Closing="Window_Closing">
+        Closing="Window_Closing"
+        PreviewKeyDown="Window_PreviewKeyDown">
 
     <Grid>
         <Grid.RowDefinitions>

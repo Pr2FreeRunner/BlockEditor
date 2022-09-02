@@ -48,6 +48,7 @@
                     </Grid>
                     <Button Focusable="False" IsTabStop="False" Height="34" Margin="5,7,5,7" Width="40" Content="&#9935;"  FontSize="22" FontWeight="Normal"   FontFamily="Segoe UI" Command="{Binding ReplaceCommand}" ToolTip="Replace Block"/>
                     <ToggleButton Focusable="False" IsTabStop="False" Height="34" Width="40"  IsChecked="{Binding Mode.IsConnectTeleportsMode, Mode=OneWay}" Margin="5,7,5,7" Content="𐩒" FontSize="26" FontFamily="Segoe UI" Command="{Binding ConnectTeleportsCommand}" ToolTip="Connect Teleports"/>
+                    <ToggleButton Focusable="False" IsTabStop="False" Height="34" Width="40"  IsChecked="{Binding Mode.IsDistanceMode, Mode=OneWay}" Margin="5,7,5,7" Content="📏" FontSize="23" FontFamily="Segoe UI" Command="{Binding DistanceCommand}" ToolTip="Measure Distance"/>
 
                     <Button Focusable="False" IsTabStop="False" Height="34" Margin="5,7,5,7" Width="40" Content="⚝" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding AddImageCommand}" ToolTip="Add Image"/>
                     <Button Focusable="False" IsTabStop="False" Height="34" Margin="5,7,5,7" Width="40" Content="✏" FontSize="19" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding EditArtCommand}" ToolTip="Edit Art"/>

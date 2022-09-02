@@ -170,6 +170,20 @@ namespace BlockEditor.Models
             graphics.DrawRectangle(pen, rec);
         }
 
+        public void DrawLine(Graphics graphics, Point p1, Point p2)
+        {
+            if (graphics == null)
+                return;
+
+            var pen = MapUtil.GetSelectionPen();
+            var brush = MapUtil.GetSelectionBrush(pen.Color);
+
+            pen.Width = 3;
+            graphics.CompositingMode = CompositingMode.SourceOver;
+
+            graphics.DrawLine(pen, p1, p2);
+        }
+
     }
 
 }
