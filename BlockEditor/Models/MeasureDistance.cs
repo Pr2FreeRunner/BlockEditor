@@ -36,8 +36,8 @@ namespace BlockEditor.Models
                 return "You need to click and drag to measure the distance between 2 points.";
 
             return "The distance is:" + Environment.NewLine 
-                + "      " + "X = " + x.ToString(CultureInfo.InvariantCulture) + Environment.NewLine
-                + "      " + "Y = " + y.ToString(CultureInfo.InvariantCulture);
+                + "       " + "X = " + x.ToString(CultureInfo.InvariantCulture) + Environment.NewLine
+                + "       " + "Y = " + y.ToString(CultureInfo.InvariantCulture);
 
         }
     }
