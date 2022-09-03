@@ -15,7 +15,7 @@ namespace BlockEditor.Views.Controls
     public partial class MapControl : UserControl
     {
         public readonly MapViewModel ViewModel;
-
+        private bool _firstload = false;
         public MapControl()
         {
             InitializeComponent();
@@ -33,7 +33,12 @@ namespace BlockEditor.Views.Controls
         {
             try
             {
-                ViewModel.Game.GoToStartPosition();
+                if(!_firstload)
+                {
+                    ViewModel.Game.GoToStartPosition();
+                    _firstload = true;
+                }
+
                 Keyboard.Focus(this);
             }
             catch (Exception ex)
