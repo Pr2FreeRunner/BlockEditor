@@ -8,7 +8,7 @@ namespace BlockEditor.Models
 
     public class UserMode : NotificationObject
     {
-        public enum UserModes { None, Selection, Fill, BlockInfo, MapInfo, BlockCount, Settings, ConnectTeleports, MoveBlock, GetPosition, Distance, Delete }
+        public enum UserModes { None, Selection, Fill, BlockInfo, ConnectTeleports, MoveBlock, GetPosition, Distance, Delete }
 
         private static Cursor BucketCursor;
 
@@ -27,10 +27,6 @@ namespace BlockEditor.Models
                 RaisePropertyChanged(nameof(IsSelectionMode));
                 RaisePropertyChanged(nameof(IsFillMode));
                 RaisePropertyChanged(nameof(IsBlockInfoMode));
-                RaisePropertyChanged(nameof(IsMapInfoMode));
-                RaisePropertyChanged(nameof(IsMapInfoMode));
-                RaisePropertyChanged(nameof(IsSettingsMode));
-                RaisePropertyChanged(nameof(IsSettingsMode));
                 RaisePropertyChanged(nameof(IsConnectTeleportsMode));
                 RaisePropertyChanged(nameof(IsDistanceMode));
                 RaisePropertyChanged(nameof(IsDeleteMode));
@@ -44,9 +40,6 @@ namespace BlockEditor.Models
         public bool IsSelectionMode => Value == UserModes.Selection;
         public bool IsFillMode => Value == UserModes.Fill;
         public bool IsBlockInfoMode => Value == UserModes.BlockInfo;
-        public bool IsBlockCountMode => Value == UserModes.BlockCount;
-        public bool IsMapInfoMode => Value == UserModes.MapInfo;
-        public bool IsSettingsMode => Value == UserModes.Settings;
         public bool IsConnectTeleportsMode => Value == UserModes.ConnectTeleports;
         public bool IsDistanceMode => Value == UserModes.Distance;
         public bool IsDeleteMode => Value == UserModes.Delete;

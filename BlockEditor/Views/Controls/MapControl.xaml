@@ -63,16 +63,16 @@
                         <Grid.InputBindings>
                             <MouseBinding Gesture="LeftClick" Command="{Binding BlockCountCommand}" />
                         </Grid.InputBindings>
-                        <ToggleButton Focusable="False" IsTabStop="False"  Height="34"  Command="{Binding BlockCountCommand}" IsChecked="{Binding Mode.IsBlockCountMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        <Button Focusable="False" IsTabStop="False"  Height="34"  Command="{Binding BlockCountCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                         <Image Focusable="False" VerticalAlignment="Center" HorizontalAlignment="Center" Source="../../Resources/GUI/BlockCount.png" />
                     </Grid>
-                    <ToggleButton Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False"  IsChecked="{Binding Mode.IsBlockInfoMode, Mode=OneWay}" Content="&#128712;"  FontSize="26" FontFamily="Segoe UI" Command="{Binding BlockInfoCommand}" ToolTip="Block Info&#x0a;Hotkey: Ctrl +  B"/>
-                    <ToggleButton Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False"  IsChecked="{Binding Mode.IsMapInfoMode, Mode=OneWay}" Content="🔧" FontSize="22" FontFamily="Segoe UI" Command="{Binding MapInfoCommand}" ToolTip="Map Info&#x0a;Hotkey:  Ctrl + M"/>
-                    <Grid         Focusable="False" Margin="5,3,5,3" Height="34" Width="40" ToolTip="Editor Settings">
+                    <Button Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False" Content="&#128712;"  FontSize="26" FontFamily="Segoe UI" Command="{Binding BlockInfoCommand}" ToolTip="Block Info&#x0a;Hotkey: Ctrl +  B"/>
+                    <Button Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False" Content="🔧" FontSize="22" FontFamily="Segoe UI" Command="{Binding MapInfoCommand}" ToolTip="Map Info&#x0a;Hotkey:  Ctrl + M"/>
+                    <Grid   Focusable="False" Margin="5,3,5,3" Height="34" Width="40" ToolTip="Editor Settings">
                         <Grid.InputBindings>
                             <MouseBinding Gesture="LeftClick" Command="{Binding SettingsCommand}" />
                         </Grid.InputBindings>
-                        <ToggleButton Focusable="False" IsTabStop="False"  Height="34" Command="{Binding SettingsCommand}" IsChecked="{Binding Mode.IsSettingsMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        <Button Focusable="False" IsTabStop="False"  Height="34" Command="{Binding SettingsCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                         <Image Focusable="False" VerticalAlignment="Center" HorizontalAlignment="Center" Source="../../Resources/GUI/Settings.png" />
                     </Grid>
                 </WrapPanel>
