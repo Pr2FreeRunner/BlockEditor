@@ -50,7 +50,7 @@
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Button       Focusable="False" Margin="4,3,4,3" Height="34" Width="40" Content="❌" FontSize="17"  FontWeight="Normal" FontFamily="Segoe UI" Command="{Binding DeselectCommand}" ToolTip="Deselect everything&#x0a;Hotkey:  Escape"/>
-                        <Grid         Focusable="False" Margin="4,3,4,3" Height="34" Width="40" ToolTip="Eraser">
+                        <Grid         Focusable="False" Margin="4,3,4,3" Height="34" Width="40" ToolTip="Eraser&#x0a;Hotkey:  Right-Click">
                             <Grid.InputBindings>
                                 <MouseBinding Gesture="LeftClick" Command="{Binding DeleteCommand}" />
                             </Grid.InputBindings>
