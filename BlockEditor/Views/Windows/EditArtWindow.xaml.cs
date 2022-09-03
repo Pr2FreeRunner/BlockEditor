@@ -115,9 +115,12 @@ namespace BlockEditor.Views.Windows
             var textBox = sender as TextBox;
             var fullText = textBox.Text.Insert(textBox.SelectionStart, e.Text);
             var culture = CultureInfo.InvariantCulture;
-            bool isInteger = !double.TryParse(fullText, NumberStyles.Any, culture, out var result);
+            bool isNotInteger = !double.TryParse(fullText, NumberStyles.Any, culture, out var result);
 
-            e.Handled = isInteger && result >= 0;
+            if(string.Equals(fullText, "-", StringComparison.InvariantCultureIgnoreCase))
+                return;
+
+            e.Handled = isNotInteger && result >= 0;
         }
 
         private void tbY_TextChanged(object sender, TextChangedEventArgs e)
