@@ -85,6 +85,11 @@ namespace BlockEditor.Views.Windows
             return BlockSize.Zoom150;
         }
 
+        private Orientation GetToolOrientation(double width)
+        {
+            var widthLimit = 1230.0;
+            return width > widthLimit ? Orientation.Horizontal : Orientation.Vertical;
+        }
 
         private void SetToolOrientation(double width)
         {
@@ -94,8 +99,8 @@ namespace BlockEditor.Views.Windows
             if(TabPanel?.Children == null)
                 return;
 
-            var widthLimit = 1230.0;
-            var orientation = width > widthLimit ? Orientation.Horizontal : Orientation.Vertical;
+
+            var orientation = GetToolOrientation(width);
 
             foreach (var child in TabPanel.Children)
             {
@@ -157,7 +162,9 @@ namespace BlockEditor.Views.Windows
 
             tab.OnClick += Tab_OnClick;
             tab.OnClose += Tab_OnClose;
+            tab.MapControl.ToolPanel.Orientation = GetToolOrientation(this.ActualWidth);
             CurrentTab   = tab;
+
             TabPanel.Children.Insert(TabPanel.Children.Count - 1, tab);
             tabNumber++;
         }
