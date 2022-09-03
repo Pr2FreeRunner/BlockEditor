@@ -26,7 +26,7 @@ namespace BlockEditor.Models
 
             if (MySettings.FirstConnectTeleports)
             {
-                MessageUtil.ShowInfo("Hint:  Click on all the teleport blocks you wish to connect."
+                MessageUtil.ShowInfo("Click on all the teleport blocks you wish to connect."
                     + Environment.NewLine + Environment.NewLine
                     + "Then click on the 'Connect Teleports' button again.");
                 MySettings.FirstConnectTeleports = false;
