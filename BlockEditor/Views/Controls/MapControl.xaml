@@ -26,8 +26,8 @@
                 Background="{StaticResource LightBackground}">
 
             <StackPanel Focusable="False" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                <Button Focusable="False" IsTabStop="False"  Height="40" Width="35" Margin="10,7,5,7" VerticalAlignment="Center" Content=" &#128896; " FontWeight="SemiBold" FontSize="26" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.UndoCommand}" ToolTip="Undo &#x0a;Hotkey:  Ctrl + Z"/>
-                <Button Focusable="False" IsTabStop="False"  Height="40" Width="35" Margin="5,7,5,7"  VerticalAlignment="Center" Content=" &#128898; " FontWeight="SemiBold" FontSize="26" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.RedoCommand}" ToolTip="Redo &#x0a;HotKey:  Ctrl + Y"/>
+                <Button Focusable="False" IsTabStop="False"  Height="40" Width="35" Margin="10,8,5,8" VerticalAlignment="Center" Content=" &#128896; " FontWeight="SemiBold" FontSize="26" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.UndoCommand}" ToolTip="Undo &#x0a;Hotkey:  Ctrl + Z"/>
+                <Button Focusable="False" IsTabStop="False"  Height="40" Width="35" Margin="5,8,5,8"  VerticalAlignment="Center" Content=" &#128898; " FontWeight="SemiBold" FontSize="26" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.RedoCommand}" ToolTip="Redo &#x0a;HotKey:  Ctrl + Y"/>
 
                 <ToggleButton Focusable="False" Margin="25,3,3,3" Height="34" Width="65" VerticalAlignment="Center" IsTabStop="False" FontSize="{StaticResource DefaultFontSize}"  IsChecked="{Binding Mode.IsSelectionMode, Mode=OneWay}"  Content="Select" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding SelectCommand}" ToolTip="Select Blocks &#x0a;Hotkey:  Shift"/>
 
