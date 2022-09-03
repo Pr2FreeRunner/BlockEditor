@@ -59,8 +59,7 @@ namespace BlockEditor.ViewModels
         public RelayCommand ConnectTeleportsCommand { get; }
         public RelayCommand EditArtCommand { get; }
         public RelayCommand DistanceCommand { get; }
-
-
+        public RelayCommand DeleteCommand { get; }
 
 
         public MapViewModel()
@@ -86,6 +85,8 @@ namespace BlockEditor.ViewModels
             ConnectTeleportsCommand = new RelayCommand((_) => OnConnectTeleportsClick());
             EditArtCommand = new RelayCommand((_) => OnEditArtClick());
             DistanceCommand = new RelayCommand((_) => OnDistanceClick());
+            DeleteCommand = new RelayCommand((_) => OnDeleteClick());
+
 
             Game.Engine.OnFrame += OnFrameUpdate;
         }
@@ -94,6 +95,21 @@ namespace BlockEditor.ViewModels
 
 
         #region Events
+
+
+        private void OnDeleteClick()
+        {
+            BlockSelection.Reset();
+
+            if (Mode.Value != UserModes.Delete)
+            {
+                Mode.Value = UserModes.Delete;
+            }
+            else
+            {
+                Mode.Value = UserModes.None;
+            };
+        }
 
         private void OnDistanceClick()
         {
@@ -538,7 +554,20 @@ namespace BlockEditor.ViewModels
                 return;
 
             switch (Mode.Value)
-            {
+            { 
+                case UserModes.Delete:
+                    if(p == null)
+                        break;
+
+                    var deleteMouse = p.Value.Move(15, -15);
+                    var deleteIndex = Game.GetMapIndex(deleteMouse);
+
+                    if (UserSelection.MapRegion.IsInside(deleteIndex))
+                        Game.DeleteSelection(UserSelection.MapRegion);
+                    else
+                        Game.DeleteBlock(deleteIndex);
+                    break;
+
                 case UserModes.Distance:
                     Game.MeasureDistance.Reset();
                     Game.MeasureDistance.MapPoint1 = index;
@@ -666,6 +695,22 @@ namespace BlockEditor.ViewModels
 
             switch (Mode.Value)
             {
+                case UserModes.Delete:
+                    if(_mousePosition == null)
+                        break;
+
+                    var deleteMouse = _mousePosition.Value.Move(15, -15);
+                    var deleteIndex = Game.GetMapIndex(deleteMouse);
+
+                    if (e.RightButton == MouseButtonState.Pressed || e.LeftButton == MouseButtonState.Pressed)
+                    {
+                        if (UserSelection.MapRegion.IsInside(deleteIndex))
+                            Game.DeleteSelection(UserSelection.MapRegion);
+                        else
+                            Game.DeleteBlock(deleteIndex);
+                    }
+                    break;
+    
                 case UserModes.MoveBlock:
                     break;
 

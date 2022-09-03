@@ -39,6 +39,7 @@
                     <Button Focusable="False" IsTabStop="False" Margin="5,7,5,7" Height="34" Width="40" Content="↺" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding RotateCommand}"  ToolTip="Rotate Blocks"/>
                     <Button Focusable="False" IsTabStop="False" Margin="5,7,5,7" Height="34" Width="40" Content="⭥" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding VerticalFlipCommand}"  ToolTip="Vertical Flip"/>
                     <Button Focusable="False" IsTabStop="False" Margin="5,7,5,7" Height="34" Width="40" Content="⇆" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding HorizontalFlipCommand}"  ToolTip="Horizontal Flip"/>
+                    <ToggleButton Focusable="False" IsTabStop="False" Height="34" Width="40"  IsChecked="{Binding Mode.IsDeleteMode, Mode=OneWay}" Margin="5,7,5,7" Content="❌" FontSize="18" FontFamily="Segoe UI" Command="{Binding DeleteCommand}" ToolTip="Delete Blocks&#x0a;Hotkey:  Ctrl + D"/>
                     <Grid Focusable="False" Width="40" Height="34" Margin="5,7,5,7" ToolTip="Flood Fill">
                         <Grid.InputBindings>
                             <MouseBinding Gesture="LeftClick" Command="{Binding FillCommand}" />

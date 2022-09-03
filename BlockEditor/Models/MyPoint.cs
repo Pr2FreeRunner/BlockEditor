@@ -39,5 +39,9 @@ namespace BlockEditor.Models
             return !(p1 == p2);
         }
 
+        public MyPoint Move(int x, int y)
+        {
+            return new MyPoint(X + x, Y + y);
+        }
     }
 }

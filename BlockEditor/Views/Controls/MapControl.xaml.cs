@@ -210,6 +210,11 @@ namespace BlockEditor.Views.Controls
                     if (ViewModel.SelectCommand.CanExecute(null))
                         ViewModel.SelectCommand.Execute(null);
                 }
+                else if (ctrl && e.Key == Key.D)
+                {
+                    if (ViewModel.DeleteCommand.CanExecute(null))
+                        ViewModel.DeleteCommand.Execute(null);
+                }
             }
             catch (Exception ex)
             {

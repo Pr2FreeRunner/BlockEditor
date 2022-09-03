@@ -8,9 +8,11 @@ namespace BlockEditor.Models
 
     public class UserMode : NotificationObject
     {
-        public enum UserModes { None, Selection, Fill, BlockInfo, MapInfo, BlockCount, Settings, ConnectTeleports, MoveBlock, GetPosition, Distance }
+        public enum UserModes { None, Selection, Fill, BlockInfo, MapInfo, BlockCount, Settings, ConnectTeleports, MoveBlock, GetPosition, Distance, Delete }
 
         private static Cursor BucketCursor;
+        private static Cursor DeleteCursor;
+
 
         private UserModes _value;
 
@@ -33,6 +35,8 @@ namespace BlockEditor.Models
                 RaisePropertyChanged(nameof(IsSettingsMode));
                 RaisePropertyChanged(nameof(IsConnectTeleportsMode));
                 RaisePropertyChanged(nameof(IsDistanceMode));
+                RaisePropertyChanged(nameof(IsDeleteMode));
+
 
                 SetMouseCursor(value);
             }
@@ -47,6 +51,8 @@ namespace BlockEditor.Models
         public bool IsSettingsMode => Value == UserModes.Settings;
         public bool IsConnectTeleportsMode => Value == UserModes.ConnectTeleports;
         public bool IsDistanceMode => Value == UserModes.Distance;
+        public bool IsDeleteMode => Value == UserModes.Delete;
+
 
 
 
@@ -56,6 +62,7 @@ namespace BlockEditor.Models
             {
                 var folder = Path.Combine(Directory.GetCurrentDirectory(), "Resources", "Cursors");
                 BucketCursor = new Cursor(Path.Combine(folder, "BucketCursor.cur"));
+                DeleteCursor = new Cursor(Path.Combine(folder, "Delete.cur"));
             }
             catch (Exception ex)
             {
@@ -69,6 +76,10 @@ namespace BlockEditor.Models
             {
                 switch (mode)
                 {
+                    case UserModes.Delete:
+                        Mouse.OverrideCursor = DeleteCursor;
+                        break;
+
                     case UserModes.Selection:
                         Mouse.OverrideCursor = Cursors.Hand;
                         break;
