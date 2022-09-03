@@ -9,20 +9,6 @@ namespace BlockEditor.Models
     public static class MySettings
     {
 
-        private static string _username;
-        public static string Username
-        {
-            get { return _username; }
-            set { _username = value; Save(); }
-        }
-
-        private static string _token;
-        public static string Token
-        {
-            get { return _token; }
-            set { _token = value; Save(); }
-        }
-
         private static bool _firstTimeLoad;
         public static bool FirstTimeLoad
         {
@@ -167,12 +153,11 @@ namespace BlockEditor.Models
             Settings.Default.Save();
         }
 
-        private static void Save()
+        public static void Save()
         {
             try
             {
-                Settings.Default["Username"] = Username;
-                Settings.Default["Token"] = Token;
+                Settings.Default["Users"] = Users.SaveUser();
                 Settings.Default["Pr2BuildVersion"] = Pr2BuildVersion;
                 Settings.Default["FirstTimeLoad"] = FirstTimeLoad;
                 Settings.Default["FirstConnectTeleports"] = FirstConnectTeleports;            
@@ -213,8 +198,7 @@ namespace BlockEditor.Models
         {
             try
             {
-                _username = Settings.Default["Username"] as string ?? string.Empty;
-                _token = Settings.Default["Token"] as string ?? string.Empty;
+                Users.LoadUsers(Settings.Default["Users"] as string);
                 _firstTimeLoad = (bool) Settings.Default["FirstTimeLoad"];
                 _firstUserSelection = (bool)Settings.Default["FirstUserSelection"];
                 _firstConnectTeleports = (bool)Settings.Default["FirstConnectTeleports"];

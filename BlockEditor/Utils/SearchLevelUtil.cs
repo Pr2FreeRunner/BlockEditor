@@ -121,13 +121,13 @@ namespace BlockEditor.Utils
 
         public static IEnumerable<SearchResult> SearchMyLevels()
         {
-            if (!CurrentUser.IsLoggedIn())
+            if (!Users.IsLoggedIn())
             {
                 MessageUtil.ShowError("Requires user to login");
                 yield break;
             }
 
-            var data = PR2Accessor.LoadMyLevels(CurrentUser.Token);
+            var data = PR2Accessor.LoadMyLevels(Users.Current.Token);
 
             if (IsSlowDownResponse(data))
             {

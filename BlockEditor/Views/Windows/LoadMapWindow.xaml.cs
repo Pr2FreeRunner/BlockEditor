@@ -72,7 +72,7 @@ namespace BlockEditor.Views.Windows
         {
             foreach (SearchBy type in Enum.GetValues(typeof(SearchBy)))
             {
-                if(type == SearchBy.MyLevels && CurrentUser.IsLoggedIn() == false)
+                if(type == SearchBy.MyLevels && !Users.IsLoggedIn())
                     continue;
 
                 var item = new ComboBoxItem();

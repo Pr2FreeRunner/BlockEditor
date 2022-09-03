@@ -24,7 +24,7 @@ namespace BlockEditor.Views.Windows
 
             InitializeComponent();
             txtResponse.Text = MapTitle = map.Level.Title;
-            btnPr2.IsEnabled = CurrentUser.IsLoggedIn();
+            btnPr2.IsEnabled = Users.IsLoggedIn();
 
             if (btnPr2.IsEnabled)
                 btnPr2.Focus();
