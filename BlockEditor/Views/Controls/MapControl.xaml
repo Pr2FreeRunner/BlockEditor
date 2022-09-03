@@ -59,7 +59,6 @@
                     <Button       Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False" Content="⚝"        FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding AddImageCommand}" ToolTip="Add Image"/>
                     <ToggleButton Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False" IsChecked="{Binding Mode.IsDistanceMode, Mode=OneWay}" Content="📏" FontSize="23" FontFamily="Segoe UI" Command="{Binding DistanceCommand}" ToolTip="Measure Distance"/>
                     <Button       Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False" Content="&#9638;"  FontSize="25" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding AddShapeCommand}" ToolTip="Add Shape"/>
-                    <Button       Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False" Content="🎲" FontSize="24" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding AddBlockRandomlyCommand}" ToolTip="Add Block Randomly"/>
                     <Grid         Focusable="False" Margin="5,3,5,3" Height="34" Width="40" ToolTip="Block Count Info">
                         <Grid.InputBindings>
                             <MouseBinding Gesture="LeftClick" Command="{Binding BlockCountCommand}" />
