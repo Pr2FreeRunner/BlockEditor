@@ -43,7 +43,6 @@ namespace BlockEditor.Views.Windows
             InitializeComponent();
 
             OpenWindows.Add(this);
-            MyUtils.SetPopUpWindowPosition(this);
 
             Init(p);
             UpdateButtons();

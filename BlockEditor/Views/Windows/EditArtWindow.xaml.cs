@@ -36,7 +36,6 @@ namespace BlockEditor.Views.Windows
                 throw new ArgumentException("map");
 
             OpenWindows.Add(this);
-            MyUtils.SetPopUpWindowPosition(this);
         }
 
 

@@ -31,11 +31,9 @@ namespace BlockEditor.Views.Windows
             if(map == null)
                 throw new ArgumentException("map");
 
-            OpenWindows.Add(this);
-            MyUtils.SetPopUpWindowPosition(this);
-
             Init();
             UpdateButtons();
+            OpenWindows.Add(this);
         }
 
         private void OnNewColor(string color)

@@ -23,11 +23,8 @@ namespace BlockEditor.Views.Windows
                 throw new ArgumentException("map");
 
             OpenWindows.Add(this);
-            MyUtils.SetPopUpWindowPosition(this);
 
             tbTotal.Text = map.Blocks.BlockCount.ToString(CultureInfo.InvariantCulture);
-
-           
 
             using (new TempCursor(Cursors.Wait))
                 SetSpecificBlockCount(map);

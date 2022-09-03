@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:BlockEditor.Views.Controls"
         mc:Ignorable="d"
         Background="Transparent"
+        WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
         WindowStyle="None"
         Width="400"

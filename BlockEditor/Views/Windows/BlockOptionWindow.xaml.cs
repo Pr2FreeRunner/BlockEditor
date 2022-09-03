@@ -36,9 +36,8 @@ namespace BlockEditor.Views.Windows
             _block = GetBlock(index.Value);
             _mapItemOptions = ItemBlockOptionsControl.GetOptions(map.Level.Items.Select(i => i.ID));
 
-            OpenWindows.Add(this);
-            MyUtils.SetPopUpWindowPosition(this);
             Init(index.Value);
+            OpenWindows.Add(this);
         }
 
         private SimpleBlock GetBlock(MyPoint index)

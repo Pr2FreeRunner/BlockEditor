@@ -18,10 +18,8 @@ namespace BlockEditor.Views.Windows
         {
             InitializeComponent();
 
-            OpenWindows.Add(this);
-            MyUtils.SetPopUpWindowPosition(this);
-
             Init(count);
+            OpenWindows.Add(this);
         }
 
       

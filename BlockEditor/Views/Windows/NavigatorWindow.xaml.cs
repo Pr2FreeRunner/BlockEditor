@@ -51,10 +51,8 @@ namespace BlockEditor.Views.Windows
             _positions = positions;
             _blockId = blockId;
 
-            OpenWindows.Add(this);
-            MyUtils.SetPopUpWindowPosition(this);
-
             Init(p);
+            OpenWindows.Add(this);
         }
 
         private void Init(MyPoint? p)
