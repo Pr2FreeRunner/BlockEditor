@@ -87,6 +87,9 @@ namespace BlockEditor.Views.Windows
 
         private Orientation GetToolOrientation(double width)
         {
+            if(double.IsNaN(width))
+                return Orientation.Horizontal;
+
             var widthLimit = 1230.0;
             return width > widthLimit ? Orientation.Horizontal : Orientation.Vertical;
         }
