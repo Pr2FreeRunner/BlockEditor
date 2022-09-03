@@ -60,6 +60,8 @@ namespace BlockEditor.ViewModels
         public RelayCommand EditArtCommand { get; }
         public RelayCommand DistanceCommand { get; }
         public RelayCommand DeleteCommand { get; }
+        public RelayCommand AddBlockRandomlyCommand { get; }
+
 
 
         public MapViewModel()
@@ -72,6 +74,8 @@ namespace BlockEditor.ViewModels
             FillCommand = new RelayCommand((_) => OnFillClick());
             SelectCommand = new RelayCommand((_) => OnSelectionClick());
             AddShapeCommand = new RelayCommand((_) => OnAddShapeClick(), (_) => UserSelection.HasSelectedRegion);
+            AddBlockRandomlyCommand = new RelayCommand((_) => OnAddBlockRandomlyClick(), (_) => UserSelection.HasSelectedRegion);
+
             BlockInfoCommand = new RelayCommand((_) => OnBlockInfoClick());
             MapInfoCommand = new RelayCommand((_) => OnMapInfoClick());
             BlockCountCommand = new RelayCommand((_) => OnBlockCountClick());
@@ -96,6 +100,30 @@ namespace BlockEditor.ViewModels
 
         #region Events
 
+        private void OnAddBlockRandomlyClick()
+        {
+            BlockSelection.Reset();
+
+            var region = UserSelection.MapRegion;
+            var id = SelectBlockWindow.Show("Block to Add:", false);
+
+            if (id == null)
+                return;
+
+            var input = UserInputWindow.Show("Probablity of adding the block?  (0-100)", "Probablity");
+
+            if(string.IsNullOrWhiteSpace(input))
+                return;
+
+            if(!MyUtils.TryParse(input, out var probability) || probability < 0 || probability > 100)
+                throw new Exception("Invalid input.");
+
+            ShapeBuilderUtil.Type = ShapeBuilderUtil.ShapeType.Rectangle;
+            ShapeBuilderUtil.Fill = true;
+
+            var blocks = ShapeBuilderUtil.Build(Game.Map, id.Value, region, probability);
+            Game.AddBlocks(blocks);
+        }
 
         private void OnDeleteClick()
         {

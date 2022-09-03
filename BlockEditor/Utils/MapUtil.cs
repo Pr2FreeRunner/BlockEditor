@@ -340,5 +340,6 @@ namespace BlockEditor.Helpers
 
             return result;
         }
+
     }
 }
