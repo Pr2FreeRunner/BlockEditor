@@ -7,13 +7,13 @@ using System.Windows.Input;
 namespace BlockEditor.Views.Windows
 {
 
-    public partial class LoginWindow : Window
+    public partial class AccountWindow : Window
     {
 
         private string UserName { get; set; }
         private string Password { get; set; }
 
-        public LoginWindow()
+        public AccountWindow()
         {
             InitializeComponent();
             UpdateButton();
@@ -63,9 +63,9 @@ namespace BlockEditor.Views.Windows
             Close();
         }
 
-        private void Password_TextChanged(object sender, TextChangedEventArgs e)
+        private void Password_TextChanged(object sender, RoutedEventArgs e)
         {
-            Password = PasswordTextbox.Text;
+            Password = PasswordTextbox.Password;
             UpdateButton();
         }
 
@@ -90,5 +90,6 @@ namespace BlockEditor.Views.Windows
         {
             OpenWindows.Remove(this);
         }
+
     }
 }

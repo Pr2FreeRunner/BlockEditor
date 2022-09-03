@@ -44,7 +44,7 @@ namespace BlockEditor.ViewModels
         private void LoginExecute(object obj)
         {
             ResetUserMode();
-            new LoginWindow().ShowDialog();
+            new AccountWindow().ShowDialog();
         }
 
         private void SaveExecute(object obj)

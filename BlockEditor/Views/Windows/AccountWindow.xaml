@@ -1,4 +1,4 @@
-﻿<Window x:Class="BlockEditor.Views.Windows.LoginWindow"
+﻿<Window x:Class="BlockEditor.Views.Windows.AccountWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -44,7 +44,7 @@
             <TextBox HorizontalAlignment="Stretch" Margin="0, 0, 0, 20" Name="NameTextbox" TextChanged="Name_TextChanged"/>
 
             <TextBlock FontSize="{StaticResource DefaultFontSize}" Text="Password:"  Margin="0, 10, 20, 0"/>
-            <TextBox  FontSize="{StaticResource DefaultFontSize}" HorizontalAlignment="Stretch" Margin="0, 0, 0, 20" Name="PasswordTextbox" TextChanged="Password_TextChanged"/>
+            <PasswordBox FontSize="{StaticResource DefaultFontSize}" HorizontalAlignment="Stretch" Margin="0, 0, 0, 20" Name="PasswordTextbox" PasswordChanged="Password_TextChanged"/>
 
         </StackPanel>
 
