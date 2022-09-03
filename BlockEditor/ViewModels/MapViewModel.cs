@@ -161,7 +161,7 @@ namespace BlockEditor.ViewModels
 
         private void OnNavigatorClick(SimpleBlock block)
         {
-            OnCleanUserMode(true, true);
+            OnCleanUserMode(false, true);
             int? id = null;
             Predicate<SimpleBlock> filter = null;
 
