@@ -7,7 +7,7 @@
         Title="Account"
         WindowStartupLocation="CenterScreen" 
         SizeToContent="WidthAndHeight"
-        MinWidth="450"
+        MinWidth="500"
         MinHeight="100"
         WindowStyle="SingleBorderWindow"
         ResizeMode="NoResize"
@@ -52,7 +52,7 @@
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,15,20,0">
             <Button FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="100" Height="25" Content="Login" IsDefault="True" Margin="5" Name="BtnOk" Click="btnOk_Click" />
-            <Button FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="100" Height="25" Content="Cancel" IsCancel="True" Margin="5" Click="btnCancel_Click" />
+            <Button FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="100" Height="25" Content="Close" IsCancel="True" Margin="5" Click="btnCancel_Click" />
         </StackPanel>
         
     </Grid>
