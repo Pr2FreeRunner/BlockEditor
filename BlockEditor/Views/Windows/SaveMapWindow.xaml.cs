@@ -37,13 +37,11 @@ namespace BlockEditor.Views.Windows
             startGrid.Visibility = Visibility.Collapsed;
             saveLevelGrid.Visibility = Visibility.Visible;
 
-            if (string.IsNullOrEmpty(MapTitle))
-                txtResponse.Focus();
-
             UpdateButtons();
+            txtResponse.Focus();
 
-            if (btnSave.IsEnabled)
-                btnSave.Focus();
+            if(!string.IsNullOrEmpty(txtResponse.Text))
+                txtResponse.CaretIndex = txtResponse.Text.Length;
         }
 
         private void btnLocalFile_Click(object sender, RoutedEventArgs e)
