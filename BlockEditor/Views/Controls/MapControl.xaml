@@ -73,7 +73,7 @@
                     <Button Focusable="False" IsTabStop="False"  Height="34"  Command="{Binding BlockCountCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                     <Image Focusable="False" VerticalAlignment="Center" HorizontalAlignment="Center" Source="../../Resources/GUI/BlockCount.png" />
                 </Grid>
-                <Button Focusable="False" Margin="4,3,4,3" Height="34" Width="40" IsTabStop="False" Content="&#128712;"  FontSize="26" FontFamily="Segoe UI" Command="{Binding BlockInfoCommand}" ToolTip="Block Info&#x0a;Hotkey: Ctrl +  B"/>
+                <ToggleButton Focusable="False" Margin="4,3,4,3" Height="34" Width="40" IsTabStop="False" Content="&#128712;"  FontSize="26" FontFamily="Segoe UI" IsChecked="{Binding Mode.IsBlockInfoMode, Mode=OneWay}" Command="{Binding BlockInfoCommand}" ToolTip="Block Info&#x0a;Hotkey: Ctrl +  B"/>
                 <Button Focusable="False" Margin="4,3,4,3" Height="34" Width="40" IsTabStop="False" Content="🔧" FontSize="22" FontFamily="Segoe UI" Command="{Binding MapInfoCommand}" ToolTip="Map Info&#x0a;Hotkey:  Ctrl + M"/>
                 <Grid   Focusable="False" Margin="4,3,4,3" Height="34" Width="40" ToolTip="Editor Settings Info">
                     <Grid.InputBindings>
