@@ -12,10 +12,11 @@ namespace BlockEditor.Utils
         public enum ShapeType { Rectangle, Square, Circle, Ellipse }
         public static ShapeType Type { get; set; }
         public static bool Fill { get; set; }
+        public static int Probablity { get; set; }
 
         private static Random _rng = new Random();
 
-        public static List<SimpleBlock> Build(Map map, int id, MyRegion region, int probability = 100)
+        public static List<SimpleBlock> Build(Map map, int id, MyRegion region)
         {
             var fallback = new List<SimpleBlock>();
 
@@ -26,7 +27,7 @@ namespace BlockEditor.Utils
             {
                 case ShapeType.Rectangle:
                     if(Fill)
-                        return GetRectangleFill(map, id, region, probability);
+                        return GetRectangleFill(map, id, region);
                     else
                         return GetRectangle(map, id, region);
 
@@ -53,6 +54,7 @@ namespace BlockEditor.Utils
 
             Type = window.Result;
             Fill = window.Fill;
+            Probablity = window.Probability;
 
             return true;
         }
@@ -88,24 +90,24 @@ namespace BlockEditor.Utils
                 return GetRectangle(map, id, square);
         }
 
-        private static List<SimpleBlock> GetRectangleFill(Map map, int id, MyRegion region, int probability = 100)
+        private static List<SimpleBlock> GetRectangleFill(Map map, int id, MyRegion region)
         {
             var result = new List<SimpleBlock>();
 
             for (int x = region.Start.Value.X; x < region.End.Value.X; x++)
                 for (int y = region.Start.Value.Y; y < region.End.Value.Y; y++)
-                    AddBlock(map, result, id, x, y, probability);
+                    AddBlock(map, result, id, x, y);
 
             return result;
         }
 
-        private static void AddBlock(Map map, List<SimpleBlock> result, int id, int x, int y, int probablity = 100)
+        private static void AddBlock(Map map, List<SimpleBlock> result, int id, int x, int y)
         {
-            if(probablity < 100)
+            if(Probablity < 100)
             {
                 var r = _rng.Next(1, 101);
 
-                if(r > probablity)
+                if(r > Probablity)
                     return;
             }
 

@@ -155,8 +155,9 @@ namespace BlockEditor.ViewModels
 
             ShapeBuilderUtil.Type = ShapeBuilderUtil.ShapeType.Rectangle;
             ShapeBuilderUtil.Fill = true;
+            ShapeBuilderUtil.Probablity = probability;
 
-            var blocks = ShapeBuilderUtil.Build(Game.Map, id.Value, region, probability);
+            var blocks = ShapeBuilderUtil.Build(Game.Map, id.Value, region);
             Game.AddBlocks(blocks);
         }
 

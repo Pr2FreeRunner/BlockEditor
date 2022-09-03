@@ -69,7 +69,6 @@
                         <Label Content="X-Position:" Margin="0,5,0,0" FontWeight="SemiBold"/>
                         <TextBox x:Name="tbPosX" Margin="4,0,0,0" TextChanged="tbPosX_TextChanged" PreviewTextInput="Double_PreviewTextInput" FontSize="12" />
 
-
                         <Label Content="Y-Position:" Margin="0,5,0,0" FontWeight="SemiBold"/>
                         <TextBox x:Name="tbPosY" Margin="4,0,0,0" TextChanged="tbPosY_TextChanged" PreviewTextInput="Double_PreviewTextInput" FontSize="12" />
                     </StackPanel>

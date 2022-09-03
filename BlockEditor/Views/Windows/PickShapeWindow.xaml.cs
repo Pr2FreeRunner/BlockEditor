@@ -1,5 +1,8 @@
 ﻿using BlockEditor.Models;
+using BlockEditor.Utils;
+using System.Globalization;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using static BlockEditor.Utils.ShapeBuilderUtil;
 
@@ -11,9 +14,12 @@ namespace BlockEditor.Views.Windows
         public ShapeType Result { get; private set; }
         public bool Fill => MySettings.FillShape;
 
+        public int Probability { get; set; }
+
         public PickShapeWindow(ShapeType fallback)
         {
             InitializeComponent();
+            Probability = 100;
             Result = fallback;
             FillCheckbox.IsChecked = Fill;
             OpenWindows.Add(this);
@@ -70,5 +76,31 @@ namespace BlockEditor.Views.Windows
         {
             OpenWindows.Remove(this);
         }
+
+        private void tb_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            var tb = sender as TextBox;
+
+            if (tb == null)
+                return;
+
+            if (MyUtils.TryParse(tb.Text, out var result))
+                Probability = result;
+            else
+            {
+                Probablity = 100;
+            }
+        }
+
+        private void Integer_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            var fullText = textBox.Text.Insert(textBox.SelectionStart, e.Text);
+            var culture = CultureInfo.InvariantCulture;
+            bool isDouble = int.TryParse(fullText, NumberStyles.Any, culture, out var result);
+
+            e.Handled = !isDouble || result < 0 || result > 100;
+        }
+
     }
 }
