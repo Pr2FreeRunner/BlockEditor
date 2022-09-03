@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using BlockEditor.Models;
 using BlockEditor.Views.Controls;
@@ -82,6 +83,30 @@ namespace BlockEditor.Views.Windows
                 return BlockSize.Zoom125;
 
             return BlockSize.Zoom150;
+        }
+
+
+        private void SetToolOrientation(double width)
+        {
+            if(double.IsNaN(width))
+                return;
+
+            if(TabPanel?.Children == null)
+                return;
+
+            var widthLimit = 1230.0;
+            var orientation = width > widthLimit ? Orientation.Horizontal : Orientation.Vertical;
+
+            foreach (var child in TabPanel.Children)
+            {
+                if(!(child is MyTabControl tab))
+                    continue;
+
+                if(tab?.MapControl?.ToolPanel == null)
+                    continue;
+
+                tab.MapControl.ToolPanel.Orientation = orientation;
+            }
         }
 
         private void SetBlockImageSize(double height = double.NaN)
@@ -207,6 +232,7 @@ namespace BlockEditor.Views.Windows
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             SetBlockImageSize(e.NewSize.Height);
+            SetToolOrientation(e.NewSize.Width);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
