@@ -29,9 +29,9 @@
                 <Button Focusable="False" IsTabStop="False"  Height="40" Width="35" Margin="10,8,5,8" VerticalAlignment="Center" Content=" &#128896; " FontWeight="SemiBold" FontSize="26" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.UndoCommand}" ToolTip="Undo &#x0a;Hotkey:  Ctrl + Z"/>
                 <Button Focusable="False" IsTabStop="False"  Height="40" Width="35" Margin="5,8,5,8"  VerticalAlignment="Center" Content=" &#128898; " FontWeight="SemiBold" FontSize="26" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.RedoCommand}" ToolTip="Redo &#x0a;HotKey:  Ctrl + Y"/>
 
-                <ToggleButton Focusable="False" Margin="25,3,3,3" Height="34" Width="65" VerticalAlignment="Center" IsTabStop="False" FontSize="{StaticResource DefaultFontSize}"  IsChecked="{Binding Mode.IsSelectionMode, Mode=OneWay}"  Content="Select" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding SelectCommand}" ToolTip="Select Blocks &#x0a;Hotkey:  Shift"/>
+                <ToggleButton Focusable="False" Margin="20,3,25,3" Height="34" Width="65" VerticalAlignment="Center" IsTabStop="False" FontSize="{StaticResource DefaultFontSize}"  IsChecked="{Binding Mode.IsSelectionMode, Mode=OneWay}"  Content="Select" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding SelectCommand}" ToolTip="Select Blocks &#x0a;Hotkey:  Shift"/>
 
-                <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="25,0,0,0">
+                <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <Button       Focusable="False" Margin="3,3,5,3" Height="34" Width="40" Content="❌" FontSize="17"  FontWeight="Normal" FontFamily="Segoe UI" Command="{Binding DeselectCommand}" ToolTip="Deselect everything&#x0a;Hotkey:  Escape"/>
                     <Button       Focusable="False" Margin="5,3,5,3" Height="34" Width="40" Content="↺"   FontSize="25" FontWeight="Bold"   FontFamily="Segoe UI" IsTabStop="False" Command="{Binding RotateCommand}"  ToolTip="Rotate Blocks"/>
                     <Button       Focusable="False" Margin="5,3,5,3" Height="34" Width="40" Content="⭥"   FontSize="25" FontWeight="Bold"   FontFamily="Segoe UI" IsTabStop="False" Command="{Binding VerticalFlipCommand}"  ToolTip="Vertical Flip"/>
@@ -77,7 +77,7 @@
                     </Grid>
                 </WrapPanel>
 
-                <CheckBox Focusable="False" IsTabStop="False" IsChecked="{Binding IsOverwrite, Mode=TwoWay}" Margin="40,7,25,7" Height="25" VerticalContentAlignment="Center" Width="100" Content="Overwrite"  FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI" ToolTip="Overwrite block&#x0a;Hotkey:  Ctrl + O"/>
+                <CheckBox Focusable="False" IsTabStop="False" IsChecked="{Binding IsOverwrite, Mode=TwoWay}" Margin="25,7,7,7" Height="25" VerticalContentAlignment="Center" Content="Overwrite"  FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI" ToolTip="Overwrite block&#x0a;Hotkey:  Ctrl + O"/>
 
             </StackPanel>
 
