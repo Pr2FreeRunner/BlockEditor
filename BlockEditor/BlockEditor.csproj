@@ -21,6 +21,7 @@
     <None Remove="Resources\GUI\BlockCount.png" />
     <None Remove="Resources\GUI\Bucket.png" />
     <None Remove="Resources\GUI\BucketCursor.cur" />
+    <None Remove="Resources\GUI\Eraser.png" />
     <None Remove="Resources\GUI\Settings.png" />
   </ItemGroup>
 
@@ -29,6 +30,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\GUI\Bucket.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\GUI\Eraser.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\GUI\Settings.png">
@@ -310,9 +314,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\Cursors\BucketCursor.cur">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\Cursors\Delete.cur">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Settings.settings">

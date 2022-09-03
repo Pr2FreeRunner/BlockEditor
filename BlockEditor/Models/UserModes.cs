@@ -11,8 +11,6 @@ namespace BlockEditor.Models
         public enum UserModes { None, Selection, Fill, BlockInfo, MapInfo, BlockCount, Settings, ConnectTeleports, MoveBlock, GetPosition, Distance, Delete }
 
         private static Cursor BucketCursor;
-        private static Cursor DeleteCursor;
-
 
         private UserModes _value;
 
@@ -62,7 +60,6 @@ namespace BlockEditor.Models
             {
                 var folder = Path.Combine(Directory.GetCurrentDirectory(), "Resources", "Cursors");
                 BucketCursor = new Cursor(Path.Combine(folder, "BucketCursor.cur"));
-                DeleteCursor = new Cursor(Path.Combine(folder, "Delete.cur"));
             }
             catch (Exception ex)
             {
@@ -76,10 +73,6 @@ namespace BlockEditor.Models
             {
                 switch (mode)
                 {
-                    case UserModes.Delete:
-                        Mouse.OverrideCursor = DeleteCursor;
-                        break;
-
                     case UserModes.Selection:
                         Mouse.OverrideCursor = Cursors.Hand;
                         break;

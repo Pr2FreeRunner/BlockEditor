@@ -14,55 +14,75 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="88" />
         </Grid.RowDefinitions>
 
-        <Border Focusable="False" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="99"
-                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                Focusable="False"
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch" 
                 Background="{StaticResource LightBackground}">
 
-            <Grid Focusable="False">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-                
-                <StackPanel Focusable="False" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                    <Button Focusable="False" IsTabStop="False"  Height="34" Width="30" Margin="10,7,5,7" Content="&#128896;" FontWeight="SemiBold" FontSize="22" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.UndoCommand}" ToolTip="Undo &#x0a;Hotkey:  Ctrl + Z"/>
-                    <Button Focusable="False" IsTabStop="False"  Height="34" Width="30" Margin="5,7,5,7"  Content="&#128898;" FontWeight="SemiBold" FontSize="22" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.RedoCommand}" ToolTip="Redo &#x0a;HotKey:  Ctrl + Y"/>
+            <StackPanel Focusable="False" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                <Button Focusable="False" IsTabStop="False"  Height="40" Width="35" Margin="10,7,5,7" VerticalAlignment="Center" Content=" &#128896; " FontWeight="SemiBold" FontSize="26" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.UndoCommand}" ToolTip="Undo &#x0a;Hotkey:  Ctrl + Z"/>
+                <Button Focusable="False" IsTabStop="False"  Height="40" Width="35" Margin="5,7,5,7"  VerticalAlignment="Center" Content=" &#128898; " FontWeight="SemiBold" FontSize="26" FontFamily="Segoe UI" Command="{Binding Game.UserOperations.RedoCommand}" ToolTip="Redo &#x0a;HotKey:  Ctrl + Y"/>
 
-                    <ToggleButton Focusable="False" IsTabStop="False" Height="34" IsChecked="{Binding Mode.IsSelectionMode, Mode=OneWay}" Margin="25,7,5,7" Width="60" Content="Select" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding SelectCommand}" ToolTip="Select Blocks &#x0a;Hotkey:  Shift"/>
+                <ToggleButton Focusable="False" Margin="25,3,3,3" Height="34" Width="65" VerticalAlignment="Center" IsTabStop="False" FontSize="{StaticResource DefaultFontSize}"  IsChecked="{Binding Mode.IsSelectionMode, Mode=OneWay}"  Content="Select" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding SelectCommand}" ToolTip="Select Blocks &#x0a;Hotkey:  Shift"/>
 
-                    <Button Focusable="False" IsTabStop="False" Margin="35,7,5,7" Height="34" Width="40" Content="↺" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding RotateCommand}"  ToolTip="Rotate Blocks"/>
-                    <Button Focusable="False" IsTabStop="False" Margin="5,7,5,7" Height="34" Width="40" Content="⭥" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding VerticalFlipCommand}"  ToolTip="Vertical Flip"/>
-                    <Button Focusable="False" IsTabStop="False" Margin="5,7,5,7" Height="34" Width="40" Content="⇆" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding HorizontalFlipCommand}"  ToolTip="Horizontal Flip"/>
-                    <ToggleButton Focusable="False" IsTabStop="False" Height="34" Width="40"  IsChecked="{Binding Mode.IsDeleteMode, Mode=OneWay}" Margin="5,7,5,7" Content="❌" FontSize="18" FontFamily="Segoe UI" Command="{Binding DeleteCommand}" ToolTip="Delete Blocks&#x0a;Hotkey:  Ctrl + D"/>
+                <StackPanel VerticalAlignment="Center" Margin="25,0,0,0" HorizontalAlignment="Stretch">
+                    <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" MaxWidth="1500">
+                        <Button       Focusable="False" Margin="3,3,5,3" Height="34" Width="40" Content="❌" FontSize="17"  FontWeight="Normal" FontFamily="Segoe UI" Command="{Binding DeselectCommand}" ToolTip="Deselect everything&#x0a;Hotkey:  Escape"/>
+                        <Button       Focusable="False" Margin="5,3,5,3" Height="34" Width="40" Content="↺"   FontSize="25" FontWeight="Bold"   FontFamily="Segoe UI" IsTabStop="False" Command="{Binding RotateCommand}"  ToolTip="Rotate Blocks"/>
+                        <Button       Focusable="False" Margin="5,3,5,3" Height="34" Width="40" Content="⭥"   FontSize="25" FontWeight="Bold"   FontFamily="Segoe UI" IsTabStop="False" Command="{Binding VerticalFlipCommand}"  ToolTip="Vertical Flip"/>
+                        <Button       Focusable="False" Margin="5,3,5,3" Height="34" Width="40" Content="⇆"   FontSize="25" FontWeight="Bold"   FontFamily="Segoe UI" IsTabStop="False" Command="{Binding HorizontalFlipCommand}"  ToolTip="Horizontal Flip"/>
+                        <Grid         Focusable="False" Margin="5,3,5,3" Height="34" Width="40" ToolTip="Eraser">
+                            <Grid.InputBindings>
+                                <MouseBinding Gesture="LeftClick" Command="{Binding DeleteCommand}" />
+                            </Grid.InputBindings>
+                            <ToggleButton Focusable="False" IsTabStop="False" Height="34" Command="{Binding DeleteCommand}" IsChecked="{Binding Mode.IsDeleteMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                            <Image Focusable="False" VerticalAlignment="Center" HorizontalAlignment="Center" Source="../../Resources/GUI/Eraser.png" />
+                        </Grid>
 
-                    <Button Focusable="False" IsTabStop="False" Height="34" Margin="5,7,5,7" Width="40" Content="&#9935;"  FontSize="22" FontWeight="Normal"   FontFamily="Segoe UI" Command="{Binding ReplaceCommand}" ToolTip="Replace Block"/>
-
-                    <Button Focusable="False" IsTabStop="False" Height="34" Margin="5,7,5,7" Width="40" Content="⚝" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding AddImageCommand}" ToolTip="Add Image"/>
-                    <Button Focusable="False" IsTabStop="False" Height="34" Margin="5,7,5,7" Width="40" Content="&#128465;" FontSize="18" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding DeleteBlockCommand}" ToolTip="Remove Block Type"/>
-                    <Button Focusable="False" IsTabStop="False" Height="34" Width="40" Margin="5,7,5,7" Content="&#8982;"  FontSize="25" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding NavigatorCommand}" ToolTip="Navigator&#x0a;Hotkey:  Ctrl + N"/>
-
-
-                    <ToggleButton Focusable="False" IsTabStop="False" Height="34" Width="40"  IsChecked="{Binding Mode.IsBlockInfoMode, Mode=OneWay}" Margin="30,7,5,7" Content="&#128712;"  FontSize="26" FontFamily="Segoe UI" Command="{Binding BlockInfoCommand}" ToolTip="Block Info&#x0a;Hotkey: Ctrl +  B"/>
-                    <ToggleButton Focusable="False" IsTabStop="False" Height="34" Width="40"  IsChecked="{Binding Mode.IsMapInfoMode, Mode=OneWay}" Margin="5,7,5,7" Content="🔧" FontSize="22" FontFamily="Segoe UI" Command="{Binding MapInfoCommand}" ToolTip="Map Info&#x0a;Hotkey:  Ctrl + M"/>
-
-                    <Grid Focusable="False" Width="40" Height="34" Margin="5,7,5,7" ToolTip="Editor Settings">
-                        <Grid.InputBindings>
-                            <MouseBinding Gesture="LeftClick" Command="{Binding SettingsCommand}" />
-                        </Grid.InputBindings>
-                        <ToggleButton Focusable="False" IsTabStop="False"  Height="34" Command="{Binding SettingsCommand}" IsChecked="{Binding Mode.IsSettingsMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-                        <Image Focusable="False" VerticalAlignment="Center" HorizontalAlignment="Center" Source="../../Resources/GUI/Settings.png" />
-                    </Grid>
-
-                    <CheckBox Focusable="False" IsTabStop="False" IsChecked="{Binding IsOverwrite, Mode=TwoWay}" Margin="40,7,25,7" Height="25" VerticalContentAlignment="Center" Width="100" Content="Overwrite"  FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI" ToolTip="Overwrite block&#x0a;Hotkey:  Ctrl + O"/>
-
+                        <Grid         Focusable="False" Margin="5,3,5,3" Height="34" Width="40" ToolTip="Flood Fill">
+                            <Grid.InputBindings>
+                                <MouseBinding Gesture="LeftClick" Command="{Binding FillCommand}" />
+                            </Grid.InputBindings>
+                            <ToggleButton Focusable="False" IsTabStop="False" Height="34" Command="{Binding FillCommand}" IsChecked="{Binding Mode.IsFillMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                            <Image Focusable="False" VerticalAlignment="Center" HorizontalAlignment="Center" Source="../../Resources/GUI/Bucket.png" />
+                        </Grid>
+                        <ToggleButton Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False" IsChecked="{Binding Mode.IsConnectTeleportsMode, Mode=OneWay}" Content="𐩒" FontSize="26" FontFamily="Segoe UI" Command="{Binding ConnectTeleportsCommand}" ToolTip="Connect Teleports"/>
+                        <Button       Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False" Content="✏" FontSize="19" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding EditArtCommand}" ToolTip="Edit Art"/>
+                        <Button       Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False" Content="&#128465;" FontSize="18" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding DeleteBlockCommand}" ToolTip="Remove Block Type"/>
+                        <Button       Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False" Content="&#8982;"   FontSize="25" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding NavigatorCommand}" ToolTip="Navigator&#x0a;Hotkey:  Ctrl + N"/>
+                        <Button       Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False" Content="&#9935;"   FontSize="22" FontWeight="Normal"   FontFamily="Segoe UI" Command="{Binding ReplaceCommand}" ToolTip="Replace Block"/>
+                        <Button       Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False" Content="⚝"        FontSize="25" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding AddImageCommand}" ToolTip="Add Image"/>
+                        <ToggleButton Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False" IsChecked="{Binding Mode.IsDistanceMode, Mode=OneWay}" Content="📏" FontSize="23" FontFamily="Segoe UI" Command="{Binding DistanceCommand}" ToolTip="Measure Distance"/>
+                        <Button       Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False" Content="&#9638;"  FontSize="25" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding AddShapeCommand}" ToolTip="Add Shape"/>
+                        <Button       Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False" Content="🎲" FontSize="24" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding AddBlockRandomlyCommand}" ToolTip="Add Block Randomly"/>
+                        <Grid         Focusable="False" Margin="5,3,5,3" Height="34" Width="40" ToolTip="Block Count Info">
+                            <Grid.InputBindings>
+                                <MouseBinding Gesture="LeftClick" Command="{Binding BlockCountCommand}" />
+                            </Grid.InputBindings>
+                            <ToggleButton Focusable="False" IsTabStop="False"  Height="34"  Command="{Binding BlockCountCommand}" IsChecked="{Binding Mode.IsBlockCountMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                            <Image Focusable="False" VerticalAlignment="Center" HorizontalAlignment="Center" Source="../../Resources/GUI/BlockCount.png" />
+                        </Grid>
+                        <ToggleButton Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False"  IsChecked="{Binding Mode.IsBlockInfoMode, Mode=OneWay}" Content="&#128712;"  FontSize="26" FontFamily="Segoe UI" Command="{Binding BlockInfoCommand}" ToolTip="Block Info&#x0a;Hotkey: Ctrl +  B"/>
+                        <ToggleButton Focusable="False" Margin="5,3,5,3" Height="34" Width="40" IsTabStop="False"  IsChecked="{Binding Mode.IsMapInfoMode, Mode=OneWay}" Content="🔧" FontSize="22" FontFamily="Segoe UI" Command="{Binding MapInfoCommand}" ToolTip="Map Info&#x0a;Hotkey:  Ctrl + M"/>
+                        <Grid         Focusable="False" Margin="5,3,5,3" Height="34" Width="40" ToolTip="Editor Settings">
+                            <Grid.InputBindings>
+                                <MouseBinding Gesture="LeftClick" Command="{Binding SettingsCommand}" />
+                            </Grid.InputBindings>
+                            <ToggleButton Focusable="False" IsTabStop="False"  Height="34" Command="{Binding SettingsCommand}" IsChecked="{Binding Mode.IsSettingsMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                            <Image Focusable="False" VerticalAlignment="Center" HorizontalAlignment="Center" Source="../../Resources/GUI/Settings.png" />
+                        </Grid>
+                    </WrapPanel>
                 </StackPanel>
 
-            </Grid>
+                <CheckBox Focusable="False" IsTabStop="False" IsChecked="{Binding IsOverwrite, Mode=TwoWay}" Margin="40,7,25,7" Height="25" VerticalContentAlignment="Center" Width="100" Content="Overwrite"  FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI" ToolTip="Overwrite block&#x0a;Hotkey:  Ctrl + O"/>
+
+            </StackPanel>
 
         </Border>
 
@@ -92,69 +112,6 @@
             Margin="50,10,50,20"
             Focusable="False"
             IsTabStop="False"/>
-
-
-        <Border Grid.Column="0"  
-            Grid.Row="1"
-            CornerRadius="12,12,12,12" 
-            BorderThickness="1" 
-            BorderBrush="{StaticResource StandardBorderColor}"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Left"
-            Margin="50,50,50,20"
-            Width="auto"
-            Height="auto">
-
-            <Border.Background>
-                <LinearGradientBrush StartPoint="0 1" EndPoint="1 1" Opacity="0.25">
-                    <LinearGradientBrush.GradientStops>
-                        <GradientStop Offset="0" Color="White" />
-                        <GradientStop Offset="1" Color="White" />
-                    </LinearGradientBrush.GradientStops>
-                </LinearGradientBrush>
-            </Border.Background>
-
-            <Grid Focusable="False">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-
-                <Grid Grid.Row="0" Grid.Column="0" Focusable="False" Width="40" Height="34" Margin="5,7,5,7" ToolTip="Flood Fill">
-                    <Grid.InputBindings>
-                        <MouseBinding Gesture="LeftClick" Command="{Binding FillCommand}" />
-                    </Grid.InputBindings>
-                    <ToggleButton Focusable="False" IsTabStop="False" Height="34" Command="{Binding FillCommand}" IsChecked="{Binding Mode.IsFillMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-                    <Image Focusable="False" VerticalAlignment="Center" HorizontalAlignment="Center" Source="../../Resources/GUI/Bucket.png" />
-                </Grid>
-
-                <ToggleButton Grid.Row="0" Grid.Column="1" Focusable="False" IsTabStop="False" Height="34" Width="40"  IsChecked="{Binding Mode.IsConnectTeleportsMode, Mode=OneWay}" Margin="5,7,5,7" Content="𐩒" FontSize="26" FontFamily="Segoe UI" Command="{Binding ConnectTeleportsCommand}" ToolTip="Connect Teleports"/>
-                <ToggleButton Grid.Row="1" Grid.Column="0" Focusable="False" IsTabStop="False" Height="34" Width="40"  IsChecked="{Binding Mode.IsDistanceMode, Mode=OneWay}" Margin="5,7,5,7" Content="📏" FontSize="23" FontFamily="Segoe UI" Command="{Binding DistanceCommand}" ToolTip="Measure Distance"/>
-                <Button       Grid.Row="1" Grid.Column="1" Focusable="False" IsTabStop="False" Height="34" Margin="5,7,5,7" Width="40" Content="✏" FontSize="19" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding EditArtCommand}" ToolTip="Edit Art"/>
-          
-                <Grid   Grid.Row="3" Grid.Column="0" Focusable="False" Width="40" Height="34" Margin="5,7,5,7" ToolTip="Block Count Info">
-                    <Grid.InputBindings>
-                        <MouseBinding Gesture="LeftClick" Command="{Binding BlockCountCommand}" />
-                    </Grid.InputBindings>
-                    <ToggleButton Focusable="False" IsTabStop="False"  Height="34"  Command="{Binding BlockCountCommand}" IsChecked="{Binding Mode.IsBlockCountMode, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-                    <Image Focusable="False" VerticalAlignment="Center" HorizontalAlignment="Center" Source="../../Resources/GUI/BlockCount.png" />
-                </Grid>
-
-                <Button  Grid.Row="4" Grid.Column="0" Focusable="False" IsTabStop="False" Height="34" Margin="5,7,5,7" Width="40" Content="&#9638;"  FontSize="25" FontWeight="SemiBold" FontFamily="Segoe UI" Command="{Binding AddShapeCommand}" ToolTip="Add Shape"/>
-                <Button  Grid.Row="4" Grid.Column="1" Focusable="False" IsTabStop="False" Height="34" Margin="7,7,5,7" Width="40" Content="🎲" FontSize="24" FontWeight="Bold" FontFamily="Segoe UI" Command="{Binding AddBlockRandomlyCommand}" ToolTip="Add Block Randomly"/>
-
-            </Grid>
-            
-            
-        </Border>
 
         <myControls:ZoomControl Grid.Row="2" Grid.Column="1" 
                            VerticalAlignment="Center" 
