@@ -389,7 +389,7 @@ namespace BlockEditor.ViewModels
 
             var blocks = ShapeBuilderUtil.Build(Game.Map, selectedId.Value, region);
 
-            if (blocks != null && !blocks.Any() && region != null && region.IsComplete() && !Game.Map.Blocks.Overwrite)
+            if (blocks != null && !blocks.Any() && region != null && region.IsComplete() && !Game.Map.Blocks.Overwrite && ShapeBuilderUtil.Probablity != 100)
                 throw new OverwriteException();
 
             Game.AddBlocks(blocks);
