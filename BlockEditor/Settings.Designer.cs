@@ -238,5 +238,17 @@ namespace BlockEditor {
                 this["Users"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Overwrite {
+            get {
+                return ((bool)(this["Overwrite"]));
+            }
+            set {
+                this["Overwrite"] = value;
+            }
+        }
     }
 }

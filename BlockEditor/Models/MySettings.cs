@@ -141,6 +141,13 @@ namespace BlockEditor.Models
             set { _firstConnectTeleports = value; Save(); }
         }
 
+        private static bool _overwrite;
+        public static bool Overwrite
+        {
+            get { return _overwrite; }
+            set { _overwrite = value;  } // don't save, bad performance
+        }
+
         public static void Init()
         {
             //Reset();
@@ -160,7 +167,8 @@ namespace BlockEditor.Models
                 Settings.Default["Users"] = Users.SaveUser();
                 Settings.Default["Pr2BuildVersion"] = Pr2BuildVersion;
                 Settings.Default["FirstTimeLoad"] = FirstTimeLoad;
-                Settings.Default["FirstConnectTeleports"] = FirstConnectTeleports;            
+                Settings.Default["FirstConnectTeleports"] = FirstConnectTeleports;  
+                Settings.Default["Overwrite"] = Overwrite;
                 Settings.Default["FirstUserSelection"] = FirstUserSelection;
                 Settings.Default["FillShape"] = FillShape;
                 Settings.Default["Zoom"] = (int)Zoom;
@@ -203,6 +211,7 @@ namespace BlockEditor.Models
                 _firstUserSelection = (bool)Settings.Default["FirstUserSelection"];
                 _firstConnectTeleports = (bool)Settings.Default["FirstConnectTeleports"];
                 _fillShape = (bool)Settings.Default["FillShape"];
+                _overwrite = (bool)Settings.Default["Overwrite"];
                 _zoom = (BlockSize)(Settings.Default["Zoom"] ?? BlockImages.DEFAULT_BLOCK_SIZE);
                 _pr2BuildVersion = HandleBuildVersion(Settings.Default["Pr2BuildVersion"] as string);
                 _playTime = (int)(Settings.Default["PlayTime"] ?? 0);

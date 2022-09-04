@@ -51,6 +51,7 @@ namespace BlockEditor.Views.Controls
         {
             try
             {
+                ViewModel.IsOverwrite = MySettings.Overwrite; //updates GUI
                 ViewModel.Game.Engine.Start();
             }
             catch (Exception ex)

@@ -13,7 +13,12 @@ namespace BlockEditor.Models
 
         private SimpleBlock[,] _blocks;
 
-        public bool Overwrite { get; set; }
+        public bool Overwrite 
+        { 
+            get { return MySettings.Overwrite; }
+            set { MySettings.Overwrite = value; }
+        }
+
         public int BlockCount;
 
         public UniqueBlocks StartBlocks { get; }
@@ -23,7 +28,6 @@ namespace BlockEditor.Models
         {
             _blocks = new SimpleBlock[SIZE, SIZE];
             StartBlocks = new UniqueBlocks();
-            Overwrite = true;
         }
 
 
