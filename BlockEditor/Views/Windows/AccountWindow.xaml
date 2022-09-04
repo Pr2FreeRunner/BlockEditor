@@ -34,7 +34,7 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock FontSize="{StaticResource DefaultFontSize}" Grid.Column="0" Margin="20,0,0,0" Text="Currently logged in as:" VerticalAlignment="Center"/>
+            <TextBlock FontSize="{StaticResource DefaultFontSize}" Grid.Column="0" Margin="20,0,0,0" Text="Logged in as:" VerticalAlignment="Center"/>
             <ComboBox x:Name="cbUsers" VerticalAlignment="Center" HorizontalAlignment="Stretch"  Grid.Column="1" FontWeight="SemiBold" Margin="10,0,0,0" SelectionChanged="cbUsers_SelectionChanged"  FontSize="{StaticResource DefaultFontSize}"/>
             <Button x:Name="btnLogout" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Grid.Column="2" Width="70" Height="25"  HorizontalAlignment="Right" Content="Logout" Margin="20,5,20,5" Click="Logout_Click" />
         </Grid>
