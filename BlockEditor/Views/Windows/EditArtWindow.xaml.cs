@@ -329,14 +329,6 @@ namespace BlockEditor.Views.Windows
             }
         }
 
-        private string GetBlockText()
-        {
-            if (cbBlocks.IsChecked != true)
-                return string.Empty;
-
-            return " and blocks";
-        }
-
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -349,14 +341,14 @@ namespace BlockEditor.Views.Windows
                         {
                             MoveArt(_region);
                             MoveBlocks(_region);
-                            Message = $"The art{GetBlockText()} inside the selected region has been moved.";
                         }
                         else
                         {
                             MoveArt();
                             MoveBlocks();
-                            Message = $"The art{GetBlockText()} inside the map has been moved.";
                         }
+
+                        Message = "Move operation successful.";
                     }
                     else
                     {
@@ -364,14 +356,14 @@ namespace BlockEditor.Views.Windows
                         {
                             RemoveArt(_region);
                             RemoveBlocks(_region);
-                            Message = $"The art{GetBlockText()} inside the selected region has been deleted.";
                         }
                         else
                         {
                             RemoveArt();
                             RemoveBlocks();
-                            Message = $"The art{GetBlockText()} inside the map has been deleted.";
                         }
+
+                        Message = "Delete operation successful.";
                     }
                 }
 
