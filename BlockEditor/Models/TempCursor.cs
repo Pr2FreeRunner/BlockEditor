@@ -19,4 +19,30 @@ namespace BlockEditor.Models
             Mouse.OverrideCursor = _current;
         }
     }
+
+    public class TempOverwrite : IDisposable
+    {
+        private bool _oldValue;
+        private Blocks _blocks;
+
+        public TempOverwrite(Blocks blocks, bool value, bool change = true)
+        {
+            if(blocks == null)
+                return;
+
+            _blocks  = blocks;
+            _oldValue = blocks.Overwrite;
+
+            if(change)
+                _blocks.Overwrite = value;
+        }
+
+        public void Dispose()
+        {
+            if(_blocks == null)
+                return;
+
+            _blocks.Overwrite = _oldValue;
+        }
+    }
 }

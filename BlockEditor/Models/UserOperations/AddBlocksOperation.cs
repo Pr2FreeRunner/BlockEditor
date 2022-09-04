@@ -47,23 +47,20 @@ namespace BlockEditor.Models
                 return false;
 
             var removed = new List<AddBlockOperation>();
-            var currentOverWrite = _map.Blocks.Overwrite;
-            _map.Blocks.Overwrite = true;
 
-            try
+            using(new TempOverwrite(_map.Blocks, true))
             {
-                if(_operations == null || !_operations.Any())
-                    ExecuteBlocks(removed, true);
-                else
-                    ExecuteOperations(removed, true);
-            }
-            catch (Exception ex)
-            {
-                MessageUtil.ShowError(ex.Message);
-            }
-            finally
-            {
-                _map.Blocks.Overwrite = currentOverWrite;
+                try
+                {
+                    if (_operations == null || !_operations.Any())
+                        ExecuteBlocks(removed, true);
+                    else
+                        ExecuteOperations(removed, true);
+                }
+                catch (Exception ex)
+                {
+                    MessageUtil.ShowError(ex.Message);
+                }
             }
 
             _operations = removed;

@@ -34,7 +34,7 @@ namespace BlockEditor.ViewModels
         public Game Game { get; }
         public bool IsOverwrite
         {
-            get { return Game.Map?.Blocks?.Overwrite ?? false; }
+            get { return Game.Map?.Blocks.Overwrite ?? false; }
             set { Game.Map.Blocks.Overwrite = value; RaisePropertyChanged(); }
         }
 
@@ -98,7 +98,7 @@ namespace BlockEditor.ViewModels
 
         private bool OnDeselectCanExecute()
         {
-            if(BlockSelection.SelectedBlocks != null)
+            if (BlockSelection.SelectedBlocks != null)
                 return true;
 
             if (BlockSelection.SelectedBlock != null)
@@ -107,19 +107,19 @@ namespace BlockEditor.ViewModels
             if (BlockSelection.SelectedBlockOption != null)
                 return true;
 
-            if(Mode.Value != UserModes.None)
+            if (Mode.Value != UserModes.None)
                 return true;
 
-            if(Mouse.OverrideCursor != null)
+            if (Mouse.OverrideCursor != null)
                 return true;
 
-            if(UserSelection.HasSelectedRegion)
+            if (UserSelection.HasSelectedRegion)
                 return true;
 
-            if(UserSelection.MapRegion.Point1 != null)
+            if (UserSelection.MapRegion.Point1 != null)
                 return true;
 
-            if(Game.MeasureDistance.MapPoint1 != null)
+            if (Game.MeasureDistance.MapPoint1 != null)
                 return true;
 
             return false;
@@ -224,16 +224,10 @@ namespace BlockEditor.ViewModels
                     return;
                 }
 
-                var overwrite = Game.Map.Blocks.Overwrite;
-                try
+                using(new TempOverwrite(Game.Map.Blocks, true))
                 {
-                    Game.Map.Blocks.Overwrite = true;
                     Game.AddBlocks(blocks);
                     Mode.Value = UserModes.None;
-                }
-                finally
-                {
-                    Game.Map.Blocks.Overwrite = overwrite;
                 }
             }
         }
@@ -304,7 +298,7 @@ namespace BlockEditor.ViewModels
 
             w.ShowDialog();
 
-            if(!string.IsNullOrWhiteSpace(w.Message))
+            if (!string.IsNullOrWhiteSpace(w.Message))
                 MessageUtil.ShowInfo(w.Message);
         }
 
@@ -314,7 +308,7 @@ namespace BlockEditor.ViewModels
             {
                 BlockSelection.RotateCommand.Execute(null);
             }
-            else if(UserSelection.HasSelectedRegion)
+            else if (UserSelection.HasSelectedRegion)
             {
                 string text = "";
 
@@ -421,11 +415,11 @@ namespace BlockEditor.ViewModels
             {
                 var level = Builders.PR2Builder.BuildLevel(w.BuildInfo);
 
-                if(level == null)
+                if (level == null)
                     throw new Exception("Something went wrong....");
 
-                if(w.BuildInfo.ImageInfo.Type == ImageDTO.ImageType.Blocks) 
-                { 
+                if (w.BuildInfo.ImageInfo.Type == ImageDTO.ImageType.Blocks)
+                {
                     var pr2Blocks = level.Blocks.Skip(8).ToList();
                     w.ShiftPosition(pr2Blocks);
                     var blocks = MyConverters.ToBlocks(pr2Blocks, out var blocksOutsideBoundries).GetBlocks();
@@ -470,10 +464,8 @@ namespace BlockEditor.ViewModels
         {
             OnCleanUserMode(true, false);
 
-            var currentOverWrite = Game.Map.Blocks.Overwrite;
-            Game.Map.Blocks.Overwrite = true;
 
-            try
+            using (new TempOverwrite(Game.Map.Blocks, true))
             {
                 var region = UserSelection.MapRegion;
                 var id1 = SelectBlockWindow.Show("Block to Replace:", false);
@@ -491,10 +483,6 @@ namespace BlockEditor.ViewModels
 
                     Game.AddBlocks(blocks);
                 }
-            }
-            finally
-            {
-                Game.Map.Blocks.Overwrite = currentOverWrite;
             }
         }
 
@@ -534,7 +522,7 @@ namespace BlockEditor.ViewModels
             if (blockSelection)
                 BlockSelection.Reset();
 
-            if(userSelection)
+            if (userSelection)
                 UserSelection.Reset();
 
             Mode.Value = UserModes.None;
@@ -558,7 +546,7 @@ namespace BlockEditor.ViewModels
                 return;
 
             switch (Mode.Value)
-            { 
+            {
                 case UserModes.Delete:
                     if (UserSelection.MapRegion.IsInside(index))
                         Game.DeleteSelection(UserSelection.MapRegion);
@@ -573,7 +561,7 @@ namespace BlockEditor.ViewModels
                     break;
 
                 case UserModes.GetPosition:
-                    if(_getPosition != null)
+                    if (_getPosition != null)
                         _getPosition(index);
                     else
                         Mode.Value = UserModes.None;
@@ -629,7 +617,7 @@ namespace BlockEditor.ViewModels
 
                     if (UserSelection.HasSelectedRegion && !UserSelection.MapRegion.IsInside(index))
                     {
-                        MessageUtil.ShowInfo("You clicked outside the selected region." 
+                        MessageUtil.ShowInfo("You clicked outside the selected region."
                             + Environment.NewLine
                             + Environment.NewLine
                             + "Either remove the selected region or click inside it.");
@@ -666,19 +654,19 @@ namespace BlockEditor.ViewModels
                     {
                         if (BlockSelection.SelectedBlocks != null)
                             Game.AddSelection(index, BlockSelection.SelectedBlocks);
-                        else if(BlockSelection.SelectedBlock != null)
+                        else if (BlockSelection.SelectedBlock != null)
                             Game.AddBlock(index, BlockSelection.SelectedBlock);
                         else
                         {
                             var b = Game.Map.Blocks.GetBlock(index, true);
 
-                            if(!b.IsEmpty())
+                            if (!b.IsEmpty())
                             {
                                 Game.DeleteBlock(b);
                                 BlockSelection.SelectedBlock = b.ID;
                                 BlockSelection.SelectedBlockOption = b.Options;
                                 Mode.Value = UserModes.MoveBlock;
-                            }    
+                            }
 
                         }
                     }
@@ -702,7 +690,7 @@ namespace BlockEditor.ViewModels
                             Game.DeleteBlock(index);
                     }
                     break;
-    
+
                 case UserModes.MoveBlock:
                     break;
 
@@ -740,7 +728,7 @@ namespace BlockEditor.ViewModels
                     break;
 
                 case UserModes.MoveBlock:
-                    if(BlockSelection.SelectedBlock != null)
+                    if (BlockSelection.SelectedBlock != null)
                         Game.AddBlock(index, BlockSelection.SelectedBlock.Value, BlockSelection.SelectedBlockOption);
 
                     BlockSelection.Reset();

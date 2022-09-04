@@ -23,12 +23,7 @@ namespace BlockEditor.Models
             if (_map?.Blocks == null || _block.IsEmpty())
                 return false;
 
-            var currentOverWrite = _map.Blocks.Overwrite;
-
-            if(redo)
-                _map.Blocks.Overwrite = true;
-
-            try
+            using (new TempOverwrite(_map.Blocks, true, redo))
             {
                 _oldBlock = _map.Blocks.GetBlock(_block.Position, false);
 
@@ -55,11 +50,6 @@ namespace BlockEditor.Models
 
                 return true;
             }
-            finally
-            {
-                _map.Blocks.Overwrite = currentOverWrite;
-            }
-           
         }
 
         public bool Undo()
@@ -70,10 +60,7 @@ namespace BlockEditor.Models
             if (_block.IsEmpty())
                 return false;
 
-            var currentOverWrite = _map.Blocks.Overwrite;
-            _map.Blocks.Overwrite = true;
-
-            try
+            using (new TempOverwrite(_map.Blocks, true))
             {
                 _map.Blocks.Delete(_block);
 
@@ -88,10 +75,6 @@ namespace BlockEditor.Models
                 if (!_oldBlock.IsEmpty())
                     _map.Blocks.Add(_oldBlock);
 
-            }
-            finally
-            {
-                _map.Blocks.Overwrite = currentOverWrite;
             }
 
             return true;

@@ -127,7 +127,6 @@ namespace BlockEditor.Utils
         private static List<SimpleBlock> GetRectangle(Map map, int id, MyRegion region)
         {
             var result = new List<SimpleBlock>();
-            var overwrite = map.Blocks.Overwrite;
             var outlineSize = 2;
 
             for (int x = region.Start.Value.X; x < region.End.Value.X; x++)

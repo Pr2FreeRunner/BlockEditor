@@ -191,16 +191,8 @@ namespace BlockEditor.Views.Windows
 
             _block = new SimpleBlock(_block.ID, _block.Position.Value, ignoreOption ? string.Empty : text);
 
-            var overwrite = _map.Blocks.Overwrite;
-            try
-            {
-                _map.Blocks.Overwrite = true;
+            using(new TempOverwrite(_map.Blocks, true))
                 _map.Blocks.Add(_block);
-            }
-            finally
-            {
-                _map.Blocks.Overwrite = overwrite;
-            }
         }
 
         private void OnNewColor(string text)
