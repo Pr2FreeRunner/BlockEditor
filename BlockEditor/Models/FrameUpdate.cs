@@ -2,6 +2,7 @@
 using LevelModel.Models.Components;
 using System;
 using System.Drawing;
+using System.Linq;
 
 namespace BlockEditor.Models
 {
@@ -91,7 +92,7 @@ namespace BlockEditor.Models
                 }
             }
 
-            foreach (var startBlock in _game.Map.Blocks.StartBlocks.GetBlocks())
+            foreach (var startBlock in _game.Map.Blocks.StartBlocks.GetBlocks().Reverse())
             {
                 if (startBlock.IsEmpty())
                     continue;
