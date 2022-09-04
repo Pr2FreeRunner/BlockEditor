@@ -298,6 +298,15 @@ namespace BlockEditor.ViewModels
 
             w.ShowDialog();
 
+            using(new TempCursor(Cursors.Wait)) 
+            { 
+                if (w.BlocksToRemove != null && w.BlocksToRemove.Any())
+                    Game.RemoveBlocks(w.BlocksToRemove);
+
+                if (w.BlocksToAdd != null && w.BlocksToAdd.Any())
+                    Game.AddBlocks(w.BlocksToAdd);
+            }
+
             if (!string.IsNullOrWhiteSpace(w.Message))
                 MessageUtil.ShowInfo(w.Message);
         }

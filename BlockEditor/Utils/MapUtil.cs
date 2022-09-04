@@ -311,6 +311,29 @@ namespace BlockEditor.Helpers
             return result;
         }
 
+        public static List<SimpleBlock> GetBlocks(Map map, MyRegion region, bool startBlocks = true)
+        {
+            var result = new List<SimpleBlock>();
+
+            if (map == null)
+                return result;
+
+            var lowerLimit = new MyPoint(0, 0);
+            var upperLimit = new MyPoint(Blocks.SIZE, Blocks.SIZE);
+
+            if (region != null && region.IsComplete())
+            {
+                lowerLimit = region.Start.Value;
+                upperLimit = region.End.Value;
+            }
+
+            for (int x = lowerLimit.X; x < upperLimit.X; x++)
+                for (int y = lowerLimit.Y; y < upperLimit.Y; y++)
+                    result.Add(map.Blocks.GetBlock(x, y, startBlocks));
+
+            return result;
+        }
+
         public static List<SimpleBlock> RemoveBlocks(Map map, List<int> ids, MyRegion region)
         {
             var result = new List<SimpleBlock>();

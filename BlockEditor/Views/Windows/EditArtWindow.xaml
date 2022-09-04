@@ -45,13 +45,13 @@
                 
                 <StackPanel  Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
                     <StackPanel Orientation="Vertical">
-                        <CheckBox Margin="0,10,0,0" Content="Text Art 0"  IsChecked="True" x:Name="cbTextArt0"  />
-                        <CheckBox Margin="0,10,0,0" Content="Text Art 1"  IsChecked="True" x:Name="cbTextArt1"  />
+                        <CheckBox Margin="0,10,0,0" Content="Text Art 0" VerticalContentAlignment="Center" FontSize="{StaticResource DefaultFontSize}" IsChecked="True" x:Name="cbTextArt0"  />
+                        <CheckBox Margin="0,10,0,0" Content="Text Art 1" VerticalContentAlignment="Center" FontSize="{StaticResource DefaultFontSize}" IsChecked="True" x:Name="cbTextArt1"  />
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical" Margin="50,0,0,0">
-                        <CheckBox Margin="0,10,0,0" Content="Draw Art 0"  IsChecked="True" x:Name="cbDrawArt0"  />
-                        <CheckBox Margin="0,10,0,0" Content="Draw Art 1"  IsChecked="True" x:Name="cbDrawArt1"  />
+                        <CheckBox Margin="0,10,0,0" Content="Draw Art 0" VerticalContentAlignment="Center" FontSize="{StaticResource DefaultFontSize}" IsChecked="True" x:Name="cbDrawArt0"  />
+                        <CheckBox Margin="0,10,0,0" Content="Draw Art 1" VerticalContentAlignment="Center" FontSize="{StaticResource DefaultFontSize}" IsChecked="True" x:Name="cbDrawArt1"  />
                     </StackPanel>
                 </StackPanel>
 
@@ -72,8 +72,9 @@
                         <Label Margin="5,10,0,0" FontWeight="Normal" FontSize="12" Content="(Positive values moves art down)" VerticalAlignment="Center"/>
                     </StackPanel>
                     <TextBox Margin="4,0,0,0" x:Name="tbY" PreviewTextInput="Double_PreviewTextInput" TextChanged="tbY_TextChanged" FontSize="{StaticResource DefaultFontSize}"  />
-
                 </StackPanel>
+
+                <CheckBox Margin="4,20,0,0" Content="Apply on Blocks"  IsChecked="False" x:Name="cbBlocks" FontWeight="SemiBold" VerticalContentAlignment="Center"  FontSize="{StaticResource DefaultFontSize}" Height="25" VerticalAlignment="Center" FontFamily="Segoe UI" />
 
                 <StackPanel Orientation="Horizontal" Margin="20,20,20,10" HorizontalAlignment="Center">
                     <Button Style="{StaticResource WhiteBtn}" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="100" Height="25" x:Name="btnOk" Content="OK" Margin="5,5,15,5" Click="btnOk_Click" />

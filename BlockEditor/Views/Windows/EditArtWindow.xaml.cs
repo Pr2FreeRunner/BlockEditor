@@ -23,11 +23,16 @@ namespace BlockEditor.Views.Windows
         private const int _regionIndex = 1;
 
         public string Message { get; set; }
+        public List<SimpleBlock> BlocksToAdd { get; }
+        public List<SimpleBlock> BlocksToRemove { get; }
+
 
         public EditArtWindow(Map map, MyRegion region)
         {
             _map = map;
             _region = region;
+            BlocksToAdd = new List<SimpleBlock>();
+            BlocksToRemove = new List<SimpleBlock>();
 
             InitializeComponent();
             Init();
@@ -116,7 +121,7 @@ namespace BlockEditor.Views.Windows
             var culture = CultureInfo.InvariantCulture;
             bool isNotInteger = !double.TryParse(fullText, NumberStyles.Any, culture, out var result);
 
-            if(string.Equals(fullText, "-", StringComparison.InvariantCultureIgnoreCase))
+            if (string.Equals(fullText, "-", StringComparison.InvariantCultureIgnoreCase))
                 return;
 
             e.Handled = isNotInteger && result >= 0;
@@ -162,7 +167,7 @@ namespace BlockEditor.Views.Windows
 
         private void CreateAbsolutePosition(List<TextArt> arts)
         {
-            if(arts == null)
+            if (arts == null)
                 return;
 
             var x = 0;
@@ -229,11 +234,11 @@ namespace BlockEditor.Views.Windows
             CreateAbsolutePosition(_map.Level.TextArt0);
             CreateAbsolutePosition(_map.Level.TextArt1);
 
-            var textArt0  = _map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
-            var textArt1  = _map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+            var textArt0 = _map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+            var textArt1 = _map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
 
-            var drawArt0  = _map.Level.DrawArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
-            var drawArt1  = _map.Level.DrawArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+            var drawArt0 = _map.Level.DrawArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+            var drawArt1 = _map.Level.DrawArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
 
             if (cbTextArt0.IsChecked == true)
                 MoveAbsoluteArt(textArt0);
@@ -269,8 +274,8 @@ namespace BlockEditor.Views.Windows
 
             if (art.Count() > 0)
             {
-                art.First().X += (int) (_moveX * 30);
-                art.First().Y += (int) (_moveY * 30);
+                art.First().X += (int)(_moveX * 30);
+                art.First().Y += (int)(_moveY * 30);
             }
         }
 
@@ -286,34 +291,87 @@ namespace BlockEditor.Views.Windows
             }
         }
 
+        private void MoveBlocks(MyRegion region = null)
+        {
+            if (cbBlocks.IsChecked != true)
+                return;
+
+            if (_moveX == null)
+                return;
+
+            if (_moveY == null)
+                return;
+
+            foreach(var b in MapUtil.GetBlocks(_map, region))
+            {
+                if(b.IsEmpty())
+                    continue;
+
+                var point = new MyPoint(b.Position.Value.X + (int)_moveX, b.Position.Value.Y + (int)_moveY);
+                var block = new SimpleBlock(b.ID, point, b.Options);
+
+                BlocksToRemove.Add(b);
+                BlocksToAdd.Add(block);
+            }
+        }
+
+        private void RemoveBlocks(MyRegion region = null)
+        {
+            if (cbBlocks.IsChecked != true)
+                return;
+
+            foreach (var b in MapUtil.GetBlocks(_map, region))
+            {
+                if (b.IsEmpty())
+                    continue;
+
+                BlocksToRemove.Add(b);
+            }
+        }
+
+        private string GetBlockText()
+        {
+            if (cbBlocks.IsChecked != true)
+                return string.Empty;
+
+            return " and blocks";
+        }
+
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (_moveMode)
+                using(new TempCursor(Cursors.Wait))
                 {
-                    if (cbSelection.SelectedIndex == _regionIndex)
+                    if (_moveMode)
                     {
-                        MoveArt(_region);
-                        Message = "The art inside the selected region has been moved.";
+                        if (cbSelection.SelectedIndex == _regionIndex)
+                        {
+                            MoveArt(_region);
+                            MoveBlocks(_region);
+                            Message = $"The art{GetBlockText()} inside the selected region has been moved.";
+                        }
+                        else
+                        {
+                            MoveArt();
+                            MoveBlocks();
+                            Message = $"The art{GetBlockText()} inside the map has been moved.";
+                        }
                     }
                     else
                     {
-                        MoveArt();
-                        Message = "The art inside the map has been moved.";
-                    }
-                }
-                else
-                {
-                    if (cbSelection.SelectedIndex == _regionIndex)
-                    {
-                        RemoveArt(_region);
-                        Message = "The art inside the selected region has been deleted.";
-                    }
-                    else
-                    {
-                        RemoveArt();
-                        Message = "The art inside the map has been deleted.";
+                        if (cbSelection.SelectedIndex == _regionIndex)
+                        {
+                            RemoveArt(_region);
+                            RemoveBlocks(_region);
+                            Message = $"The art{GetBlockText()} inside the selected region has been deleted.";
+                        }
+                        else
+                        {
+                            RemoveArt();
+                            RemoveBlocks();
+                            Message = $"The art{GetBlockText()} inside the map has been deleted.";
+                        }
                     }
                 }
 
