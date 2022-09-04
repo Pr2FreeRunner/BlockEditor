@@ -1,6 +1,7 @@
 ﻿using LevelModel.Models.Components;
 using static System.Windows.Forms.Design.AxImporter;
 using System;
+using BlockEditor.Helpers;
 
 namespace BlockEditor.Models
 {
@@ -17,30 +18,48 @@ namespace BlockEditor.Models
             _block = b;
         }
 
-        public bool Execute()
+        public bool Execute(bool redo = false)
         {
-            if(_map?.Blocks == null || _block.IsEmpty())
+            if (_map?.Blocks == null || _block.IsEmpty())
                 return false;
 
-            _oldBlock = _map.Blocks.GetBlock(_block.Position, false);
+            var currentOverWrite = _map.Blocks.Overwrite;
 
-            if (!_oldBlock.IsEmpty() && _oldBlock.ID == _block.ID 
-                && string.Equals(_oldBlock.Options, _block.Options, StringComparison.InvariantCultureIgnoreCase))
-                return false;
+            if(redo)
+                _map.Blocks.Overwrite = true;
 
-            if (Block.IsStartBlock(_block.ID))
+            try
             {
-                var oldStartBlock = _map.Blocks.GetBlock(_block.Position, true);
+                _oldBlock = _map.Blocks.GetBlock(_block.Position, false);
 
-                if(oldStartBlock.ID == _block.ID)
-                    return false; 
+                if (!_oldBlock.IsEmpty() && _oldBlock.ID == _block.ID
+                    && string.Equals(_oldBlock.Options, _block.Options, StringComparison.InvariantCultureIgnoreCase))
+                    return false;
 
-                _oldStartPosition = _map.Blocks.StartBlocks.GetPosition(_block.ID);
+                if (Block.IsStartBlock(_block.ID))
+                {
+                    var oldStartBlock = _map.Blocks.GetBlock(_block.Position, true);
+
+                    if (oldStartBlock.ID == _block.ID)
+                        return false;
+
+                    _oldStartPosition = _map.Blocks.StartBlocks.GetPosition(_block.ID);
+                }
+                else
+                {
+                    if (!_oldBlock.IsEmpty() && !_map.Blocks.Overwrite)
+                        return false;
+                }
+
+                _map?.Blocks.Add(_block);
+
+                return true;
             }
-
-            _map?.Blocks.Add(_block);
-
-            return true;
+            finally
+            {
+                _map.Blocks.Overwrite = currentOverWrite;
+            }
+           
         }
 
         public bool Undo()
@@ -51,18 +70,29 @@ namespace BlockEditor.Models
             if (_block.IsEmpty())
                 return false;
 
-            _map.Blocks.Delete(_block);
+            var currentOverWrite = _map.Blocks.Overwrite;
+            _map.Blocks.Overwrite = true;
 
-            if(Block.IsStartBlock(_block.ID))
+            try
             {
-                if(_oldStartPosition == null)
-                    _oldStartPosition = _block.Position;
-                else
-                    _map.Blocks.Add(new SimpleBlock(_block.ID, _oldStartPosition.Value));
+                _map.Blocks.Delete(_block);
+
+                if (Block.IsStartBlock(_block.ID))
+                {
+                    if (_oldStartPosition == null)
+                        _oldStartPosition = _block.Position;
+                    else
+                        _map.Blocks.Add(new SimpleBlock(_block.ID, _oldStartPosition.Value));
+                }
+
+                if (!_oldBlock.IsEmpty())
+                    _map.Blocks.Add(_oldBlock);
+
             }
-           
-            if(!_oldBlock.IsEmpty())
-                _map.Blocks.Add(_oldBlock);
+            finally
+            {
+                _map.Blocks.Overwrite = currentOverWrite;
+            }
 
             return true;
         }

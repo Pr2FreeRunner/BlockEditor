@@ -89,7 +89,7 @@ namespace BlockEditor.ViewModels
                 lock(_lock)
                 {
                     var op = _undos.Pop();
-                    var success = op.Execute();
+                    var success = op.Execute(true);
 
                     if(success)
                         _operations.Push(op);

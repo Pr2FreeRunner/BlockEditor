@@ -13,7 +13,7 @@ namespace BlockEditor.Models
             _add = new AddBlocksOperation(map, blocks);
         }
 
-        public bool Execute()
+        public bool Execute(bool redo = false)
         {
             return _add.Undo();
         }

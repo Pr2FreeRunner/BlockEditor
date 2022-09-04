@@ -18,7 +18,7 @@ namespace BlockEditor.Models
             _operations = new List<AddBlockOperation>();
         }
 
-        public bool Execute()
+        public bool Execute(bool redo = false)
         {
             if (_blocks == null || !_blocks.Any())
                 return false;
@@ -28,9 +28,9 @@ namespace BlockEditor.Models
             try
             {
                 if (_operations == null || !_operations.Any())
-                    ExecuteBlocks(added, false);
+                    ExecuteBlocks(added, false, redo);
                 else
-                    ExecuteOperations(added, false);
+                    ExecuteOperations(added, false, redo);
             }
             catch (Exception ex)
             {
@@ -47,6 +47,8 @@ namespace BlockEditor.Models
                 return false;
 
             var removed = new List<AddBlockOperation>();
+            var currentOverWrite = _map.Blocks.Overwrite;
+            _map.Blocks.Overwrite = true;
 
             try
             {
@@ -59,12 +61,16 @@ namespace BlockEditor.Models
             {
                 MessageUtil.ShowError(ex.Message);
             }
+            finally
+            {
+                _map.Blocks.Overwrite = currentOverWrite;
+            }
 
             _operations = removed;
             return true;
         }
 
-        private void ExecuteBlocks(List<AddBlockOperation> operations, bool undo)
+        private void ExecuteBlocks(List<AddBlockOperation> operations, bool undo, bool redo = false)
         {
             foreach (var block in _blocks)
             {
@@ -72,18 +78,18 @@ namespace BlockEditor.Models
                     continue;
 
                 var op = new AddBlockOperation(_map, block);
-                var ok = undo ? op.Undo() : op.Execute();
+                var ok = undo ? op.Undo() : op.Execute(redo);
 
                 if (ok)
                     operations.Add(op);
             }
         }
 
-        private void ExecuteOperations(List<AddBlockOperation> operations, bool undo)
+        private void ExecuteOperations(List<AddBlockOperation> operations, bool undo, bool redo = false)
         {
             foreach (var op in _operations)
             {
-                var ok = undo ? op.Undo() : op.Execute();
+                var ok = undo ? op.Undo() : op.Execute(redo);
 
                 if (ok)
                     operations.Add(op);

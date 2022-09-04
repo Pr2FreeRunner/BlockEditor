@@ -10,7 +10,7 @@
             _add = new AddBlockOperation(map, b);
         }
 
-        public bool Execute()
+        public bool Execute(bool redo = false)
         {
             return _add.Undo();
         }

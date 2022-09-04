@@ -2,7 +2,7 @@
 {
     public interface IUserOperation
     {
-        bool Execute();
+        bool Execute(bool redo = false);
         bool Undo();
     }
 }

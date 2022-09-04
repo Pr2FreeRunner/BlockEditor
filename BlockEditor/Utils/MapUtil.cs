@@ -300,7 +300,7 @@ namespace BlockEditor.Helpers
             {
                 for (int y = lowerLimit.Y; y < upperLimit.Y; y++)
                 {
-                    var b = map.Blocks.GetBlock(x, y);
+                    var b = map.Blocks.GetBlock(x, y, false);
                     var index = replace.IndexOf(b.ID);
 
                     if(index != notFound)
