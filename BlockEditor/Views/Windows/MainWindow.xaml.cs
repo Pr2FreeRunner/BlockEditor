@@ -69,8 +69,6 @@ namespace BlockEditor.Views.Windows
             if (double.IsNaN(height))
                 return BlockSize.Zoom110;
 
-            if (height < 750)
-                return BlockSize.Zoom50;
             if (height < 800)
                 return BlockSize.Zoom75;
             if(height < 900)
