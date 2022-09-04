@@ -133,6 +133,7 @@ namespace BlockEditor.ViewModels
         private void OnDeleteClick()
         {
             BlockSelection.Reset();
+            Game.MeasureDistance.Reset();
 
             if (Mode.Value != UserModes.Delete)
             {
@@ -190,6 +191,7 @@ namespace BlockEditor.ViewModels
         {
             BlockSelection.Reset();
             UserSelection.Reset();
+            Game.MeasureDistance.Reset();
 
             if (Mode.Value != UserModes.Selection)
             {
@@ -205,6 +207,7 @@ namespace BlockEditor.ViewModels
         {
             BlockSelection.Reset();
             UserSelection.Reset();
+            Game.MeasureDistance.Reset();
 
             if (Mode.Value != UserModes.ConnectTeleports)
             {
@@ -240,6 +243,7 @@ namespace BlockEditor.ViewModels
             if (Mode.Value != UserModes.Fill)
             {
                 BlockSelection.Reset();
+                Game.MeasureDistance.Reset();
                 Mode.Value = UserModes.Fill;
             }
             else
@@ -500,6 +504,7 @@ namespace BlockEditor.ViewModels
             {
                 BlockSelection.Reset();
                 UserSelection.Reset();
+                Game.MeasureDistance.Reset();
                 Mode.Value = UserModes.BlockInfo;
             }
             else
