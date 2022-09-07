@@ -99,12 +99,13 @@ namespace BlockEditor.ViewModels
             DeselectCommand = new RelayCommand((_) => OnDeselectClick(), (_) => OnDeselectCanExecute());
             NavigatorCommand = new RelayCommand((_) => OnNavigatorClick(SimpleBlock.None));
             DeleteBlockOptionCommand = new RelayCommand((_) => OnDeleteBlockOptionClick());
-            BuildMenuCommand = new RelayCommand((_) => BuildMenu());
-            TransformMenuCommand = new RelayCommand((_) => TransformMenu());
-            DeleteMenuCommand = new RelayCommand((_) => DeleteMenu());
-            EditMenuCommand = new RelayCommand((_) => EditMenu());
-            AdvancedMenuCommand = new RelayCommand((_) => AdvancedMenu());
-            InfoMenuCommand = new RelayCommand((_) => InfoMenu());
+
+            BuildMenuCommand = MenuCommand(BuildMenu);
+            TransformMenuCommand = MenuCommand(TransformMenu);
+            DeleteMenuCommand = MenuCommand(DeleteMenu);
+            EditMenuCommand = MenuCommand(EditMenu);
+            AdvancedMenuCommand = MenuCommand(AdvancedMenu);
+            InfoMenuCommand = MenuCommand(InfoMenu);
 
 
             Game.Engine.OnFrame += OnFrameUpdate;
@@ -112,9 +113,19 @@ namespace BlockEditor.ViewModels
 
         #region Menu
 
+        private RelayCommand MenuCommand(Action menu)
+        {
+            return new RelayCommand((_) =>
+            {
+                 Mode.UpdateGuiState();
+                 menu?.Invoke();
+                Mode.UpdateGuiState();
+            });
+        }
+
         private void BuildMenu()
         {
-            var w = new MenuWindow("Build Tools", Mode);
+            var w = new MenuWindow("Build Tools");
 
             w.AddOption("Add Shape", AddShapeCommand);
             w.AddOption("Add Image", AddImageCommand);
@@ -126,7 +137,7 @@ namespace BlockEditor.ViewModels
 
         private void EditMenu()
         {
-            var w = new MenuWindow("Edit Tools", Mode);
+            var w = new MenuWindow("Edit Tools");
 
             w.AddOption("Replace Block Type", ReplaceCommand);
             w.AddOption("Move Region", MoveRegionCommand);
@@ -136,18 +147,20 @@ namespace BlockEditor.ViewModels
 
         private void AdvancedMenu()
         {
-            var w = new MenuWindow("Advanced Tools", Mode);
+            var w = new MenuWindow("Advanced Tools");
 
             w.AddOption("Connect Teleports", ConnectTeleportsCommand);
             w.AddOption("Measure Distance", DistanceCommand);
 
             w.ShowDialog();
             w.Execute();
+            Mode.UpdateGuiState();
         }
 
         private void InfoMenu()
         {
-            var w = new MenuWindow("Info Tools", Mode);
+            Mode.UpdateGuiState();
+            var w = new MenuWindow("Info Tools");
 
             w.AddOption("Block Count", BlockCountCommand);
             w.AddOption("Block Info", BlockInfoCommand);
@@ -156,11 +169,13 @@ namespace BlockEditor.ViewModels
 
             w.ShowDialog();
             w.Execute();
+            Mode.UpdateGuiState();
         }
 
         private void TransformMenu()
         {
-            var w = new MenuWindow("Transform Tools", Mode);
+            Mode.UpdateGuiState();
+            var w = new MenuWindow("Transform Tools");
 
             w.AddOption("Rotate", RotateCommand);
             w.AddOption("Horizontal Flip", HorizontalFlipCommand);
@@ -173,7 +188,7 @@ namespace BlockEditor.ViewModels
 
         private void DeleteMenu()
         {
-            var w = new MenuWindow("Delete Tools", Mode);
+            var w = new MenuWindow("Delete Tools");
 
             w.AddOption("Block Type", DeleteBlockTypeCommand);
             w.AddOption("Block Option", DeleteBlockOptionCommand);
