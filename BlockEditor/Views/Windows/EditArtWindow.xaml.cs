@@ -22,7 +22,6 @@ namespace BlockEditor.Views.Windows
         private bool _moveMode;
         private const int _regionIndex = 1;
 
-        public string Message { get; set; }
         public List<SimpleBlock> BlocksToAdd { get; }
         public List<SimpleBlock> BlocksToRemove { get; }
 
@@ -328,8 +327,6 @@ namespace BlockEditor.Views.Windows
                             MoveArt();
                             MoveBlocks();
                         }
-
-                        Message = "Move operation successful.";
                     }
                     else
                     {
@@ -343,8 +340,6 @@ namespace BlockEditor.Views.Windows
                             RemoveArt();
                             RemoveBlocks();
                         }
-
-                        Message = "Delete operation successful.";
                     }
                 }
 

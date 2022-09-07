@@ -218,6 +218,16 @@ namespace BlockEditor.Views.Controls
                     if (ViewModel.NavigatorCommand.CanExecute(null))
                         ViewModel.NavigatorCommand.Execute(null);
                 }
+                else if (ctrl && e.Key == Key.Q)
+                {
+                    if (ViewModel.AdvancedMenuCommand.CanExecute(null))
+                        ViewModel.AdvancedMenuCommand.Execute(null);
+                }
+                else if (ctrl && e.Key == Key.B)
+                {
+                    if (ViewModel.BuildMenuCommand.CanExecute(null))
+                        ViewModel.BuildMenuCommand.Execute(null);
+                }
                 else if (ctrl && e.Key == Key.O)
                 {
                     ViewModel.IsOverwrite = !ViewModel.IsOverwrite;

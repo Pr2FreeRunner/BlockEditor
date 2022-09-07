@@ -57,11 +57,13 @@ namespace BlockEditor.ViewModels
         public RelayCommand ConnectTeleportsCommand { get; }
         public RelayCommand MoveRegionCommand { get; }
         public RelayCommand DeleteRegionCommand { get; }
+        public RelayCommand DeleteBlockOptionCommand { get; }
+
         public RelayCommand DistanceCommand { get; }
         public RelayCommand DeleteCommand { get; }
         public RelayCommand DeselectCommand { get; }
 
-        public RelayCommand AddMenuCommand { get; }
+        public RelayCommand BuildMenuCommand { get; }
         public RelayCommand TransformMenuCommand { get; }
         public RelayCommand DeleteMenuCommand { get; }
         public RelayCommand EditMenuCommand { get; }
@@ -96,8 +98,8 @@ namespace BlockEditor.ViewModels
             DeleteCommand = new RelayCommand((_) => OnDeleteClick());
             DeselectCommand = new RelayCommand((_) => OnDeselectClick(), (_) => OnDeselectCanExecute());
             NavigatorCommand = new RelayCommand((_) => OnNavigatorClick(SimpleBlock.None));
-
-            AddMenuCommand = new RelayCommand((_) => AddMenu());
+            DeleteBlockOptionCommand = new RelayCommand((_) => OnDeleteBlockOptionClick());
+            BuildMenuCommand = new RelayCommand((_) => BuildMenu());
             TransformMenuCommand = new RelayCommand((_) => TransformMenu());
             DeleteMenuCommand = new RelayCommand((_) => DeleteMenu());
             EditMenuCommand = new RelayCommand((_) => EditMenu());
@@ -110,13 +112,13 @@ namespace BlockEditor.ViewModels
 
         #region Menu
 
-        private void AddMenu()
+        private void BuildMenu()
         {
-            var w = new MenuWindow("Add Tools");
+            var w = new MenuWindow("Build Tools");
 
             w.AddOption("Add Shape", AddShapeCommand);
             w.AddOption("Add Image", AddImageCommand);
-            w.AddOption("Flood Fill", FillCommand);
+            w.AddOption("Bucket Flood Fill", FillCommand);
 
             w.ShowDialog();
             w.Execute();
@@ -174,6 +176,7 @@ namespace BlockEditor.ViewModels
             var w = new MenuWindow("Delete Tools");
 
             w.AddOption("Block Type", DeleteBlockTypeCommand);
+            w.AddOption("Block Option", DeleteBlockOptionCommand);
             w.AddOption("Delete Blocks", DeleteCommand);
             w.AddOption("Delete Region", DeleteRegionCommand);
 
@@ -396,9 +399,6 @@ namespace BlockEditor.ViewModels
                 if (w.BlocksToAdd != null && w.BlocksToAdd.Any())
                     Game.AddBlocks(w.BlocksToAdd);
             }
-
-            if (!string.IsNullOrWhiteSpace(w.Message))
-                MessageUtil.ShowInfo(w.Message);
         }
 
         public void OnDeleteRegionClick()
@@ -417,9 +417,6 @@ namespace BlockEditor.ViewModels
                 if (w.BlocksToAdd != null && w.BlocksToAdd.Any())
                     Game.AddBlocks(w.BlocksToAdd);
             }
-
-            if (!string.IsNullOrWhiteSpace(w.Message))
-                MessageUtil.ShowInfo(w.Message);
         }
 
         public void OnRotateClick()
@@ -577,6 +574,32 @@ namespace BlockEditor.ViewModels
                 var blocks = MapUtil.RemoveBlocks(Game.Map, new List<int>() { id1.Value }, region);
 
                 Game.RemoveBlocks(blocks);
+            }
+        }
+
+        public void OnDeleteBlockOptionClick()
+        {
+            OnCleanUserMode(true, false);
+
+            var region = UserSelection.MapRegion;
+            var remove = new List<SimpleBlock>();
+            var add = new List<SimpleBlock>();
+
+            using (new TempCursor(Cursors.Wait))
+            {
+                foreach(var oldBlock in MapUtil.GetBlocks(Game.Map, region))
+                {
+                    if (oldBlock.IsEmpty())
+                        continue;
+
+                    var newBlock = new SimpleBlock(oldBlock.ID, oldBlock.Position.Value, string.Empty);
+                    remove.Add(oldBlock);
+                    add.Add(newBlock);
+                }
+                
+
+                Game.RemoveBlocks(remove);
+                Game.AddBlocks(add);
             }
         }
 
