@@ -34,7 +34,7 @@
         <Grid Grid.Row="1">
             <Grid Grid.Row="1" x:Name="MapPanel"/>
             <controls:BlocksControl 
-                Margin="8,60,8,60"
+                Margin="8,62,8,70"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 x:Name="BlocksControl" 
