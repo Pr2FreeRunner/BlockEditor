@@ -192,16 +192,26 @@ namespace BlockEditor.Views.Controls
                 else if (ctrl && e.Key == Key.V)
                 {
                     BlockSelection.ActivatePreviousSelection();
+                }        
+                else if (ctrl && e.Key == Key.I)
+                {
+                    if (ViewModel.InfoMenuCommand.CanExecute(null))
+                        ViewModel.InfoMenuCommand.Execute(null);
                 }
-                else if (ctrl && e.Key == Key.B)
+                else if (ctrl && e.Key == Key.T)
                 {
-                    if (ViewModel.BlockInfoCommand.CanExecute(null))
-                        ViewModel.BlockInfoCommand.Execute(null);
-                }              
-                else if (ctrl && e.Key == Key.M)
+                    if (ViewModel.TransformMenuCommand.CanExecute(null))
+                        ViewModel.TransformMenuCommand.Execute(null);
+                }
+                else if (ctrl && e.Key == Key.D)
                 {
-                    if (ViewModel.MapInfoCommand.CanExecute(null))
-                        ViewModel.MapInfoCommand.Execute(null);
+                    if (ViewModel.DeleteMenuCommand.CanExecute(null))
+                        ViewModel.DeleteMenuCommand.Execute(null);
+                }
+                else if (ctrl && e.Key == Key.E)
+                {
+                    if (ViewModel.EditMenuCommand.CanExecute(null))
+                        ViewModel.EditMenuCommand.Execute(null);
                 }
                 else if (ctrl && e.Key == Key.N)
                 {

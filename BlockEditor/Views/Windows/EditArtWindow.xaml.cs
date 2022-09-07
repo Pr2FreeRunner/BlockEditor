@@ -19,7 +19,7 @@ namespace BlockEditor.Views.Windows
 
         private double? _moveX;
         private double? _moveY;
-        private bool _moveMode = false;
+        private bool _moveMode;
         private const int _regionIndex = 1;
 
         public string Message { get; set; }
@@ -27,12 +27,13 @@ namespace BlockEditor.Views.Windows
         public List<SimpleBlock> BlocksToRemove { get; }
 
 
-        public EditArtWindow(Map map, MyRegion region)
-        {
+        public EditArtWindow(Map map, MyRegion region, bool move)
+        { 
             _map = map;
             _region = region;
             BlocksToAdd = new List<SimpleBlock>();
             BlocksToRemove = new List<SimpleBlock>();
+            _moveMode = move;
 
             InitializeComponent();
             Init();
@@ -41,6 +42,7 @@ namespace BlockEditor.Views.Windows
                 throw new ArgumentException("map");
 
             OpenWindows.Add(this);
+            UpdateButtons();
         }
 
 
@@ -75,32 +77,9 @@ namespace BlockEditor.Views.Windows
             OpenWindows.Remove(this);
         }
 
-
-        private void btnMoveArt_Click(object sender, RoutedEventArgs e)
-        {
-            Page2Title.Content = "Move Art";
-            Page1.Visibility = Visibility.Collapsed;
-            Page2.Visibility = Visibility.Visible;
-            MovePanel.Visibility = Visibility.Visible;
-            btnOk.IsEnabled = false;
-            _moveMode = true;
-
-            UpdateButtons();
-        }
-
         private bool HasSelectedRegion()
         {
             return _region != null && _region.IsComplete();
-        }
-
-        private void btnRemove_Click(object sender, RoutedEventArgs e)
-        {
-            Page2Title.Content = "Delete Art";
-            Page1.Visibility = Visibility.Collapsed;
-            Page2.Visibility = Visibility.Visible;
-            MovePanel.Visibility = Visibility.Collapsed;
-            _moveMode = false;
-            UpdateButtons();
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -112,6 +91,8 @@ namespace BlockEditor.Views.Windows
         private void UpdateButtons()
         {
             btnOk.IsEnabled = !_moveMode || (_moveMode && _moveX != null && _moveY != null);
+            MovePanel.Visibility = _moveMode ? Visibility.Visible : Visibility.Collapsed;
+            Page2Title.Content = _moveMode ? "Move" : "Delete";
         }
 
         private void Double_PreviewTextInput(object sender, TextCompositionEventArgs e)

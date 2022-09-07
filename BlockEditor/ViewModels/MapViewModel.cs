@@ -52,14 +52,21 @@ namespace BlockEditor.ViewModels
         public RelayCommand RotateCommand { get; }
         public RelayCommand VerticalFlipCommand { get; }
         public RelayCommand HorizontalFlipCommand { get; }
-        public RelayCommand DeleteBlockCommand { get; }
+        public RelayCommand DeleteBlockTypeCommand { get; }
         public RelayCommand SettingsCommand { get; }
         public RelayCommand ConnectTeleportsCommand { get; }
-        public RelayCommand EditArtCommand { get; }
+        public RelayCommand MoveRegionCommand { get; }
+        public RelayCommand DeleteRegionCommand { get; }
         public RelayCommand DistanceCommand { get; }
         public RelayCommand DeleteCommand { get; }
         public RelayCommand DeselectCommand { get; }
 
+        public RelayCommand AddMenuCommand { get; }
+        public RelayCommand TransformMenuCommand { get; }
+        public RelayCommand DeleteMenuCommand { get; }
+        public RelayCommand EditMenuCommand { get; }
+        public RelayCommand InfoMenuCommand { get; }
+        public RelayCommand AdvancedMenuCommand { get; }
 
 
 
@@ -69,7 +76,6 @@ namespace BlockEditor.ViewModels
             Mode = new UserMode();
 
             UserSelection = new UserSelection();
-            NavigatorCommand = new RelayCommand((_) => OnNavigatorClick(SimpleBlock.None));
             FillCommand = new RelayCommand((_) => OnFillClick());
             SelectCommand = new RelayCommand((_) => OnSelectionClick());
             AddShapeCommand = new RelayCommand((_) => OnAddShapeClick(), (_) => UserSelection.HasSelectedRegion);
@@ -81,17 +87,101 @@ namespace BlockEditor.ViewModels
             RotateCommand = new RelayCommand((_) => OnRotateClick());
             VerticalFlipCommand = new RelayCommand((_) => OnVerticalFlipClick());
             HorizontalFlipCommand = new RelayCommand((_) => OnHorizontalFlipClick());
-            DeleteBlockCommand = new RelayCommand((_) => OnDeleteBlockClick());
+            DeleteBlockTypeCommand = new RelayCommand((_) => OnDeleteBlockTypeClick());
             SettingsCommand = new RelayCommand((_) => OnSettingsClick());
             ConnectTeleportsCommand = new RelayCommand((_) => OnConnectTeleportsClick());
-            EditArtCommand = new RelayCommand((_) => OnEditArtClick());
+            MoveRegionCommand = new RelayCommand((_) => OnMoveRegionClick());
+            DeleteRegionCommand = new RelayCommand((_) => OnDeleteRegionClick());
             DistanceCommand = new RelayCommand((_) => OnDistanceClick());
             DeleteCommand = new RelayCommand((_) => OnDeleteClick());
             DeselectCommand = new RelayCommand((_) => OnDeselectClick(), (_) => OnDeselectCanExecute());
+            NavigatorCommand = new RelayCommand((_) => OnNavigatorClick(SimpleBlock.None));
+
+            AddMenuCommand = new RelayCommand((_) => AddMenu());
+            TransformMenuCommand = new RelayCommand((_) => TransformMenu());
+            DeleteMenuCommand = new RelayCommand((_) => DeleteMenu());
+            EditMenuCommand = new RelayCommand((_) => EditMenu());
+            AdvancedMenuCommand = new RelayCommand((_) => AdvancedMenu());
+            InfoMenuCommand = new RelayCommand((_) => InfoMenu());
 
 
             Game.Engine.OnFrame += OnFrameUpdate;
         }
+
+        #region Menu
+
+        private void AddMenu()
+        {
+            var w = new MenuWindow("Add Tools");
+
+            w.AddOption("Add Shape", AddShapeCommand);
+            w.AddOption("Add Image", AddImageCommand);
+            w.AddOption("Flood Fill", FillCommand);
+
+            w.ShowDialog();
+            w.Execute();
+        }
+
+        private void EditMenu()
+        {
+            var w = new MenuWindow("Edit Tools");
+
+            w.AddOption("Replace Block Type", ReplaceCommand);
+            w.AddOption("Move Region", MoveRegionCommand);
+            w.ShowDialog();
+            w.Execute();
+        }
+
+        private void AdvancedMenu()
+        {
+            var w = new MenuWindow("Advanced Tools");
+
+            w.AddOption("Connect Teleports", ConnectTeleportsCommand);
+            w.AddOption("Measure Distance", DistanceCommand);
+
+            w.ShowDialog();
+            w.Execute();
+        }
+
+        private void InfoMenu()
+        {
+            var w = new MenuWindow("Info Tools");
+
+            w.AddOption("Block Count", BlockCountCommand);
+            w.AddOption("Block Info", BlockInfoCommand);
+            w.AddOption("Editor Info", SettingsCommand);
+            w.AddOption("Map Info", MapInfoCommand);
+
+            w.ShowDialog();
+            w.Execute();
+        }
+
+        private void TransformMenu()
+        {
+            var w = new MenuWindow("Transform Tools");
+
+            w.AddOption("Rotate", RotateCommand);
+            w.AddOption("Horizontal Flip", HorizontalFlipCommand);
+            w.AddOption("Vertical Flip", VerticalFlipCommand);
+
+            w.ShowDialog();
+            w.Execute();
+        }
+
+
+        private void DeleteMenu()
+        {
+            var w = new MenuWindow("Delete Tools");
+
+            w.AddOption("Block Type", DeleteBlockTypeCommand);
+            w.AddOption("Delete Blocks", DeleteCommand);
+            w.AddOption("Delete Region", DeleteRegionCommand);
+
+            w.ShowDialog();
+            w.Execute();
+        }
+
+        #endregion
 
 
         #region Events
@@ -290,16 +380,37 @@ namespace BlockEditor.ViewModels
             }
         }
 
-        public void OnEditArtClick()
+        public void OnMoveRegionClick()
         {
             OnCleanUserMode(true, false);
 
-            var w = new EditArtWindow(Game.Map, UserSelection.MapRegion);
+            var w = new EditArtWindow(Game.Map, UserSelection.MapRegion, true);
 
             w.ShowDialog();
 
             using(new TempCursor(Cursors.Wait)) 
             { 
+                if (w.BlocksToRemove != null && w.BlocksToRemove.Any())
+                    Game.RemoveBlocks(w.BlocksToRemove);
+
+                if (w.BlocksToAdd != null && w.BlocksToAdd.Any())
+                    Game.AddBlocks(w.BlocksToAdd);
+            }
+
+            if (!string.IsNullOrWhiteSpace(w.Message))
+                MessageUtil.ShowInfo(w.Message);
+        }
+
+        public void OnDeleteRegionClick()
+        {
+            OnCleanUserMode(true, false);
+
+            var w = new EditArtWindow(Game.Map, UserSelection.MapRegion, false);
+
+            w.ShowDialog();
+
+            using (new TempCursor(Cursors.Wait))
+            {
                 if (w.BlocksToRemove != null && w.BlocksToRemove.Any())
                     Game.RemoveBlocks(w.BlocksToRemove);
 
@@ -451,7 +562,7 @@ namespace BlockEditor.ViewModels
             }
         }
 
-        public void OnDeleteBlockClick()
+        public void OnDeleteBlockTypeClick()
         {
             OnCleanUserMode(true, false);
 
