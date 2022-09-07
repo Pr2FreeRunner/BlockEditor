@@ -114,7 +114,7 @@ namespace BlockEditor.ViewModels
 
         private void BuildMenu()
         {
-            var w = new MenuWindow("Build Tools");
+            var w = new MenuWindow("Build Tools", Mode);
 
             w.AddOption("Add Shape", AddShapeCommand);
             w.AddOption("Add Image", AddImageCommand);
@@ -126,7 +126,7 @@ namespace BlockEditor.ViewModels
 
         private void EditMenu()
         {
-            var w = new MenuWindow("Edit Tools");
+            var w = new MenuWindow("Edit Tools", Mode);
 
             w.AddOption("Replace Block Type", ReplaceCommand);
             w.AddOption("Move Region", MoveRegionCommand);
@@ -136,7 +136,7 @@ namespace BlockEditor.ViewModels
 
         private void AdvancedMenu()
         {
-            var w = new MenuWindow("Advanced Tools");
+            var w = new MenuWindow("Advanced Tools", Mode);
 
             w.AddOption("Connect Teleports", ConnectTeleportsCommand);
             w.AddOption("Measure Distance", DistanceCommand);
@@ -147,7 +147,7 @@ namespace BlockEditor.ViewModels
 
         private void InfoMenu()
         {
-            var w = new MenuWindow("Info Tools");
+            var w = new MenuWindow("Info Tools", Mode);
 
             w.AddOption("Block Count", BlockCountCommand);
             w.AddOption("Block Info", BlockInfoCommand);
@@ -160,7 +160,7 @@ namespace BlockEditor.ViewModels
 
         private void TransformMenu()
         {
-            var w = new MenuWindow("Transform Tools");
+            var w = new MenuWindow("Transform Tools", Mode);
 
             w.AddOption("Rotate", RotateCommand);
             w.AddOption("Horizontal Flip", HorizontalFlipCommand);
@@ -173,7 +173,7 @@ namespace BlockEditor.ViewModels
 
         private void DeleteMenu()
         {
-            var w = new MenuWindow("Delete Tools");
+            var w = new MenuWindow("Delete Tools", Mode);
 
             w.AddOption("Block Type", DeleteBlockTypeCommand);
             w.AddOption("Block Option", DeleteBlockOptionCommand);
@@ -182,6 +182,7 @@ namespace BlockEditor.ViewModels
 
             w.ShowDialog();
             w.Execute();
+            Mode.UpdateGuiState();
         }
 
         #endregion

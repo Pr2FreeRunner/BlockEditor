@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Input;
 using BlockEditor.Helpers;
+using Newtonsoft.Json.Bson;
 
 namespace BlockEditor.Models
 {
@@ -25,12 +26,12 @@ namespace BlockEditor.Models
                 _value = value;
 
                 RaisePropertyChanged(nameof(IsSelectionMode));
-                RaisePropertyChanged(nameof(IsFillMode));
-                RaisePropertyChanged(nameof(IsBlockInfoMode));
-                RaisePropertyChanged(nameof(IsConnectTeleportsMode));
-                RaisePropertyChanged(nameof(IsDistanceMode));
+                RaisePropertyChanged(nameof(IsBuildMode));
+                RaisePropertyChanged(nameof(IsTransformMode));
                 RaisePropertyChanged(nameof(IsDeleteMode));
-
+                RaisePropertyChanged(nameof(IsEditMode));
+                RaisePropertyChanged(nameof(IsAdvancedMode));
+                RaisePropertyChanged(nameof(IsInfoMode));
 
                 SetMouseCursor(value);
             }
@@ -38,14 +39,18 @@ namespace BlockEditor.Models
 
      
         public bool IsSelectionMode => Value == UserModes.Selection;
-        public bool IsFillMode => Value == UserModes.Fill;
-        public bool IsBlockInfoMode => Value == UserModes.BlockInfo;
-        public bool IsConnectTeleportsMode => Value == UserModes.ConnectTeleports;
-        public bool IsDistanceMode => Value == UserModes.Distance;
+        public bool IsBuildMode => Value == UserModes.Fill;
+        public bool IsTransformMode => false;
         public bool IsDeleteMode => Value == UserModes.Delete;
+        public bool IsEditMode => false;
+        public bool IsAdvancedMode => Value == UserModes.Distance || Value == UserModes.ConnectTeleports;
+        public bool IsInfoMode => Value == UserModes.BlockInfo;
 
 
-
+        public void UpdateGuiState()
+        {
+            Value = Value;
+        }
 
         public static void Init()
         {

@@ -1,6 +1,7 @@
 ﻿using BlockEditor.Helpers;
 using BlockEditor.Models;
 using BlockEditor.Views.Controls;
+using System;
 using System.Windows;
 using System.Windows.Input;
 namespace BlockEditor.Views.Windows
@@ -9,11 +10,15 @@ namespace BlockEditor.Views.Windows
     {
         public RelayCommand Option { get; set; }
 
+        private UserMode _mode { get; }
 
-        public MenuWindow(string title)
+        public MenuWindow(string title, UserMode mode)
         {
+            _mode?.UpdateGuiState();
+
             InitializeComponent();
             tbTitle.Content = title;
+            _mode = mode;
             OpenWindows.Add(this);
         }
 
@@ -47,6 +52,8 @@ namespace BlockEditor.Views.Windows
 
         public void Execute()
         {
+            _mode?.UpdateGuiState();
+
             if (!IsValid(Option))
                 return;
 
