@@ -20,6 +20,21 @@ namespace BlockEditor.Views.Windows
 
         private int _index;
 
+
+        private NavigatorWindow(Game game, List<MyPoint> positions, int blockId, MyPoint? p)
+        {
+            InitializeComponent();
+
+            _game = game;
+            _positions = positions;
+            _blockId = blockId;
+
+            Init(p);
+            MyUtil.SetPopUpWindowPosition(this);
+            OpenWindows.Add(this);
+        }
+
+
         public static void Show(Game game, Predicate<SimpleBlock> filter, int blockId, MyPoint? p)
         {
             if (game == null || filter == null)
@@ -30,7 +45,7 @@ namespace BlockEditor.Views.Windows
 
             using (new TempCursor(Cursors.Wait))
             {
-                blocks    = game.Map.Blocks.GetBlocks().Where(b => !b.IsEmpty() && filter(b)).ToList();
+                blocks = game.Map.Blocks.GetBlocks().Where(b => !b.IsEmpty() && filter(b)).ToList();
                 positions = blocks.Select(b => b.Position.Value).ToList();
             }
 
@@ -41,19 +56,9 @@ namespace BlockEditor.Views.Windows
             }
 
             new NavigatorWindow(game, positions, blockId, p).ShowDialog();
-            
-        }
-        private NavigatorWindow(Game game, List<MyPoint> positions, int blockId, MyPoint? p)
-        {
-            InitializeComponent();
 
-            _game = game;
-            _positions = positions;
-            _blockId = blockId;
-
-            Init(p);
-            OpenWindows.Add(this);
         }
+
 
         private void Init(MyPoint? p)
         {

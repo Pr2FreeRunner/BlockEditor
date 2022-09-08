@@ -50,7 +50,7 @@ namespace BlockEditor.ViewModels
 
         public void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var p = MyUtils.GetPosition(sender as IInputElement, e);
+            var p = MyUtil.GetPosition(sender as IInputElement, e);
             var index = Game.GetMapIndex(p);
 
             if (p == null || index == null)
@@ -189,7 +189,7 @@ namespace BlockEditor.ViewModels
 
         public void OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
-            Game.MousePosition = MyUtils.GetPosition(sender as IInputElement, e);
+            Game.MousePosition = MyUtil.GetPosition(sender as IInputElement, e);
             var index = Game.GetMapIndex(Game.MousePosition);
 
             switch (Game.Mode.Value)
@@ -225,7 +225,7 @@ namespace BlockEditor.ViewModels
 
         internal void OnPreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
-            var p = MyUtils.GetPosition(sender as IInputElement, e);
+            var p = MyUtil.GetPosition(sender as IInputElement, e);
             var index = Game.GetMapIndex(p);
 
             if (p == null || index == null)
@@ -292,7 +292,7 @@ namespace BlockEditor.ViewModels
             Game.CleanUserMode(true, true);
             Game.GoToStartPosition();
 
-            MyUtils.BlocksOutsideBoundries(map.BlocksOutsideBoundries);
+            MyUtil.BlocksOutsideBoundries(map.BlocksOutsideBoundries);
 
             Game.Engine.Pause = false;
         }

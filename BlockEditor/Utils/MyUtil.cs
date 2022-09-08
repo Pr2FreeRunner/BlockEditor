@@ -10,7 +10,7 @@ using System.Windows.Input;
 namespace BlockEditor.Utils
 {
 
-    class MyUtils
+    class MyUtil
     {
 
         public static MyPoint? GetPosition(IInputElement src, MouseEventArgs e)
@@ -34,6 +34,20 @@ namespace BlockEditor.Utils
         public static bool TryParseDouble(string input, out double result)
         {
             return double.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out result);
+        }
+
+        public static void SetPopUpWindowPosition(Window w)
+        {
+            var mainWindow = App.Current?.MainWindow as MainWindow;
+
+            if (mainWindow == null)
+                return;
+
+            var x = 60;
+            var y = 150;
+
+            w.Left = mainWindow.WindowState == WindowState.Maximized ? x : mainWindow.Left + x; 
+            w.Top  = mainWindow.WindowState == WindowState.Maximized ? y : mainWindow.Top  + y;
         }
 
         public static void BlocksOutsideBoundries(int count)

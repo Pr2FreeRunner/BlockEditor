@@ -47,7 +47,7 @@ namespace BlockEditor.Views.Windows
             foreach (SearchDirectionEnum type in Enum.GetValues(typeof(SearchDirectionEnum)))
             {
                 var item = new ComboBoxItem();
-                item.Content = MyUtils.InsertSpaceBeforeCapitalLetter(type.ToString());
+                item.Content = MyUtil.InsertSpaceBeforeCapitalLetter(type.ToString());
                 SearchDirectionComobBox.Items.Add(item);
             }
 
@@ -60,7 +60,7 @@ namespace BlockEditor.Views.Windows
             foreach (SearchOrderEnum type in Enum.GetValues(typeof(SearchOrderEnum)))
             {
                 var item = new ComboBoxItem();
-                item.Content = MyUtils.InsertSpaceBeforeCapitalLetter(type.ToString());
+                item.Content = MyUtil.InsertSpaceBeforeCapitalLetter(type.ToString());
                 OrderComboBox.Items.Add(item);
             }
 
@@ -79,7 +79,7 @@ namespace BlockEditor.Views.Windows
                 var name = type == SearchBy.BestWeek ? "Week's Best" : type.ToString();
 
                 item.ToolTip = "HotKey:  Ctrl + " + name.First();
-                item.Content = MyUtils.InsertSpaceBeforeCapitalLetter(name);
+                item.Content = MyUtil.InsertSpaceBeforeCapitalLetter(name);
 
                 SearchByComboBox.Items.Add(item);
             }

@@ -7,7 +7,7 @@ namespace BlockEditor.Utils
     {
         public static System.Drawing.Color? GetColorFromBlockOption(string blockOptions)
         {
-            if (MyUtils.TryParse(blockOptions, out var result))
+            if (MyUtil.TryParse(blockOptions, out var result))
                 blockOptions = result.ToString("X6");
 
             return GetColorFromHex(blockOptions);

@@ -118,7 +118,7 @@ namespace BlockEditor.Views.Windows
             foreach (ImageType type in Enum.GetValues(typeof(ImageType)))
             {
                 var item = new ComboBoxItem();
-                var name = MyUtils.InsertSpaceBeforeCapitalLetter(type.ToString());
+                var name = MyUtil.InsertSpaceBeforeCapitalLetter(type.ToString());
                 item.Content = name;
 
                 if(!string.Equals("None", name, StringComparison.InvariantCultureIgnoreCase))
@@ -128,7 +128,7 @@ namespace BlockEditor.Views.Windows
             foreach (IgnoreColor type in Enum.GetValues(typeof(IgnoreColor)))
             {
                 var item = new ComboBoxItem();
-                item.Content = MyUtils.InsertSpaceBeforeCapitalLetter(type.ToString()); ;
+                item.Content = MyUtil.InsertSpaceBeforeCapitalLetter(type.ToString()); ;
 
                 cbIgnoreColor.Items.Add(item);
             }
@@ -136,7 +136,7 @@ namespace BlockEditor.Views.Windows
             foreach (ColorSensitivty type in Enum.GetValues(typeof(ColorSensitivty)))
             {
                 var item = new ComboBoxItem();
-                item.Content = MyUtils.InsertSpaceBeforeCapitalLetter(type.ToString()); ;
+                item.Content = MyUtil.InsertSpaceBeforeCapitalLetter(type.ToString()); ;
 
                 cbSensitivity.Items.Add(item);
             }
@@ -208,7 +208,7 @@ namespace BlockEditor.Views.Windows
             if (tb == null)
                 return;
 
-            if (MyUtils.TryParseDouble(tb.Text, out var result))
+            if (MyUtil.TryParseDouble(tb.Text, out var result))
             {
                 _posX = result;
                 _posXInput = tb.Text;
@@ -224,7 +224,7 @@ namespace BlockEditor.Views.Windows
             if (tb == null)
                 return;
 
-            if (MyUtils.TryParseDouble(tb.Text, out var result))
+            if (MyUtil.TryParseDouble(tb.Text, out var result))
             {
                 _posY = result;
                 _posYInput = tb.Text;

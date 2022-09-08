@@ -84,7 +84,7 @@ namespace BlockEditor.Views.Windows
             if (tb == null)
                 return;
 
-            if (MyUtils.TryParse(tb.Text, out var result))
+            if (MyUtil.TryParse(tb.Text, out var result))
                 Probability = result;
             else
             {

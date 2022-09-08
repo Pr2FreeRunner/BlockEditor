@@ -201,7 +201,7 @@ namespace BlockEditor.Utils
             if (string.IsNullOrWhiteSpace(input))
                 return null;
 
-            if (!MyUtils.TryParse(input, out var id))
+            if (!MyUtil.TryParse(input, out var id))
                 return null;
 
             return id;

@@ -461,7 +461,7 @@ namespace BlockEditor.Models
                     var blocks = BlocksUtil.ToBlocks(pr2Blocks, out var blocksOutsideBoundries).GetBlocks();
                     var position = blocks.First().Position;
 
-                    MyUtils.BlocksOutsideBoundries(blocksOutsideBoundries);
+                    MyUtil.BlocksOutsideBoundries(blocksOutsideBoundries);
                     game.AddBlocks(blocks);
                     game.GoToPosition(position);
                 }

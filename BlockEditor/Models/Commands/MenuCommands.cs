@@ -76,7 +76,7 @@ namespace BlockEditor.Models
             var w = new MenuWindow("Edit Tools");
 
             w.AddOption("Move Region", _tools.MoveRegionCommand);
-            w.AddOption("Replace Block Type", _tools.ReplaceCommand);
+            w.AddOption("Replace Block", _tools.ReplaceCommand);
             w.AddOption("Reverse Arrows", ReverseArrowsCommand);
             w.ShowDialog();
             w.Execute();

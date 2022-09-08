@@ -37,6 +37,7 @@ namespace BlockEditor.Views.Windows
             _mapItemOptions = ItemBlockOptionsControl.GetOptions(map.Level.Items.Select(i => i.ID));
 
             Init(index.Value);
+            MyUtil.SetPopUpWindowPosition(this);
             OpenWindows.Add(this);
         }
 

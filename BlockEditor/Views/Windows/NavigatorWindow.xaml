@@ -7,7 +7,7 @@
         SizeToContent="Height"
         Width="350"
         WindowStyle="None"
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="Manual"
         AllowsTransparency="True" 
         Background="Transparent"
         PreviewKeyDown="Window_PreviewKeyDown"

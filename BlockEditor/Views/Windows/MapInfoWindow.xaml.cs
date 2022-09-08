@@ -131,7 +131,7 @@ namespace BlockEditor.Views.Windows
             if (tb == null)
                 return;
 
-            if (MyUtils.TryParse(tb.Text, out var result))
+            if (MyUtil.TryParse(tb.Text, out var result))
                 _map.Level.MaxTime = result;
         }
 
@@ -142,7 +142,7 @@ namespace BlockEditor.Views.Windows
             if(tb == null)
                 return;
 
-            if(MyUtils.TryParse(tb.Text, out var result))
+            if(MyUtil.TryParse(tb.Text, out var result))
                 _map.Level.CowboyChance = result;
         }
 
@@ -170,7 +170,7 @@ namespace BlockEditor.Views.Windows
             if (tb == null)
                 return;
 
-            if (MyUtils.TryParse(tb.Text, out var result))
+            if (MyUtil.TryParse(tb.Text, out var result))
                 _map.Level.RankLimit = result;
         }
 
@@ -181,7 +181,7 @@ namespace BlockEditor.Views.Windows
             if (tb == null)
                 return;
 
-            if (MyUtils.TryParseDouble(tb.Text, out var result))
+            if (MyUtil.TryParseDouble(tb.Text, out var result))
                 _map.Level.Gravity = result;
         }
 

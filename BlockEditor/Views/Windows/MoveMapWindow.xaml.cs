@@ -111,7 +111,7 @@ namespace BlockEditor.Views.Windows
         {
             var text = tbY.Text;
 
-            if (MyUtils.TryParseDouble(text, out var result))
+            if (MyUtil.TryParseDouble(text, out var result))
                 _moveY = result;
 
             UpdateButtons();
@@ -121,7 +121,7 @@ namespace BlockEditor.Views.Windows
         {
             var text = tbX.Text;
 
-            if (MyUtils.TryParseDouble(text, out var result))
+            if (MyUtil.TryParseDouble(text, out var result))
                 _moveX = result;
 
             UpdateButtons();
