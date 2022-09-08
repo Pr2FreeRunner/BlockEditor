@@ -101,7 +101,7 @@ namespace BlockEditor.Views.Windows
             foreach (var child in TabPanel.Children)
             {
                 if(child is MyTabControl tab && tab != null)
-                    tab.MapControl.ViewModel.Mode.Value = UserMode.UserModes.None;
+                    tab.MapControl.ViewModel.Game.Mode.Value = UserMode.UserModes.None;
             }
         }
 
@@ -112,7 +112,7 @@ namespace BlockEditor.Views.Windows
             if(_currentMap == null)
                 return;
 
-            _currentMap.ViewModel.Mode.Value = UserMode.UserModes.None;
+            _currentMap.ViewModel.Game.Mode.Value = UserMode.UserModes.None;
         }
 
         public void TitleChanged(string title)

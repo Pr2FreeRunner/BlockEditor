@@ -22,23 +22,19 @@ namespace BlockEditor.ViewModels
 
         private MyPoint? _mousePosition;
 
-
         public BitmapImage MapContent
         {
             get => Game.GameImage?.GetImage();
         }
 
-        public UserMode Mode { get; }
-        public UserSelection UserSelection { get; }
-
         public Game Game { get; }
+
         public bool IsOverwrite
         {
             get { return Game.Map?.Blocks.Overwrite ?? false; }
             set { Game.Map.Blocks.Overwrite = value; RaisePropertyChanged(); }
         }
 
-        private Action<MyPoint?> _getPosition;
 
         public RelayCommand NavigatorCommand { get; }
         public RelayCommand FillCommand { get; }
@@ -58,7 +54,8 @@ namespace BlockEditor.ViewModels
         public RelayCommand MoveRegionCommand { get; }
         public RelayCommand DeleteRegionCommand { get; }
         public RelayCommand DeleteBlockOptionCommand { get; }
-
+        public RelayCommand ReverseHorizontalArrowsCommand { get; }
+        public RelayCommand ReverseVerticalArrowsCommand { get; }
         public RelayCommand DistanceCommand { get; }
         public RelayCommand DeleteCommand { get; }
         public RelayCommand DeselectCommand { get; }
@@ -69,36 +66,37 @@ namespace BlockEditor.ViewModels
         public RelayCommand EditMenuCommand { get; }
         public RelayCommand InfoMenuCommand { get; }
         public RelayCommand AdvancedMenuCommand { get; }
+        public RelayCommand ReverseArrowsMenuCommand { get; }
 
 
 
         public MapViewModel()
         {
             Game = new Game();
-            Mode = new UserMode();
 
-            UserSelection = new UserSelection();
-            FillCommand = new RelayCommand((_) => OnFillClick());
-            SelectCommand = new RelayCommand((_) => OnSelectionClick());
-            AddShapeCommand = new RelayCommand((_) => OnAddShapeClick(), (_) => UserSelection.HasSelectedRegion);
-            BlockInfoCommand = new RelayCommand((_) => OnBlockInfoClick());
-            MapInfoCommand = new RelayCommand((_) => OnMapInfoClick());
-            BlockCountCommand = new RelayCommand((_) => OnBlockCountClick());
-            ReplaceCommand = new RelayCommand((_) => OnReplaceClick());
-            AddImageCommand = new RelayCommand((_) => OnAddImageClick());
-            RotateCommand = new RelayCommand((_) => OnRotateClick());
-            VerticalFlipCommand = new RelayCommand((_) => OnVerticalFlipClick());
-            HorizontalFlipCommand = new RelayCommand((_) => OnHorizontalFlipClick());
-            DeleteBlockTypeCommand = new RelayCommand((_) => OnDeleteBlockTypeClick());
-            SettingsCommand = new RelayCommand((_) => OnSettingsClick());
-            ConnectTeleportsCommand = new RelayCommand((_) => OnConnectTeleportsClick());
-            MoveRegionCommand = new RelayCommand((_) => OnMoveRegionClick());
-            DeleteRegionCommand = new RelayCommand((_) => OnDeleteRegionClick());
-            DistanceCommand = new RelayCommand((_) => OnDistanceClick());
-            DeleteCommand = new RelayCommand((_) => OnDeleteClick());
-            DeselectCommand = new RelayCommand((_) => OnDeselectClick(), (_) => OnDeselectCanExecute());
-            NavigatorCommand = new RelayCommand((_) => OnNavigatorClick(SimpleBlock.None));
-            DeleteBlockOptionCommand = new RelayCommand((_) => OnDeleteBlockOptionClick());
+            FillCommand = new RelayCommand((_) => FloodFill());
+            SelectCommand = new RelayCommand((_) => Selection());
+            AddShapeCommand = new RelayCommand((_) => AddShape(), (_) => Game.UserSelection.HasSelectedRegion);
+            BlockInfoCommand = new RelayCommand((_) => BlockInfo());
+            MapInfoCommand = new RelayCommand((_) => MapInfo());
+            BlockCountCommand = new RelayCommand((_) => BlockCount());
+            ReplaceCommand = new RelayCommand((_) => Replace());
+            AddImageCommand = new RelayCommand((_) => AddImage());
+            RotateCommand = new RelayCommand((_) => Rotate());
+            VerticalFlipCommand = new RelayCommand((_) => VerticalFlip());
+            HorizontalFlipCommand = new RelayCommand((_) => HorizontalFlip());
+            DeleteBlockTypeCommand = new RelayCommand((_) => DeleteBlockType());
+            SettingsCommand = new RelayCommand((_) => EditorSettings());
+            ConnectTeleportsCommand = new RelayCommand((_) => ConnectTeleports());
+            MoveRegionCommand = new RelayCommand((_) => MoveRegion());
+            DeleteRegionCommand = new RelayCommand((_) => DeleteRegion());
+            DistanceCommand = new RelayCommand((_) => Distance());
+            DeleteCommand = new RelayCommand((_) => Delete());
+            DeselectCommand = new RelayCommand((_) => Deselect(), (_) => DeselectCanExecute());
+            NavigatorCommand = new RelayCommand((_) => Navigator(SimpleBlock.None));
+            DeleteBlockOptionCommand = new RelayCommand((_) => DeleteBlockOption());
+            ReverseHorizontalArrowsCommand = new RelayCommand((_) => ReverseHorizontalArrows());
+            ReverseVerticalArrowsCommand = new RelayCommand((_) => ReverseVerticalArrows());
 
             BuildMenuCommand = MenuCommand(BuildMenu);
             TransformMenuCommand = MenuCommand(TransformMenu);
@@ -106,10 +104,12 @@ namespace BlockEditor.ViewModels
             EditMenuCommand = MenuCommand(EditMenu);
             AdvancedMenuCommand = MenuCommand(AdvancedMenu);
             InfoMenuCommand = MenuCommand(InfoMenu);
-
+            ReverseArrowsMenuCommand = MenuCommand(ReverseArrowsMenu);
 
             Game.Engine.OnFrame += OnFrameUpdate;
         }
+
+
 
         #region Menu
 
@@ -117,9 +117,9 @@ namespace BlockEditor.ViewModels
         {
             return new RelayCommand((_) =>
             {
-                 Mode.UpdateGuiState();
-                 menu?.Invoke();
-                Mode.UpdateGuiState();
+                Game.Mode.UpdateGuiState();
+                menu?.Invoke();
+                Game.Mode.UpdateGuiState();
             });
         }
 
@@ -139,8 +139,9 @@ namespace BlockEditor.ViewModels
         {
             var w = new MenuWindow("Edit Tools");
 
-            w.AddOption("Replace Block Type", ReplaceCommand);
             w.AddOption("Move Region", MoveRegionCommand);
+            w.AddOption("Replace Block Type", ReplaceCommand);
+            w.AddOption("Reverse Arrows", ReverseArrowsMenuCommand);
             w.ShowDialog();
             w.Execute();
         }
@@ -154,12 +155,24 @@ namespace BlockEditor.ViewModels
 
             w.ShowDialog();
             w.Execute();
-            Mode.UpdateGuiState();
+            Game.Mode.UpdateGuiState();
+        }
+
+        private void ReverseArrowsMenu()
+        {
+            var w = new MenuWindow("Reverse Arrows");
+
+            w.AddOption("Left/Right Arrows", ReverseHorizontalArrowsCommand);
+            w.AddOption("Up/Down Arrows", ReverseVerticalArrowsCommand);
+
+            w.ShowDialog();
+            w.Execute();
+            Game.Mode.UpdateGuiState();
         }
 
         private void InfoMenu()
         {
-            Mode.UpdateGuiState();
+            Game.Mode.UpdateGuiState();
             var w = new MenuWindow("Info Tools");
 
             w.AddOption("Block Count", BlockCountCommand);
@@ -169,12 +182,12 @@ namespace BlockEditor.ViewModels
 
             w.ShowDialog();
             w.Execute();
-            Mode.UpdateGuiState();
+            Game.Mode.UpdateGuiState();
         }
 
         private void TransformMenu()
         {
-            Mode.UpdateGuiState();
+            Game.Mode.UpdateGuiState();
             var w = new MenuWindow("Transform Tools");
 
             w.AddOption("Rotate", RotateCommand);
@@ -184,7 +197,6 @@ namespace BlockEditor.ViewModels
             w.ShowDialog();
             w.Execute();
         }
-
 
         private void DeleteMenu()
         {
@@ -197,15 +209,45 @@ namespace BlockEditor.ViewModels
 
             w.ShowDialog();
             w.Execute();
-            Mode.UpdateGuiState();
+            Game.Mode.UpdateGuiState();
         }
 
         #endregion
 
 
-        #region Events
+        #region Tool Commands
 
-        private bool OnDeselectCanExecute()
+        private void ReverseHorizontalArrows()
+        {
+            CleanUserMode(true, false);
+
+            using (new TempOverwrite(Game.Map.Blocks, true))
+            using (new TempCursor(Cursors.Wait))
+            {
+                var remove = new List<int> { Block.ARROW_LEFT, Block.ARROW_RIGHT };
+                var add    = new List<int> { Block.ARROW_RIGHT, Block.ARROW_LEFT };
+                var blocks = MapUtil.ReplaceBlock(Game.Map, remove, add, Game.UserSelection.MapRegion);
+
+                Game.AddBlocks(blocks);
+            }
+        }
+
+        private void ReverseVerticalArrows()
+        {
+            CleanUserMode(true, false);
+
+            using (new TempOverwrite(Game.Map.Blocks, true))
+            using (new TempCursor(Cursors.Wait))
+            {
+                var remove = new List<int> { Block.ARROW_UP, Block.ARROW_DOWN };
+                var add = new List<int> { Block.ARROW_DOWN, Block.ARROW_UP };
+                var blocks = MapUtil.ReplaceBlock(Game.Map, remove, add, Game.UserSelection.MapRegion);
+
+                Game.AddBlocks(blocks);
+            }
+        }
+
+        private bool DeselectCanExecute()
         {
             if (BlockSelection.SelectedBlocks != null)
                 return true;
@@ -216,16 +258,16 @@ namespace BlockEditor.ViewModels
             if (BlockSelection.SelectedBlockOption != null)
                 return true;
 
-            if (Mode.Value != UserModes.None)
+            if (Game.Mode.Value != UserModes.None)
                 return true;
 
             if (Mouse.OverrideCursor != null)
                 return true;
 
-            if (UserSelection.HasSelectedRegion)
+            if (Game.UserSelection.HasSelectedRegion)
                 return true;
 
-            if (UserSelection.MapRegion.Point1 != null)
+            if (Game.UserSelection.MapRegion.Point1 != null)
                 return true;
 
             if (Game.MeasureDistance.MapPoint1 != null)
@@ -234,44 +276,44 @@ namespace BlockEditor.ViewModels
             return false;
         }
 
-        private void OnDeselectClick()
+        private void Deselect()
         {
-            OnCleanUserMode(true, true);
+            CleanUserMode(true, true);
         }
 
-        private void OnDeleteClick()
+        private void Delete()
         {
             BlockSelection.Reset();
             Game.MeasureDistance.Reset();
 
-            if (Mode.Value != UserModes.Delete)
+            if (Game.Mode.Value != UserModes.Delete)
             {
-                Mode.Value = UserModes.Delete;
+                Game.Mode.Value = UserModes.Delete;
             }
             else
             {
-                Mode.Value = UserModes.None;
+                Game.Mode.Value = UserModes.None;
             };
         }
 
-        private void OnDistanceClick()
+        private void Distance()
         {
             BlockSelection.Reset();
             Game.MeasureDistance.Reset();
 
-            if (Mode.Value != UserModes.Distance)
+            if (Game.Mode.Value != UserModes.Distance)
             {
-                Mode.Value = UserModes.Distance;
+                Game.Mode.Value = UserModes.Distance;
             }
             else
             {
-                Mode.Value = UserModes.None;
+                Game.Mode.Value = UserModes.None;
             };
         }
 
-        private void OnNavigatorClick(SimpleBlock block)
+        private void Navigator(SimpleBlock block)
         {
-            OnCleanUserMode(false, true);
+            CleanUserMode(false, true);
             int? id = null;
             Predicate<SimpleBlock> filter = null;
 
@@ -296,85 +338,85 @@ namespace BlockEditor.ViewModels
                 NavigatorWindow.Show(Game, filter, id.Value, block.Position);
         }
 
-        private void OnSelectionClick()
+        private void Selection()
         {
             BlockSelection.Reset();
-            UserSelection.Reset();
+            Game.UserSelection.Reset();
             Game.MeasureDistance.Reset();
 
-            if (Mode.Value != UserModes.Selection)
+            if (Game.Mode.Value != UserModes.Selection)
             {
-                Mode.Value = UserModes.Selection;
+                Game.Mode.Value = UserModes.Selection;
             }
             else
             {
-                Mode.Value = UserModes.None;
+                Game.Mode.Value = UserModes.None;
             }
         }
 
-        private void OnConnectTeleportsClick()
+        private void ConnectTeleports()
         {
             BlockSelection.Reset();
-            UserSelection.Reset();
+            Game.UserSelection.Reset();
             Game.MeasureDistance.Reset();
 
-            if (Mode.Value != UserModes.ConnectTeleports)
+            if (Game.Mode.Value != UserModes.ConnectTeleports)
             {
-                ConnectTeleports.Start();
-                Mode.Value = UserModes.ConnectTeleports;
+                Models.ConnectTeleports.Start();
+                Game.Mode.Value = UserModes.ConnectTeleports;
             }
             else
             {
-                var blocks = ConnectTeleports.End(out var addMore);
+                var blocks = Models.ConnectTeleports.End(out var addMore);
 
                 if (addMore)
                 {
-                    Mode.Value = UserModes.ConnectTeleports; // updates GUI
+                    Game.Mode.Value = UserModes.ConnectTeleports; // updates GUI
                     return;
                 }
 
                 using(new TempOverwrite(Game.Map.Blocks, true))
                 {
                     Game.AddBlocks(blocks);
-                    Mode.Value = UserModes.None;
+                    Game.Mode.Value = UserModes.None;
                 }
             }
         }
 
-        public void OnFillClick()
+        private void FloodFill()
         {
-            if (Mode.Value != UserModes.Fill)
+            if (Game.Mode.Value != UserModes.Fill)
             {
                 BlockSelection.Reset();
                 Game.MeasureDistance.Reset();
-                Mode.Value = UserModes.Fill;
+                Game.Mode.Value = UserModes.Fill;
             }
             else
             {
-                Mode.Value = UserModes.None;
+                Game.Mode.Value = UserModes.None;
             }
         }
 
-        public void OnSettingsClick()
+        private void EditorSettings()
         {
-            OnCleanUserMode(true, true);
+            CleanUserMode(true, true);
 
             new SettingsWindow().ShowDialog();
 
-            Mode.Value = UserModes.None;
+            Game.Mode.Value = UserModes.None;
         }
 
-        public void OnVerticalFlipClick()
+        private void VerticalFlip()
         {
             if (BlockSelection.VerticalFlipCommand.CanExecute(null))
             {
                 BlockSelection.VerticalFlipCommand.Execute(null);
             }
-            else if (UserSelection.HasSelectedRegion)
+            else if (Game.UserSelection.HasSelectedRegion)
             {
                 string text = "";
 
-                if (UserSelection.SelectedRegionContainsBlocks(Game.Map))
+                if (Game.UserSelection.SelectedRegionContainsBlocks(Game.Map))
                     text = "If you wish to flip the blocks inside the selected region, "
                         + Environment.NewLine + "you first have to select them by using Ctrl + C or Ctrl + X";
                 else
@@ -399,11 +441,11 @@ namespace BlockEditor.ViewModels
             }
         }
 
-        public void OnMoveRegionClick()
+        private void MoveRegion()
         {
-            OnCleanUserMode(true, false);
+            CleanUserMode(true, false);
 
-            var w = new EditArtWindow(Game.Map, UserSelection.MapRegion, true);
+            var w = new EditArtWindow(Game.Map, Game.UserSelection.MapRegion, true);
 
             w.ShowDialog();
 
@@ -417,11 +459,11 @@ namespace BlockEditor.ViewModels
             }
         }
 
-        public void OnDeleteRegionClick()
+        private void DeleteRegion()
         {
-            OnCleanUserMode(true, false);
+            CleanUserMode(true, false);
 
-            var w = new EditArtWindow(Game.Map, UserSelection.MapRegion, false);
+            var w = new EditArtWindow(Game.Map, Game.UserSelection.MapRegion, false);
 
             w.ShowDialog();
 
@@ -435,17 +477,17 @@ namespace BlockEditor.ViewModels
             }
         }
 
-        public void OnRotateClick()
+        private void Rotate()
         {
             if (BlockSelection.RotateCommand.CanExecute(null))
             {
                 BlockSelection.RotateCommand.Execute(null);
             }
-            else if (UserSelection.HasSelectedRegion)
+            else if (Game.UserSelection.HasSelectedRegion)
             {
                 string text = "";
 
-                if (UserSelection.SelectedRegionContainsBlocks(Game.Map))
+                if (Game.UserSelection.SelectedRegionContainsBlocks(Game.Map))
                     text = "If you wish to rotate the blocks inside the selected region, "
                         + Environment.NewLine + "you first have to select them by using Ctrl + C or Ctrl + X";
                 else
@@ -470,17 +512,17 @@ namespace BlockEditor.ViewModels
             }
         }
 
-        public void OnHorizontalFlipClick()
+        private void HorizontalFlip()
         {
             if (BlockSelection.HorizontalFlipCommand.CanExecute(null))
             {
                 BlockSelection.HorizontalFlipCommand.Execute(null);
             }
-            else if (UserSelection.HasSelectedRegion)
+            else if (Game.UserSelection.HasSelectedRegion)
             {
                 string text = "";
 
-                if (UserSelection.SelectedRegionContainsBlocks(Game.Map))
+                if (Game.UserSelection.SelectedRegionContainsBlocks(Game.Map))
                     text = "If you wish to flip the blocks inside the selected region, "
                         + Environment.NewLine + "you first have to select them by using Ctrl + C or Ctrl + X";
                 else
@@ -505,12 +547,12 @@ namespace BlockEditor.ViewModels
             }
         }
 
-        public void OnAddShapeClick()
+        private void AddShape()
         {
-            OnCleanUserMode(true, false);
+            CleanUserMode(true, false);
 
             var selectedId = SelectBlockWindow.Show("Add Shape", false);
-            var region = UserSelection.MapRegion;
+            var region = Game.UserSelection.MapRegion;
 
             if (selectedId == null)
                 return;
@@ -527,17 +569,17 @@ namespace BlockEditor.ViewModels
             BlockSelection.Reset();
         }
 
-        public void OnAddImageClick(MyPoint? p = null)
+        private void AddImage(MyPoint? p = null)
         {
-            OnCleanUserMode(true, true);
+            CleanUserMode(true, true);
 
             var w = new ImageToBlocksWindow(p);
             var r = w.ShowDialog();
 
             if (w.GetPosition)
             {
-                Mode.Value = UserModes.GetPosition;
-                _getPosition = (x) => OnAddImageClick(x);
+                Game.Mode.Value = UserModes.GetPosition;
+                Game.GetPosition = (x) => AddImage(x);
                 return;
             }
 
@@ -575,11 +617,11 @@ namespace BlockEditor.ViewModels
             }
         }
 
-        public void OnDeleteBlockTypeClick()
+        private void DeleteBlockType()
         {
-            OnCleanUserMode(true, false);
+            CleanUserMode(true, false);
 
-            var region = UserSelection.MapRegion;
+            var region = Game.UserSelection.MapRegion;
             var id1 = SelectBlockWindow.Show("Block Type to Remove:", false);
 
             if (id1 == null)
@@ -593,11 +635,11 @@ namespace BlockEditor.ViewModels
             }
         }
 
-        public void OnDeleteBlockOptionClick()
+        private void DeleteBlockOption()
         {
-            OnCleanUserMode(true, false);
+            CleanUserMode(true, false);
 
-            var region = UserSelection.MapRegion;
+            var region = Game.UserSelection.MapRegion;
             var remove = new List<SimpleBlock>();
             var add = new List<SimpleBlock>();
 
@@ -619,14 +661,14 @@ namespace BlockEditor.ViewModels
             }
         }
 
-        public void OnReplaceClick()
+        private void Replace()
         {
-            OnCleanUserMode(true, false);
+            CleanUserMode(true, false);
 
 
             using (new TempOverwrite(Game.Map.Blocks, true))
             {
-                var region = UserSelection.MapRegion;
+                var region = Game.UserSelection.MapRegion;
                 var id1 = SelectBlockWindow.Show("Block to Replace:", false);
 
                 if (id1 == null)
@@ -645,53 +687,58 @@ namespace BlockEditor.ViewModels
             }
         }
 
-        public void OnBlockInfoClick()
+        private void BlockInfo()
         {
-            if (Mode.Value != UserModes.BlockInfo)
+            if (Game.Mode.Value != UserModes.BlockInfo)
             {
                 BlockSelection.Reset();
-                UserSelection.Reset();
+                Game.UserSelection.Reset();
                 Game.MeasureDistance.Reset();
-                Mode.Value = UserModes.BlockInfo;
+                Game.Mode.Value = UserModes.BlockInfo;
             }
             else
             {
-                Mode.Value = UserModes.None;
+                Game.Mode.Value = UserModes.None;
             }
         }
 
-        public void OnBlockCountClick()
+        private void BlockCount()
         {
-            OnCleanUserMode(true, true);
+            CleanUserMode(true, true);
 
             var w = new BlockCountWindow(Game.Map);
             w.ShowDialog();
         }
 
-        public void OnMapInfoClick()
+        private void MapInfo()
         {
-            OnCleanUserMode(true, true);
+            CleanUserMode(true, true);
 
             var w = new MapInfoWindow(Game.Map, Game.Engine.RefreshGui);
             w.ShowDialog();
         }
 
-        public void OnCleanUserMode(bool blockSelection, bool userSelection)
+        public void CleanUserMode(bool blockSelection, bool userSelection)
         {
             if (blockSelection)
                 BlockSelection.Reset();
 
             if (userSelection)
-                UserSelection.Reset();
+                Game.UserSelection.Reset();
 
-            Mode.Value = UserModes.None;
+            Game.Mode.Value = UserModes.None;
             Mouse.OverrideCursor = null;
             Game.MeasureDistance.Reset();
         }
+        
+        #endregion
+
+
+        #region Events
 
         public void OnFrameUpdate()
         {
-            new FrameUpdate(Game, _mousePosition, UserSelection);
+            new FrameUpdate(Game, _mousePosition);
 
             RaisePropertyChanged(nameof(MapContent));
         }
@@ -704,11 +751,11 @@ namespace BlockEditor.ViewModels
             if (p == null || index == null)
                 return;
 
-            switch (Mode.Value)
+            switch (Game.Mode.Value)
             {
                 case UserModes.Delete:
-                    if (UserSelection.MapRegion.IsInside(index))
-                        Game.DeleteSelection(UserSelection.MapRegion);
+                    if (Game.UserSelection.MapRegion.IsInside(index))
+                        Game.DeleteSelection(Game.UserSelection.MapRegion);
                     else
                         Game.DeleteBlock(index);
                     break;
@@ -720,29 +767,29 @@ namespace BlockEditor.ViewModels
                     break;
 
                 case UserModes.GetPosition:
-                    if (_getPosition != null)
-                        _getPosition(index);
+                    if (Game.GetPosition != null)
+                        Game.GetPosition(index);
                     else
-                        Mode.Value = UserModes.None;
+                        Game.Mode.Value = UserModes.None;
                     break;
 
                 case UserModes.ConnectTeleports:
-                    ConnectTeleports.Add(Game.Map.Blocks.GetBlock(index));
+                    Models.ConnectTeleports.Add(Game.Map.Blocks.GetBlock(index));
                     break;
 
                 case UserModes.Selection:
 
                     if (e.LeftButton == MouseButtonState.Pressed)
                     {
-                        UserSelection.OnMouseDown(p, index);
+                        Game.UserSelection.OnMouseDown(p, index);
                     }
                     else if (e.RightButton == MouseButtonState.Pressed)
                     {
-                        if (!UserSelection.MapRegion.IsInside(index))
+                        if (!Game.UserSelection.MapRegion.IsInside(index))
                             break;
 
-                        Game.DeleteSelection(UserSelection.MapRegion);
-                        OnCleanUserMode(true, true);
+                        Game.DeleteSelection(Game.UserSelection.MapRegion);
+                        CleanUserMode(true, true);
                     }
 
                     break;
@@ -765,8 +812,8 @@ namespace BlockEditor.ViewModels
 
                     if (navigate)
                     {
-                        Mode.Value = UserModes.None;
-                        OnNavigatorClick(Game.Map.Blocks.GetBlock(index));
+                        Game.Mode.Value = UserModes.None;
+                        Navigator(Game.Map.Blocks.GetBlock(index));
                     }
                     break;
 
@@ -774,7 +821,7 @@ namespace BlockEditor.ViewModels
                     if (e.ChangedButton != MouseButton.Left)
                         break;
 
-                    if (UserSelection.HasSelectedRegion && !UserSelection.MapRegion.IsInside(index))
+                    if (Game.UserSelection.HasSelectedRegion && !Game.UserSelection.MapRegion.IsInside(index))
                     {
                         MessageUtil.ShowInfo("You clicked outside the selected region."
                             + Environment.NewLine
@@ -799,7 +846,7 @@ namespace BlockEditor.ViewModels
                         if (!b.IsEmpty() && !Game.Map.Blocks.Overwrite)
                             throw new OverwriteException();
 
-                        var region = UserSelection.HasSelectedRegion ? UserSelection.MapRegion : null;
+                        var region = Game.UserSelection.HasSelectedRegion ? Game.UserSelection.MapRegion : null;
                         Game.AddBlocks(MapUtil.GetFloodFill(Game.Map, index, selectedId.Value, region));
                     }
                     break;
@@ -824,7 +871,7 @@ namespace BlockEditor.ViewModels
                                 Game.DeleteBlock(b);
                                 BlockSelection.SelectedBlock = b.ID;
                                 BlockSelection.SelectedBlockOption = b.Options;
-                                Mode.Value = UserModes.MoveBlock;
+                                Game.Mode.Value = UserModes.MoveBlock;
                             }
 
                         }
@@ -838,13 +885,13 @@ namespace BlockEditor.ViewModels
             _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
             var index = Game.GetMapIndex(_mousePosition);
 
-            switch (Mode.Value)
+            switch (Game.Mode.Value)
             {
                 case UserModes.Delete:
                     if (e.RightButton == MouseButtonState.Pressed || e.LeftButton == MouseButtonState.Pressed)
                     {
-                        if (UserSelection.MapRegion.IsInside(index))
-                            Game.DeleteSelection(UserSelection.MapRegion);
+                        if (Game.UserSelection.MapRegion.IsInside(index))
+                            Game.DeleteSelection(Game.UserSelection.MapRegion);
                         else
                             Game.DeleteBlock(index);
                     }
@@ -877,7 +924,7 @@ namespace BlockEditor.ViewModels
             if (p == null || index == null)
                 return;
 
-            switch (Mode.Value)
+            switch (Game.Mode.Value)
             {
                 case UserModes.Distance:
                     Game.MeasureDistance.MapPoint2 = index;
@@ -891,7 +938,7 @@ namespace BlockEditor.ViewModels
                         Game.AddBlock(index, BlockSelection.SelectedBlock.Value, BlockSelection.SelectedBlockOption);
 
                     BlockSelection.Reset();
-                    Mode.Value = UserModes.None;
+                    Game.Mode.Value = UserModes.None;
                     break;
 
 
@@ -900,11 +947,11 @@ namespace BlockEditor.ViewModels
                     if (e.ChangedButton != MouseButton.Left)
                         break;
 
-                    UserSelection.OnMouseUp(p, index);
+                    Game.UserSelection.OnMouseUp(p, index);
 
                     if (MySettings.FirstUserSelection
-                        && UserSelection.HasSelectedRegion
-                        && UserSelection.SelectedRegionContainsBlocks(Game.Map))
+                        && Game.UserSelection.HasSelectedRegion
+                        && Game.UserSelection.SelectedRegionContainsBlocks(Game.Map))
                     {
                         MessageUtil.ShowInfo("Hint:  To copy the blocks inside the selected region press Ctrl + C");
                         MySettings.FirstUserSelection = false;
@@ -935,7 +982,7 @@ namespace BlockEditor.ViewModels
 
             Game.UserOperations.Clear();
             (App.Current.MainWindow as MainWindow)?.TitleChanged(Game.Map.Level.Title);
-            OnCleanUserMode(true, true);
+            CleanUserMode(true, true);
             Game.GoToStartPosition();
 
             MyUtils.BlocksOutsideBoundries(map.BlocksOutsideBoundries);
@@ -963,6 +1010,5 @@ namespace BlockEditor.ViewModels
         }
 
         #endregion
-
     }
 }

@@ -144,7 +144,7 @@ namespace BlockEditor.Views.Controls
 
                 if (e.Key == Key.Escape)
                 {
-                    ViewModel.OnCleanUserMode(true, true);
+                    ViewModel.CleanUserMode(true, true);
                 }
                 else if (ctrl && e.Key == Key.Z)
                 {
@@ -181,13 +181,13 @@ namespace BlockEditor.Views.Controls
                 }
                 else if (IsSelectionKey(e, ctrl))
                 {
-                    ViewModel.UserSelection.CreateSelection(ViewModel.Game.Map);
+                    ViewModel.Game.UserSelection.CreateSelection(ViewModel.Game.Map);
 
                     if (e.Key == Key.X || e.Key == Key.Delete)
-                        ViewModel.Game.DeleteSelection(ViewModel.UserSelection.MapRegion);
+                        ViewModel.Game.DeleteSelection(ViewModel.Game.UserSelection.MapRegion);
 
                     var del = e.Key == Key.Delete;
-                    ViewModel.OnCleanUserMode(del, del);
+                    ViewModel.CleanUserMode(del, del);
                 }
                 else if (ctrl && e.Key == Key.V)
                 {
@@ -246,7 +246,7 @@ namespace BlockEditor.Views.Controls
 
         private bool IsSelectionKey(KeyEventArgs e, bool ctrl)
         {
-            var isSelectionMode = ViewModel.Mode.Value == UserModes.Selection;
+            var isSelectionMode = ViewModel.Game.Mode.Value == UserModes.Selection;
             var isCopy = ctrl && (e.Key == Key.C || e.Key == Key.X);
             var isDelete = e.Key == Key.Delete;
 

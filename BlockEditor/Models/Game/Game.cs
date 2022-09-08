@@ -2,6 +2,7 @@
 using BlockEditor.Utils;
 using BlockEditor.ViewModels;
 using LevelModel.Models.Components;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -19,12 +20,22 @@ namespace BlockEditor.Models
 
         public Map Map { get; set; }
 
+        public UserMode Mode { get; }
+
+        public UserSelection UserSelection { get; }
+
+        public Action<MyPoint?> GetPosition { get; set; }
+
         public UserOperationsViewModel UserOperations { get; }
 
         public MeasureDistance MeasureDistance { get;  }
 
+
+
         public Game()
         {
+            UserSelection = new UserSelection();
+            Mode = new UserMode();
             Map = new Map();
             Engine = new GameEngine();
             Camera = new Camera();
@@ -32,6 +43,7 @@ namespace BlockEditor.Models
             UserOperations = new UserOperationsViewModel();
             MeasureDistance = new MeasureDistance();
         }
+
 
         public MyPoint? GetMapIndex(MyPoint? p)
         {
