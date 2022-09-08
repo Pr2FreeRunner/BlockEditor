@@ -458,7 +458,7 @@ namespace BlockEditor.Models
                 {
                     var pr2Blocks = level.Blocks.Skip(8).ToList();
                     w.ShiftPosition(pr2Blocks);
-                    var blocks = MyConverters.ToBlocks(pr2Blocks, out var blocksOutsideBoundries).GetBlocks();
+                    var blocks = BlocksUtil.ToBlocks(pr2Blocks, out var blocksOutsideBoundries).GetBlocks();
                     var position = blocks.First().Position;
 
                     MyUtils.BlocksOutsideBoundries(blocksOutsideBoundries);

@@ -57,20 +57,20 @@ namespace BlockEditor.Models
         {
             Level = GetDefaultLevel();
             Level.Title = string.Empty;
-            Blocks = MyConverters.ToBlocks(Level.Blocks, out BlocksOutsideBoundries);
+            Blocks = BlocksUtil.ToBlocks(Level.Blocks, out BlocksOutsideBoundries);
             BlockSize = DEFAULT_BLOCK_SIZE;
         }
 
         public Map(Level level)
         {
             Level = level ?? GetDefaultLevel();
-            Blocks = MyConverters.ToBlocks(Level.Blocks, out BlocksOutsideBoundries);
+            Blocks = BlocksUtil.ToBlocks(Level.Blocks, out BlocksOutsideBoundries);
         }
 
 
         public string ToPr2String(string username, string token, bool publish, bool overwrite, bool newest)
         {
-            Level.Blocks = MyConverters.ToPr2Blocks(Blocks);
+            Level.Blocks = BlocksUtil.ToPr2Blocks(Blocks);
             Level.Published = publish;
 
             if (username == null || token == null)

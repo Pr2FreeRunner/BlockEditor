@@ -4,6 +4,7 @@ using System.Windows.Input;
 
 namespace BlockEditor.Helpers
 {
+
     public class RelayCommand : ICommand
     {
         Action<object> _execute;
@@ -59,6 +60,4 @@ namespace BlockEditor.Helpers
         }
 
     }
-
-
 }

@@ -2,6 +2,7 @@
 
 namespace BlockEditor.Models
 {
+
     public class BlockLimitException : Exception
     {
         private const string BaseMsg = "Maximum block limit of 50k was hit!";
@@ -18,4 +19,5 @@ namespace BlockEditor.Models
         public OverwriteException() : base(BaseMsg) { }
 
     }
+
 }
