@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -23,13 +21,12 @@ namespace BlockEditor.ViewModels
         {
             get => Game.GameImage?.GetImage();
         }
-        public Game Game { get; }
         public bool IsOverwrite
         {
             get { return Game.Map?.Blocks.Overwrite ?? false; }
             set { Game.Map.Blocks.Overwrite = value; RaisePropertyChanged(); }
         }
-
+        public Game Game { get; }
         public MenuCommands Commands { get; }
 
 
