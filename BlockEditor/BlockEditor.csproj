@@ -18,6 +18,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ViewModels\1ztkiaxj.5kn~" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Dependencies\Multi-Tool\" />
     <Folder Include="Dependencies\TAS\" />
     <Folder Include="Resources\Blocks\" />
