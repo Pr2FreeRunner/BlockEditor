@@ -144,7 +144,8 @@ namespace BlockEditor.Views.Controls
 
                 if (e.Key == Key.Escape)
                 {
-                    ViewModel.CleanUserMode(true, true);
+                    if (ViewModel.DeselectCommand.CanExecute(null))
+                        ViewModel.DeselectCommand.Execute(null);
                 }
                 else if (ctrl && e.Key == Key.Z)
                 {
@@ -187,7 +188,7 @@ namespace BlockEditor.Views.Controls
                         ViewModel.Game.DeleteSelection(ViewModel.Game.UserSelection.MapRegion);
 
                     var del = e.Key == Key.Delete;
-                    ViewModel.CleanUserMode(del, del);
+                    ViewModel.Game.CleanUserMode(del, del);
                 }
                 else if (ctrl && e.Key == Key.V)
                 {

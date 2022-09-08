@@ -20,8 +20,6 @@ namespace BlockEditor.ViewModels
     public class MapViewModel : NotificationObject
     {
 
-        private MyPoint? _mousePosition;
-
         public BitmapImage MapContent
         {
             get => Game.GameImage?.GetImage();
@@ -219,7 +217,7 @@ namespace BlockEditor.ViewModels
 
         private void ReverseHorizontalArrows()
         {
-            CleanUserMode(true, false);
+            Game.CleanUserMode(true, false);
 
             using (new TempOverwrite(Game.Map.Blocks, true))
             using (new TempCursor(Cursors.Wait))
@@ -234,7 +232,7 @@ namespace BlockEditor.ViewModels
 
         private void ReverseVerticalArrows()
         {
-            CleanUserMode(true, false);
+            Game.CleanUserMode(true, false);
 
             using (new TempOverwrite(Game.Map.Blocks, true))
             using (new TempCursor(Cursors.Wait))
@@ -278,7 +276,7 @@ namespace BlockEditor.ViewModels
 
         private void Deselect()
         {
-            CleanUserMode(true, true);
+            Game.CleanUserMode(true, true);
         }
 
         private void Delete()
@@ -313,7 +311,7 @@ namespace BlockEditor.ViewModels
 
         private void Navigator(SimpleBlock block)
         {
-            CleanUserMode(false, true);
+            Game.CleanUserMode(false, true);
             int? id = null;
             Predicate<SimpleBlock> filter = null;
 
@@ -399,7 +397,7 @@ namespace BlockEditor.ViewModels
 
         private void EditorSettings()
         {
-            CleanUserMode(true, true);
+            Game.CleanUserMode(true, true);
 
             new SettingsWindow().ShowDialog();
 
@@ -443,7 +441,7 @@ namespace BlockEditor.ViewModels
 
         private void MoveRegion()
         {
-            CleanUserMode(true, false);
+            Game.CleanUserMode(true, false);
 
             var w = new EditArtWindow(Game.Map, Game.UserSelection.MapRegion, true);
 
@@ -461,7 +459,7 @@ namespace BlockEditor.ViewModels
 
         private void DeleteRegion()
         {
-            CleanUserMode(true, false);
+            Game.CleanUserMode(true, false);
 
             var w = new EditArtWindow(Game.Map, Game.UserSelection.MapRegion, false);
 
@@ -549,7 +547,7 @@ namespace BlockEditor.ViewModels
 
         private void AddShape()
         {
-            CleanUserMode(true, false);
+            Game.CleanUserMode(true, false);
 
             var selectedId = SelectBlockWindow.Show("Add Shape", false);
             var region = Game.UserSelection.MapRegion;
@@ -571,7 +569,7 @@ namespace BlockEditor.ViewModels
 
         private void AddImage(MyPoint? p = null)
         {
-            CleanUserMode(true, true);
+            Game.CleanUserMode(true, true);
 
             var w = new ImageToBlocksWindow(p);
             var r = w.ShowDialog();
@@ -619,7 +617,7 @@ namespace BlockEditor.ViewModels
 
         private void DeleteBlockType()
         {
-            CleanUserMode(true, false);
+            Game.CleanUserMode(true, false);
 
             var region = Game.UserSelection.MapRegion;
             var id1 = SelectBlockWindow.Show("Block Type to Remove:", false);
@@ -637,7 +635,7 @@ namespace BlockEditor.ViewModels
 
         private void DeleteBlockOption()
         {
-            CleanUserMode(true, false);
+            Game.CleanUserMode(true, false);
 
             var region = Game.UserSelection.MapRegion;
             var remove = new List<SimpleBlock>();
@@ -663,7 +661,7 @@ namespace BlockEditor.ViewModels
 
         private void Replace()
         {
-            CleanUserMode(true, false);
+            Game.CleanUserMode(true, false);
 
 
             using (new TempOverwrite(Game.Map.Blocks, true))
@@ -704,7 +702,7 @@ namespace BlockEditor.ViewModels
 
         private void BlockCount()
         {
-            CleanUserMode(true, true);
+            Game.CleanUserMode(true, true);
 
             var w = new BlockCountWindow(Game.Map);
             w.ShowDialog();
@@ -712,23 +710,10 @@ namespace BlockEditor.ViewModels
 
         private void MapInfo()
         {
-            CleanUserMode(true, true);
+            Game.CleanUserMode(true, true);
 
             var w = new MapInfoWindow(Game.Map, Game.Engine.RefreshGui);
             w.ShowDialog();
-        }
-
-        public void CleanUserMode(bool blockSelection, bool userSelection)
-        {
-            if (blockSelection)
-                BlockSelection.Reset();
-
-            if (userSelection)
-                Game.UserSelection.Reset();
-
-            Game.Mode.Value = UserModes.None;
-            Mouse.OverrideCursor = null;
-            Game.MeasureDistance.Reset();
         }
         
         #endregion
@@ -738,7 +723,7 @@ namespace BlockEditor.ViewModels
 
         public void OnFrameUpdate()
         {
-            new FrameUpdate(Game, _mousePosition);
+            new FrameUpdate(Game);
 
             RaisePropertyChanged(nameof(MapContent));
         }
@@ -789,7 +774,7 @@ namespace BlockEditor.ViewModels
                             break;
 
                         Game.DeleteSelection(Game.UserSelection.MapRegion);
-                        CleanUserMode(true, true);
+                        Game.CleanUserMode(true, true);
                     }
 
                     break;
@@ -882,8 +867,8 @@ namespace BlockEditor.ViewModels
 
         public void OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
-            _mousePosition = MyUtils.GetPosition(sender as IInputElement, e);
-            var index = Game.GetMapIndex(_mousePosition);
+            Game.MousePosition = MyUtils.GetPosition(sender as IInputElement, e);
+            var index = Game.GetMapIndex(Game.MousePosition);
 
             switch (Game.Mode.Value)
             {
@@ -982,7 +967,7 @@ namespace BlockEditor.ViewModels
 
             Game.UserOperations.Clear();
             (App.Current.MainWindow as MainWindow)?.TitleChanged(Game.Map.Level.Title);
-            CleanUserMode(true, true);
+            Game.CleanUserMode(true, true);
             Game.GoToStartPosition();
 
             MyUtils.BlocksOutsideBoundries(map.BlocksOutsideBoundries);

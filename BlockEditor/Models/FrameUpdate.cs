@@ -14,13 +14,13 @@ namespace BlockEditor.Models
         private Graphics _graphics;
         private Game _game;
 
-        public FrameUpdate(Game game, MyPoint? mousePosition)
+        public FrameUpdate(Game game)
         {
             if (game?.GameImage == null || game?.Map == null || game?.Camera == null)
                 return;
 
             _game = game;
-            _mousePosition = mousePosition;
+            _mousePosition = game.MousePosition;
             _userSelection = game.UserSelection;
             _graphics = CreateGraphics();
 

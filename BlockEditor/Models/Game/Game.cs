@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using static BlockEditor.Models.UserMode;
+using System.Windows.Input;
 
 namespace BlockEditor.Models
 {
@@ -30,6 +32,7 @@ namespace BlockEditor.Models
 
         public MeasureDistance MeasureDistance { get;  }
 
+        public MyPoint? MousePosition { get; set; }
 
 
         public Game()
@@ -193,6 +196,19 @@ namespace BlockEditor.Models
             var y = p.Value.Y * size - (GameImage.Height / 2);
 
             Camera.Position = new MyPoint(x, y);
+        }
+
+        public void CleanUserMode(bool blockSelection, bool userSelection)
+        {
+            if (blockSelection)
+                BlockSelection.Reset();
+
+            if (userSelection)
+                UserSelection.Reset();
+
+            Mode.Value = UserModes.None;
+            Mouse.OverrideCursor = null;
+            MeasureDistance.Reset();
         }
 
     }
