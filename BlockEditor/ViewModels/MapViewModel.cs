@@ -31,7 +31,6 @@ namespace BlockEditor.ViewModels
             set { Game.Map.Blocks.Overwrite = value; RaisePropertyChanged(); }
         }
 
-
         public RelayCommand NavigatorCommand { get; }
         public RelayCommand FillCommand { get; }
         public RelayCommand SelectCommand { get; }
