@@ -119,8 +119,8 @@ namespace BlockEditor.ViewModels
                     {
                         Game.Mode.Value = UserModes.None;
 
-                        if(Commands.NavigateCommand.CanExecute(null))
-                            Commands.NavigateCommand.Execute(Game.Map.Blocks.GetBlock(index));
+                        if(Commands.NavigateToPointCommand.CanExecute(null))
+                            Commands.NavigateToPointCommand.Execute(Game.Map.Blocks.GetBlock(index));
                     }
                     break;
 

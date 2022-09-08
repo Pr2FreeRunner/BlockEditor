@@ -14,7 +14,6 @@ namespace BlockEditor.Models
         public RelayCommand InfoCommand { get; }
         public RelayCommand AdvancedCommand { get; }
         public RelayCommand ReverseArrowsCommand { get; }
-
         public RelayCommand SelectCommand { get; }
         public RelayCommand NavigateCommand { get; }
         public RelayCommand NavigateToPointCommand { get; }
