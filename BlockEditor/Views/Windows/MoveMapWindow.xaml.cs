@@ -211,8 +211,12 @@ namespace BlockEditor.Views.Windows
 
         private void MoveArt(MyRegion region)
         {
+            var x = (int)(_moveX * 30);
+            var y = (int)(_moveY * 30);
+
             CreateAbsolutePosition(_map.Level.TextArt0);
             CreateAbsolutePosition(_map.Level.TextArt1);
+
 
             var textArt0 = _map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
             var textArt1 = _map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
@@ -221,14 +225,14 @@ namespace BlockEditor.Views.Windows
             var drawArt1 = _map.Level.DrawArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
 
             if (cbTextArt0.IsChecked == true)
-                MoveAbsoluteArt(textArt0);
+                MapUtil.MoveAbsoluteArt(textArt0, x, y);
             if (cbTextArt1.IsChecked == true)
-                MoveAbsoluteArt(textArt1);
+                MapUtil.MoveAbsoluteArt(textArt1, x, y);
 
             if (cbDrawArt0.IsChecked == true)
-                MoveAbsoluteArt(drawArt0);
+                MapUtil.MoveAbsoluteArt(drawArt0, x, y);
             if (cbDrawArt1.IsChecked == true)
-                MoveAbsoluteArt(drawArt1);
+                MapUtil.MoveAbsoluteArt(drawArt1, x, y);
 
             CreateRelativePosition(_map.Level.TextArt0);
             CreateRelativePosition(_map.Level.TextArt1);
@@ -236,39 +240,18 @@ namespace BlockEditor.Views.Windows
 
         private void MoveArt()
         {
+            var x = (int)(_moveX * 30);
+            var y = (int)(_moveY * 30);
+
             if (cbTextArt0.IsChecked == true)
-                MoveRelativeArt(_map.Level.TextArt0);
+                MapUtil.MoveRelativeArt(_map.Level.TextArt0, x, y);
             if (cbTextArt1.IsChecked == true)
-                MoveRelativeArt(_map.Level.TextArt1);
+                MapUtil.MoveRelativeArt(_map.Level.TextArt1, x, y);
 
             if (cbDrawArt0.IsChecked == true)
-                MoveAbsoluteArt(_map.Level.DrawArt0);
+                MapUtil.MoveAbsoluteArt(_map.Level.DrawArt0, x, y);
             if (cbDrawArt1.IsChecked == true)
-                MoveAbsoluteArt(_map.Level.DrawArt1);
-        }
-
-        private void MoveRelativeArt(IEnumerable<Art> art)
-        {
-            if (art == null)
-                return;
-
-            if (art.Count() > 0)
-            {
-                art.First().X += (int)(_moveX * 30);
-                art.First().Y += (int)(_moveY * 30);
-            }
-        }
-
-        private void MoveAbsoluteArt(IEnumerable<Art> art)
-        {
-            if (art == null)
-                return;
-
-            foreach (Art a in art)
-            {
-                a.X += (int)(_moveX * 30); ;
-                a.Y += (int)(_moveY * 30);
-            }
+                MapUtil.MoveAbsoluteArt(_map.Level.DrawArt1, x, y);
         }
 
         private void MoveBlocks(MyRegion region = null)

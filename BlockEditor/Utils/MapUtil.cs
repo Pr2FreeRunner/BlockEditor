@@ -364,5 +364,30 @@ namespace BlockEditor.Helpers
             return result;
         }
 
+        public static void MoveRelativeArt(IEnumerable<Art> art, int x, int y)
+        {
+            if (art == null)
+                return;
+
+            if (art.Count() > 0)
+            {
+                art.First().X += x;
+                art.First().Y += y;
+            }
+        }
+
+        public static void MoveAbsoluteArt(IEnumerable<Art> art, int x, int y)
+        {
+            if (art == null)
+                return;
+
+            foreach (Art a in art)
+            {
+                a.X += x;
+                a.Y += y;
+            }
+        }
+
+
     }
 }
