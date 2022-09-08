@@ -188,8 +188,7 @@ namespace BlockEditor.Views.Controls
                     if (e.Key == Key.X || e.Key == Key.Delete)
                         ViewModel.Game.DeleteSelection(ViewModel.Game.UserSelection.MapRegion);
 
-                    var del = e.Key == Key.Delete;
-                    ViewModel.Game.CleanUserMode(del, del);
+                    ViewModel.Game.CleanUserMode(e.Key == Key.Delete, true);
                 }
                 else if (ctrl && e.Key == Key.V)
                 {
