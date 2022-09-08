@@ -15,8 +15,8 @@ namespace BlockEditor.Models
         public RelayCommand AdvancedCommand { get; }
         public RelayCommand ReverseArrowsCommand { get; }
         public RelayCommand SelectCommand { get; }
+        public RelayCommand NavigatorCommand { get; }
         public RelayCommand NavigateCommand { get; }
-        public RelayCommand NavigateToPointCommand { get; }
         public RelayCommand DeselectCommand { get; }
 
 
@@ -34,8 +34,8 @@ namespace BlockEditor.Models
             _game = game;
 
             SelectCommand = _tools.SelectCommand;
-            NavigateCommand = _tools.NavigatorCommand;
-            NavigateToPointCommand = _tools.NavigateToPointCommand;
+            NavigatorCommand = _tools.NavigatorCommand;
+            NavigateCommand = _tools.NavigateCommand;
             DeselectCommand = _tools.DeselectCommand;
 
             BuildCommand = MenuCommand(BuildMenu);

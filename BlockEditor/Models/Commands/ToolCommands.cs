@@ -16,7 +16,7 @@ namespace BlockEditor.Models
     {
 
         public RelayCommand NavigatorCommand { get; }
-        public RelayCommand NavigateToPointCommand { get; }
+        public RelayCommand NavigateCommand { get; }
         public RelayCommand FillCommand { get; }
         public RelayCommand SelectCommand { get; }
         public RelayCommand AddShapeCommand { get; }
@@ -63,7 +63,7 @@ namespace BlockEditor.Models
             DeleteCommand = new RelayCommand((_) => Delete(game));
             DeselectCommand = new RelayCommand((_) => Deselect(game), (_) => DeselectCanExecute(game));
             NavigatorCommand = new RelayCommand((_) => Navigator(game, SimpleBlock.None));
-            NavigateToPointCommand = new RelayCommand((p) => Navigator(game, p));
+            NavigateCommand = new RelayCommand((p) => Navigator(game, p));
             DeleteBlockOptionCommand = new RelayCommand((_) => DeleteBlockOption(game));
             ReverseHorizontalArrowsCommand = new RelayCommand((_) => ReverseHorizontalArrows(game));
             ReverseVerticalArrowsCommand = new RelayCommand((_) => ReverseVerticalArrows(game));

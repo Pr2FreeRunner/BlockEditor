@@ -217,8 +217,8 @@ namespace BlockEditor.Views.Controls
                 }
                 else if (ctrl && e.Key == Key.N)
                 {
-                    if (ViewModel.Commands.NavigateCommand.CanExecute(null))
-                        ViewModel.Commands.NavigateCommand.Execute(null);
+                    if (ViewModel.Commands.NavigatorCommand.CanExecute(null))
+                        ViewModel.Commands.NavigatorCommand.Execute(null);
                 }
                 else if (ctrl && e.Key == Key.Q)
                 {
