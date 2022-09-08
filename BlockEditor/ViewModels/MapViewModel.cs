@@ -24,9 +24,7 @@ namespace BlockEditor.ViewModels
         {
             get => Game.GameImage?.GetImage();
         }
-
         public Game Game { get; }
-
         public bool IsOverwrite
         {
             get { return Game.Map?.Blocks.Overwrite ?? false; }
