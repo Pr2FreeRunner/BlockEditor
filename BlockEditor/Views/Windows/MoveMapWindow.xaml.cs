@@ -265,7 +265,7 @@ namespace BlockEditor.Views.Windows
             if (_moveY == null)
                 return;
 
-            foreach(var b in MapUtil.GetBlocks(_map, region))
+            foreach(var b in BlocksUtil.GetBlocks(_map?.Blocks, region))
             {
                 if(b.IsEmpty())
                     continue;
@@ -283,7 +283,7 @@ namespace BlockEditor.Views.Windows
             if (cbBlocks.IsChecked != true)
                 return;
 
-            foreach (var b in MapUtil.GetBlocks(_map, region))
+            foreach (var b in BlocksUtil.GetBlocks(_map?.Blocks, region))
             {
                 if (b.IsEmpty())
                     continue;

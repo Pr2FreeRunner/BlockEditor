@@ -79,7 +79,7 @@ namespace BlockEditor.Models
             {
                 var remove = new List<int> { Block.ARROW_LEFT, Block.ARROW_RIGHT };
                 var add = new List<int> { Block.ARROW_RIGHT, Block.ARROW_LEFT };
-                var blocks = MapUtil.ReplaceBlock(game.Map, remove, add, game.UserSelection.MapRegion);
+                var blocks = BlocksUtil.ReplaceBlock(game.Map?.Blocks, remove, add, game.UserSelection.MapRegion);
 
                 game.AddBlocks(blocks);
             }
@@ -94,7 +94,7 @@ namespace BlockEditor.Models
             {
                 var remove = new List<int> { Block.ARROW_UP, Block.ARROW_DOWN };
                 var add = new List<int> { Block.ARROW_DOWN, Block.ARROW_UP };
-                var blocks = MapUtil.ReplaceBlock(game.Map, remove, add, game.UserSelection.MapRegion);
+                var blocks = BlocksUtil.ReplaceBlock(game.Map?.Blocks, remove, add, game.UserSelection.MapRegion);
 
                 game.AddBlocks(blocks);
             }
@@ -490,7 +490,7 @@ namespace BlockEditor.Models
 
             using (new TempCursor(Cursors.Wait))
             {
-                var blocks = MapUtil.RemoveBlocks(game.Map, new List<int>() { id1.Value }, region);
+                var blocks = BlocksUtil.RemoveBlocks(game.Map?.Blocks, new List<int>() { id1.Value }, region);
 
                 game.RemoveBlocks(blocks);
             }
@@ -506,7 +506,7 @@ namespace BlockEditor.Models
 
             using (new TempCursor(Cursors.Wait))
             {
-                foreach (var oldBlock in MapUtil.GetBlocks(game.Map, region))
+                foreach (var oldBlock in BlocksUtil.GetBlocks(game.Map?.Blocks, region))
                 {
                     if (oldBlock.IsEmpty())
                         continue;
@@ -541,7 +541,7 @@ namespace BlockEditor.Models
 
                 using (new TempCursor(Cursors.Wait))
                 {
-                    var blocks = MapUtil.ReplaceBlock(game.Map, new List<int>() { id1.Value }, new List<int>() { id2.Value }, region);
+                    var blocks = BlocksUtil.ReplaceBlock(game.Map?.Blocks, new List<int>() { id1.Value }, new List<int>() { id2.Value }, region);
 
                     game.AddBlocks(blocks);
                 }

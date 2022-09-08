@@ -23,7 +23,7 @@ namespace BlockEditor.Views.Controls
             this.DataContext = ViewModel = new MapViewModel();
 
             MapButtons.ViewModel.OnLoadMap += ViewModel.OnLoadMap;
-            MapButtons.ViewModel.OnSaveMap += () => MapUtil.Save(ViewModel.Game.Map);
+            MapButtons.ViewModel.OnSaveMap += () => SaveMapUtil.Save(ViewModel.Game.Map);
             MapButtons.ViewModel.OnTestMap += () => MapUtil.TestInTasTool(ViewModel.Game.Map);
             ZoomControl.ViewModel.OnZoomChanged += (zoom) => ViewModel.OnZoomChanged(zoom);
             this.Loaded += windowLoaded;

@@ -24,10 +24,26 @@
             <Button Grid.Row="0" Style="{StaticResource CloseBtn}" Click="CloseButton_Click" HorizontalAlignment="Right" VerticalAlignment="Top"/>
             <TextBlock Grid.Row="0" FontSize="16" FontWeight="Bold" Text="Block Count Info" HorizontalAlignment="Center" Margin="0,3,0,0"/>
 
-            <StackPanel Margin="0,17,0,12" Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
-                <TextBlock Grid.Row="2" Grid.Column="0" FontFamily="Courier New" Margin="0,5,0,0" FontWeight="SemiBold" FontSize="{StaticResource DefaultFontSize}" Text="Block Count: "/>
-                <TextBlock Grid.Row="2" Grid.Column="1" FontFamily="Courier New" Margin="0,5,0,0" x:Name="tbTotal" FontWeight="Normal" FontSize="{StaticResource DefaultFontSize}" Text="100"/>
-            </StackPanel>
+            <Grid Margin="0,17,0,12" Grid.Row="1" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Row="0" Grid.Column="0" FontFamily="Courier New" Margin="0,5,0,0" FontWeight="SemiBold" FontSize="{StaticResource DefaultFontSize}" Text="Block Count: "/>
+                <TextBlock Grid.Row="0" Grid.Column="1" FontFamily="Courier New" Margin="0,5,0,0" x:Name="tbTotal" FontWeight="Normal" FontSize="{StaticResource DefaultFontSize}" Text="100"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" FontFamily="Courier New" Margin="0,5,0,0" FontWeight="SemiBold" FontSize="{StaticResource DefaultFontSize}" Text="Map Width: "/>
+                <TextBlock Grid.Row="1" Grid.Column="1" FontFamily="Courier New" Margin="0,5,0,0" x:Name="tbWidth" FontWeight="Normal" FontSize="{StaticResource DefaultFontSize}" Text="100"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" FontFamily="Courier New" Margin="0,5,0,0" FontWeight="SemiBold" FontSize="{StaticResource DefaultFontSize}" Text="Map Height: "/>
+                <TextBlock Grid.Row="2" Grid.Column="1" FontFamily="Courier New" Margin="0,5,0,0" x:Name="tbHeight" FontWeight="Normal" FontSize="{StaticResource DefaultFontSize}" Text="100"/>
+            </Grid>
 
             <TextBlock Grid.Row="2"
                        HorizontalAlignment="Center"

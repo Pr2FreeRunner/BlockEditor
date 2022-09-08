@@ -1,6 +1,5 @@
-﻿using BlockEditor.Models;
-using BlockEditor.Utils;
-using LevelModel.Models;
+﻿using BlockEditor.Helpers;
+using BlockEditor.Models;
 using LevelModel.Models.Components;
 using System;
 using System.Collections.Generic;
@@ -22,12 +21,22 @@ namespace BlockEditor.Views.Windows
             if(map == null)
                 throw new ArgumentException("map");
 
-            OpenWindows.Add(this);
-
-            tbTotal.Text = map.Blocks.BlockCount.ToString(CultureInfo.InvariantCulture);
 
             using (new TempCursor(Cursors.Wait))
-                SetSpecificBlockCount(map);
+                Init(map);
+
+            OpenWindows.Add(this);
+        }
+
+        private void Init(Map map)
+        {
+            var dim = BlocksUtil.GetDimensions(map?.Blocks);
+
+            tbTotal.Text  = map.Blocks.BlockCount.ToString(CultureInfo.InvariantCulture);
+            tbWidth.Text  = dim.Item1.ToString(CultureInfo.InvariantCulture);
+            tbHeight.Text = dim.Item2.ToString(CultureInfo.InvariantCulture);
+
+            SetSpecificBlockCount(map);
         }
 
         private void SetSpecificBlockCount(Map map)

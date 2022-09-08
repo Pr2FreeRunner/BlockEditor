@@ -31,6 +31,7 @@ namespace BlockEditor.ViewModels
         public MenuCommands Commands { get; }
 
 
+
         public MapViewModel()
         {
             Game = new Game();
@@ -40,7 +41,6 @@ namespace BlockEditor.ViewModels
         }
 
 
-        #region Events
 
         public void OnFrameUpdate()
         {
@@ -155,7 +155,7 @@ namespace BlockEditor.ViewModels
                             throw new OverwriteException();
 
                         var region = Game.UserSelection.HasSelectedRegion ? Game.UserSelection.MapRegion : null;
-                        Game.AddBlocks(MapUtil.GetFloodFill(Game.Map, index, selectedId.Value, region));
+                        Game.AddBlocks(BlocksUtil.GetFloodFill(Game.Map?.Blocks, index, selectedId.Value, region));
                     }
                     break;
 
@@ -317,6 +317,5 @@ namespace BlockEditor.ViewModels
             Game.Camera.Position = new MyPoint(x, y);
         }
 
-        #endregion
     }
 }
