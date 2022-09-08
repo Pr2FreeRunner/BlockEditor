@@ -20,9 +20,9 @@ namespace BlockEditor.Models
         public RelayCommand DeselectCommand { get; }
 
 
-
         private readonly ToolCommands _tools;
         private readonly Game _game;
+
 
 
         public MenuCommands(Game game)
@@ -46,6 +46,7 @@ namespace BlockEditor.Models
             InfoCommand = MenuCommand(InfoMenu);
             ReverseArrowsCommand = MenuCommand(ReverseArrowsMenu);
         }
+
 
 
         public RelayCommand MenuCommand(Action menu)
@@ -140,5 +141,6 @@ namespace BlockEditor.Models
             w.ShowDialog();
             w.Execute();
         }
+
     }
 }
