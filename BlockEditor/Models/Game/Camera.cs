@@ -1,5 +1,4 @@
-﻿using BlockEditor.Models;
-using BlockEditor.Utils;
+﻿using BlockEditor.Utils;
 using System.Windows.Input;
 using static BlockEditor.Models.BlockImages;
 
@@ -15,7 +14,7 @@ namespace BlockEditor.Models
         public MyPoint Position
         {
             get { return _position; }
-            set { lock (_lock)  { _position = value; } }
+            set { lock (_lock) { _position = value; } }
         }
 
         public MyPoint ScreenSize { get; internal set; }
@@ -38,21 +37,21 @@ namespace BlockEditor.Models
 
         public void Move(BlockSize size)
         {
-            var currentX  = Position.X;
-            var currentY  = Position.Y;
+            var currentX = Position.X;
+            var currentY = Position.Y;
             var blockSize = size.GetPixelSize();
             var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 
-            if (Keyboard.IsKeyDown(Key.Up) || (!ctrl && Keyboard.IsKeyDown(Key.W)))
+            if (Keyboard.IsKeyDown(Key.Up) || !ctrl && Keyboard.IsKeyDown(Key.W))
                 currentY -= MOVE_STRENGTH;
 
-            if (Keyboard.IsKeyDown(Key.Down) || (!ctrl && Keyboard.IsKeyDown(Key.S)))
+            if (Keyboard.IsKeyDown(Key.Down) || !ctrl && Keyboard.IsKeyDown(Key.S))
                 currentY += MOVE_STRENGTH;
 
-            if (Keyboard.IsKeyDown(Key.Right) || (!ctrl && Keyboard.IsKeyDown(Key.D)))
+            if (Keyboard.IsKeyDown(Key.Right) || !ctrl && Keyboard.IsKeyDown(Key.D))
                 currentX += MOVE_STRENGTH;
 
-            if (Keyboard.IsKeyDown(Key.Left) || (!ctrl && Keyboard.IsKeyDown(Key.A)))
+            if (Keyboard.IsKeyDown(Key.Left) || !ctrl && Keyboard.IsKeyDown(Key.A))
                 currentX -= MOVE_STRENGTH;
 
             if (currentX < 0)
@@ -61,7 +60,7 @@ namespace BlockEditor.Models
             if (currentY < 0)
                 currentY = 0;
 
-            var maxWidth  = Blocks.SIZE * blockSize - ScreenSize.X;
+            var maxWidth = Blocks.SIZE * blockSize - ScreenSize.X;
             var maxHeight = Blocks.SIZE * blockSize - ScreenSize.Y;
 
             if (currentX > maxWidth)

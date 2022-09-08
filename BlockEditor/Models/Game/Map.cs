@@ -4,9 +4,8 @@ using Converters;
 using Converters.DataStructures.DTO;
 using LevelModel.Models;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
+
 using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Models
@@ -24,8 +23,8 @@ namespace BlockEditor.Models
         {
             get
             {
-                try 
-                { 
+                try
+                {
                     if (Level.BackgroundColor != null)
                         return ColorTranslator.FromHtml("#" + Level.BackgroundColor);
                     else
@@ -38,7 +37,7 @@ namespace BlockEditor.Models
             }
         }
 
-        public int BlockPixelSize; 
+        public int BlockPixelSize;
         private BlockSize _blockSize;
         public BlockSize BlockSize
         {
@@ -56,10 +55,10 @@ namespace BlockEditor.Models
 
         public Map()
         {
-            Level  = GetDefaultLevel();
+            Level = GetDefaultLevel();
             Level.Title = string.Empty;
-            Blocks    = MyConverters.ToBlocks(Level.Blocks, out BlocksOutsideBoundries);
-            BlockSize = BlockImages.DEFAULT_BLOCK_SIZE;
+            Blocks = MyConverters.ToBlocks(Level.Blocks, out BlocksOutsideBoundries);
+            BlockSize = DEFAULT_BLOCK_SIZE;
         }
 
         public Map(Level level)
@@ -92,7 +91,7 @@ namespace BlockEditor.Models
         private Level GetDefaultLevel()
         {
             var data = "version=1&credits=&cowboyChance=0&title=Default&time=1658836801&note=&min_level=0&song=&gravity=1.0&max_time=0&has_pass=0&live=1"
-                     +"&items=1&gameMode=race&badHats=&data=m4`0`444;335;111,1;0;112,1;0;113,1;0;114```````-1````4fde8f5661b3bc371330feb1b59eeb33";
+                     + "&items=1&gameMode=race&badHats=&data=m4`0`444;335;111,1;0;112,1;0;113,1;0;114```````-1````4fde8f5661b3bc371330feb1b59eeb33";
 
             var levelInfo = Parsers.PR2Parser.Level(data);
 
@@ -101,8 +100,8 @@ namespace BlockEditor.Models
 
         public MyPoint GetMapIndex(MyPoint p)
         {
-            var x = (int)(p.X / BlockPixelSize);
-            var y = (int)(p.Y / BlockPixelSize);
+            var x = p.X / BlockPixelSize;
+            var y = p.Y / BlockPixelSize;
 
             return new MyPoint(x, y);
         }

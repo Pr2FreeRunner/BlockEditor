@@ -37,7 +37,7 @@ namespace BlockEditor.Models
             }
         }
 
-     
+
         public bool IsSelectionMode => Value == UserModes.Selection;
         public bool IsBuildMode => Value == UserModes.Fill;
         public bool IsTransformMode => false;

@@ -43,7 +43,7 @@ namespace BlockEditor.Models
         private Graphics CreateGraphics()
         {
             var bmp = _game.GameImage?.GetBitmap();
-            var ex  = new Exception("Failed to generate graphics for the game");
+            var ex = new Exception("Failed to generate graphics for the game");
 
             if (bmp == null)
                 throw ex;
@@ -53,7 +53,7 @@ namespace BlockEditor.Models
 
         private void DrawGrids()
         {
-            var width  = _game.GameImage.Width;
+            var width = _game.GameImage.Width;
             var height = _game.GameImage.Height;
             var startX = _game.Camera.Position.X / _game.Map.BlockPixelSize / 30;
             var startY = _game.Camera.Position.X / _game.Map.BlockPixelSize / 30;
@@ -70,13 +70,13 @@ namespace BlockEditor.Models
 
         private void DrawBlocks()
         {
-            var width  = _game.GameImage.Width;
+            var width = _game.GameImage.Width;
             var height = _game.GameImage.Height;
 
             var minBlockX = _game.Camera.Position.X / _game.Map.BlockPixelSize;
             var minBlockY = _game.Camera.Position.Y / _game.Map.BlockPixelSize;
 
-            var blockCountX = width  / _game.Map.BlockPixelSize;
+            var blockCountX = width / _game.Map.BlockPixelSize;
             var blockCountY = height / _game.Map.BlockPixelSize;
 
             for (int y = minBlockY; y < minBlockY + blockCountY; y++)
@@ -85,7 +85,7 @@ namespace BlockEditor.Models
                 {
                     var block = _game.Map.Blocks.GetBlock(x, y, false);
 
-                    if(block.IsEmpty())
+                    if (block.IsEmpty())
                         continue;
 
                     DrawBlock(block, false);
@@ -103,23 +103,23 @@ namespace BlockEditor.Models
 
         private void DrawBlock(SimpleBlock b, bool semiTrans)
         {
-            if(b.IsEmpty())
+            if (b.IsEmpty())
                 return;
 
             BlockImage image = null;
 
-            if(b.ID == Block.TELEPORT)
+            if (b.ID == Block.TELEPORT)
                 image = BlockImages.GetTeleportImageBlock(_game.Map.BlockSize, b.Options);
             else
                 image = BlockImages.GetImageBlock(_game.Map.BlockSize, b.ID);
-            
+
             if (image == null)
                 return;
 
             var posX = b.Position.Value.X * _game.Map.BlockPixelSize - _game.Camera.Position.X;
             var posY = b.Position.Value.Y * _game.Map.BlockPixelSize - _game.Camera.Position.Y;
 
-            if(semiTrans)
+            if (semiTrans)
                 _game.GameImage.DrawTransperentImage(_graphics, image.SemiTransparentBitmap, posX, posY);
             else
                 _game.GameImage.DrawImage(ref image.Bitmap, posX, posY);
@@ -127,7 +127,7 @@ namespace BlockEditor.Models
 
         private void DrawSelectedBlock()
         {
-            if(_userSelection == null)
+            if (_userSelection == null)
                 return;
 
             if (_mousePosition == null)
@@ -140,8 +140,8 @@ namespace BlockEditor.Models
             if (block == null)
                 return;
 
-            var positionX = (int) (_mousePosition.Value.X - _game.Map.BlockPixelSize / 2.0);
-            var positionY = (int) (_mousePosition.Value.Y - _game.Map.BlockPixelSize / 2.0);
+            var positionX = (int)(_mousePosition.Value.X - _game.Map.BlockPixelSize / 2.0);
+            var positionY = (int)(_mousePosition.Value.Y - _game.Map.BlockPixelSize / 2.0);
 
             _game.GameImage.DrawTransperentImage(_graphics, block, positionX, positionY);
         }
@@ -162,7 +162,7 @@ namespace BlockEditor.Models
             var arrayX = (int)(_mousePosition.Value.X + _game.Map.BlockPixelSize / 2.0);
             var arrayY = (int)(_mousePosition.Value.Y + _game.Map.BlockPixelSize / 2.0);
 
-            var width  = blocks.GetLength(0);
+            var width = blocks.GetLength(0);
             var height = blocks.GetLength(1);
 
             for (int x = 0; x < width; x++)
@@ -176,22 +176,22 @@ namespace BlockEditor.Models
                     if (block == null)
                         continue;
 
-                    var blockX = arrayX - width  * _game.Map.BlockPixelSize + x * _game.Map.BlockPixelSize;
+                    var blockX = arrayX - width * _game.Map.BlockPixelSize + x * _game.Map.BlockPixelSize;
                     var blockY = arrayY - height * _game.Map.BlockPixelSize + y * _game.Map.BlockPixelSize;
 
                     _game.GameImage.DrawTransperentImage(_graphics, block, blockX, blockY);
                 }
             }
-           
+
         }
 
         private void DrawSelectedRectangle()
         {
-            if(_userSelection == null)
+            if (_userSelection == null)
                 return;
 
             var start = _userSelection.ImageRegion?.Start;
-            var end   = _userSelection.ImageRegion?.End ?? _mousePosition;
+            var end = _userSelection.ImageRegion?.End ?? _mousePosition;
 
             if (start == null || end == null)
                 return;
@@ -214,7 +214,7 @@ namespace BlockEditor.Models
                 return;
 
             var start = _game.MeasureDistance.ImagePoint1;
-            var end   = _game.MeasureDistance.ImagePoint2 ?? _mousePosition;
+            var end = _game.MeasureDistance.ImagePoint2 ?? _mousePosition;
 
             if (start == null || end == null)
                 return;

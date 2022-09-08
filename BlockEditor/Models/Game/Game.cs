@@ -4,14 +4,14 @@ using BlockEditor.ViewModels;
 using LevelModel.Models.Components;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using static BlockEditor.Models.UserMode;
+
 using System.Windows.Input;
 
 namespace BlockEditor.Models
 {
-   public class Game
+    public class Game
     {
 
         public GameImage GameImage { get; set; }

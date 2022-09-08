@@ -5,9 +5,10 @@ using System.Windows.Controls;
 using BlockEditor.Helpers;
 using BlockEditor.ViewModels;
 using BlockEditor.Models;
+using BlockEditor.Views.Windows;
+
 using static BlockEditor.Models.UserMode;
 using static BlockEditor.Models.BlockImages;
-using BlockEditor.Views.Windows;
 
 namespace BlockEditor.Views.Controls
 {
@@ -144,8 +145,8 @@ namespace BlockEditor.Views.Controls
 
                 if (e.Key == Key.Escape)
                 {
-                    if (ViewModel.DeselectCommand.CanExecute(null))
-                        ViewModel.DeselectCommand.Execute(null);
+                    if (ViewModel.Commands.DeselectCommand.CanExecute(null))
+                        ViewModel.Commands.DeselectCommand.Execute(null);
                 }
                 else if (ctrl && e.Key == Key.Z)
                 {
@@ -196,38 +197,38 @@ namespace BlockEditor.Views.Controls
                 }        
                 else if (ctrl && e.Key == Key.I)
                 {
-                    if (ViewModel.InfoMenuCommand.CanExecute(null))
-                        ViewModel.InfoMenuCommand.Execute(null);
+                    if (ViewModel.Commands.InfoCommand.CanExecute(null))
+                        ViewModel.Commands.InfoCommand.Execute(null);
                 }
                 else if (ctrl && e.Key == Key.T)
                 {
-                    if (ViewModel.TransformMenuCommand.CanExecute(null))
-                        ViewModel.TransformMenuCommand.Execute(null);
+                    if (ViewModel.Commands.TransformCommand.CanExecute(null))
+                        ViewModel.Commands.TransformCommand.Execute(null);
                 }
                 else if (ctrl && e.Key == Key.D)
                 {
-                    if (ViewModel.DeleteMenuCommand.CanExecute(null))
-                        ViewModel.DeleteMenuCommand.Execute(null);
+                    if (ViewModel.Commands.DeleteCommand.CanExecute(null))
+                        ViewModel.Commands.DeleteCommand.Execute(null);
                 }
                 else if (ctrl && e.Key == Key.E)
                 {
-                    if (ViewModel.EditMenuCommand.CanExecute(null))
-                        ViewModel.EditMenuCommand.Execute(null);
+                    if (ViewModel.Commands.EditCommand.CanExecute(null))
+                        ViewModel.Commands.EditCommand.Execute(null);
                 }
                 else if (ctrl && e.Key == Key.N)
                 {
-                    if (ViewModel.NavigatorCommand.CanExecute(null))
-                        ViewModel.NavigatorCommand.Execute(null);
+                    if (ViewModel.Commands.NavigateCommand.CanExecute(null))
+                        ViewModel.Commands.NavigateCommand.Execute(null);
                 }
                 else if (ctrl && e.Key == Key.Q)
                 {
-                    if (ViewModel.AdvancedMenuCommand.CanExecute(null))
-                        ViewModel.AdvancedMenuCommand.Execute(null);
+                    if (ViewModel.Commands.AdvancedCommand.CanExecute(null))
+                        ViewModel.Commands.AdvancedCommand.Execute(null);
                 }
                 else if (ctrl && e.Key == Key.B)
                 {
-                    if (ViewModel.BuildMenuCommand.CanExecute(null))
-                        ViewModel.BuildMenuCommand.Execute(null);
+                    if (ViewModel.Commands.BuildCommand.CanExecute(null))
+                        ViewModel.Commands.BuildCommand.Execute(null);
                 }
                 else if (ctrl && e.Key == Key.O)
                 {
@@ -235,8 +236,8 @@ namespace BlockEditor.Views.Controls
                 }
                 else if (e.Key == Key.LeftShift || e.Key == Key.RightShift)
                 {
-                    if (ViewModel.SelectCommand.CanExecute(null))
-                        ViewModel.SelectCommand.Execute(null);
+                    if (ViewModel.Commands.SelectCommand.CanExecute(null))
+                        ViewModel.Commands.SelectCommand.Execute(null);
                 }
             }
             catch (Exception ex)
