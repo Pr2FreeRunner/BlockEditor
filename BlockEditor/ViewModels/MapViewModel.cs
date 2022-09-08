@@ -26,6 +26,7 @@ namespace BlockEditor.ViewModels
             get { return Game.Map?.Blocks.Overwrite ?? false; }
             set { Game.Map.Blocks.Overwrite = value; RaisePropertyChanged(); }
         }
+
         public Game Game { get; }
         public MenuCommands Commands { get; }
 
