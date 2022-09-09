@@ -75,7 +75,7 @@
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="20,45,20,20">
-                        <Button Style="{StaticResource WhiteBtn}" Width="100" Height="25" Content="Get Position" Margin="5" Click="btnPosition_Click" />
+                        <Button Style="{StaticResource WhiteBtn}" FontWeight="SemiBold" Width="120" Height="25" Content="Get Position" Margin="5" Click="btnPosition_Click" />
                     </StackPanel>
 
                 </Grid>
@@ -84,8 +84,8 @@
             </StackPanel>
 
             <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="20,15,20,5" HorizontalAlignment="Right">
-                <Button Style="{StaticResource WhiteBtn}" Width="100" Height="25" Content="OK" x:Name="btnOk" IsDefault="True" Margin="5" Click="btnOk_Click" />
-                <Button Style="{StaticResource WhiteBtn}" Width="100" Height="25" Content="Cancel" IsCancel="True" Margin="5" Name="btnCancel" Click="btnCancel_Click" />
+                <Button Style="{StaticResource WhiteBtn}" Width="120" Height="25" FontWeight="SemiBold" Content="OK" x:Name="btnOk" IsDefault="True" Margin="5" Click="btnOk_Click" />
+                <Button Style="{StaticResource WhiteBtn}" Width="120" Height="25" FontWeight="SemiBold" Content="Cancel" IsCancel="True" Margin="5" Name="btnCancel" Click="btnCancel_Click" />
             </StackPanel>
         </Grid>
 
