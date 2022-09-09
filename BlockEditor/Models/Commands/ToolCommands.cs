@@ -36,10 +36,10 @@ namespace BlockEditor.Models
         public RelayCommand DeleteRegionCommand { get; }
         public RelayCommand DeleteBlockOptionCommand { get; }
         public RelayCommand ReverseHorizontalArrowsCommand { get; }
+        public RelayCommand ReverseVerticalArrowsCommand { get; }
         public RelayCommand DistanceCommand { get; }
         public RelayCommand DeleteCommand { get; }
         public RelayCommand DeselectCommand { get; }
-        public RelayCommand ReverseTrapsCommand { get; }
 
 
         public ToolCommands(Game game)
@@ -68,7 +68,7 @@ namespace BlockEditor.Models
             DeleteBlockOptionCommand = new RelayCommand((_) => DeleteBlockOption(game));
             ReverseHorizontalArrowsCommand = new RelayCommand((_) => ReverseHorizontalArrows(game));
             ReplaceArtColorCommand = new RelayCommand((_) => ReplaceArtColor(game));
-            ReverseTrapsCommand = new RelayCommand((_) => ReverseTraps(game));
+            ReverseVerticalArrowsCommand = new RelayCommand((_) => ReverseVerticalArrows(game));
         }
 
 
@@ -81,6 +81,21 @@ namespace BlockEditor.Models
             {
                 var remove = new List<int> { Block.ARROW_LEFT, Block.ARROW_RIGHT };
                 var add = new List<int> { Block.ARROW_RIGHT, Block.ARROW_LEFT };
+                var blocks = BlocksUtil.ReplaceBlock(game.Map?.Blocks, remove, add, game.UserSelection.MapRegion);
+
+                game.AddBlocks(blocks);
+            }
+        }
+
+        private void ReverseVerticalArrows(Game game)
+        {
+            game.CleanUserMode(true, false);
+
+            using (new TempOverwrite(game.Map.Blocks, true))
+            using (new TempCursor(Cursors.Wait))
+            {
+                var remove = new List<int> { Block.ARROW_UP, Block.ARROW_DOWN };
+                var add = new List<int> { Block.ARROW_DOWN, Block.ARROW_UP };
                 var blocks = BlocksUtil.ReplaceBlock(game.Map?.Blocks, remove, add, game.UserSelection.MapRegion);
 
                 game.AddBlocks(blocks);
@@ -262,19 +277,12 @@ namespace BlockEditor.Models
             }
             else if (game.UserSelection.HasSelectedRegion)
             {
-                string text = "";
-
-                if (game.UserSelection.SelectedRegionContainsBlocks(game.Map))
-                    text = "If you wish to flip the blocks inside the selected region, "
-                        + Environment.NewLine + "you first have to select them by using Ctrl + C or Ctrl + X";
-                else
-                    text = "The selected region contains no blocks, there is nothing to flip.";
-
-                MessageUtil.ShowInfo(text);
+                game.VerticalFlipRegion(game.UserSelection.MapRegion);
+                ReverseVerticalArrows(game);
             }
             else
             {
-                var r1 = UserQuestionWindow.Show("Do you wish vertically flip the map?", "Vertical Flip", false);
+                var r1 = UserQuestionWindow.Show("Art?", "Vertical Flip", false);
 
                 if (r1 != UserQuestionWindow.QuestionResult.Yes)
                     return;
@@ -304,29 +312,6 @@ namespace BlockEditor.Models
 
                 if (w.BlocksToAdd != null && w.BlocksToAdd.Any())
                     game.AddBlocks(w.BlocksToAdd);
-            }
-        }
-
-        private void ReverseTraps(Game game)
-        {
-            game.CleanUserMode(true, false);
-
-            var w = new EditArtWindow(game.Map, game.UserSelection.MapRegion, EditArtWindow.EditArtModes.ReverseTraps);
-
-            w.ShowDialog();
-
-            using (new TempCursor(Cursors.Wait))
-            {
-                if (w.BlocksToRemove != null && w.BlocksToRemove.Any())
-                    game.RemoveBlocks(w.BlocksToRemove);
-
-                if (w.BlocksToAdd != null && w.BlocksToAdd.Any())
-                    game.AddBlocks(w.BlocksToAdd);
-
-                ReverseHorizontalArrows(game);
-
-                if (!w.IsRegionSelected())
-                    game.GoToStartPosition(showError: false);
             }
         }
 
@@ -400,15 +385,8 @@ namespace BlockEditor.Models
             }
             else if (game.UserSelection.HasSelectedRegion)
             {
-                string text = "";
-
-                if (game.UserSelection.SelectedRegionContainsBlocks(game.Map))
-                    text = "If you wish to flip the blocks inside the selected region, "
-                        + Environment.NewLine + "you first have to select them by using Ctrl + C or Ctrl + X";
-                else
-                    text = "The selected region contains no blocks, there is nothing to flip.";
-
-                MessageUtil.ShowInfo(text);
+                game.HorizontalFlipRegion(game.UserSelection.MapRegion);
+                ReverseHorizontalArrows(game);
             }
             else
             {
@@ -420,7 +398,8 @@ namespace BlockEditor.Models
                 using (new TempCursor(Cursors.Wait))
                 {
                     game.Engine.PauseConfirmed();
-                    game.Map.Blocks.HorizontalFlip();
+                    game.HorizontalFlipMap();
+                    ReverseHorizontalArrows(game);
                     game.GoToStartPosition(showError: false);
                     game.Engine.Pause = false;
                 }

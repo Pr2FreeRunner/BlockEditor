@@ -17,6 +17,7 @@ namespace BlockEditor.Models
         public RelayCommand NavigatorCommand { get; }
         public RelayCommand NavigateCommand { get; }
         public RelayCommand DeselectCommand { get; }
+        public RelayCommand ReverseArrowsCommand { get; }
 
 
         private readonly ToolCommands _tools;
@@ -43,6 +44,7 @@ namespace BlockEditor.Models
             EditCommand = MenuCommand(EditMenu);
             AdvancedCommand = MenuCommand(AdvancedMenu);
             InfoCommand = MenuCommand(InfoMenu);
+            ReverseArrowsCommand = MenuCommand(ReverseArrowsMenu);
         }
 
 
@@ -76,7 +78,18 @@ namespace BlockEditor.Models
             w.AddOption("Move Region", _tools.MoveRegionCommand);
             w.AddOption("Replace Block", _tools.ReplaceCommand);
             w.AddOption("Replace Color", _tools.ReplaceArtColorCommand);
-            w.AddOption("Reverse Traps", _tools.ReverseTrapsCommand);
+            w.AddOption("Reverse Arrows", ReverseArrowsCommand);
+            w.ShowDialog();
+            w.Execute();
+        }
+
+        public void ReverseArrowsMenu()
+        {
+            var w = new MenuWindow("Reverse Arrows");
+
+            w.AddOption("Left/Right Arrows", _tools.ReverseHorizontalArrowsCommand);
+            w.AddOption("Up/Down Arrows", _tools.ReverseVerticalArrowsCommand);
+
             w.ShowDialog();
             w.Execute();
         }

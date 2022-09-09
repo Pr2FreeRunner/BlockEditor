@@ -214,5 +214,103 @@ namespace BlockEditor.Models
             MeasureDistance.Reset();
         }
 
+        public void HorizontalFlipRegion(MyRegion region)
+        {
+            if(Map == null)
+                return;
+
+            var blocksToAdd = new List<SimpleBlock>();
+            var blocksToRemove = new List<SimpleBlock>();
+
+            foreach (var b in BlocksUtil.GetBlocks(Map?.Blocks, region))
+            {
+                if (b.IsEmpty())
+                    continue;
+
+                var relStart = b.Position.Value.X - region.Start.Value.X + 1;
+                var point = new MyPoint(region.End.Value.X - relStart, b.Position.Value.Y);
+                var block = new SimpleBlock(b.ID, point, b.Options);
+
+                blocksToRemove.Add(b);
+                blocksToAdd.Add(block);
+            }
+
+            RemoveBlocks(blocksToRemove);
+            AddBlocks(blocksToAdd);
+        }
+
+        public void VerticalFlipRegion(MyRegion region)
+        {
+            if (Map == null)
+                return;
+
+            var blocksToAdd = new List<SimpleBlock>();
+            var blocksToRemove = new List<SimpleBlock>();
+
+            foreach (var b in BlocksUtil.GetBlocks(Map?.Blocks, region))
+            {
+                if (b.IsEmpty())
+                    continue;
+
+                var relStart = b.Position.Value.Y - region.Start.Value.Y + 1;
+                var point = new MyPoint(b.Position.Value.X, region.End.Value.Y - relStart);
+                var block = new SimpleBlock(b.ID, point, b.Options);
+
+                blocksToRemove.Add(b);
+                blocksToAdd.Add(block);
+            }
+
+            RemoveBlocks(blocksToRemove);
+            AddBlocks(blocksToAdd);
+        }
+
+        public void HorizontalFlipMap()
+        {
+            if (Map == null)
+                return;
+
+            var blocksToAdd = new List<SimpleBlock>();
+            var blocksToRemove = new List<SimpleBlock>();
+
+            foreach (var b in Map.Blocks.GetBlocks(true))
+            {
+                if (b.IsEmpty())
+                    continue;
+
+                var point = new MyPoint(Blocks.SIZE - b.Position.Value.X, b.Position.Value.Y);
+                var block = new SimpleBlock(b.ID, point, b.Options);
+
+                blocksToRemove.Add(b);
+                blocksToAdd.Add(block);
+            }
+
+            RemoveBlocks(blocksToRemove);
+            AddBlocks(blocksToAdd);
+        }
+
+        public void VerticalFlipMap()
+        {
+            if (Map == null)
+                return;
+
+            var blocksToAdd = new List<SimpleBlock>();
+            var blocksToRemove = new List<SimpleBlock>();
+
+            foreach (var b in Map.Blocks.GetBlocks(true))
+            {
+                if (b.IsEmpty())
+                    continue;
+
+                var point = new MyPoint(b.Position.Value.X, Blocks.SIZE - b.Position.Value.Y);
+                var block = new SimpleBlock(b.ID, point, b.Options);
+
+                blocksToRemove.Add(b);
+                blocksToAdd.Add(block);
+            }
+
+            RemoveBlocks(blocksToRemove);
+            AddBlocks(blocksToAdd);
+        }
+
     }
 }
