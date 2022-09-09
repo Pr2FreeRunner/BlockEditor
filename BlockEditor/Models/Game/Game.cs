@@ -314,5 +314,29 @@ namespace BlockEditor.Models
             AddBlocks(blocksToAdd);
         }
 
+        public void RotateMap()
+        {
+            if (Map == null)
+                return;
+
+            var blocksToAdd = new List<SimpleBlock>();
+            var blocksToRemove = new List<SimpleBlock>();
+
+            foreach (var b in Map.Blocks.GetBlocks(true))
+            {
+                if (b.IsEmpty())
+                    continue;
+
+                var point = new MyPoint(b.Position.Value.Y, Blocks.SIZE - b.Position.Value.X - 1);
+                var block = new SimpleBlock(b.ID, point, b.Options);
+
+                blocksToRemove.Add(b);
+                blocksToAdd.Add(block);
+            }
+
+            RemoveBlocks(blocksToRemove);
+            AddBlocks(blocksToAdd);
+        }
+
     }
 }

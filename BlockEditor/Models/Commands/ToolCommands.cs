@@ -362,7 +362,7 @@ namespace BlockEditor.Models
                 using (new TempCursor(Cursors.Wait))
                 {
                     game.Engine.PauseConfirmed();
-                    game.Map.Blocks.Rotate();
+                    game.RotateMap();
                     game.GoToStartPosition(showError: false);
                     game.Engine.Pause = false;
                 }
