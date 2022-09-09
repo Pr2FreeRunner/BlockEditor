@@ -145,7 +145,7 @@ namespace BlockEditor.Helpers
                 if (!ColorUtil.IsColorEqual(color, replace, sensitivity))
                     continue;
 
-                a.Color = ColorUtil.ToHexString(color);
+                a.Color = ColorUtil.ToHexString(add.Value);
             }
         }
 
