@@ -89,7 +89,7 @@ namespace BlockEditor.Views.Windows
             foreach (var s in Enum.GetValues(typeof(ColorSensitivty)))
             { 
                 var item = new ComboBoxItem();
-                item.Content = s.ToString();
+                item.Content = MyUtil.InsertSpaceBeforeCapitalLetter(s.ToString());
                 cbSensitivity.Items.Add(item);
             }
         }
