@@ -182,7 +182,9 @@ namespace BlockEditor.Models
 
             if (p == null)
             {
-                MessageUtil.ShowWarning("The start block was not found.");
+                if(showError)
+                    MessageUtil.ShowWarning("The start block was not found.");
+
                 return;
             }
 
