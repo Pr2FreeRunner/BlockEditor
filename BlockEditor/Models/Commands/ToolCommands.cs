@@ -29,7 +29,7 @@ namespace BlockEditor.Models
         public RelayCommand VerticalFlipCommand { get; }
         public RelayCommand HorizontalFlipCommand { get; }
         public RelayCommand DeleteBlockTypeCommand { get; }
-        public RelayCommand SettingsCommand { get; }
+        public RelayCommand EditorInfoCommand { get; }
         public RelayCommand ConnectTeleportsCommand { get; }
         public RelayCommand MoveRegionCommand { get; }
         public RelayCommand ReplaceArtColorCommand { get; }
@@ -56,7 +56,7 @@ namespace BlockEditor.Models
             VerticalFlipCommand = new RelayCommand((_) => VerticalFlip(game));
             HorizontalFlipCommand = new RelayCommand((_) => HorizontalFlip(game));
             DeleteBlockTypeCommand = new RelayCommand((_) => DeleteBlockType(game));
-            SettingsCommand = new RelayCommand((_) => EditorSettings(game));
+            EditorInfoCommand = new RelayCommand((_) => EditorInfo(game));
             ConnectTeleportsCommand = new RelayCommand((_) => ConnectTeleports(game));
             MoveRegionCommand = new RelayCommand((_) => MoveRegion(game));
             DeleteRegionCommand = new RelayCommand((_) => DeleteRegion(game));
@@ -245,7 +245,7 @@ namespace BlockEditor.Models
             }
         }
 
-        private void EditorSettings(Game game)
+        private void EditorInfo(Game game)
         {
             game.CleanUserMode(true, true);
 

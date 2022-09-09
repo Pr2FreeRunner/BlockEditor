@@ -98,7 +98,7 @@ namespace BlockEditor.Models
 
             w.AddOption("Block Count", _tools.BlockCountCommand);
             w.AddOption("Block Info", _tools.BlockInfoCommand);
-            w.AddOption("Editor Info", _tools.SettingsCommand);
+            w.AddOption("Editor Info", _tools.EditorInfoCommand);
             w.AddOption("Map Info", _tools.MapInfoCommand);
 
             w.ShowDialog();
