@@ -75,7 +75,7 @@ namespace BlockEditor.Models
 
             w.AddOption("Move Region", _tools.MoveRegionCommand);
             w.AddOption("Replace Block", _tools.ReplaceCommand);
-            w.AddOption("Replace Art Color", _tools.ReplaceArtColorCommand);
+            w.AddOption("Replace Color", _tools.ReplaceArtColorCommand);
             w.AddOption("Reverse Traps", _tools.ReverseTrapsCommand);
             w.ShowDialog();
             w.Execute();
