@@ -283,7 +283,7 @@ namespace BlockEditor.Models
                 {
                     game.Engine.PauseConfirmed();
                     game.Map.Blocks.VerticalFlip();
-                    game.GoToStartPosition();
+                    game.GoToStartPosition(showError: false);
                     game.Engine.Pause = false;
                 }
             }
@@ -325,8 +325,8 @@ namespace BlockEditor.Models
 
                 ReverseHorizontalArrows(game);
 
-                if (!w.IsRegionSelected() && game.Map != null && !game.Map.Blocks.StartBlocks.Player1.IsEmpty())
-                    game.GoToStartPosition();
+                if (!w.IsRegionSelected())
+                    game.GoToStartPosition(showError: false);
             }
         }
 
@@ -386,7 +386,7 @@ namespace BlockEditor.Models
                 {
                     game.Engine.PauseConfirmed();
                     game.Map.Blocks.Rotate();
-                    game.GoToStartPosition();
+                    game.GoToStartPosition(showError: false);
                     game.Engine.Pause = false;
                 }
             }
@@ -421,7 +421,7 @@ namespace BlockEditor.Models
                 {
                     game.Engine.PauseConfirmed();
                     game.Map.Blocks.HorizontalFlip();
-                    game.GoToStartPosition();
+                    game.GoToStartPosition(showError: false);
                     game.Engine.Pause = false;
                 }
             }

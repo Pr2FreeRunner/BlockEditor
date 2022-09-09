@@ -173,8 +173,11 @@ namespace BlockEditor.Models
             UserOperations.Execute(op);
         }
 
-        public void GoToStartPosition(int id = Block.START_BLOCK_P1)
+        public void GoToStartPosition(int id = Block.START_BLOCK_P1, bool showError = true)
         {
+            if (Map == null)
+                return;
+
             var p = Map.Blocks.StartBlocks.GetPosition(id);
 
             if (p == null)
