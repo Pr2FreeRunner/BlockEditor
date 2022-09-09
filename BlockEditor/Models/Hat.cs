@@ -30,6 +30,7 @@ namespace BlockEditor.Models
         public string Name { get; set; }
 
 
+
         public Hat(int id)
         {
             ID = id;
@@ -41,6 +42,7 @@ namespace BlockEditor.Models
             ID = GetID(name);
             Name = GetName(ID);
         }
+
 
 
         private string GetName(int id)
