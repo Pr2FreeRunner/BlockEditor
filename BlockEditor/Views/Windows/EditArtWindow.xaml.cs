@@ -353,7 +353,8 @@ namespace BlockEditor.Views.Windows
                 if (b.IsEmpty())
                     continue;
 
-                var point = new MyPoint(Blocks.SIZE - b.Position.Value.X, b.Position.Value.Y);
+                var relStart = b.Position.Value.X - region.Start.Value.X + 1;
+                var point = new MyPoint(region.End.Value.X - relStart, b.Position.Value.Y);
                 var block = new SimpleBlock(b.ID, point, b.Options);
 
                 BlocksToRemove.Add(b);
