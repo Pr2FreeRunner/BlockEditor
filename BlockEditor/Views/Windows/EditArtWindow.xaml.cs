@@ -135,7 +135,6 @@ namespace BlockEditor.Views.Windows
                     break;
                 case EditArtModes.ReplaceColor:
                     btnOk.IsEnabled = _colorAdd != null && _colorReplace != null && _sensitivity != null;
-                    btnOk.IsEnabled = _moveX != null && _moveY != null;
                     Page2Title.Content = "Replace Art Color";
                     MovePanel.Visibility = Visibility.Collapsed;
                     ReplaceColorPanel.Visibility = Visibility.Visible;
@@ -344,9 +343,6 @@ namespace BlockEditor.Views.Windows
 
         private void ReplaceArtColor(MyRegion region)
         {
-            var x = (int)(_moveX * 30);
-            var y = (int)(_moveY * 30);
-
             CreateAbsolutePosition(_map.Level.TextArt0);
             CreateAbsolutePosition(_map.Level.TextArt1);
 
@@ -366,6 +362,25 @@ namespace BlockEditor.Views.Windows
                 MapUtil.ChangeArtColor(drawArt0, null, null);
             if (cbDrawArt1.IsChecked == true)
                 MapUtil.ChangeArtColor(drawArt1,null, null);
+
+            CreateRelativePosition(_map.Level.TextArt0);
+            CreateRelativePosition(_map.Level.TextArt1);
+        }
+
+        private void ReplaceArtColor()
+        {
+            CreateAbsolutePosition(_map.Level.TextArt0);
+            CreateAbsolutePosition(_map.Level.TextArt1);
+
+            if (cbTextArt0.IsChecked == true)
+                MapUtil.ChangeArtColor(_map.Level.TextArt0, null, null);
+            if (cbTextArt1.IsChecked == true)
+                MapUtil.ChangeArtColor(_map.Level.TextArt1, null, null);
+
+            if (cbDrawArt0.IsChecked == true)
+                MapUtil.ChangeArtColor(_map.Level.DrawArt0, null, null);
+            if (cbDrawArt1.IsChecked == true)
+                MapUtil.ChangeArtColor(_map.Level.DrawArt1, null, null);
 
             CreateRelativePosition(_map.Level.TextArt0);
             CreateRelativePosition(_map.Level.TextArt1);
@@ -410,7 +425,7 @@ namespace BlockEditor.Views.Windows
                             }
                             else
                             {
-                                ReplaceArtColor(_region);
+                                ReplaceArtColor();
                             }
                             break;
                     }
