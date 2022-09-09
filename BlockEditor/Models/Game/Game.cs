@@ -69,7 +69,7 @@ namespace BlockEditor.Models
             UserOperations.Execute(op);
         }
 
-        internal void AddBlocks(IEnumerable<SimpleBlock> blocks)
+        public void AddBlocks(IEnumerable<SimpleBlock> blocks)
         {
             if (blocks == null || Map == null)
                 return;
@@ -81,7 +81,7 @@ namespace BlockEditor.Models
             UserOperations.Execute(op);
         }
 
-        internal void RemoveBlocks(IEnumerable<SimpleBlock> blocks)
+        public void RemoveBlocks(IEnumerable<SimpleBlock> blocks)
         {
             if (blocks == null || Map == null)
                 return;
@@ -93,7 +93,7 @@ namespace BlockEditor.Models
             UserOperations.Execute(op);
         }
 
-        internal void AddSelection(MyPoint? index, int?[,] selectedBlocks)
+        public void AddSelection(MyPoint? index, int?[,] selectedBlocks)
         {
             if (index == null || selectedBlocks == null || Map == null)
                 return;
