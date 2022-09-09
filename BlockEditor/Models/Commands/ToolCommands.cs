@@ -282,7 +282,10 @@ namespace BlockEditor.Models
             }
             else
             {
-                var r1 = UserQuestionWindow.Show("Art?", "Vertical Flip", false);
+                var r1 = UserQuestionWindow.Show("Do you wish to vertically flip the map?"
+                    + Environment.NewLine + Environment.NewLine
+                    + "Note:  Art will not be moved.", 
+                    "Vertical Flip", false);
 
                 if (r1 != UserQuestionWindow.QuestionResult.Yes)
                     return;
@@ -296,7 +299,76 @@ namespace BlockEditor.Models
                 }
             }
         }
+        
+        private void HorizontalFlip(Game game)
+        {
+            if (BlockSelection.HorizontalFlipCommand.CanExecute(null))
+            {
+                BlockSelection.HorizontalFlipCommand.Execute(null);
+            }
+            else if (game.UserSelection.HasSelectedRegion)
+            {
+                game.HorizontalFlipRegion(game.UserSelection.MapRegion);
+                ReverseHorizontalArrows(game);
+            }
+            else
+            {
+                var r = UserQuestionWindow.Show("Do you wish to horizontally flip the map?"
+                      + Environment.NewLine + Environment.NewLine
+                      + "Note:  Art will not be moved. ", 
+                      "Horizontal Flip", false);
 
+                if (r != UserQuestionWindow.QuestionResult.Yes)
+                    return;
+
+                using (new TempCursor(Cursors.Wait))
+                {
+                    game.Engine.PauseConfirmed();
+                    game.HorizontalFlipMap();
+                    ReverseHorizontalArrows(game);
+                    game.GoToStartPosition(showError: false);
+                    game.Engine.Pause = false;
+                }
+            }
+        }
+        private void Rotate(Game game)
+        {
+            if (BlockSelection.RotateCommand.CanExecute(null))
+            {
+                BlockSelection.RotateCommand.Execute(null);
+            }
+            else if (game.UserSelection.HasSelectedRegion)
+            {
+                string text = "";
+
+                if (game.UserSelection.SelectedRegionContainsBlocks(game.Map))
+                    text = "If you wish to rotate the blocks inside the selected region, "
+                        + Environment.NewLine + "you first have to select them by using Ctrl + C or Ctrl + X";
+                else
+                    text = "The selected region contains no blocks, there is nothing to rotate.";
+
+                MessageUtil.ShowInfo(text);
+            }
+            else
+            {
+                var r = UserQuestionWindow.Show("Do you wish to rotate the map?"
+                      + Environment.NewLine + Environment.NewLine
+                      + "Note:  Art will not be moved. ", 
+                      "Rotate Blocks", false);
+
+                if (r != UserQuestionWindow.QuestionResult.Yes)
+                    return;
+
+                using (new TempCursor(Cursors.Wait))
+                {
+                    game.Engine.PauseConfirmed();
+                    game.Map.Blocks.Rotate();
+                    game.GoToStartPosition(showError: false);
+                    game.Engine.Pause = false;
+                }
+            }
+        }
+        
         private void MoveRegion(Game game)
         {
             game.CleanUserMode(true, false);
@@ -342,69 +414,6 @@ namespace BlockEditor.Models
             w.ShowDialog();
         }
 
-        private void Rotate(Game game)
-        {
-            if (BlockSelection.RotateCommand.CanExecute(null))
-            {
-                BlockSelection.RotateCommand.Execute(null);
-            }
-            else if (game.UserSelection.HasSelectedRegion)
-            {
-                string text = "";
-
-                if (game.UserSelection.SelectedRegionContainsBlocks(game.Map))
-                    text = "If you wish to rotate the blocks inside the selected region, "
-                        + Environment.NewLine + "you first have to select them by using Ctrl + C or Ctrl + X";
-                else
-                    text = "The selected region contains no blocks, there is nothing to rotate.";
-
-                MessageUtil.ShowInfo(text);
-            }
-            else
-            {
-                var r = UserQuestionWindow.Show("Do you wish rotate the map?", "Rotate Blocks", false);
-
-                if (r != UserQuestionWindow.QuestionResult.Yes)
-                    return;
-
-                using (new TempCursor(Cursors.Wait))
-                {
-                    game.Engine.PauseConfirmed();
-                    game.Map.Blocks.Rotate();
-                    game.GoToStartPosition(showError: false);
-                    game.Engine.Pause = false;
-                }
-            }
-        }
-
-        private void HorizontalFlip(Game game)
-        {
-            if (BlockSelection.HorizontalFlipCommand.CanExecute(null))
-            {
-                BlockSelection.HorizontalFlipCommand.Execute(null);
-            }
-            else if (game.UserSelection.HasSelectedRegion)
-            {
-                game.HorizontalFlipRegion(game.UserSelection.MapRegion);
-                ReverseHorizontalArrows(game);
-            }
-            else
-            {
-                var r = UserQuestionWindow.Show("Do you wish horizontally flip the map?", "Horizontal Flip", false);
-
-                if (r != UserQuestionWindow.QuestionResult.Yes)
-                    return;
-
-                using (new TempCursor(Cursors.Wait))
-                {
-                    game.Engine.PauseConfirmed();
-                    game.HorizontalFlipMap();
-                    ReverseHorizontalArrows(game);
-                    game.GoToStartPosition(showError: false);
-                    game.Engine.Pause = false;
-                }
-            }
-        }
 
         private void AddShape(Game game)
         {
