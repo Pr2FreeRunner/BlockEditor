@@ -33,6 +33,7 @@ namespace BlockEditor.Models
 
                 if (Block.IsStartBlock(_block.ID))
                 {
+                    _oldBlock = SimpleBlock.None;
                     var oldStartBlock = _map.Blocks.GetBlock(_block.Position, true);
 
                     if (oldStartBlock.ID == _block.ID)

@@ -293,7 +293,7 @@ namespace BlockEditor.Models
                 using (new TempCursor(Cursors.Wait))
                 {
                     game.Engine.PauseConfirmed();
-                    game.Map.Blocks.VerticalFlip();
+                    game.VerticalFlipMap();
                     game.GoToStartPosition(showError: false);
                     game.Engine.Pause = false;
                 }
@@ -324,7 +324,7 @@ namespace BlockEditor.Models
                 using (new TempCursor(Cursors.Wait))
                 {
                     game.Engine.PauseConfirmed();
-                    game.Map.Blocks.HorizontalFlip();
+                    game.HorizontalFlipMap();
                     ReverseHorizontalArrows(game);
                     game.GoToStartPosition(showError: false);
                     game.Engine.Pause = false;
