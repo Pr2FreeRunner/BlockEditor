@@ -69,10 +69,38 @@ namespace BlockEditor.Views.Windows
             Close();
         }
 
+        private void ClickButton(int nr)
+        {
+            int index = nr - 1;
+
+            if(index < 0)
+                return;
+
+            if(index >= MenuContainer.Children.Count)
+                return;
+
+            var child = MenuContainer.Children[index];
+
+            if(!(child is WhiteButton b))
+                return;
+
+            b.InvokeClickEvent();
+        }
+
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Escape)
                 Close();
+
+            if(e.Key == Key.D1 || e.Key == Key.NumPad1) ClickButton(1);
+            if(e.Key == Key.D2 || e.Key == Key.NumPad2) ClickButton(2);
+            if(e.Key == Key.D3 || e.Key == Key.NumPad3) ClickButton(3);
+            if(e.Key == Key.D4 || e.Key == Key.NumPad4) ClickButton(4);
+            if(e.Key == Key.D5 || e.Key == Key.NumPad5) ClickButton(5);
+            if(e.Key == Key.D6 || e.Key == Key.NumPad6) ClickButton(6);
+            if(e.Key == Key.D7 || e.Key == Key.NumPad7) ClickButton(7);
+            if(e.Key == Key.D8 || e.Key == Key.NumPad8) ClickButton(8);
+            if(e.Key == Key.D9 || e.Key == Key.NumPad9) ClickButton(9);
         }
 
 
