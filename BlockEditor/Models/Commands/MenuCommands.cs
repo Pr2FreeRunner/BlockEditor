@@ -132,12 +132,12 @@ namespace BlockEditor.Models
 
         public void DeleteMenu()
         {
-            var w = new MenuWindow("Delete Tools");
+            var w = new MenuWindow("Remove Tools");
 
             w.AddOption("Block Type", _tools.DeleteBlockTypeCommand);
             w.AddOption("Block Option", _tools.DeleteBlockOptionCommand);
-            w.AddOption("Delete Blocks", _tools.DeleteCommand);
-            w.AddOption("Delete Region", _tools.DeleteRegionCommand);
+            w.AddOption("Remove Blocks", _tools.DeleteCommand);
+            w.AddOption("Remove Region", _tools.DeleteRegionCommand);
 
             w.ShowDialog();
             w.Execute();

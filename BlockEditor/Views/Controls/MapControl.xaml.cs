@@ -194,42 +194,42 @@ namespace BlockEditor.Views.Controls
                 {
                     BlockSelection.ActivatePreviousSelection();
                 }        
-                else if (ctrl && e.Key == Key.I)
+                else if (e.Key == Key.I)
                 {
                     if (ViewModel.Commands.InfoCommand.CanExecute(null))
                         ViewModel.Commands.InfoCommand.Execute(null);
                 }
-                else if (ctrl && e.Key == Key.T)
+                else if (e.Key == Key.T)
                 {
                     if (ViewModel.Commands.TransformCommand.CanExecute(null))
                         ViewModel.Commands.TransformCommand.Execute(null);
                 }
-                else if (ctrl && e.Key == Key.D)
+                else if (e.Key == Key.R)
                 {
                     if (ViewModel.Commands.DeleteCommand.CanExecute(null))
                         ViewModel.Commands.DeleteCommand.Execute(null);
                 }
-                else if (ctrl && e.Key == Key.E)
+                else if (e.Key == Key.E)
                 {
                     if (ViewModel.Commands.EditCommand.CanExecute(null))
                         ViewModel.Commands.EditCommand.Execute(null);
                 }
-                else if (ctrl && e.Key == Key.N)
+                else if (e.Key == Key.N)
                 {
                     if (ViewModel.Commands.NavigatorCommand.CanExecute(null))
                         ViewModel.Commands.NavigatorCommand.Execute(null);
                 }
-                else if (ctrl && e.Key == Key.Q)
+                else if (e.Key == Key.Q)
                 {
                     if (ViewModel.Commands.AdvancedCommand.CanExecute(null))
                         ViewModel.Commands.AdvancedCommand.Execute(null);
                 }
-                else if (ctrl && e.Key == Key.B)
+                else if (e.Key == Key.B)
                 {
                     if (ViewModel.Commands.BuildCommand.CanExecute(null))
                         ViewModel.Commands.BuildCommand.Execute(null);
                 }
-                else if (ctrl && e.Key == Key.O)
+                else if (e.Key == Key.O)
                 {
                     ViewModel.IsOverwrite = !ViewModel.IsOverwrite;
                 }
