@@ -324,6 +324,9 @@ namespace BlockEditor.Models
                     game.AddBlocks(w.BlocksToAdd);
 
                 ReverseHorizontalArrows(game);
+
+                if (!w.IsRegionSelected() && game.Map != null && !game.Map.Blocks.StartBlocks.Player1.IsEmpty())
+                    game.GoToStartPosition();
             }
         }
 

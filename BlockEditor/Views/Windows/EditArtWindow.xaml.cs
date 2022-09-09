@@ -25,14 +25,15 @@ namespace BlockEditor.Views.Windows
         private string _colorReplace;
         private string _colorAdd;
         private ColorSensitivty? _sensitivity;
-
-        private EditArtModes _mode;
         private const int _regionIndex = 1;
+        private EditArtModes _mode;
 
         public List<SimpleBlock> BlocksToAdd { get; }
         public List<SimpleBlock> BlocksToRemove { get; }
 
         public enum EditArtModes { Move, Delete, ReplaceColor, ReverseTraps }
+
+
 
         public EditArtWindow(Map map, MyRegion region, EditArtModes mode)
         {
@@ -51,6 +52,8 @@ namespace BlockEditor.Views.Windows
             UpdateButtons();
             OpenWindows.Add(this);
         }
+
+
 
         private void MyColorPickerReplace_OnNewColor(string obj)
         {
@@ -484,6 +487,11 @@ namespace BlockEditor.Views.Windows
             CreateRelativePosition(_map.Level.TextArt1);
         }
 
+        public bool IsRegionSelected()
+        {
+            return cbSelection.SelectedIndex == _regionIndex;
+        }
+
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -493,7 +501,7 @@ namespace BlockEditor.Views.Windows
                     switch (_mode)
                     {
                         case EditArtModes.Move:
-                            if (cbSelection.SelectedIndex == _regionIndex)
+                            if (IsRegionSelected())
                             {
                                 MoveArt(_region);
                                 MoveBlocks(_region);
@@ -505,7 +513,7 @@ namespace BlockEditor.Views.Windows
                             }
                             break;
                         case EditArtModes.Delete:
-                            if (cbSelection.SelectedIndex == _regionIndex)
+                            if (IsRegionSelected())
                             {
                                 RemoveArt(_region);
                                 RemoveBlocks(_region);
@@ -517,7 +525,7 @@ namespace BlockEditor.Views.Windows
                             }
                             break;
                         case EditArtModes.ReplaceColor:
-                            if (cbSelection.SelectedIndex == _regionIndex)
+                            if (IsRegionSelected())
                             {
                                 ReplaceArtColor(_region);
                             }
@@ -527,7 +535,7 @@ namespace BlockEditor.Views.Windows
                             }
                             break;
                         case EditArtModes.ReverseTraps:
-                            if (cbSelection.SelectedIndex == _regionIndex)
+                            if (IsRegionSelected())
                             {
                                 ReverseArt(_region);
                                 ReverseBlocks(_region);
