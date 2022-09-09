@@ -59,9 +59,9 @@ namespace BlockEditor.Utils
 
             switch (sensitivty)
             {
-                case ColorSensitivty.VeryLow: return distance < 200;
-                case ColorSensitivty.Low: return distance < 125;
-                case ColorSensitivty.Medium: return distance < 80;
+                case ColorSensitivty.VeryLow: return distance < 300;
+                case ColorSensitivty.Low: return distance < 150;
+                case ColorSensitivty.Medium: return distance < 75;
                 case ColorSensitivty.High: return distance < 40;
                 case ColorSensitivty.VeryHigh: return distance < 15;
 
