@@ -38,7 +38,7 @@ namespace BlockEditor.Views.Windows
             b.HorizontalAlignment = HorizontalAlignment.Center;
             b.VerticalAlignment = VerticalAlignment.Center;
             b.OnClick += () => { Option = command; Close(); };
-            b.Width = 200;
+            b.Width = 210;
             b.Height = 26;
             b.Margin = new Thickness(10, 10, 10, 10);
             b.IsEnabled = IsValid(command);

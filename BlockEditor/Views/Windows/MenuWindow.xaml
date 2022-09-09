@@ -8,7 +8,7 @@
         AllowsTransparency="True"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
-        Width="300"
+        Width="320"
         MaxHeight="410"
         SizeToContent="Height"
         Closing="Window_Closing"
@@ -26,6 +26,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
@@ -33,7 +34,7 @@
                 <Label x:Name="tbTitle" Content="Menu" Margin="0" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Grid>
             
-            <ScrollViewer Margin="5,10,5,12" Focusable="false" Grid.Row="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+            <ScrollViewer Margin="5,10,5,2" Focusable="false" Grid.Row="1" VerticalScrollBarVisibility="Auto" VerticalAlignment="Center" HorizontalAlignment="Stretch">
                 <StackPanel x:Name="MenuContainer" 
                         Orientation="Vertical"
                         HorizontalAlignment="Center" 
@@ -41,6 +42,11 @@
                 </StackPanel>
             </ScrollViewer>
 
+            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="5,2,5,5" HorizontalAlignment="Center">
+                <Label FontSize="{StaticResource DefaultFontSize}" Margin="0,0,-1,0" VerticalAlignment="Center" Content="Hint:"  FontWeight="SemiBold"/>
+                <Label FontSize="{StaticResource DefaultFontSize}" Margin="-2,0,0,0" VerticalAlignment="Center" Content="Use the numbers as hotkey." FontWeight="Normal" />
+                
+            </StackPanel>
         </Grid>
 
     </Border>
