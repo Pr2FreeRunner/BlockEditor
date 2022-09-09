@@ -132,6 +132,18 @@ namespace BlockEditor.Helpers
             }
         }
 
+        public static void ReverseArtPosition(IEnumerable<Art> art)
+        {
+            if (art == null)
+                return;
+
+            foreach (Art a in art)
+            {
+                a.X = 30 * Blocks.SIZE - a.X;
+                a.Y = a.Y;
+            }
+        }
+
 
         public static void ChangeArtColor(IEnumerable<Art> art, SKColor? replace, SKColor? add, ColorSensitivty sensitivity)
         {

@@ -5,6 +5,7 @@ using LevelModel.Models.Components.Art;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -31,7 +32,7 @@ namespace BlockEditor.Views.Windows
         public List<SimpleBlock> BlocksToAdd { get; }
         public List<SimpleBlock> BlocksToRemove { get; }
 
-        public enum EditArtModes { Move, Delete, ReplaceColor }
+        public enum EditArtModes { Move, Delete, ReplaceColor, ReverseTraps }
 
         public EditArtWindow(Map map, MyRegion region, EditArtModes mode)
         {
@@ -120,7 +121,7 @@ namespace BlockEditor.Views.Windows
             switch (_mode)
             {
                 case EditArtModes.Move:
-                    btnOk.IsEnabled =  _moveX != null && _moveY != null;
+                    btnOk.IsEnabled = _moveX != null && _moveY != null;
                     Page2Title.Content = "Move";
                     MovePanel.Visibility = Visibility.Visible;
                     ReplaceColorPanel.Visibility = Visibility.Collapsed;
@@ -139,6 +140,13 @@ namespace BlockEditor.Views.Windows
                     MovePanel.Visibility = Visibility.Collapsed;
                     ReplaceColorPanel.Visibility = Visibility.Visible;
                     cbBlocks.Visibility = Visibility.Collapsed;
+                    break;
+                case EditArtModes.ReverseTraps:
+                    btnOk.IsEnabled = true;
+                    Page2Title.Content = "Reverse";
+                    MovePanel.Visibility = Visibility.Collapsed;
+                    ReplaceColorPanel.Visibility = Visibility.Collapsed;
+                    cbBlocks.Visibility = Visibility.Visible;
                     break;
             }
         }
@@ -287,6 +295,90 @@ namespace BlockEditor.Views.Windows
             CreateRelativePosition(_map.Level.TextArt1);
         }
 
+        private void ReverseArt(MyRegion region)
+        {
+            CreateAbsolutePosition(_map.Level.TextArt0);
+            CreateAbsolutePosition(_map.Level.TextArt1);
+
+
+            var textArt0 = _map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+            var textArt1 = _map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+
+            var drawArt0 = _map.Level.DrawArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+            var drawArt1 = _map.Level.DrawArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+
+            if (cbTextArt0.IsChecked == true)
+                MapUtil.ReverseArtPosition(textArt0);
+            if (cbTextArt1.IsChecked == true)
+                MapUtil.ReverseArtPosition(textArt1);
+
+            if (cbDrawArt0.IsChecked == true)
+                MapUtil.ReverseArtPosition(drawArt0);
+            if (cbDrawArt1.IsChecked == true)
+                MapUtil.ReverseArtPosition(drawArt1);
+
+            CreateRelativePosition(_map.Level.TextArt0);
+            CreateRelativePosition(_map.Level.TextArt1);
+        }
+
+        private void ReverseArt()
+        {
+            CreateAbsolutePosition(_map.Level.TextArt0);
+            CreateAbsolutePosition(_map.Level.TextArt1);
+
+            if (cbTextArt0.IsChecked == true)
+                MapUtil.ReverseArtPosition(_map.Level.TextArt0);
+            if (cbTextArt1.IsChecked == true)
+                MapUtil.ReverseArtPosition(_map.Level.TextArt1);
+
+            if (cbDrawArt0.IsChecked == true)
+                MapUtil.ReverseArtPosition(_map.Level.DrawArt0);
+            if (cbDrawArt1.IsChecked == true)
+                MapUtil.ReverseArtPosition(_map.Level.DrawArt1);
+
+            CreateRelativePosition(_map.Level.TextArt0);
+            CreateRelativePosition(_map.Level.TextArt1);
+        }
+
+        private void ReverseBlocks(MyRegion region)
+        {
+            if (cbBlocks.IsChecked != true)
+                return;
+
+            foreach (var b in BlocksUtil.GetBlocks(_map?.Blocks, region))
+            {
+                if (b.IsEmpty())
+                    continue;
+
+                var point = new MyPoint(Blocks.SIZE - b.Position.Value.X, b.Position.Value.Y);
+                var block = new SimpleBlock(b.ID, point, b.Options);
+
+                BlocksToRemove.Add(b);
+                BlocksToAdd.Add(block);
+            }
+        }
+
+        private void ReverseBlocks()
+        {
+            if (cbBlocks.IsChecked != true)
+                return;
+
+            if (_map == null)
+                return;
+
+            foreach (var b in _map?.Blocks.GetBlocks(true))
+            {
+                if (b.IsEmpty())
+                    continue;
+
+                var point = new MyPoint(Blocks.SIZE - b.Position.Value.X, b.Position.Value.Y);
+                var block = new SimpleBlock(b.ID, point, b.Options);
+
+                BlocksToRemove.Add(b);
+                BlocksToAdd.Add(block);
+            }
+        }
+
         private void MoveArt()
         {
             var x = (int)(_moveX * 30);
@@ -432,6 +524,18 @@ namespace BlockEditor.Views.Windows
                             else
                             {
                                 ReplaceArtColor();
+                            }
+                            break;
+                        case EditArtModes.ReverseTraps:
+                            if (cbSelection.SelectedIndex == _regionIndex)
+                            {
+                                ReverseArt(_region);
+                                ReverseBlocks(_region);
+                            }
+                            else
+                            {
+                                ReverseArt();
+                                ReverseBlocks();
                             }
                             break;
                     }
