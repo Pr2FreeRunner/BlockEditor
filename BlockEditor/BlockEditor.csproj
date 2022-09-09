@@ -317,7 +317,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Windows\MoveMapWindow.xaml">
+    <Page Update="Views\Windows\EditArtWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\Windows\NavigatorWindow.xaml">

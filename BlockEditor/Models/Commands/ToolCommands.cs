@@ -32,6 +32,7 @@ namespace BlockEditor.Models
         public RelayCommand SettingsCommand { get; }
         public RelayCommand ConnectTeleportsCommand { get; }
         public RelayCommand MoveRegionCommand { get; }
+        public RelayCommand ReplaceArtColorCommand { get; }
         public RelayCommand DeleteRegionCommand { get; }
         public RelayCommand DeleteBlockOptionCommand { get; }
         public RelayCommand ReverseHorizontalArrowsCommand { get; }
@@ -67,6 +68,7 @@ namespace BlockEditor.Models
             DeleteBlockOptionCommand = new RelayCommand((_) => DeleteBlockOption(game));
             ReverseHorizontalArrowsCommand = new RelayCommand((_) => ReverseHorizontalArrows(game));
             ReverseVerticalArrowsCommand = new RelayCommand((_) => ReverseVerticalArrows(game));
+            ReplaceArtColorCommand = new RelayCommand((_) => ReplaceArtColor(game));
         }
 
 
@@ -306,7 +308,7 @@ namespace BlockEditor.Models
         {
             game.CleanUserMode(true, false);
 
-            var w = new EditArtWindow(game.Map, game.UserSelection.MapRegion, true);
+            var w = new EditArtWindow(game.Map, game.UserSelection.MapRegion, EditArtWindow.EditArtModes.Move);
 
             w.ShowDialog();
 
@@ -324,7 +326,7 @@ namespace BlockEditor.Models
         {
             game.CleanUserMode(true, false);
 
-            var w = new EditArtWindow(game.Map, game.UserSelection.MapRegion, false);
+            var w = new EditArtWindow(game.Map, game.UserSelection.MapRegion, EditArtWindow.EditArtModes.Delete);
 
             w.ShowDialog();
 
@@ -336,6 +338,15 @@ namespace BlockEditor.Models
                 if (w.BlocksToAdd != null && w.BlocksToAdd.Any())
                     game.AddBlocks(w.BlocksToAdd);
             }
+        }
+
+        private void ReplaceArtColor(Game game)
+        {
+            game.CleanUserMode(true, false);
+
+            var w = new EditArtWindow(game.Map, game.UserSelection.MapRegion, EditArtWindow.EditArtModes.ReplaceColor);
+
+            w.ShowDialog();
         }
 
         private void Rotate(Game game)

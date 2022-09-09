@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:local="clr-namespace:BlockEditor.Views.Controls"
         mc:Ignorable="d"
         Background="Transparent"
         AllowsTransparency="True"
@@ -34,7 +35,7 @@
 
             <StackPanel Grid.Row="1" Orientation="Vertical" x:Name="Page2" Visibility="Visible">
                 <Label Content="Move Art" x:Name="Page2Title" FontWeight="SemiBold" Margin="0,-10,0,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                
+
                 <StackPanel  Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
                     <StackPanel Orientation="Vertical">
                         <CheckBox Margin="0,10,0,0" Content="Text Art 0" VerticalContentAlignment="Center" FontSize="{StaticResource DefaultFontSize}" IsChecked="True" x:Name="cbTextArt0"  />
@@ -67,6 +68,20 @@
                         <Label Margin="5,10,0,0" FontWeight="Normal" FontSize="12" Content="(Positive values moves art down)" VerticalAlignment="Center"/>
                     </StackPanel>
                     <TextBox Margin="4,0,0,0" x:Name="tbY" PreviewTextInput="Double_PreviewTextInput" TextChanged="tbY_TextChanged" FontSize="{StaticResource DefaultFontSize}"  />
+                </StackPanel>
+
+                <StackPanel x:Name="ReplaceColorPanel" HorizontalAlignment="Stretch">
+                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0" VerticalAlignment="Center">
+                        <Label FontWeight="SemiBold" Margin="0,5,0,0" FontSize="{StaticResource DefaultFontSize}" Content="Color to Replace: " Width="125"/>
+                        <local:ColorPickerControl Height="30" Margin="4,5,0,0" x:Name="MyColorPickerReplace" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0" VerticalAlignment="Center">
+                        <Label FontWeight="SemiBold" Margin="0,5,0,0" FontSize="{StaticResource DefaultFontSize}" Content="Color to Add:" Width="125"/>
+                        <local:ColorPickerControl Height="30" Margin="4,5,0,0" x:Name="MyColorPickerAdd" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </StackPanel>
+                    
+                    <Label Margin="0,7,0,0" FontWeight="SemiBold" Content="Color Sensitivity:"/>
+                    <ComboBox Margin="4,0,0,0" x:Name="cbSensitivity" SelectionChanged="cbSensitivity_SelectionChanged" FontSize="{StaticResource DefaultFontSize}"/>
                 </StackPanel>
 
 

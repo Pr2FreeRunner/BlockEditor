@@ -12,8 +12,7 @@
                  Margin="0,0,10,0"
                  PreviewTextInput="HexOnly_PreviewTextInput"
                  x:Name="tbColor" 
-                 FontSize="14" 
-                 Text="#121212" />
+                 FontSize="14" />
         <Button VerticalAlignment="Center" Width="28" Height="20" x:Name="ColorButton" Click="ColorButton_Click"/>
     </StackPanel>
     

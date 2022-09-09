@@ -11,6 +11,8 @@ using System.IO;
 using System.Windows.Input;
 using System.Linq;
 using LevelModel.Models.Components.Art;
+using SkiaSharp;
+using BlockEditor.Utils;
 
 namespace BlockEditor.Helpers
 {
@@ -126,6 +128,18 @@ namespace BlockEditor.Helpers
             {
                 a.X += x;
                 a.Y += y;
+            }
+        }
+
+        public static void ChangeArtColor(IEnumerable<Art> art, SKColor? replace, SKColor? add)
+        {
+            if (art == null)
+                return;
+
+            foreach (Art a in art)
+            {
+                var c0 = ColorUtil.GetColorFromHex(a.Color);
+                var c = new SKColor();
             }
         }
 

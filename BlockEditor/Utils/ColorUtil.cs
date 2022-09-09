@@ -1,5 +1,7 @@
-﻿using System;
+﻿using SkiaSharp;
+using System;
 using System.Windows.Media;
+using static Builders.DataStructures.DTO.ImageDTO;
 
 namespace BlockEditor.Utils
 {
@@ -45,6 +47,35 @@ namespace BlockEditor.Utils
         {
             return System.Drawing.Color.FromArgb(255, c.R, c.G, c.B);
 
+        }
+
+        public static bool IsColorEqual(SKColor? c1, SKColor? c2, ColorSensitivty sensitivty)
+        {
+            if (c1 == null || c2 == null)
+                return false;
+
+            var distance = GetColorDistance(c1.Value, c2.Value);
+
+            switch (sensitivty)
+            {
+                case ColorSensitivty.VeryLow: return distance < 100;
+                case ColorSensitivty.Low: return distance < 75;
+                case ColorSensitivty.Medium: return distance < 50;
+                case ColorSensitivty.High: return distance < 25;
+                case ColorSensitivty.VeryHigh: return distance < 10;
+
+                default: return distance < 50;
+            }
+        }
+
+        static double GetColorDistance(SKColor e1, SKColor e2)
+        {
+            long rmean = ((long)e1.Red + e2.Red) / 2;
+            long r = e1.Red - (long)e2.Red;
+            long g = e1.Green - (long)e2.Green;
+            long b = e1.Blue - (long)e2.Blue;
+
+            return Math.Sqrt((((512 + rmean) * r * r) >> 8) + 4 * g * g + (((767 - rmean) * b * b) >> 8));
         }
     }
 

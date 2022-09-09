@@ -2,6 +2,7 @@
 using BlockEditor.Models;
 using BlockEditor.Utils;
 using LevelModel.Models.Components.Art;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using static Builders.DataStructures.DTO.ImageDTO;
 
 namespace BlockEditor.Views.Windows
 {
@@ -19,34 +21,53 @@ namespace BlockEditor.Views.Windows
 
         private double? _moveX;
         private double? _moveY;
-        private bool _moveMode;
+        private string _colorReplace;
+        private string _colorAdd;
+        private ColorSensitivty? _sensitivity;
+
+        private EditArtModes _mode;
         private const int _regionIndex = 1;
 
         public List<SimpleBlock> BlocksToAdd { get; }
         public List<SimpleBlock> BlocksToRemove { get; }
 
+        public enum EditArtModes { Move, Delete, ReplaceColor }
 
-        public EditArtWindow(Map map, MyRegion region, bool move)
-        { 
+        public EditArtWindow(Map map, MyRegion region, EditArtModes mode)
+        {
             _map = map;
             _region = region;
             BlocksToAdd = new List<SimpleBlock>();
             BlocksToRemove = new List<SimpleBlock>();
-            _moveMode = move;
+            _mode = mode;
 
             InitializeComponent();
-            Init();
 
             if (map == null)
                 throw new ArgumentException("map");
 
+            Init();
+            UpdateButtons();
             OpenWindows.Add(this);
+        }
+
+        private void MyColorPickerReplace_OnNewColor(string obj)
+        {
+            _colorReplace = obj;
             UpdateButtons();
         }
 
+        private void MyColorPickerAdd_OnNewColor(string obj)
+        {
+            _colorAdd = obj;
+            UpdateButtons();
+        }
 
         private void Init()
         {
+            MyColorPickerAdd.OnNewColor += MyColorPickerAdd_OnNewColor;
+            MyColorPickerReplace.OnNewColor += MyColorPickerReplace_OnNewColor;
+
             var mapItem = new ComboBoxItem();
             mapItem.Content = "Map";
 
@@ -63,6 +84,13 @@ namespace BlockEditor.Views.Windows
             else
             {
                 cbSelection.SelectedIndex = 0;
+            }
+
+            foreach (var s in Enum.GetValues(typeof(ColorSensitivty)))
+            { 
+                var item = new ComboBoxItem();
+                item.Content = s.ToString();
+                cbSensitivity.Items.Add(item);
             }
         }
 
@@ -89,9 +117,31 @@ namespace BlockEditor.Views.Windows
 
         private void UpdateButtons()
         {
-            btnOk.IsEnabled = !_moveMode || (_moveMode && _moveX != null && _moveY != null);
-            MovePanel.Visibility = _moveMode ? Visibility.Visible : Visibility.Collapsed;
-            Page2Title.Content = _moveMode ? "Move" : "Delete";
+            switch (_mode)
+            {
+                case EditArtModes.Move:
+                    btnOk.IsEnabled =  _moveX != null && _moveY != null;
+                    Page2Title.Content = "Move";
+                    MovePanel.Visibility = Visibility.Visible;
+                    ReplaceColorPanel.Visibility = Visibility.Collapsed;
+                    cbBlocks.Visibility = Visibility.Visible;
+                    break;
+                case EditArtModes.Delete:
+                    btnOk.IsEnabled = true;
+                    Page2Title.Content = "Delete";
+                    MovePanel.Visibility = Visibility.Collapsed;
+                    ReplaceColorPanel.Visibility = Visibility.Collapsed;
+                    cbBlocks.Visibility = Visibility.Visible;
+                    break;
+                case EditArtModes.ReplaceColor:
+                    btnOk.IsEnabled = _colorAdd != null && _colorReplace != null && _sensitivity != null;
+                    btnOk.IsEnabled = _moveX != null && _moveY != null;
+                    Page2Title.Content = "Replace Art Color";
+                    MovePanel.Visibility = Visibility.Collapsed;
+                    ReplaceColorPanel.Visibility = Visibility.Visible;
+                    cbBlocks.Visibility = Visibility.Collapsed;
+                    break;
+            }
         }
 
         private void Double_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -292,37 +342,77 @@ namespace BlockEditor.Views.Windows
             }
         }
 
+        private void ReplaceArtColor(MyRegion region)
+        {
+            var x = (int)(_moveX * 30);
+            var y = (int)(_moveY * 30);
+
+            CreateAbsolutePosition(_map.Level.TextArt0);
+            CreateAbsolutePosition(_map.Level.TextArt1);
+
+
+            var textArt0 = _map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+            var textArt1 = _map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+
+            var drawArt0 = _map.Level.DrawArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+            var drawArt1 = _map.Level.DrawArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+
+            if (cbTextArt0.IsChecked == true)
+                MapUtil.ChangeArtColor(textArt0, null, null);
+            if (cbTextArt1.IsChecked == true)
+                MapUtil.ChangeArtColor(textArt1, null, null);
+
+            if (cbDrawArt0.IsChecked == true)
+                MapUtil.ChangeArtColor(drawArt0, null, null);
+            if (cbDrawArt1.IsChecked == true)
+                MapUtil.ChangeArtColor(drawArt1,null, null);
+
+            CreateRelativePosition(_map.Level.TextArt0);
+            CreateRelativePosition(_map.Level.TextArt1);
+        }
+
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 using(new TempCursor(Cursors.Wait))
                 {
-                    if (_moveMode)
+                    switch (_mode)
                     {
-                        if (cbSelection.SelectedIndex == _regionIndex)
-                        {
-                            MoveArt(_region);
-                            MoveBlocks(_region);
-                        }
-                        else
-                        {
-                            MoveArt();
-                            MoveBlocks();
-                        }
-                    }
-                    else
-                    {
-                        if (cbSelection.SelectedIndex == _regionIndex)
-                        {
-                            RemoveArt(_region);
-                            RemoveBlocks(_region);
-                        }
-                        else
-                        {
-                            RemoveArt();
-                            RemoveBlocks();
-                        }
+                        case EditArtModes.Move:
+                            if (cbSelection.SelectedIndex == _regionIndex)
+                            {
+                                MoveArt(_region);
+                                MoveBlocks(_region);
+                            }
+                            else
+                            {
+                                MoveArt();
+                                MoveBlocks();
+                            }
+                            break;
+                        case EditArtModes.Delete:
+                            if (cbSelection.SelectedIndex == _regionIndex)
+                            {
+                                RemoveArt(_region);
+                                RemoveBlocks(_region);
+                            }
+                            else
+                            {
+                                RemoveArt();
+                                RemoveBlocks();
+                            }
+                            break;
+                        case EditArtModes.ReplaceColor:
+                            if (cbSelection.SelectedIndex == _regionIndex)
+                            {
+                                ReplaceArtColor(_region);
+                            }
+                            else
+                            {
+                                ReplaceArtColor(_region);
+                            }
+                            break;
                     }
                 }
 
@@ -337,6 +427,23 @@ namespace BlockEditor.Views.Windows
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void cbSensitivity_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (cbSensitivity.SelectedIndex != -1)
+                    _sensitivity = (ColorSensitivty)(cbSensitivity.SelectedIndex + 1);
+                else
+                    _sensitivity = null;
+
+                UpdateButtons();
+            }
+            catch (Exception ex)
+            {
+                MessageUtil.ShowError(ex.Message);
+            }
         }
     }
 }
