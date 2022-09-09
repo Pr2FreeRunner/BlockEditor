@@ -13,6 +13,7 @@ using System.Linq;
 using LevelModel.Models.Components.Art;
 using SkiaSharp;
 using BlockEditor.Utils;
+using static Builders.DataStructures.DTO.ImageDTO;
 
 namespace BlockEditor.Helpers
 {
@@ -131,15 +132,20 @@ namespace BlockEditor.Helpers
             }
         }
 
-        public static void ChangeArtColor(IEnumerable<Art> art, SKColor? replace, SKColor? add)
+
+        public static void ChangeArtColor(IEnumerable<Art> art, SKColor? replace, SKColor? add, ColorSensitivty sensitivity)
         {
             if (art == null)
                 return;
 
             foreach (Art a in art)
             {
-                var c0 = ColorUtil.GetColorFromHex(a.Color);
-                var c = new SKColor();
+                var color  = ColorUtil.ToSkColor(a.Color);
+
+                if (!ColorUtil.IsColorEqual(color, replace, sensitivity))
+                    continue;
+
+                a.Color = ColorUtil.ToHexString(color);
             }
         }
 

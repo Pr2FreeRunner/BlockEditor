@@ -77,6 +77,22 @@ namespace BlockEditor.Utils
 
             return Math.Sqrt((((512 + rmean) * r * r) >> 8) + 4 * g * g + (((767 - rmean) * b * b) >> 8));
         }
+
+        public static SKColor ToSkColor(string color)
+        {
+            if (string.IsNullOrWhiteSpace(color))
+                new SKColor();
+
+            var c = ColorUtil.GetColorFromHex(color);
+            return new SKColor(c.Value.R, c.Value.G, c.Value.B);
+        }
+
+        public static string ToHexString(SKColor c)
+        {
+            var c1 = Color.FromRgb(c.Red, c.Green, c.Blue);
+
+            return c1.ToString().Substring(3);
+        }
     }
 
 }
