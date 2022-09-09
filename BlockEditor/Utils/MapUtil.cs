@@ -145,19 +145,19 @@ namespace BlockEditor.Helpers
         }
 
 
-        public static void ChangeArtColor(IEnumerable<Art> art, SKColor? replace, SKColor? add, ColorSensitivty sensitivity)
+        public static void ChangeArtColor(IEnumerable<Art> art, SKColor? replace, SKColor? add, ColorSensitivty sensitivity, bool hex)
         {
             if (art == null)
                 return;
 
             foreach (Art a in art)
             {
-                var color  = ColorUtil.ToSkColor(a.Color);
+                var color  = ColorUtil.ToSkColor(hex ? ColorUtil.GetColorFromHex(a.Color) : ColorUtil.GetColorFromBlockOption(a.Color));
 
                 if (!ColorUtil.IsColorEqual(color, replace, sensitivity))
                     continue;
 
-                a.Color = ColorUtil.ToHexString(add.Value);
+                a.Color = hex ? ColorUtil.ToHexString(add.Value) : ColorUtil.ToIntString(add.Value);
             }
         }
 

@@ -439,8 +439,8 @@ namespace BlockEditor.Views.Windows
 
         private void ReplaceArtColor(MyRegion region)
         {
-            var replace = ColorUtil.ToSkColor(_colorReplace);
-            var add     = ColorUtil.ToSkColor(_colorAdd);
+            var replace = ColorUtil.ToSkColor(ColorUtil.GetColorFromHex(_colorReplace));
+            var add     = ColorUtil.ToSkColor(ColorUtil.GetColorFromHex(_colorAdd));
 
             CreateAbsolutePosition(_map.Level.TextArt0);
             CreateAbsolutePosition(_map.Level.TextArt1);
@@ -453,14 +453,14 @@ namespace BlockEditor.Views.Windows
             var drawArt1 = _map.Level.DrawArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
 
             if (cbTextArt0.IsChecked == true)
-                MapUtil.ChangeArtColor(textArt0, replace, add, _sensitivity.Value);
+                MapUtil.ChangeArtColor(textArt0, replace, add, _sensitivity.Value, false);
             if (cbTextArt1.IsChecked == true)
-                MapUtil.ChangeArtColor(textArt1, replace, add, _sensitivity.Value);
+                MapUtil.ChangeArtColor(textArt1, replace, add, _sensitivity.Value, false);
 
             if (cbDrawArt0.IsChecked == true)
-                MapUtil.ChangeArtColor(drawArt0, replace, add, _sensitivity.Value);
+                MapUtil.ChangeArtColor(drawArt0, replace, add, _sensitivity.Value, true);
             if (cbDrawArt1.IsChecked == true)
-                MapUtil.ChangeArtColor(drawArt1, replace, add, _sensitivity.Value);
+                MapUtil.ChangeArtColor(drawArt1, replace, add, _sensitivity.Value, true);
 
             CreateRelativePosition(_map.Level.TextArt0);
             CreateRelativePosition(_map.Level.TextArt1);
@@ -468,21 +468,21 @@ namespace BlockEditor.Views.Windows
 
         private void ReplaceArtColor()
         {
-            var replace = ColorUtil.ToSkColor(_colorReplace);
-            var add = ColorUtil.ToSkColor(_colorAdd);
+            var replace = ColorUtil.ToSkColor(ColorUtil.GetColorFromHex(_colorReplace));
+            var add = ColorUtil.ToSkColor(ColorUtil.GetColorFromHex(_colorAdd));
 
             CreateAbsolutePosition(_map.Level.TextArt0);
             CreateAbsolutePosition(_map.Level.TextArt1);
 
             if (cbTextArt0.IsChecked == true)
-                MapUtil.ChangeArtColor(_map.Level.TextArt0, replace, add, _sensitivity.Value);
+                MapUtil.ChangeArtColor(_map.Level.TextArt0, replace, add, _sensitivity.Value, false);
             if (cbTextArt1.IsChecked == true)
-                MapUtil.ChangeArtColor(_map.Level.TextArt1, replace, add, _sensitivity.Value);
+                MapUtil.ChangeArtColor(_map.Level.TextArt1, replace, add, _sensitivity.Value, false);
 
             if (cbDrawArt0.IsChecked == true)
-                MapUtil.ChangeArtColor(_map.Level.DrawArt0, replace, add, _sensitivity.Value);
+                MapUtil.ChangeArtColor(_map.Level.DrawArt0, replace, add, _sensitivity.Value, true);
             if (cbDrawArt1.IsChecked == true)
-                MapUtil.ChangeArtColor(_map.Level.DrawArt1, replace, add, _sensitivity.Value);
+                MapUtil.ChangeArtColor(_map.Level.DrawArt1, replace, add, _sensitivity.Value, true);
 
             CreateRelativePosition(_map.Level.TextArt0);
             CreateRelativePosition(_map.Level.TextArt1);

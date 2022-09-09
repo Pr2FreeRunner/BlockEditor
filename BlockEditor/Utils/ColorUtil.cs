@@ -1,5 +1,6 @@
 ﻿using SkiaSharp;
 using System;
+using System.Globalization;
 using System.Windows.Media;
 using static Builders.DataStructures.DTO.ImageDTO;
 
@@ -58,11 +59,11 @@ namespace BlockEditor.Utils
 
             switch (sensitivty)
             {
-                case ColorSensitivty.VeryLow: return distance < 100;
-                case ColorSensitivty.Low: return distance < 75;
-                case ColorSensitivty.Medium: return distance < 50;
-                case ColorSensitivty.High: return distance < 25;
-                case ColorSensitivty.VeryHigh: return distance < 10;
+                case ColorSensitivty.VeryLow: return distance < 200;
+                case ColorSensitivty.Low: return distance < 125;
+                case ColorSensitivty.Medium: return distance < 80;
+                case ColorSensitivty.High: return distance < 40;
+                case ColorSensitivty.VeryHigh: return distance < 15;
 
                 default: return distance < 50;
             }
@@ -78,20 +79,31 @@ namespace BlockEditor.Utils
             return Math.Sqrt((((512 + rmean) * r * r) >> 8) + 4 * g * g + (((767 - rmean) * b * b) >> 8));
         }
 
-        public static SKColor ToSkColor(string color)
+        public static SKColor ToSkColor(System.Drawing.Color? c)
         {
-            if (string.IsNullOrWhiteSpace(color))
-                new SKColor();
+            if(c == null)
+                return new SKColor();
 
-            var c = ColorUtil.GetColorFromHex(color);
             return new SKColor(c.Value.R, c.Value.G, c.Value.B);
         }
 
         public static string ToHexString(SKColor c)
         {
-            var c1 = Color.FromRgb(c.Red, c.Green, c.Blue);
+            var c1  = Color.FromRgb(c.Red, c.Green, c.Blue);
+            var hex = c1.ToString().Substring(3);
 
-            return c1.ToString().Substring(3);
+            return hex;
+        }
+
+        public static string ToIntString(SKColor c)
+        {
+            var c1 = Color.FromRgb(c.Red, c.Green, c.Blue);
+            var hex = c1.ToString().Substring(3);
+
+            if (int.TryParse(hex, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var result))
+                return result.ToString(CultureInfo.InvariantCulture);
+
+            return hex;
         }
     }
 
