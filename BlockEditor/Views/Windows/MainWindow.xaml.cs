@@ -11,11 +11,11 @@ namespace BlockEditor.Views.Windows
     public partial class MainWindow : Window
     {
 
-        private MapControl _currentMap;
         private MyTabControl _currentTab;
         private int tabNumber = 1;
         public static readonly DateTime StartTime;
 
+        public MapControl CurrentMap { get; set; }
         public MyTabControl CurrentTab { 
             get 
             { 
@@ -32,8 +32,8 @@ namespace BlockEditor.Views.Windows
 
                 if (_currentTab != null)
                 {
-                    _currentMap = _currentTab.MapControl;
-                    MapPanel.Children.Add(_currentMap);
+                    CurrentMap = _currentTab.MapControl;
+                    MapPanel.Children.Add(CurrentMap);
                     _currentTab.OnSelection(true);
                 }
             }
@@ -92,7 +92,7 @@ namespace BlockEditor.Views.Windows
 
         private void OnSelectedBlockId(int? id)
         {
-            if(_currentMap == null)
+            if(CurrentMap == null)
                 return;
 
             BlockSelection.SelectedBlocks = null;
@@ -109,10 +109,10 @@ namespace BlockEditor.Views.Windows
         {
             BlockSelection.Reset();
 
-            if(_currentMap == null)
+            if(CurrentMap == null)
                 return;
 
-            _currentMap.ViewModel.Game.Mode.Value = UserMode.UserModes.None;
+            CurrentMap.ViewModel.Game.Mode.Value = UserMode.UserModes.None;
         }
 
         public void TitleChanged(string title)
@@ -162,19 +162,19 @@ namespace BlockEditor.Views.Windows
 
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
-            if(_currentMap == null)
+            if(CurrentMap == null)
                 return;
 
-            _currentMap.ViewModel.Game.Engine.Pause = false;
+            CurrentMap.ViewModel.Game.Engine.Pause = false;
             base.OnPreviewGotKeyboardFocus(e);
         }
 
         protected override void OnLostKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
-            if (_currentMap == null)
+            if (CurrentMap == null)
                 return;
 
-            _currentMap.ViewModel.Game.Engine.Pause = true;
+            CurrentMap.ViewModel.Game.Engine.Pause = true;
             base.OnLostKeyboardFocus(e);
         }
 
@@ -185,19 +185,19 @@ namespace BlockEditor.Views.Windows
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (_currentMap == null)
+            if (CurrentMap == null)
                 return;
 
             BlocksControl.OnKeyDown(e.Key);
-            _currentMap.UserControl_PreviewKeyDown(sender, e);
+            CurrentMap.UserControl_PreviewKeyDown(sender, e);
         }
 
         private void Window_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (_currentMap == null)
+            if (CurrentMap == null)
                 return;
 
-            _currentMap.UserControl_PreviewMouseWheel(sender, e);
+            CurrentMap.UserControl_PreviewMouseWheel(sender, e);
         }
 
         private void NewTab_Click(object sender, RoutedEventArgs e)

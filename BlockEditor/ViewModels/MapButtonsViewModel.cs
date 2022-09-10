@@ -38,7 +38,7 @@ namespace BlockEditor.ViewModels
 
         private void ResetUserMode()
         {
-            (App.Current.MainWindow as MainWindow)?.ResetUserMode();
+            App.MyMainWindow?.ResetUserMode();
         }
 
         private void LoginExecute(object obj)

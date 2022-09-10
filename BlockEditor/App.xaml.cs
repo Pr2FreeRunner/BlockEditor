@@ -1,4 +1,5 @@
 ﻿using BlockEditor.Models;
+using BlockEditor.Views.Windows;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,5 +17,12 @@ namespace BlockEditor
         {
         }
 
+        public static MainWindow MyMainWindow
+        {
+            get
+            {
+                return App.Current.MainWindow as MainWindow;
+            }
+        }
     }
 }

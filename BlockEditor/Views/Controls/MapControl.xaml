@@ -63,6 +63,8 @@
                 VerticalAlignment="Stretch"
                 Source="{Binding MapContent, Mode=OneWay}" />
 
+            <StackPanel x:Name="SidePanel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70" />
+
         </Grid>
 
         <myControls:MapButtonsControl x:Name="MapButtons"

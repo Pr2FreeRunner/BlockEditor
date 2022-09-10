@@ -20,6 +20,7 @@ namespace BlockEditor.Views.Controls
         public MapControl()
         {
             InitializeComponent();
+            ClearSidePanel();
             this.DataContext = ViewModel = new MapViewModel();
 
             MapButtons.ViewModel.OnLoadMap += ViewModel.OnLoadMap;
@@ -28,6 +29,33 @@ namespace BlockEditor.Views.Controls
             ZoomControl.ViewModel.OnZoomChanged += (zoom) => ViewModel.OnZoomChanged(zoom);
             this.Loaded += windowLoaded;
             ZoomControl.ViewModel.Zoom = MySettings.Zoom;
+        }
+
+        public void AddSidePanel(Control c)
+        {
+            if(c == null)
+                return;
+
+            SidePanel.Children.Clear();
+            SidePanel.Children.Add(c);
+            SidePanel.Visibility = Visibility.Visible;
+        }
+
+        public void ClearSidePanel()
+        {
+            SidePanel.Children.Clear();
+            SidePanel.Visibility = Visibility.Collapsed;
+        }
+
+        public Control GetSidePanel()
+        {
+            if(SidePanel?.Children == null)
+                return null;
+
+            if(SidePanel.Children.Count == 0)
+                return null;
+
+            return SidePanel.Children[0] as Control;
         }
 
         private void windowLoaded(object sender, RoutedEventArgs e)

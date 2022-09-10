@@ -171,7 +171,7 @@ namespace BlockEditor.Helpers
             else
             {
                 map.Level.Title = save.MapTitle;
-                (App.Current.MainWindow as MainWindow)?.TitleChanged(map.Level.Title);
+                App.MyMainWindow?.TitleChanged(map.Level.Title);
                 Upload(map, save.Publish, save.Newest);
             }
         }
@@ -230,7 +230,7 @@ namespace BlockEditor.Helpers
                 try
                 {
                     map.Level.Title = Path.GetFileNameWithoutExtension(filepath);
-                    (App.Current.MainWindow as MainWindow)?.TitleChanged(map.Level.Title);
+                    App.MyMainWindow?.TitleChanged(map.Level.Title);
 
                     var data = map.ToPr2String(string.Empty, string.Empty, false, false, false);
 

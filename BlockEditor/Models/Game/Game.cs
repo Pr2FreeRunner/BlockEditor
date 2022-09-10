@@ -211,6 +211,7 @@ namespace BlockEditor.Models
             if (userSelection)
                 UserSelection.Reset();
 
+            App.MyMainWindow?.CurrentMap?.ClearSidePanel();
             Mode.Value = UserModes.None;
             Mouse.OverrideCursor = null;
             MeasureDistance.Reset();

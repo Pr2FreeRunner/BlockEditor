@@ -5,6 +5,7 @@ using System.Windows.Media.Imaging;
 using BlockEditor.Helpers;
 using BlockEditor.Models;
 using BlockEditor.Utils;
+using BlockEditor.Views.Controls;
 using BlockEditor.Views.Windows;
 using LevelModel.Models.Components;
 
@@ -79,7 +80,11 @@ namespace BlockEditor.ViewModels
                     break;
 
                 case UserModes.ConnectTeleports:
-                    Models.ConnectTeleports.Add(Game.Map.Blocks.GetBlock(index));
+                    var c = App.MyMainWindow?.CurrentMap?.GetSidePanel() as ConnectTeleportsControl;
+
+                    if(c != null)
+                        c.Add(Game.Map.Blocks.GetBlock(index));
+
                     break;
 
                 case UserModes.Selection:
@@ -288,7 +293,7 @@ namespace BlockEditor.ViewModels
             Game.Map.BlockSize = size;
 
             Game.UserOperations.Clear();
-            (App.Current.MainWindow as MainWindow)?.TitleChanged(Game.Map.Level.Title);
+            App.MyMainWindow?.TitleChanged(Game.Map.Level.Title);
             Game.CleanUserMode(true, true);
             Game.GoToStartPosition();
 

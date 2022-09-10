@@ -1,39 +1,37 @@
 ﻿using BlockEditor.Helpers;
-using BlockEditor.Views.Windows;
 using LevelModel.Models.Components;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Windows.Input;
 
 namespace BlockEditor.Models
 {
-    public static class ConnectTeleports
+    public class ConnectTeleports
     {
 
-        private static List<SimpleBlock> Blocks { get; }
+        private List<SimpleBlock> _blocks { get; }
+        public string Options { get; set; }
+        public int Count => _blocks?.Count ?? 0;
 
-        static ConnectTeleports()
+
+
+        public ConnectTeleports()
         {
-            Blocks = new List<SimpleBlock>();
-
+            _blocks = new List<SimpleBlock>();
         }
 
-        public static void Start()
+        public void Start()
         {
-            Blocks.Clear();
+            _blocks.Clear();
+            Options = string.Empty;
 
             if (MySettings.FirstConnectTeleports)
             {
-                MessageUtil.ShowInfo("Click on all the teleport blocks you wish to connect."
-                    + Environment.NewLine + Environment.NewLine
-                    + "Then click on the 'Connect Teleports' button again.");
+                MessageUtil.ShowInfo("Click on all the teleport blocks you wish to connect.");
                 MySettings.FirstConnectTeleports = false;
             }
         }
 
-        public static void Add(SimpleBlock b)
+        public void Add(SimpleBlock b)
         {
             if(b.IsEmpty())
                 return;
@@ -42,42 +40,25 @@ namespace BlockEditor.Models
                 return;
 
 
-            if(Blocks.Where(x => x.Position.Value == b.Position.Value).Count() > 0)
+            if(_blocks.Where(x => x.Position.Value == b.Position.Value).Count() > 0)
                 return;
 
-            Blocks.Add(b);
+            _blocks.Add(b);
         }
 
-        public static List<SimpleBlock> End(out bool addMore)
+        public List<SimpleBlock> GetAddedBlocks()
         {
-            addMore = false;
             var result = new List<SimpleBlock>();
 
-            if(Blocks.Count == 0)
+            if(_blocks.Count == 0)
                 return result;
 
-            ConnectTeleportsWindow w = null;
-            using (new TempCursor(null)) 
-            { 
-                w = new ConnectTeleportsWindow(Blocks.Count);
-                w.ShowDialog();
-            }
-
-            if (w.DialogResult != true)
-                return result;
-
-            if(w.AddMore)
-            {
-                addMore = true;
-                return result;
-            }
-
-            foreach (var b in Blocks)
+            foreach (var b in _blocks)
             {
                 if(b.IsEmpty())
                     continue;
 
-                result.Add(new SimpleBlock(b.ID, b.Position.Value, w.Option));
+                result.Add(new SimpleBlock(b.ID, b.Position.Value, Options ?? string.Empty));
             }
 
             return result;

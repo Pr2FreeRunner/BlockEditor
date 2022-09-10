@@ -9,6 +9,7 @@ using System.Windows.Input;
 using LevelModel.Models.Components;
 
 using static BlockEditor.Models.UserMode;
+using BlockEditor.Views.Controls;
 
 namespace BlockEditor.Models
 {
@@ -225,24 +226,12 @@ namespace BlockEditor.Models
 
             if (game.Mode.Value != UserModes.ConnectTeleports)
             {
-                Models.ConnectTeleports.Start();
                 game.Mode.Value = UserModes.ConnectTeleports;
+                App.MyMainWindow?.CurrentMap?.AddSidePanel(new ConnectTeleportsControl(game));
             }
             else
             {
-                var blocks = Models.ConnectTeleports.End(out var addMore);
-
-                if (addMore)
-                {
-                    game.Mode.Value = UserModes.ConnectTeleports; // updates GUI
-                    return;
-                }
-
-                using (new TempOverwrite(game.Map.Blocks, true))
-                {
-                    game.AddBlocks(blocks);
-                    game.Mode.Value = UserModes.None;
-                }
+                game.CleanUserMode(true, true);
             }
         }
 
@@ -413,7 +402,6 @@ namespace BlockEditor.Models
 
             w.ShowDialog();
         }
-
 
         private void AddShape(Game game)
         {

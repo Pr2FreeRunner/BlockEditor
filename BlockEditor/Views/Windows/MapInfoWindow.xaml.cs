@@ -154,7 +154,7 @@ namespace BlockEditor.Views.Windows
                 return;
 
             _map.Level.Title = tb.Text;
-            (App.Current.MainWindow as MainWindow)?.TitleChanged(_map.Level.Title);
+            App.MyMainWindow?.TitleChanged(_map.Level.Title);
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
