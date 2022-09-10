@@ -57,17 +57,21 @@ namespace BlockEditor.Views.Controls
         }
 
 
-        private void Close()
+        private void Close(bool addBlocks)
         {
             App.MyMainWindow?.CurrentMap?.ClearSidePanel();
 
             if(_game == null)
                 return;
 
+            _game.Mode.Value = UserModes.None;
+
+            if(!addBlocks)
+                return;
+
             using (new TempCursor(Cursors.Wait))
                 _game.AddBlocks(_data.GetAddedBlocks());
 
-            _game.Mode.Value = UserModes.None;
         }
 
 
@@ -89,23 +93,18 @@ namespace BlockEditor.Views.Controls
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            Close(false);
         }
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            Close(true);
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
-                Close();
-        }
-
-        private void btnAddMore_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
+                Close(false);
         }
 
         private void btnReset_Click(object sender, RoutedEventArgs e)
