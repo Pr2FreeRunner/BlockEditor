@@ -20,7 +20,7 @@ namespace BlockEditor.Models
         public RelayCommand NavigateCommand { get; }
         public RelayCommand FillCommand { get; }
         public RelayCommand SelectCommand { get; }
-        public RelayCommand AddShapeCommand { get; }
+        public RelayCommand BuildShapeCommand { get; }
         public RelayCommand BlockInfoCommand { get; }
         public RelayCommand MapInfoCommand { get; }
         public RelayCommand BlockCountCommand { get; }
@@ -41,13 +41,14 @@ namespace BlockEditor.Models
         public RelayCommand DistanceCommand { get; }
         public RelayCommand DeleteCommand { get; }
         public RelayCommand DeselectCommand { get; }
+        public RelayCommand MoveLastPasteCommand { get; }
 
 
         public ToolCommands(Game game)
         {
             FillCommand = new RelayCommand((_) => FloodFill(game));
             SelectCommand = new RelayCommand((_) => Selection(game));
-            AddShapeCommand = new RelayCommand((_) => AddShape(game), (_) => game.UserSelection.HasSelectedRegion);
+            BuildShapeCommand = new RelayCommand((_) => BuildShape(game), (_) => HasUserSelectedRegion(game));
             BlockInfoCommand = new RelayCommand((_) => BlockInfo(game));
             MapInfoCommand = new RelayCommand((_) => MapInfo(game));
             BlockCountCommand = new RelayCommand((_) => BlockCount(game));
@@ -70,8 +71,36 @@ namespace BlockEditor.Models
             ReverseHorizontalArrowsCommand = new RelayCommand((_) => ReverseHorizontalArrows(game));
             ReplaceArtColorCommand = new RelayCommand((_) => ReplaceArtColor(game));
             ReverseVerticalArrowsCommand = new RelayCommand((_) => ReverseVerticalArrows(game));
+            MoveLastPasteCommand = new RelayCommand((_) => MoveLastPaste(game), (_) => MoveLastPasteCanExecute(game));
         }
 
+        
+        private void MoveLastPaste(Game game)
+        {
+            var blocksToRemove = game.UserOperations.LastAddBlocksOperation.GetBlocks().ToList();
+
+            var w = new MoveLastPasteWindow(blocksToRemove);
+
+            w.ShowDialog();
+
+            if(w.DialogResult != true)
+                return;
+
+            using(new TempCursor(Cursors.Wait))
+            {
+                BlocksUtil.Move(game, blocksToRemove, w.MoveX.Value, w.MoveY.Value);
+            }
+        }
+
+        private bool MoveLastPasteCanExecute(Game game)
+        {
+            return game.UserOperations.LastAddBlocksOperation != null;
+        }
+
+        private bool HasUserSelectedRegion(Game game)
+        {
+            return game.UserSelection.HasSelectedRegion;
+        }
 
         private void ReverseHorizontalArrows(Game game)
         {
@@ -400,11 +429,11 @@ namespace BlockEditor.Models
             w.ShowDialog();
         }
 
-        private void AddShape(Game game)
+        private void BuildShape(Game game)
         {
             game.CleanUserMode(true, false);
 
-            var selectedId = SelectBlockWindow.Show("Add Shape", false);
+            var selectedId = SelectBlockWindow.Show("Build Shape", false);
             var region = game.UserSelection.MapRegion;
 
             if (selectedId == null)

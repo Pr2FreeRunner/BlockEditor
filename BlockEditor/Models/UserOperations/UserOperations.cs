@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace BlockEditor.ViewModels
 {
 
-    public class UserOperationsViewModel : NotificationObject
+    public class UserOperations
     {
         private readonly Stack<IUserOperation> _operations;
         private readonly Stack<IUserOperation> _undos;
@@ -15,7 +15,10 @@ namespace BlockEditor.ViewModels
         public RelayCommand UndoCommand { get; }
         public RelayCommand RedoCommand { get; }
 
-        public UserOperationsViewModel()
+        public AddBlocksOperation LastAddBlocksOperation { get; set; }
+
+
+        public UserOperations()
         {
             _operations = new Stack<IUserOperation>();
             _undos = new Stack<IUserOperation>();
@@ -49,6 +52,8 @@ namespace BlockEditor.ViewModels
 
                     if(success)
                         _operations.Push(op);
+
+                    AddLastAddBlocksOperation(success, op);
                 }
             }
             catch (Exception ex)
@@ -56,6 +61,27 @@ namespace BlockEditor.ViewModels
                 MessageUtil.ShowError(ex.Message);
             }
         }
+
+        private void AddLastAddBlocksOperation(bool success, IUserOperation op)
+        {
+            if (success && op is AddBlocksOperation last)
+                LastAddBlocksOperation = last;
+            else
+                LastAddBlocksOperation = null;
+        }
+
+        private void UndoLastAddBlocksOperation(bool success, IUserOperation op)
+        {
+            if(!success)
+                return;
+
+            if (!(op is AddBlocksOperation last))
+                return;
+
+            if(last.GetID() == LastAddBlocksOperation.GetID())
+                LastAddBlocksOperation = null;
+        }
+
 
         public void Undo()
         {
@@ -71,6 +97,8 @@ namespace BlockEditor.ViewModels
 
                     if (success)
                         _undos.Push(op);
+
+                    UndoLastAddBlocksOperation(success, op);
                 }
             }
             catch (Exception ex)
@@ -93,6 +121,8 @@ namespace BlockEditor.ViewModels
 
                     if(success)
                         _operations.Push(op);
+
+                    AddLastAddBlocksOperation(success, op);
                 }
             }
             catch (Exception ex)

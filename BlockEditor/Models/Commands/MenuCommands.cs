@@ -68,7 +68,7 @@ namespace BlockEditor.Models
         {
             var w = new MenuWindow("Build Tools");
 
-            w.AddOption("Add Shape", _tools.AddShapeCommand);
+            w.AddOption("Build Shape", _tools.BuildShapeCommand);
             w.AddOption("Add Image", _tools.AddImageCommand);
             w.AddOption("Bucket Flood Fill", _tools.FillCommand);
 
@@ -81,6 +81,7 @@ namespace BlockEditor.Models
             var w = new MenuWindow("Edit Tools");
 
             w.AddOption("Move Region", _tools.MoveRegionCommand);
+            w.AddOption("Move Last Paste", _tools.MoveLastPasteCommand);
             w.AddOption("Replace Block", _tools.ReplaceCommand);
             w.AddOption("Replace Color", _tools.ReplaceArtColorCommand);
             w.AddOption("Reverse Arrows", ReverseArrowsCommand);

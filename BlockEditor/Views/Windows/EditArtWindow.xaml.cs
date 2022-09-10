@@ -166,6 +166,8 @@ namespace BlockEditor.Views.Windows
 
             if (MyUtil.TryParseDouble(text, out var result))
                 _moveY = result;
+            else
+                _moveY = null;
 
             UpdateButtons();
         }
@@ -176,6 +178,8 @@ namespace BlockEditor.Views.Windows
 
             if (MyUtil.TryParseDouble(text, out var result))
                 _moveX = result;
+            else
+                _moveX = null;
 
             UpdateButtons();
 

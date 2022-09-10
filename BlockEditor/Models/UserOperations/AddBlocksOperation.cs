@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace BlockEditor.Models
 {
-    public class AddBlocksOperation : IUserOperation
+    public class AddBlocksOperation : BaseOperation, IUserOperation
     {
         private readonly Map _map;
         private readonly IEnumerable<SimpleBlock> _blocks;
@@ -65,6 +65,11 @@ namespace BlockEditor.Models
 
             _operations = removed;
             return true;
+        }
+
+        public IEnumerable<SimpleBlock> GetBlocks()
+        {
+            return _blocks;
         }
 
         private void ExecuteBlocks(List<AddBlockOperation> operations, bool undo, bool redo = false)

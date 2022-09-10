@@ -3,6 +3,7 @@ using BlockEditor.Views.Windows;
 using LevelModel.Models.Components;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace BlockEditor.Helpers
@@ -253,6 +254,29 @@ namespace BlockEditor.Helpers
             }
 
             return pr2Blocks;
+        }
+
+        public static void Move(Game game, List<SimpleBlock> blocks, int x, int y)
+        {
+            if(game == null || blocks == null)
+                return;
+
+            var result = new List<SimpleBlock>();
+
+            foreach (var b in blocks)
+            {
+                if (b.IsEmpty())
+                    continue;
+
+                var point = new MyPoint(b.Position.Value.X + x, b.Position.Value.Y + y);
+                var block = new SimpleBlock(b.ID, point, b.Options);
+
+                result.Add(block);
+            }
+
+
+            game.RemoveBlocks(blocks);
+            game.AddBlocks(result);
         }
     
     }

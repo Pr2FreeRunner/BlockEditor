@@ -5,7 +5,7 @@ using BlockEditor.Helpers;
 
 namespace BlockEditor.Models
 {
-    public class AddBlockOperation : IUserOperation
+    public class AddBlockOperation : BaseOperation, IUserOperation
     {
         private readonly Map _map;
         private readonly SimpleBlock _block;

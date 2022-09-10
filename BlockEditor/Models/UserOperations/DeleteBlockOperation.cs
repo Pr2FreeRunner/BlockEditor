@@ -1,6 +1,6 @@
 ﻿namespace BlockEditor.Models
 {
-    public class DeleteBlockOperation : IUserOperation
+    public class DeleteBlockOperation : BaseOperation, IUserOperation
     {
         private readonly AddBlockOperation _add;
 

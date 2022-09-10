@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BlockEditor.Models
 {
-    public class DeleteBlocksOperation : IUserOperation
+    public class DeleteBlocksOperation : BaseOperation, IUserOperation
     {
         private readonly AddBlocksOperation _add;
 

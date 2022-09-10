@@ -28,12 +28,11 @@ namespace BlockEditor.Models
 
         public Action<MyPoint?> GetPosition { get; set; }
 
-        public UserOperationsViewModel UserOperations { get; }
+        public UserOperations UserOperations { get; }
 
         public MeasureDistance MeasureDistance { get;  }
 
         public MyPoint? MousePosition { get; set; }
-
 
         public Game()
         {
@@ -43,7 +42,7 @@ namespace BlockEditor.Models
             Engine = new GameEngine();
             Camera = new Camera();
             GameImage = new GameImage(0, 0);
-            UserOperations = new UserOperationsViewModel();
+            UserOperations = new UserOperations();
             MeasureDistance = new MeasureDistance();
         }
 
@@ -120,11 +119,7 @@ namespace BlockEditor.Models
                 }
             }
 
-            if(!blocks.Any())
-                return;
-
-            var op = new AddBlocksOperation(Map, blocks);
-            UserOperations.Execute(op);
+            AddBlocks(blocks);
         }
 
         public void DeleteSelection(MyRegion region)

@@ -1,0 +1,62 @@
+﻿<Window x:Class="BlockEditor.Views.Windows.MoveLastPasteWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        mc:Ignorable="d"
+        Background="Transparent"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        Width="400"
+        SizeToContent="Height"
+        Closing="Window_Closing"
+        PreviewKeyDown="Window_PreviewKeyDown">
+
+    <Border Background="{StaticResource LightBackground}" 
+            BorderBrush="{StaticResource StandardBorderColor}"
+            BorderThickness="2"
+            CornerRadius="15"
+            VerticalAlignment="Stretch"
+            HorizontalAlignment="Stretch"
+            Padding="10">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Button Style="{StaticResource CloseBtn}" Margin="0,2,0,0" Click="CloseButton_Click" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+            </Grid>
+
+            <StackPanel Grid.Row="1" Orientation="Vertical" x:Name="Page2" Visibility="Visible">
+                <Label Content="Move Last Paste" x:Name="Page2Title" FontWeight="SemiBold" Margin="0,-10,0,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                <Label Margin="0,10,0,0" FontWeight="SemiBold" Content="Block Count: "/>
+                <TextBox Margin="4,0,0,0" x:Name="tbCount" IsReadOnly="True"  FontSize="{StaticResource DefaultFontSize}"  />
+
+                <StackPanel Orientation="Horizontal">
+                    <Label Margin="0,10,0,0" FontWeight="SemiBold" Content="X-Movement: "/>
+                    <Label Margin="5,10,0,0" FontWeight="Normal" FontSize="12"  Content="(Positive values moves blocks right)" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <TextBox Margin="4,0,0,0" x:Name="tbX"  PreviewTextInput="Integer_PreviewTextInput" TextChanged="tbX_TextChanged" FontSize="{StaticResource DefaultFontSize}"  />
+
+                <StackPanel Orientation="Horizontal">
+                    <Label Margin="0,10,0,0" FontWeight="SemiBold" Content="Y-Movement: "/>
+                    <Label Margin="5,10,0,0" FontWeight="Normal" FontSize="12" Content="(Positive values moves blocks down)" VerticalAlignment="Center"/>
+                </StackPanel>
+                <TextBox Margin="4,0,0,0" x:Name="tbY" PreviewTextInput="Integer_PreviewTextInput" TextChanged="tbY_TextChanged" FontSize="{StaticResource DefaultFontSize}"  />
+
+                <StackPanel Orientation="Horizontal" Margin="20,20,20,10" HorizontalAlignment="Center">
+                    <Button Style="{StaticResource WhiteBtn}" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="100" Height="25" x:Name="btnOk" Content="OK" Margin="5,5,15,5" Click="btnOk_Click" />
+                    <Button Style="{StaticResource WhiteBtn}" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold" Width="100" Height="25" Content="Cancel" Margin="15,5,5,5" Click="btnCancel_Click" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Border>
+
+</Window>
