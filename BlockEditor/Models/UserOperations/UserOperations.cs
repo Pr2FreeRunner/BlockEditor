@@ -75,6 +75,9 @@ namespace BlockEditor.ViewModels
             if(!success)
                 return;
 
+            if(LastAddBlocksOperation == null)
+                return;
+
             if (!(op is AddBlocksOperation last))
                 return;
 
