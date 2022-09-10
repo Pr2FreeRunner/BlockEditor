@@ -83,7 +83,7 @@ namespace BlockEditor.Views.Windows
             if (MyUtil.TryParse(text, out var result))
                 MoveX = result;
             else
-                MoveY = null;
+                MoveX = null;
 
             UpdateButtons();
         }
