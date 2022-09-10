@@ -17,7 +17,7 @@ namespace BlockEditor.Views.Controls
         private readonly ConnectTeleports _data;
 
         private readonly Game _game;
-
+        private Cursor _connectCursor;
 
 
         public ConnectTeleportsControl(Game game)
@@ -25,6 +25,7 @@ namespace BlockEditor.Views.Controls
             InitializeComponent();
             _game = game;
             _data = new ConnectTeleports();
+            _connectCursor = Mouse.OverrideCursor;
             Init(99);
         }
 
@@ -112,6 +113,25 @@ namespace BlockEditor.Views.Controls
             _data.Start();
             MyColorPicker.SetColor(string.Empty);
             UpdateGui();
+        }
+
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                Mouse.OverrideCursor = null;
+            }
+            catch { }
+        }
+
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if(_game.Mode.Value == UserModes.ConnectTeleports)
+                    Mouse.OverrideCursor = _connectCursor;
+            }
+            catch {}
         }
     }
 }

@@ -9,7 +9,9 @@
              Width="300"
              Height="auto"
              HorizontalAlignment="Center"
-             VerticalAlignment="Center">
+             VerticalAlignment="Center"
+             MouseEnter="UserControl_MouseEnter"
+             MouseLeave="UserControl_MouseLeave">
     
     <Border Background="{StaticResource LightBackground}" 
             BorderBrush="{StaticResource StandardBorderColor}"
