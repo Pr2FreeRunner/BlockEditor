@@ -17,7 +17,7 @@ namespace BlockEditor.Views.Controls
         private readonly ConnectTeleports _data;
 
         private readonly Game _game;
-        private Cursor _connectCursor;
+        private readonly Cursor _connectCursor;
 
 
         public ConnectTeleportsControl(Game game)
