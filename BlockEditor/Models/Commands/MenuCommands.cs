@@ -53,6 +53,11 @@ namespace BlockEditor.Models
         {
             return new RelayCommand((_) =>
             {
+                if(_game.Mode.UsesSidePanel())
+                {
+                    _game.CleanUserMode(false, false);
+                }
+
                 _game.Mode.UpdateGuiState();
                 menu?.Invoke();
                 _game.Mode.UpdateGuiState();

@@ -54,6 +54,14 @@ namespace BlockEditor.Models
             Value = Value;
         }
 
+        public bool UsesSidePanel()
+        {
+            if(Value == UserModes.ConnectTeleports)
+                return true;
+
+            return false;
+        }
+
         public static void Init()
         {
             try

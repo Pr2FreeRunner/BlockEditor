@@ -229,46 +229,47 @@ namespace BlockEditor.Views.Controls
                 }        
                 else if (e.Key == Key.I)
                 {
-                    if (ViewModel.Commands.InfoCommand.CanExecute(null))
+                    if (ViewModel.Commands.InfoCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.InfoCommand.Execute(null);
                 }
                 else if (e.Key == Key.T)
                 {
-                    if (ViewModel.Commands.TransformCommand.CanExecute(null))
+                    if (ViewModel.Commands.TransformCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.TransformCommand.Execute(null);
                 }
                 else if (e.Key == Key.R)
                 {
-                    if (ViewModel.Commands.DeleteCommand.CanExecute(null))
+                    if (ViewModel.Commands.DeleteCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.DeleteCommand.Execute(null);
                 }
                 else if (e.Key == Key.E)
                 {
-                    if (ViewModel.Commands.EditCommand.CanExecute(null))
+                    if (ViewModel.Commands.EditCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.EditCommand.Execute(null);
                 }
                 else if (e.Key == Key.N)
                 {
-                    if (ViewModel.Commands.NavigatorCommand.CanExecute(null))
+                    if (ViewModel.Commands.NavigatorCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.NavigatorCommand.Execute(null);
                 }
                 else if (e.Key == Key.Q)
                 {
-                    if (ViewModel.Commands.AdvancedCommand.CanExecute(null))
+                    if (ViewModel.Commands.AdvancedCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.AdvancedCommand.Execute(null);
                 }
                 else if (e.Key == Key.B)
                 {
-                    if (ViewModel.Commands.BuildCommand.CanExecute(null))
+                    if (ViewModel.Commands.BuildCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.BuildCommand.Execute(null);
                 }
                 else if (e.Key == Key.O)
                 {
-                    ViewModel.IsOverwrite = !ViewModel.IsOverwrite;
+                    if(!App.IsSidePanelActive())
+                        ViewModel.IsOverwrite = !ViewModel.IsOverwrite;
                 }
                 else if (e.Key == Key.LeftShift || e.Key == Key.RightShift)
                 {
-                    if (ViewModel.Commands.SelectCommand.CanExecute(null))
+                    if (ViewModel.Commands.SelectCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.SelectCommand.Execute(null);
                 }
             }

@@ -24,5 +24,10 @@ namespace BlockEditor
                 return App.Current.MainWindow as MainWindow;
             }
         }
+
+        public static bool IsSidePanelActive()
+        {
+            return MyMainWindow?.CurrentMap?.GetSidePanel() != null;
+        }
     }
 }
