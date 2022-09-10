@@ -316,6 +316,7 @@ namespace BlockEditor.Models
                 }
             }
         }
+       
         private void Rotate(Game game)
         {
             if (BlockSelection.RotateCommand.CanExecute(null))
