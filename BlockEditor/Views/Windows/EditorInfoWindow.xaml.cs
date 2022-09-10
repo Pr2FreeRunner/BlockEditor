@@ -17,9 +17,9 @@ using System.Windows.Media.Imaging;
 
 namespace BlockEditor.Views.Windows
 {
-    public partial class SettingsWindow : Window
+    public partial class EditorInfoWindow : Window
     {
-        public SettingsWindow()
+        public EditorInfoWindow()
         {
             InitializeComponent();
 

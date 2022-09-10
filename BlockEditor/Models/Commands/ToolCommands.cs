@@ -281,7 +281,7 @@ namespace BlockEditor.Models
         {
             game.CleanUserMode(true, true);
 
-            new SettingsWindow().ShowDialog();
+            new EditorInfoWindow().ShowDialog();
 
             game.Mode.Value = UserModes.None;
         }

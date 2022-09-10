@@ -9,7 +9,7 @@
         AllowsTransparency="True"
         WindowStyle="None"
         Width="435"
-        Height="520"
+        Height="515"
         WindowStartupLocation="CenterScreen"
         PreviewKeyDown="Window_PreviewKeyDown"
         Closing="Window_Closing">
@@ -41,7 +41,7 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel x:Name="Page1" Grid.Row="0" Visibility="Visible" Orientation="Vertical" VerticalAlignment="Top">
-                    <Label Content="Title:" Margin="0,4,0,0" FontWeight="SemiBold"/>
+                    <Label Content="Title:" Margin="0,-4,0,0" FontWeight="SemiBold"/>
                     <TextBox x:Name="tbtTitle" Margin="4,0,0,0" TextChanged="Title_TextChanged" FontSize="12" />
 
                     <Label Margin="0,7,0,0" FontWeight="SemiBold" Content="Time:"/>
@@ -74,7 +74,7 @@
                 </StackPanel>
 
                 <StackPanel x:Name="Page2" Visibility="Collapsed" Grid.Row="0" Orientation="Vertical" VerticalAlignment="Top">
-                    <Label Content="Note:" Margin="0,4,0,0" FontWeight="SemiBold"/>
+                    <Label Content="Note:" Margin="0,-4,0,0" FontWeight="SemiBold"/>
                     <TextBox MaxLength="255" TextWrapping="Wrap" AcceptsReturn="True" x:Name="tbNote" Margin="4,0,0,0" Height="73" TextChanged="Note_TextChanged" FontSize="12" />
                     
                     <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Items:"/>
@@ -85,7 +85,7 @@
                 </StackPanel>
 
                 <StackPanel x:Name="Page3" Visibility="Collapsed" Grid.Row="0" Orientation="Vertical" VerticalAlignment="Top">
-                    <Label Content="Level ID:" Margin="0,5,0,0" FontWeight="SemiBold"/>
+                    <Label Content="Level ID:" Margin="0,-4,0,0" FontWeight="SemiBold"/>
                     <TextBox x:Name="tbId" Margin="4,0,0,0" IsReadOnly="true" FontSize="12"/>
 
                     <Label Content="Version:" Margin="0,8,0,0" FontWeight="SemiBold"/>
