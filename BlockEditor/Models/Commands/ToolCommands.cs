@@ -75,8 +75,6 @@ namespace BlockEditor.Models
 
         private void ReverseHorizontalArrows(Game game)
         {
-            game.CleanUserMode(true, false);
-
             using (new TempOverwrite(game.Map.Blocks, true))
             using (new TempCursor(Cursors.Wait))
             {
@@ -90,8 +88,6 @@ namespace BlockEditor.Models
 
         private void ReverseVerticalArrows(Game game)
         {
-            game.CleanUserMode(true, false);
-
             using (new TempOverwrite(game.Map.Blocks, true))
             using (new TempCursor(Cursors.Wait))
             {
