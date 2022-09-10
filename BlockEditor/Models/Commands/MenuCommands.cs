@@ -68,9 +68,9 @@ namespace BlockEditor.Models
         {
             var w = new MenuWindow("Build Tools");
 
-            w.AddOption("Build Shape", _tools.BuildShapeCommand);
-            w.AddOption("Add Image", _tools.AddImageCommand);
             w.AddOption("Bucket Flood Fill", _tools.FillCommand);
+            w.AddOption("Build Shape", _tools.BuildShapeCommand);
+            w.AddOption("Convert Image", _tools.ConvertImageCommand);
 
             w.ShowDialog();
             w.Execute();

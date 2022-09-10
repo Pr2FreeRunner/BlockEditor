@@ -322,7 +322,7 @@
     <Page Update="Views\Windows\NavigatorWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
-    <Page Update="Views\Windows\AddImageWindow.xaml">
+    <Page Update="Views\Windows\ConvertImageWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\Windows\MapInfoWindow.xaml">

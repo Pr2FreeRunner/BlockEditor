@@ -84,6 +84,9 @@ namespace BlockEditor.Views.Windows
             if(!(child is WhiteButton b))
                 return;
 
+            if(!b.IsEnabled)
+                return;
+
             b.InvokeClickEvent();
         }
 
