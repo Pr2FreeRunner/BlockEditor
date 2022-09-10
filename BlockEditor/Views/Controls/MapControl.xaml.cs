@@ -15,6 +15,8 @@ namespace BlockEditor.Views.Controls
     {
         public readonly MapViewModel ViewModel;
         private bool _firstload = false;
+
+
         public MapControl()
         {
             InitializeComponent();
@@ -28,6 +30,8 @@ namespace BlockEditor.Views.Controls
             this.Loaded += windowLoaded;
             ZoomControl.ViewModel.Zoom = MySettings.Zoom;
         }
+
+
 
         public void AddSidePanel(Control c)
         {
