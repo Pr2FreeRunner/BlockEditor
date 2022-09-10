@@ -77,6 +77,9 @@ namespace BlockEditor.Models
         
         private void MovePastedBlocks(Game game)
         {
+            if(game.UserOperations.LastAddBlocksOperation == null)
+                return;
+
             var blocksToRemove = game.UserOperations.LastAddBlocksOperation.GetBlocks().ToList();
 
             var w = new MoveLastPasteWindow(blocksToRemove);
