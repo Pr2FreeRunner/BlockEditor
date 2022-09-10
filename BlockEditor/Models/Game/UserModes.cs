@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Input;
 using BlockEditor.Helpers;
 using Newtonsoft.Json.Bson;
+using Newtonsoft.Json.Linq;
 
 namespace BlockEditor.Models
 {
@@ -34,6 +35,7 @@ namespace BlockEditor.Models
                 RaisePropertyChanged(nameof(IsInfoMode));
 
                 SetMouseCursor(value);
+                ClearSidePanel(value);
             }
         }
 
@@ -63,6 +65,14 @@ namespace BlockEditor.Models
             {
                 MessageUtil.ShowError(ex.Message);
             }
+        }
+
+        private void ClearSidePanel(UserModes mode)
+        {
+            if (mode == UserModes.ConnectTeleports)
+                return;
+
+            App.MyMainWindow?.CurrentMap?.ClearSidePanel();
         }
 
         private void SetMouseCursor(UserModes mode)

@@ -5,10 +5,8 @@ using System.Windows.Controls;
 using BlockEditor.Helpers;
 using BlockEditor.ViewModels;
 using BlockEditor.Models;
-using BlockEditor.Views.Windows;
 
 using static BlockEditor.Models.UserMode;
-using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Views.Controls
 {
@@ -43,6 +41,9 @@ namespace BlockEditor.Views.Controls
 
         public void ClearSidePanel()
         {
+            if(SidePanel?.Children == null)
+                return;
+
             SidePanel.Children.Clear();
             SidePanel.Visibility = Visibility.Collapsed;
         }
