@@ -41,7 +41,7 @@ namespace BlockEditor.Models
         public RelayCommand DistanceCommand { get; }
         public RelayCommand DeleteCommand { get; }
         public RelayCommand DeselectCommand { get; }
-        public RelayCommand MoveLastPasteCommand { get; }
+        public RelayCommand MovePastedBlocksCommand { get; }
 
 
         public ToolCommands(Game game)
@@ -71,11 +71,11 @@ namespace BlockEditor.Models
             ReverseHorizontalArrowsCommand = new RelayCommand((_) => ReverseHorizontalArrows(game));
             ReplaceArtColorCommand = new RelayCommand((_) => ReplaceArtColor(game));
             ReverseVerticalArrowsCommand = new RelayCommand((_) => ReverseVerticalArrows(game));
-            MoveLastPasteCommand = new RelayCommand((_) => MoveLastPaste(game), (_) => MoveLastPasteCanExecute(game));
+            MovePastedBlocksCommand = new RelayCommand((_) => MovePastedBlocks(game), (_) => MovePastedBlocksCanExecute(game));
         }
 
         
-        private void MoveLastPaste(Game game)
+        private void MovePastedBlocks(Game game)
         {
             var blocksToRemove = game.UserOperations.LastAddBlocksOperation.GetBlocks().ToList();
 
@@ -92,7 +92,7 @@ namespace BlockEditor.Models
             }
         }
 
-        private bool MoveLastPasteCanExecute(Game game)
+        private bool MovePastedBlocksCanExecute(Game game)
         {
             return game.UserOperations.LastAddBlocksOperation != null;
         }

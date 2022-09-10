@@ -105,7 +105,7 @@ namespace BlockEditor.Models
 
             w.AddOption("Connect Teleports", _tools.ConnectTeleportsCommand);
             w.AddOption("Measure Distance", _tools.DistanceCommand);
-            w.AddOption("Move Last Paste", _tools.MoveLastPasteCommand);
+            w.AddOption("Move Pasted Blocks", _tools.MovePastedBlocksCommand);
 
             w.ShowDialog();
             w.Execute();
