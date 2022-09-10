@@ -1,5 +1,6 @@
-﻿using BlockEditor.Helpers;
-using BlockEditor.Utils;
+﻿using BlockEditor.Utils;
+using BlockEditor.Helpers;
+using BlockEditor.Views.Controls;
 using BlockEditor.Views.Windows;
 using Builders.DataStructures.DTO;
 using System;
@@ -9,7 +10,6 @@ using System.Windows.Input;
 using LevelModel.Models.Components;
 
 using static BlockEditor.Models.UserMode;
-using BlockEditor.Views.Controls;
 
 namespace BlockEditor.Models
 {
