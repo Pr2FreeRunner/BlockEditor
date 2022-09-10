@@ -81,7 +81,6 @@ namespace BlockEditor.Models
             var w = new MenuWindow("Edit Tools");
 
             w.AddOption("Move Region", _tools.MoveRegionCommand);
-            w.AddOption("Move Last Paste", _tools.MoveLastPasteCommand);
             w.AddOption("Replace Block", _tools.ReplaceCommand);
             w.AddOption("Replace Color", _tools.ReplaceArtColorCommand);
             w.AddOption("Reverse Arrows", ReverseArrowsCommand);
@@ -106,6 +105,7 @@ namespace BlockEditor.Models
 
             w.AddOption("Connect Teleports", _tools.ConnectTeleportsCommand);
             w.AddOption("Measure Distance", _tools.DistanceCommand);
+            w.AddOption("Move Last Paste", _tools.MoveLastPasteCommand);
 
             w.ShowDialog();
             w.Execute();
