@@ -20,7 +20,7 @@ using static Builders.DataStructures.DTO.BuildDTO;
 
 namespace BlockEditor.Views.Windows
 {
-    public partial class ConvertImageWindow : Window
+    public partial class BuildImageWindow : Window
     {
         private static double? _posX;
         private static double? _posY;
@@ -38,7 +38,7 @@ namespace BlockEditor.Views.Windows
         public bool GetPosition { get; set; }
 
 
-        public ConvertImageWindow(MyPoint? p)
+        public BuildImageWindow(MyPoint? p)
         {
             InitializeComponent();
 

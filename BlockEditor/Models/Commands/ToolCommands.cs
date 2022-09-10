@@ -25,7 +25,7 @@ namespace BlockEditor.Models
         public RelayCommand MapInfoCommand { get; }
         public RelayCommand BlockCountCommand { get; }
         public RelayCommand ReplaceCommand { get; }
-        public RelayCommand ConvertImageCommand { get; }
+        public RelayCommand BuildImageCommand { get; }
         public RelayCommand RotateCommand { get; }
         public RelayCommand VerticalFlipCommand { get; }
         public RelayCommand HorizontalFlipCommand { get; }
@@ -53,7 +53,7 @@ namespace BlockEditor.Models
             MapInfoCommand = new RelayCommand((_) => MapInfo(game));
             BlockCountCommand = new RelayCommand((_) => BlockCount(game));
             ReplaceCommand = new RelayCommand((_) => Replace(game));
-            ConvertImageCommand = new RelayCommand((_) => ConvertImage(game));
+            BuildImageCommand = new RelayCommand((_) => BuildImage(game));
             RotateCommand = new RelayCommand((_) => Rotate(game));
             VerticalFlipCommand = new RelayCommand((_) => VerticalFlip(game));
             HorizontalFlipCommand = new RelayCommand((_) => HorizontalFlip(game));
@@ -451,17 +451,17 @@ namespace BlockEditor.Models
             BlockSelection.Reset();
         }
 
-        private void ConvertImage(Game game, MyPoint? p = null)
+        private void BuildImage(Game game, MyPoint? p = null)
         {
             game.CleanUserMode(true, true);
 
-            var w = new ConvertImageWindow(p);
+            var w = new BuildImageWindow(p);
             var r = w.ShowDialog();
 
             if (w.GetPosition)
             {
                 game.Mode.Value = UserModes.GetPosition;
-                game.GetPosition = (x) => ConvertImage(game, x);
+                game.GetPosition = (x) => BuildImage(game, x);
                 return;
             }
 

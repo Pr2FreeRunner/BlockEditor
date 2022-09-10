@@ -1,4 +1,4 @@
-﻿<Window x:Class="BlockEditor.Views.Windows.ConvertImageWindow"
+﻿<Window x:Class="BlockEditor.Views.Windows.BuildImageWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -30,7 +30,7 @@
 
             <Grid Grid.Row="0">
                 <Button Style="{StaticResource CloseBtn}" Margin="0,2,0,0" Click="CloseButton_Click" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-                <Label Content="Convert Image" Margin="0" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Label Content="Build Image" Margin="0" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Grid>
 
 
@@ -46,7 +46,7 @@
                     <Button  Grid.Column="1" Content="&#128193;" FontSize="16" Width="40" Margin="5,0,0,0" Click="Path_Click"/>
                 </Grid>
 
-                <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Convert To:"/>
+                <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Target:"/>
                 <ComboBox Margin="4,0,0,0" x:Name="cbTarget" SelectionChanged="target_SelectionChanged" FontSize="{StaticResource DefaultFontSize}"/>
 
                 <Label Margin="0,5,0,0" FontWeight="SemiBold" Content="Size:"/>
