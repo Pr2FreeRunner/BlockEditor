@@ -33,16 +33,6 @@ namespace BlockEditor.Views.Controls
 
 
 
-        public void AddSidePanel(Control c)
-        {
-            if(c == null)
-                return;
-
-            SidePanel.Children.Clear();
-            SidePanel.Children.Add(c);
-            SidePanel.Visibility = Visibility.Visible;
-        }
-
         public void ClearSidePanel()
         {
             if(SidePanel?.Children == null)
@@ -62,6 +52,20 @@ namespace BlockEditor.Views.Controls
 
             return SidePanel.Children[0] as Control;
         }
+
+        public void AddSidePanel(Control c)
+        {
+            // Don't use side panel...
+            // It is buggy (weird consequences)
+            // only use if there is no other way..
+            if (c == null)
+                return;
+
+            SidePanel.Children.Clear();
+            SidePanel.Children.Add(c);
+            SidePanel.Visibility = Visibility.Visible;
+        }
+
 
         private void windowLoaded(object sender, RoutedEventArgs e)
         {
