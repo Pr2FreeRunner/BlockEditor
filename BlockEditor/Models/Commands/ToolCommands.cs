@@ -77,6 +77,8 @@ namespace BlockEditor.Models
         
         private void MovePastedBlocks(Game game)
         {
+            game.CleanUserMode(true, true);
+
             if(game.UserOperations.LastAddBlocksOperation == null)
                 return;
 

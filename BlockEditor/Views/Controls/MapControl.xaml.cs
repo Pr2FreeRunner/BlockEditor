@@ -312,7 +312,7 @@ namespace BlockEditor.Views.Controls
 
         private bool IsSelectionKey(KeyEventArgs e, bool ctrl)
         {
-            var isSelectionMode = ViewModel.Game.Mode.Value == UserModes.Selection;
+            var isSelectionMode = ViewModel.Game.UserSelection.HasSelectedRegion;
             var isCopy = ctrl && (e.Key == Key.C || e.Key == Key.X);
             var isDelete = e.Key == Key.Delete;
 
