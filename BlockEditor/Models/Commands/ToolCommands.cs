@@ -235,7 +235,7 @@ namespace BlockEditor.Models
             }
             else
             {
-                game.CleanUserMode(true, true);
+                game.CleanUserMode(false, false);
             }
         }
 
