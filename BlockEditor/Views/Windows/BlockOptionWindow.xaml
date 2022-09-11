@@ -50,12 +50,6 @@
                 <TextBlock x:Name="tbBlockOption" Margin="10,15,0,0" FontWeight="SemiBold" FontSize="{StaticResource DefaultFontSize}" Text="Block Options:"/>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Margin="10,10,5,5">
-                <TextBlock Margin="0" FontWeight="SemiBold" FontSize="{StaticResource DefaultFontSize}" Text="Hint:"/>
-                <TextBlock Margin="7,0,0,0" FontWeight="Normal" FontSize="{StaticResource DefaultFontSize}" Text="Double click a block to see the Block Info."/>
-                
-            </StackPanel>
-
         </StackPanel>
     </Border>
 </Window>

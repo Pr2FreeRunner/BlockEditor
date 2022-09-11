@@ -250,5 +250,17 @@ namespace BlockEditor {
                 this["Overwrite"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FirstBlockInfo {
+            get {
+                return ((bool)(this["FirstBlockInfo"]));
+            }
+            set {
+                this["FirstBlockInfo"] = value;
+            }
+        }
     }
 }

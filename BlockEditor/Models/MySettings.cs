@@ -148,6 +148,13 @@ namespace BlockEditor.Models
             set { _overwrite = value;  } // don't save, bad performance
         }
 
+        private static bool _firstBlockInfo;
+        public static bool FirstBlockInfo
+        {
+            get { return _firstBlockInfo; }
+            set { _firstBlockInfo = value; Save(); }
+        }
+
         public static void Init()
         {
             //Reset();
@@ -170,6 +177,7 @@ namespace BlockEditor.Models
                 Settings.Default["FirstConnectTeleports"] = FirstConnectTeleports;  
                 Settings.Default["Overwrite"] = Overwrite;
                 Settings.Default["FirstUserSelection"] = FirstUserSelection;
+                Settings.Default["FirstBlockInfo"] = FirstBlockInfo;
                 Settings.Default["FillShape"] = FillShape;
                 Settings.Default["Zoom"] = (int)Zoom;
                 Settings.Default["PlayTime"] = PlayTime;
@@ -212,6 +220,7 @@ namespace BlockEditor.Models
                 _firstConnectTeleports = (bool)Settings.Default["FirstConnectTeleports"];
                 _fillShape = (bool)Settings.Default["FillShape"];
                 _overwrite = (bool)Settings.Default["Overwrite"];
+                _firstBlockInfo = (bool)Settings.Default["FirstBlockInfo"];
                 _zoom = (BlockSize)(Settings.Default["Zoom"] ?? BlockImages.DEFAULT_BLOCK_SIZE);
                 _pr2BuildVersion = HandleBuildVersion(Settings.Default["Pr2BuildVersion"] as string);
                 _playTime = (int)(Settings.Default["PlayTime"] ?? 0);

@@ -564,6 +564,11 @@ namespace BlockEditor.Models
         {
             if (game.Mode.Value != UserModes.BlockInfo)
             {
+                if(MySettings.FirstBlockInfo)
+                {
+                    MessageUtil.ShowInfo("Hint:  You can double click a block to directly open the Block Info.");
+                    MySettings.FirstBlockInfo = false;
+                }
                 game.CleanUserMode(true, true);
                 game.Mode.Value = UserModes.BlockInfo;
             }
