@@ -83,13 +83,14 @@ namespace BlockEditor.Views.Windows
                     var panel = new StackPanel();
                     panel.Orientation = Orientation.Horizontal;
                     panel.VerticalAlignment = VerticalAlignment.Center;
-                    panel.Margin = new Thickness(10, 20, 10, 5);
+                    panel.Margin = new Thickness(10, 10, 10, 5);
 
                     var label = new TextBlock();
                     label.Text = "Color: ";
                     label.VerticalAlignment = VerticalAlignment.Center;
                     label.FontSize = 14;
                     label.Margin = new Thickness(0, 0, 0, 15);
+                    label.FontWeight = FontWeights.SemiBold;
 
                     var c = new ColorPickerControl();
                     c.VerticalAlignment = VerticalAlignment.Center;

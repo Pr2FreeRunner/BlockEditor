@@ -20,7 +20,7 @@ namespace BlockEditor.Models
         public RelayCommand ReverseArrowsCommand { get; }
 
 
-        private readonly ToolCommands _tools;
+        public ToolCommands Tools { get; }
         private readonly Game _game;
 
 
@@ -30,13 +30,13 @@ namespace BlockEditor.Models
             if (game == null)
                 throw new Exception("Invalid args to init...");
 
-            _tools = new ToolCommands(game);
+            Tools = new ToolCommands(game);
             _game = game;
 
-            SelectCommand = _tools.SelectCommand;
-            NavigatorCommand = _tools.NavigatorCommand;
-            NavigateCommand = _tools.NavigateCommand;
-            DeselectCommand = _tools.DeselectCommand;
+            SelectCommand = Tools.SelectCommand;
+            NavigatorCommand = Tools.NavigatorCommand;
+            NavigateCommand = Tools.NavigateCommand;
+            DeselectCommand = Tools.DeselectCommand;
 
             BuildCommand = MenuCommand(BuildMenu);
             TransformCommand = MenuCommand(TransformMenu);
@@ -68,9 +68,9 @@ namespace BlockEditor.Models
         {
             var w = new MenuWindow("Build Tools");
 
-            w.AddOption("Build Image", _tools.BuildImageCommand);
-            w.AddOption("Build Shape", _tools.BuildShapeCommand);
-            w.AddOption("Bucket Flood Fill", _tools.FillCommand);
+            w.AddOption("Build Image", Tools.BuildImageCommand);
+            w.AddOption("Build Shape", Tools.BuildShapeCommand);
+            w.AddOption("Bucket Flood Fill", Tools.FillCommand);
 
             w.ShowDialog();
             w.Execute();
@@ -80,9 +80,9 @@ namespace BlockEditor.Models
         {
             var w = new MenuWindow("Edit Tools");
 
-            w.AddOption("Move Region", _tools.MoveRegionCommand);
-            w.AddOption("Replace Block", _tools.ReplaceCommand);
-            w.AddOption("Replace Color", _tools.ReplaceArtColorCommand);
+            w.AddOption("Move Region", Tools.MoveRegionCommand);
+            w.AddOption("Replace Block", Tools.ReplaceCommand);
+            w.AddOption("Replace Color", Tools.ReplaceArtColorCommand);
             w.AddOption("Reverse Arrows", ReverseArrowsCommand);
             w.ShowDialog();
             w.Execute();
@@ -92,8 +92,8 @@ namespace BlockEditor.Models
         {
             var w = new MenuWindow("Reverse Arrows");
 
-            w.AddOption("Left/Right Arrows", _tools.ReverseHorizontalArrowsCommand);
-            w.AddOption("Up/Down Arrows", _tools.ReverseVerticalArrowsCommand);
+            w.AddOption("Left/Right Arrows", Tools.ReverseHorizontalArrowsCommand);
+            w.AddOption("Up/Down Arrows", Tools.ReverseVerticalArrowsCommand);
 
             w.ShowDialog();
             w.Execute();
@@ -103,9 +103,9 @@ namespace BlockEditor.Models
         {
             var w = new MenuWindow("Advanced Tools");
 
-            w.AddOption("Connect Teleports", _tools.ConnectTeleportsCommand);
-            w.AddOption("Measure Distance", _tools.DistanceCommand);
-            w.AddOption("Move Pasted Blocks", _tools.MovePastedBlocksCommand);
+            w.AddOption("Connect Teleports", Tools.ConnectTeleportsCommand);
+            w.AddOption("Measure Distance", Tools.DistanceCommand);
+            w.AddOption("Move Pasted Blocks", Tools.MovePastedBlocksCommand);
 
             w.ShowDialog();
             w.Execute();
@@ -115,10 +115,10 @@ namespace BlockEditor.Models
         {
             var w = new MenuWindow("Info Tools");
 
-            w.AddOption("Block Count", _tools.BlockCountCommand);
-            w.AddOption("Block Info", _tools.BlockInfoCommand);
-            w.AddOption("Editor Info", _tools.EditorInfoCommand);
-            w.AddOption("Map Info", _tools.MapInfoCommand);
+            w.AddOption("Block Count", Tools.BlockCountCommand);
+            w.AddOption("Block Info", Tools.BlockInfoCommand);
+            w.AddOption("Editor Info", Tools.EditorInfoCommand);
+            w.AddOption("Map Info", Tools.MapInfoCommand);
 
             w.ShowDialog();
             w.Execute();
@@ -128,9 +128,9 @@ namespace BlockEditor.Models
         {
             var w = new MenuWindow("Transform Tools");
 
-            w.AddOption("Rotate", _tools.RotateCommand);
-            w.AddOption("Horizontal Flip", _tools.HorizontalFlipCommand);
-            w.AddOption("Vertical Flip", _tools.VerticalFlipCommand);
+            w.AddOption("Rotate", Tools.RotateCommand);
+            w.AddOption("Horizontal Flip", Tools.HorizontalFlipCommand);
+            w.AddOption("Vertical Flip", Tools.VerticalFlipCommand);
 
             w.ShowDialog();
             w.Execute();
@@ -140,10 +140,10 @@ namespace BlockEditor.Models
         {
             var w = new MenuWindow("Remove Tools");
 
-            w.AddOption("Block Type", _tools.DeleteBlockTypeCommand);
-            w.AddOption("Block Option", _tools.DeleteBlockOptionCommand);
-            w.AddOption("Remove Blocks", _tools.DeleteCommand);
-            w.AddOption("Remove Region", _tools.DeleteRegionCommand);
+            w.AddOption("Block Type", Tools.DeleteBlockTypeCommand);
+            w.AddOption("Block Option", Tools.DeleteBlockOptionCommand);
+            w.AddOption("Remove Blocks", Tools.DeleteModeCommand);
+            w.AddOption("Remove Region", Tools.DeleteRegionCommand);
 
             w.ShowDialog();
             w.Execute();

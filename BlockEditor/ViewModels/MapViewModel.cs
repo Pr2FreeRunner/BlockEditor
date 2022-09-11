@@ -170,6 +170,13 @@ namespace BlockEditor.ViewModels
                     }
                     else if (e.ChangedButton == MouseButton.Left)
                     {
+                        if (e.ClickCount > 1 && Commands.Tools.BlockInfoCommand.CanExecute())
+                        {
+                            Commands.Tools.BlockInfoCommand.Execute(null);
+                            OnPreviewMouseDown(sender, e);
+                            return;
+                        }
+
                         if (BlockSelection.SelectedBlocks != null)
                             Game.AddSelection(index, BlockSelection.SelectedBlocks);
                         else if (BlockSelection.SelectedBlock != null)

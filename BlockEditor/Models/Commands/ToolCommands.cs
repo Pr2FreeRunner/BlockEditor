@@ -39,7 +39,7 @@ namespace BlockEditor.Models
         public RelayCommand ReverseHorizontalArrowsCommand { get; }
         public RelayCommand ReverseVerticalArrowsCommand { get; }
         public RelayCommand DistanceCommand { get; }
-        public RelayCommand DeleteCommand { get; }
+        public RelayCommand DeleteModeCommand { get; }
         public RelayCommand DeselectCommand { get; }
         public RelayCommand MovePastedBlocksCommand { get; }
 
@@ -63,7 +63,7 @@ namespace BlockEditor.Models
             MoveRegionCommand = new RelayCommand((_) => MoveRegion(game));
             DeleteRegionCommand = new RelayCommand((_) => DeleteRegion(game));
             DistanceCommand = new RelayCommand((_) => Distance(game));
-            DeleteCommand = new RelayCommand((_) => Delete(game));
+            DeleteModeCommand = new RelayCommand((_) => DeleteMode(game));
             DeselectCommand = new RelayCommand((_) => Deselect(game), (_) => DeselectCanExecute(game));
             NavigatorCommand = new RelayCommand((_) => Navigator(game, SimpleBlock.None));
             NavigateCommand = new RelayCommand((p) => Navigator(game, p));
@@ -165,33 +165,29 @@ namespace BlockEditor.Models
             game.CleanUserMode(true, true);
         }
 
-        private void Delete(Game game)
+        private void DeleteMode(Game game)
         {
-            BlockSelection.Reset();
-            game.MeasureDistance.Reset();
-
             if (game.Mode.Value != UserModes.Delete)
             {
+                game.CleanUserMode(true, false);
                 game.Mode.Value = UserModes.Delete;
             }
             else
             {
-                game.Mode.Value = UserModes.None;
+                game.CleanUserMode(true, false);
             };
         }
 
         private void Distance(Game game)
         {
-            BlockSelection.Reset();
-            game.MeasureDistance.Reset();
-
             if (game.Mode.Value != UserModes.Distance)
             {
+                game.CleanUserMode(true, false);
                 game.Mode.Value = UserModes.Distance;
             }
             else
             {
-                game.Mode.Value = UserModes.None;
+                game.CleanUserMode(true, false);
             };
         }
 
@@ -232,28 +228,22 @@ namespace BlockEditor.Models
 
         private void Selection(Game game)
         {
-            BlockSelection.Reset();
-            game.UserSelection.Reset();
-            game.MeasureDistance.Reset();
-
             if (game.Mode.Value != UserModes.Selection)
             {
+                game.CleanUserMode(true, true);
                 game.Mode.Value = UserModes.Selection;
             }
             else
             {
-                game.Mode.Value = UserModes.None;
+                game.CleanUserMode(true, true);
             }
         }
 
         private void ConnectTeleports(Game game)
         {
-            BlockSelection.Reset();
-            game.UserSelection.Reset();
-            game.MeasureDistance.Reset();
-
             if (game.Mode.Value != UserModes.ConnectTeleports)
             {
+                game.CleanUserMode(true, true);
                 game.Mode.Value = UserModes.ConnectTeleports;
                 App.MyMainWindow?.CurrentMap?.AddSidePanel(new ConnectTeleportsControl(game));
             }
@@ -267,8 +257,7 @@ namespace BlockEditor.Models
         {
             if (game.Mode.Value != UserModes.Fill)
             {
-                BlockSelection.Reset();
-                game.MeasureDistance.Reset();
+                game.CleanUserMode(true, false);
                 game.Mode.Value = UserModes.Fill;
             }
             else
@@ -451,7 +440,6 @@ namespace BlockEditor.Models
                 throw new OverwriteException();
 
             game.AddBlocks(blocks);
-            BlockSelection.Reset();
         }
 
         private void BuildImage(Game game, MyPoint? p = null)
@@ -576,9 +564,7 @@ namespace BlockEditor.Models
         {
             if (game.Mode.Value != UserModes.BlockInfo)
             {
-                BlockSelection.Reset();
-                game.UserSelection.Reset();
-                game.MeasureDistance.Reset();
+                game.CleanUserMode(true, true);
                 game.Mode.Value = UserModes.BlockInfo;
             }
             else
