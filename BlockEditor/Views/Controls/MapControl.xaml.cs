@@ -94,10 +94,37 @@ namespace BlockEditor.Views.Controls
             }
         }
 
+        private bool IsClickInsideSidePanel(MouseButtonEventArgs e)
+        {
+            var panel = GetSidePanel();
+
+            if (panel == null)
+                return false;
+
+            var p = e.GetPosition(panel);
+
+            if(p.X < 0)
+                return false;
+
+            if (p.Y < 0)
+                return false;
+
+            if (p.X > panel.ActualWidth)
+                return false;
+
+            if(p.Y > panel.ActualHeight)
+                return false;
+
+            return true;
+        }
+
         private void Map_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             try
             {
+                if(IsClickInsideSidePanel(e))
+                    return;
+
                 ViewModel.OnPreviewMouseDown(sender, e);
 
                 if (MySettings.FirstTimeLoad)
