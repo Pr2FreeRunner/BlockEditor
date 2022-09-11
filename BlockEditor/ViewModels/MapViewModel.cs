@@ -170,7 +170,7 @@ namespace BlockEditor.ViewModels
                     }
                     else if (e.ChangedButton == MouseButton.Left)
                     {
-                        if (e.ClickCount > 1 && Commands.Tools.BlockInfoCommand.CanExecute())
+                        if (e.ClickCount > 1 && Commands.Tools.BlockInfoCommand.CanExecute(null))
                         {
                             Commands.Tools.BlockInfoCommand.Execute(null);
                             OnPreviewMouseDown(sender, e);
