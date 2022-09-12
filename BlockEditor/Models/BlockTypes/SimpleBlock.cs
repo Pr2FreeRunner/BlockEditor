@@ -1,6 +1,4 @@
 ﻿using LevelModel.Models.Components;
-using System;
-using System.Collections.Generic;
 
 namespace BlockEditor.Models
 {
