@@ -168,7 +168,7 @@ namespace BlockEditor.Models
 
             foreach(var b in blocks)
             {
-                if (!b.IsEmpty())
+                if (b.IsEmpty())
                     continue;
 
                 var block = BlockImages.GetImageBlock(_game.Map.BlockSize, b.ID)?.SemiTransparentBitmap;
