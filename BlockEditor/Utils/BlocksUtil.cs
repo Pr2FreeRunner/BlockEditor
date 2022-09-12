@@ -43,7 +43,7 @@ namespace BlockEditor.Helpers
             return result;
         }
 
-        public static List<SimpleBlock> GetBlocks(Blocks blocks, MyRegion region, bool startBlocks = true)
+        public static List<SimpleBlock> GetBlocks(Blocks blocks, MyRegion region)
         {
             var result = new List<SimpleBlock>();
 
