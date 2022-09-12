@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BlockEditor.Models
 {
@@ -23,33 +25,33 @@ namespace BlockEditor.Models
 
         public bool HasSelectedRegion => MapRegion.IsComplete() && ImageRegion.IsComplete();
 
-        private SimpleBlock[,] GetSelection(Map map)
+        private List<SimpleBlock> GetSelection(Map map)
         {
+
             if (map == null || MapRegion == null || !MapRegion.IsComplete())
                 return null;
 
-            var start = MapRegion.Start.Value;
-            var end   = MapRegion.End.Value;
+            var start  = MapRegion.Start.Value;
+            var end    = MapRegion.End.Value;
+            var result = new List<SimpleBlock>();
 
-            var selection = new SimpleBlock[end.X - start.X, end.Y - start.Y];
 
             for (int y = start.Y; y < end.Y; y++)
             {
                 for (int x = start.X; x < end.X; x++)
                 {
-                    var b = map.Blocks.GetBlock(x, y);
+                    var normalBlock = map.Blocks.GetBlock(x, y, false);
+                    var startBlock  = map.Blocks.StartBlocks.GetBlock(x, y);
 
-                    if(b.IsEmpty())
-                        continue;
+                    if(!normalBlock.IsEmpty())
+                        result.Add(normalBlock.Move(x - start.X, y - start.Y));
 
-                    var xPos = x - start.X;
-                    var yPos = y - start.Y;
-
-                    selection[xPos, yPos] = b.Move(xPos, yPos);
+                    if (!startBlock.IsEmpty())
+                        result.Add(startBlock.Move(x - start.X, y - start.Y));
                 }
             }
 
-            return selection;
+            return result;
         }
 
         public void OnMouseDown(MyPoint? image, MyPoint? map)
@@ -81,19 +83,7 @@ namespace BlockEditor.Models
             if(selection == null)
                 return false;
 
-            var length0 = selection.GetLength(0);
-            var length1 = selection.GetLength(1);
-
-            for (int i = 0; i < length0; i++)
-            {
-                for (int j = 0; j < length1; j++)
-                {
-                    if (!selection[i, j].IsEmpty())
-                        return true;
-                }
-            }
-
-            return false;
+            return selection.Any(b => !b.IsEmpty());
         }
 
 

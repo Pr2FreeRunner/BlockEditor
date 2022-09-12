@@ -278,6 +278,18 @@ namespace BlockEditor.Helpers
             game.RemoveBlocks(blocks);
             game.AddBlocks(result);
         }
-    
+
+        internal static IEnumerable<SimpleBlock> MoveRelative(List<SimpleBlock> selectedBlocks, MyPoint? index)
+        {
+            var result = new List<SimpleBlock>();
+
+            if (selectedBlocks == null || !selectedBlocks.Any() || index == null)
+                return result;
+
+            return selectedBlocks
+                .Where(b => !b.IsEmpty())
+                .Select(b => b.Move(b.Position.Value.X + index.Value.X, b.Position.Value.Y + index.Value.Y))
+                .ToList();
+        }
     }
 }

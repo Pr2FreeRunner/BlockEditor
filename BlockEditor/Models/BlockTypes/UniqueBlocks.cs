@@ -40,6 +40,11 @@ namespace BlockEditor.Models
             return null;
         }
 
+        public SimpleBlock GetBlock(int x, int y)
+        {
+            return GetBlock(new MyPoint(x, y));
+        }
+
         public SimpleBlock GetBlock(MyPoint? p)
         {
             if(p == null)

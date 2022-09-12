@@ -1,6 +1,7 @@
 ﻿using BlockEditor.Helpers;
 using BlockEditor.Utils;
 using System;
+using System.Collections.Generic;
 
 namespace BlockEditor.Models
 {
@@ -13,10 +14,9 @@ namespace BlockEditor.Models
         public static RelayCommand HorizontalFlipCommand { get; }
 
 
-
         private static readonly object _lock = new object();
-        private static SimpleBlock[,] _selectedBlocks;
-        public static SimpleBlock[,] SelectedBlocks
+        private static List<SimpleBlock> _selectedBlocks;
+        public static List<SimpleBlock> SelectedBlocks
         {
             get
             {
@@ -24,18 +24,16 @@ namespace BlockEditor.Models
             }
             set
             {
-                var temp = ArrayUtil.MinimizeSize(value);
-
                 lock (_lock)
                 {
                     PreviouselectedBlocks = _selectedBlocks;
-                    _selectedBlocks = temp;
+                    _selectedBlocks = value;
                 }
             }
         }
 
-        private static SimpleBlock[,] _previousSelectedBlocks;
-        public static SimpleBlock[,] PreviouselectedBlocks
+        private static List<SimpleBlock> _previousSelectedBlocks;
+        public static List<SimpleBlock> PreviouselectedBlocks
         {
             get
             {
@@ -45,6 +43,7 @@ namespace BlockEditor.Models
             {
                 if(value == null)
                     return;
+
                 _previousSelectedBlocks = value;
             }
         }
@@ -68,9 +67,9 @@ namespace BlockEditor.Models
 
         }
 
-        public static void OnNewSelection(SimpleBlock[,] selection)
+        public static void OnNewSelection(List<SimpleBlock> blocks)
         {
-            SelectedBlocks = selection;
+            SelectedBlocks = blocks;
         }
 
         private static bool CanRotate()

@@ -178,7 +178,7 @@ namespace BlockEditor.ViewModels
                         }
 
                         if (BlockSelection.SelectedBlocks != null)
-                            Game.AddSelection(index, BlockSelection.SelectedBlocks);
+                            Game.AddBlocks(BlocksUtil.MoveRelative(BlockSelection.SelectedBlocks, index));
                         else if (BlockSelection.SelectedBlock != null)
                             Game.AddBlock(index, BlockSelection.SelectedBlock);
                         else
@@ -227,7 +227,7 @@ namespace BlockEditor.ViewModels
                     else if (e.LeftButton == MouseButtonState.Pressed)
                     {
                         if (BlockSelection.SelectedBlocks != null)
-                            Game.AddSelection(index, BlockSelection.SelectedBlocks);
+                            Game.AddBlocks(BlocksUtil.MoveRelative(BlockSelection.SelectedBlocks, index));
                         else
                             Game.AddBlock(index, BlockSelection.SelectedBlock);
                     }

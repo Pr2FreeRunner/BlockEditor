@@ -1,4 +1,5 @@
 ﻿using BlockEditor.Helpers;
+using BlockEditor.Utils;
 using LevelModel.Models.Components;
 using System;
 using System.Drawing;
@@ -162,25 +163,24 @@ namespace BlockEditor.Models
             var arrayX = (int)(_mousePosition.Value.X + _game.Map.BlockPixelSize / 2.0);
             var arrayY = (int)(_mousePosition.Value.Y + _game.Map.BlockPixelSize / 2.0);
 
-            var width = blocks.GetLength(0);
-            var height = blocks.GetLength(1);
+            var width  = ArrayUtil.GetMaxWidth(blocks);
+            var height = ArrayUtil.GetMaxHeight(blocks);
 
-            for (int x = 0; x < width; x++)
+            foreach(var b in blocks)
             {
-                for (int y = 0; y < height; y++)
-                {
-                    var block = BlockImages.GetImageBlock(_game.Map.BlockSize, blocks[x, y].ID)?.SemiTransparentBitmap;
+                if (!b.IsEmpty())
+                    continue;
 
-                    if (block == null)
-                        continue;
+                var block = BlockImages.GetImageBlock(_game.Map.BlockSize, b.ID)?.SemiTransparentBitmap;
 
-                    var blockX = arrayX - width * _game.Map.BlockPixelSize + x * _game.Map.BlockPixelSize;
-                    var blockY = arrayY - height * _game.Map.BlockPixelSize + y * _game.Map.BlockPixelSize;
+                if (block == null)
+                    continue;
 
-                    _game.GameImage.DrawTransperentImage(_graphics, block, blockX, blockY);
-                }
+                var blockX = arrayX - width  * _game.Map.BlockPixelSize + b.Position.Value.X * _game.Map.BlockPixelSize;
+                var blockY = arrayY - height * _game.Map.BlockPixelSize + b.Position.Value.Y * _game.Map.BlockPixelSize;
+
+                _game.GameImage.DrawTransperentImage(_graphics, block, blockX, blockY);
             }
-
         }
 
         private void DrawSelectedRectangle()

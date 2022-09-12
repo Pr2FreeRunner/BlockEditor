@@ -92,37 +92,6 @@ namespace BlockEditor.Models
             UserOperations.Execute(op);
         }
 
-        public void AddSelection(MyPoint? index, SimpleBlock[,] selectedBlocks)
-        {
-            if (index == null || selectedBlocks == null || Map == null)
-                return;
-
-            var width = selectedBlocks.GetLength(0);
-            var height  = selectedBlocks.GetLength(1);
-            var blocks  = new List<SimpleBlock>();
-
-            for (int x = 0; x < width; x++)
-            {
-                for (int y = 0; y < height; y++)
-                {
-                    var block = selectedBlocks[x, y];
-
-                    if (block.IsEmpty())
-                        continue;
-
-                    var position = new MyPoint(index.Value.X + x - width  + 1, index.Value.Y + y - height + 1);
-                    var currentBlock = Map.Blocks.GetBlock(position);
-                     
-                    if(!currentBlock.IsEmpty() && currentBlock.ID == block.ID && string.Equals(currentBlock.Options, block.Options, StringComparison.InvariantCultureIgnoreCase))
-                        continue;
-
-                    blocks.Add(block.Move(position));
-                }
-            }
-
-            AddBlocks(blocks);
-        }
-
         public void DeleteSelection(MyRegion region)
         {
             if (region == null || !region.IsComplete() || Map == null)
