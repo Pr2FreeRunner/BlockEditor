@@ -6,6 +6,7 @@ namespace BlockEditor.Models
 {
     public struct SimpleBlock
     {
+
         public static readonly SimpleBlock None = new SimpleBlock();
 
         public MyPoint? Position { get; set; }
@@ -51,6 +52,8 @@ namespace BlockEditor.Models
             Options = options ?? string.Empty;
         }
 
+
+
         public SimpleBlock Move(int x, int y)
         {
             return new SimpleBlock(ID, x, y, Options);
@@ -60,7 +63,6 @@ namespace BlockEditor.Models
         {
             return Move(p.X, p.Y);
         }
-
 
         public bool IsEmpty()
         {
