@@ -41,13 +41,13 @@ namespace BlockEditor.Models
                 for (int x = start.X; x < end.X; x++)
                 {
                     var normalBlock = map.Blocks.GetBlock(x, y, false);
-                    var startBlock  = map.Blocks.StartBlocks.GetBlock(x, y);
+                    var startBlocks = map.Blocks.StartBlocks.GetBlocks(x, y);
 
                     if(!normalBlock.IsEmpty())
                         result.Add(normalBlock.Move(x - start.X, y - start.Y));
 
-                    if (!startBlock.IsEmpty())
-                        result.Add(startBlock.Move(x - start.X, y - start.Y));
+                    if (startBlocks != null)
+                        result.AddRange(startBlocks.Where(b => !b.IsEmpty()).Select(b => b.Move(x - start.X, y - start.Y)));
                 }
             }
 
@@ -69,8 +69,7 @@ namespace BlockEditor.Models
 
         public void CreateSelection(Map map)
         {
-            var selection = GetSelection(map);
-            BlockSelection.OnNewSelection(selection);
+            BlockSelection.OnNewSelection(GetSelection(map));
         }
 
         public bool SelectedRegionContainsBlocks(Map map)

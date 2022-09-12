@@ -45,6 +45,11 @@ namespace BlockEditor.Models
             return GetBlock(new MyPoint(x, y));
         }
 
+        public List<SimpleBlock> GetBlocks(int x, int y)
+        {
+            return GetBlocks(new MyPoint(x, y));
+        }
+
         public SimpleBlock GetBlock(MyPoint? p)
         {
             if(p == null)
@@ -62,6 +67,27 @@ namespace BlockEditor.Models
             }
 
             return SimpleBlock.None;
+        }
+
+        public List<SimpleBlock> GetBlocks(MyPoint? p)
+        {
+            var result = new List<SimpleBlock>();
+
+            if (p == null)
+                return result;
+
+            foreach (var startBlock in GetBlocks())
+            {
+                if (startBlock.IsEmpty())
+                    continue;
+
+                if (startBlock.Position != p.Value)
+                    continue;
+
+                result.Add(startBlock);
+            }
+
+            return result;
         }
 
         public void Remove(int id)
