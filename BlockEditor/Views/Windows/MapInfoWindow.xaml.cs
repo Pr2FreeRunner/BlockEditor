@@ -161,6 +161,14 @@ namespace BlockEditor.Views.Windows
         {
             if (e.Key == Key.Escape)
                 Close();
+
+            var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+
+            if(ctrl && e.Key == Key.Left && btnLeftPage.IsEnabled)
+                OnPreviousPage(null, null);
+
+            if (ctrl && e.Key == Key.Right && btnRightPage.IsEnabled)
+                OnNextPage(null, null);
         }
 
         private void Rank_TextChanged(object sender, TextChangedEventArgs e)

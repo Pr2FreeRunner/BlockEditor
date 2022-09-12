@@ -247,6 +247,7 @@ namespace BlockEditor.Views.Windows
                 _page = 1;
                 _searchBy = (SearchBy)SearchByComboBox.SelectedIndex;
                 Clean();
+                searchTextbox.Focus();
             }
             catch (Exception ex)
             {
@@ -320,6 +321,14 @@ namespace BlockEditor.Views.Windows
                 Search_Click(null, null);
                 e.Handled = true;
             }
+            else if (ctrl && e.Key == Key.Left && btnLeftPage.IsEnabled)
+            {
+                OnPreviousPage(null, null);
+            }
+            else if (ctrl && e.Key == Key.Right && btnRightPage.IsEnabled)
+            {
+                OnNextPage(null, null);
+            }
 
 
             UpdateButtons();
@@ -382,6 +391,7 @@ namespace BlockEditor.Views.Windows
 
         private void Combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            searchTextbox.Focus();
             Search_Click(null, null);
         }
 
