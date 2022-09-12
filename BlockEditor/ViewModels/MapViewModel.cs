@@ -31,7 +31,6 @@ namespace BlockEditor.ViewModels
         public MenuCommands Commands { get; }
 
 
-
         public MapViewModel()
         {
             Game = new Game();
@@ -39,7 +38,6 @@ namespace BlockEditor.ViewModels
 
             Game.Engine.OnFrame += OnFrameUpdate;
         }
-
 
 
         public void OnFrameUpdate()
