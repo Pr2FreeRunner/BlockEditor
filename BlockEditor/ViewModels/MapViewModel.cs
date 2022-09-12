@@ -192,7 +192,6 @@ namespace BlockEditor.ViewModels
                                 BlockSelection.SelectedBlockOption = b.Options;
                                 Game.Mode.Value = UserModes.MoveBlock;
                             }
-
                         }
                     }
                     break;
