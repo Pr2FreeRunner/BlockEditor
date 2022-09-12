@@ -34,6 +34,7 @@ namespace BlockEditor.Models
 
         public MyPoint? MousePosition { get; set; }
 
+
         public Game()
         {
             UserSelection = new UserSelection();
