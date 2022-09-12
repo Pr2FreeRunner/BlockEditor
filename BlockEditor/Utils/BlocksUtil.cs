@@ -60,8 +60,14 @@ namespace BlockEditor.Helpers
             }
 
             for (int x = lowerLimit.X; x < upperLimit.X; x++)
+            {
                 for (int y = lowerLimit.Y; y < upperLimit.Y; y++)
-                    result.Add(blocks.GetBlock(x, y, startBlocks));
+                {
+                    result.Add(blocks.GetBlock(x, y, false));
+                    result.AddRange(blocks.StartBlocks.GetBlocks(x, y));
+                }
+            }
+
 
             return result;
         }
