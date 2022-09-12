@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlockEditor.Models;
+using System;
 
 namespace BlockEditor.Utils
 {
@@ -45,7 +46,7 @@ namespace BlockEditor.Utils
             return result;
         }
 
-        public static T[,] MinimizeSize<T>(T[,] matrix)
+        public static SimpleBlock[,] MinimizeSize(SimpleBlock[,] matrix)
         {
             if (matrix == null)
                 return null;
@@ -63,7 +64,7 @@ namespace BlockEditor.Utils
                 bool any = false;
                 for (int column = 0; column < width; column++)
                 {
-                    any = matrix[row, column] != null;
+                    any = !matrix[row, column].IsEmpty();
 
                     if (any)
                         break;
@@ -81,7 +82,7 @@ namespace BlockEditor.Utils
 
                 for (int row = 0; row < height; row++)
                 {
-                    any = matrix[row, column] != null;
+                    any = !matrix[row, column].IsEmpty();
 
                     if (any)
                         break;
@@ -99,7 +100,7 @@ namespace BlockEditor.Utils
 
                 for (int column = 0; column < width; column++)
                 {
-                    any = matrix[row, column] != null;
+                    any = !matrix[row, column].IsEmpty();
 
                     if (any)
                         break;
@@ -117,7 +118,7 @@ namespace BlockEditor.Utils
 
                 for (int row = 0; row < height; row++)
                 {
-                    any = matrix[row, column] != null;
+                    any = !matrix[row, column].IsEmpty();
 
                     if (any)
                         break;

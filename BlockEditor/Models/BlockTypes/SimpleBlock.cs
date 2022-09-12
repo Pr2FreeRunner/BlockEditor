@@ -75,42 +75,5 @@ namespace BlockEditor.Models
             return ID == Block.ITEM_BLUE || ID == Block.ITEM_RED;
         }
 
-
-
-        public override bool Equals(object obj)
-        {
-            if (obj is SimpleBlock block)
-                return block == this;
-
-            return false;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Position, ID, Options);
-        }
-
-        public static bool operator ==(SimpleBlock b1, SimpleBlock b2)
-        {
-            if (b1.IsEmpty())
-                return false;
-
-            if (b2.IsEmpty())
-                return false;
-
-            if (b1.Position.Value != b2.Position.Value)
-                return false;
-
-            if (!string.Equals(b1.Options, b2.Options, StringComparison.InvariantCultureIgnoreCase))
-                return false;
-
-            return true;
-        }
-
-
-        public static bool operator !=(SimpleBlock b1, SimpleBlock b2)
-        {
-            return !(b1 == b2);
-        }
     }
 }

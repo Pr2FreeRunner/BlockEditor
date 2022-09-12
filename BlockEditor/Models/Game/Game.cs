@@ -106,16 +106,17 @@ namespace BlockEditor.Models
                 for (int y = 0; y < height; y++)
                 {
                     var block = selectedBlocks[x, y];
-                    var blockIndex = new MyPoint(index.Value.X + x - width  + 1, index.Value.Y + y - height + 1);
-                    var currentBlock = Map.Blocks.GetBlock(blockIndex);
+
+                    if (block.IsEmpty())
+                        continue;
+
+                    var position = new MyPoint(index.Value.X + x - width  + 1, index.Value.Y + y - height + 1);
+                    var currentBlock = Map.Blocks.GetBlock(position);
                      
-                    if(!currentBlock.IsEmpty() && currentBlock == block)
+                    if(!currentBlock.IsEmpty() && currentBlock.ID == block.ID && string.Equals(currentBlock.Options, block.Options, StringComparison.InvariantCultureIgnoreCase))
                         continue;
 
-                    if(!block.IsEmpty())
-                        continue;
-
-                    blocks.Add(block.Move(blockIndex));
+                    blocks.Add(block.Move(position));
                 }
             }
 
