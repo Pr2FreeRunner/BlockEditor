@@ -23,7 +23,7 @@ namespace BlockEditor.Models
 
         public bool HasSelectedRegion => MapRegion.IsComplete() && ImageRegion.IsComplete();
 
-        private int?[,] GetSelection(Map map)
+        private SimpleBlock[,] GetSelection(Map map)
         {
             if (map == null || MapRegion == null || !MapRegion.IsComplete())
                 return null;
@@ -31,7 +31,7 @@ namespace BlockEditor.Models
             var start = MapRegion.Start.Value;
             var end   = MapRegion.End.Value;
 
-            var selection = new int?[end.X - start.X, end.Y - start.Y];
+            var selection = new SimpleBlock[end.X - start.X, end.Y - start.Y];
 
             for (int y = start.Y; y < end.Y; y++)
             {
@@ -42,7 +42,10 @@ namespace BlockEditor.Models
                     if(b.IsEmpty())
                         continue;
 
-                    selection[x - start.X, y - start.Y] = b.ID;
+                    var xPos = x - start.X;
+                    var yPos = y - start.Y;
+
+                    selection[xPos, yPos] = b.Move(xPos, yPos);
                 }
             }
 
@@ -85,7 +88,7 @@ namespace BlockEditor.Models
             {
                 for (int j = 0; j < length1; j++)
                 {
-                    if (selection[i, j] != null)
+                    if (!selection[i, j].IsEmpty())
                         return true;
                 }
             }

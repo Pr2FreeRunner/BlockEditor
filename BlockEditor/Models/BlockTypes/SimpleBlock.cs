@@ -1,5 +1,6 @@
 ﻿using LevelModel.Models.Components;
 using System;
+using System.Collections.Generic;
 
 namespace BlockEditor.Models
 {
@@ -50,6 +51,17 @@ namespace BlockEditor.Models
             Options = options ?? string.Empty;
         }
 
+        public SimpleBlock Move(int x, int y)
+        {
+            return new SimpleBlock(ID, x, y, Options);
+        }
+
+        public SimpleBlock Move(MyPoint p)
+        {
+            return Move(p.X, p.Y);
+        }
+
+
         public bool IsEmpty()
         {
             return Position == null;
@@ -63,5 +75,42 @@ namespace BlockEditor.Models
             return ID == Block.ITEM_BLUE || ID == Block.ITEM_RED;
         }
 
+
+
+        public override bool Equals(object obj)
+        {
+            if (obj is SimpleBlock block)
+                return block == this;
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Position, ID, Options);
+        }
+
+        public static bool operator ==(SimpleBlock b1, SimpleBlock b2)
+        {
+            if (b1.IsEmpty())
+                return false;
+
+            if (b2.IsEmpty())
+                return false;
+
+            if (b1.Position.Value != b2.Position.Value)
+                return false;
+
+            if (!string.Equals(b1.Options, b2.Options, StringComparison.InvariantCultureIgnoreCase))
+                return false;
+
+            return true;
+        }
+
+
+        public static bool operator !=(SimpleBlock b1, SimpleBlock b2)
+        {
+            return !(b1 == b2);
+        }
     }
 }

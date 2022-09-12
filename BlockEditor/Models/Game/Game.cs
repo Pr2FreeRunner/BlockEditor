@@ -92,7 +92,7 @@ namespace BlockEditor.Models
             UserOperations.Execute(op);
         }
 
-        public void AddSelection(MyPoint? index, int?[,] selectedBlocks)
+        public void AddSelection(MyPoint? index, SimpleBlock[,] selectedBlocks)
         {
             if (index == null || selectedBlocks == null || Map == null)
                 return;
@@ -105,17 +105,17 @@ namespace BlockEditor.Models
             {
                 for (int y = 0; y < height; y++)
                 {
-                    var id = selectedBlocks[x, y];
+                    var block = selectedBlocks[x, y];
                     var blockIndex = new MyPoint(index.Value.X + x - width  + 1, index.Value.Y + y - height + 1);
-                    var currentBlock = Map.Blocks.GetBlock(blockIndex.X, blockIndex.Y);
+                    var currentBlock = Map.Blocks.GetBlock(blockIndex);
                      
-                    if(!currentBlock.IsEmpty() && currentBlock.ID == id)
+                    if(!currentBlock.IsEmpty() && currentBlock == block)
                         continue;
 
-                    if(id == null)
+                    if(!block.IsEmpty())
                         continue;
 
-                    blocks.Add(new SimpleBlock(id.Value, blockIndex));
+                    blocks.Add(block.Move(blockIndex));
                 }
             }
 

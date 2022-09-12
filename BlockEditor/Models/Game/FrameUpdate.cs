@@ -169,9 +169,7 @@ namespace BlockEditor.Models
             {
                 for (int y = 0; y < height; y++)
                 {
-                    var id = blocks[x, y];
-
-                    var block = BlockImages.GetImageBlock(_game.Map.BlockSize, id)?.SemiTransparentBitmap;
+                    var block = BlockImages.GetImageBlock(_game.Map.BlockSize, blocks[x, y].ID)?.SemiTransparentBitmap;
 
                     if (block == null)
                         continue;

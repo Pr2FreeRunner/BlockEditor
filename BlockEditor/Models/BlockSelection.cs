@@ -15,8 +15,8 @@ namespace BlockEditor.Models
 
 
         private static readonly object _lock = new object();
-        private static int?[,] _selectedBlocks;
-        public static int?[,] SelectedBlocks
+        private static SimpleBlock[,] _selectedBlocks;
+        public static SimpleBlock[,] SelectedBlocks
         {
             get
             {
@@ -34,8 +34,8 @@ namespace BlockEditor.Models
             }
         }
 
-        private static int?[,] _previousSelectedBlocks;
-        public static int?[,] PreviouselectedBlocks
+        private static SimpleBlock[,] _previousSelectedBlocks;
+        public static SimpleBlock[,] PreviouselectedBlocks
         {
             get
             {
@@ -68,7 +68,7 @@ namespace BlockEditor.Models
 
         }
 
-        public static void OnNewSelection(int?[,] selection)
+        public static void OnNewSelection(SimpleBlock[,] selection)
         {
             SelectedBlocks = selection;
         }
