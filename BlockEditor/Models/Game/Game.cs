@@ -105,13 +105,13 @@ namespace BlockEditor.Models
                 for (int y = region.Start.Value.Y; y < region.End.Value.Y; y++)
                 {
                     var normalBlock = Map.Blocks.GetBlock(x, y, false);
-                    var startBlock = Map.Blocks.StartBlocks.GetBlock(x, y);
+                    var startBlocks = Map.Blocks.StartBlocks.GetBlocks(x, y);
 
                     if (!normalBlock.IsEmpty())
                         result.Add(normalBlock);
 
-                    if (!startBlock.IsEmpty())
-                        result.Add(startBlock);
+                    if (startBlocks != null)
+                        result.AddRange(startBlocks.Where(b => !b.IsEmpty()));
                 }
             }
 
