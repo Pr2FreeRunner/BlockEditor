@@ -59,7 +59,7 @@ namespace BlockEditor.ViewModels
             {
                 case UserModes.Delete:
                     if (Game.UserSelection.MapRegion.IsInside(index))
-                        Game.DeleteSelection(Game.UserSelection.MapRegion);
+                        Game.DeleteBlocks(Game.UserSelection.MapRegion);
                     else
                         Game.DeleteBlock(index);
                     break;
@@ -96,7 +96,7 @@ namespace BlockEditor.ViewModels
                         if (!Game.UserSelection.MapRegion.IsInside(index))
                             break;
 
-                        Game.DeleteSelection(Game.UserSelection.MapRegion);
+                        Game.DeleteBlocks(Game.UserSelection.MapRegion);
                         Game.CleanUserMode(true, true);
                     }
 
@@ -176,7 +176,7 @@ namespace BlockEditor.ViewModels
                         }
 
                         if (BlockSelection.SelectedBlocks != null)
-                            Game.AddBlocks(BlocksUtil.MoveRelative(BlockSelection.SelectedBlocks, index));
+                            Game.AddBlocks(BlocksUtil.MoveSelection(BlockSelection.SelectedBlocks, index));
                         else if (BlockSelection.SelectedBlock != null)
                             Game.AddBlock(index, BlockSelection.SelectedBlock);
                         else
@@ -207,7 +207,7 @@ namespace BlockEditor.ViewModels
                     if (e.RightButton == MouseButtonState.Pressed || e.LeftButton == MouseButtonState.Pressed)
                     {
                         if (Game.UserSelection.MapRegion.IsInside(index))
-                            Game.DeleteSelection(Game.UserSelection.MapRegion);
+                            Game.DeleteBlocks(Game.UserSelection.MapRegion);
                         else
                             Game.DeleteBlock(index);
                     }
@@ -224,7 +224,7 @@ namespace BlockEditor.ViewModels
                     else if (e.LeftButton == MouseButtonState.Pressed)
                     {
                         if (BlockSelection.SelectedBlocks != null)
-                            Game.AddBlocks(BlocksUtil.MoveRelative(BlockSelection.SelectedBlocks, index));
+                            Game.AddBlocks(BlocksUtil.MoveSelection(BlockSelection.SelectedBlocks, index));
                         else
                             Game.AddBlock(index, BlockSelection.SelectedBlock);
                     }

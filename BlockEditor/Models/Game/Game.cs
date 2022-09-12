@@ -92,30 +92,32 @@ namespace BlockEditor.Models
             UserOperations.Execute(op);
         }
 
-        public void DeleteSelection(MyRegion region)
+        public void DeleteBlocks(MyRegion region)
         {
             if (region == null || !region.IsComplete() || Map == null)
                 return;
 
-            var blocks = new List<SimpleBlock>();
+            var result = new List<SimpleBlock>();
 
             for (int x = region.Start.Value.X; x < region.End.Value.X; x++)
             {
                 for (int y = region.Start.Value.Y; y < region.End.Value.Y; y++)
                 {
-                    var block = Map.Blocks.GetBlock(x, y);
+                    var normalBlock = Map.Blocks.GetBlock(x, y, false);
+                    var startBlock = Map.Blocks.StartBlocks.GetBlock(x, y);
 
-                    if (block.IsEmpty())
-                        continue;
+                    if (normalBlock.IsEmpty())
+                        result.Add(normalBlock);
 
-                    blocks.Add(block);
+                    if (startBlock.IsEmpty())
+                        result.Add(startBlock);
                 }
             }
 
-            if (!blocks.Any())
+            if (!result.Any())
                 return;
 
-            var op = new DeleteBlocksOperation(Map, blocks);
+            var op = new DeleteBlocksOperation(Map, result);
             UserOperations.Execute(op);
         }
 

@@ -1,4 +1,5 @@
 ﻿using BlockEditor.Models;
+using BlockEditor.Utils;
 using BlockEditor.Views.Windows;
 using LevelModel.Models.Components;
 using System;
@@ -279,16 +280,19 @@ namespace BlockEditor.Helpers
             game.AddBlocks(result);
         }
 
-        internal static IEnumerable<SimpleBlock> MoveRelative(List<SimpleBlock> selectedBlocks, MyPoint? index)
+        internal static IEnumerable<SimpleBlock> MoveSelection(List<SimpleBlock> blocks, MyPoint? index)
         {
             var result = new List<SimpleBlock>();
 
-            if (selectedBlocks == null || !selectedBlocks.Any() || index == null)
+            if (blocks == null || !blocks.Any() || index == null)
                 return result;
 
-            return selectedBlocks
+            var width  = ArrayUtil.GetMaxWidth(blocks);
+            var height = ArrayUtil.GetMaxHeight(blocks);
+
+            return blocks
                 .Where(b => !b.IsEmpty())
-                .Select(b => b.Move(b.Position.Value.X + index.Value.X, b.Position.Value.Y + index.Value.Y))
+                .Select(b => b.Move(index.Value.X + b.Position.Value.X - width, index.Value.Y + b.Position.Value.Y - height))
                 .ToList();
         }
     }

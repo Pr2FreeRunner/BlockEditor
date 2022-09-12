@@ -250,7 +250,7 @@ namespace BlockEditor.Views.Controls
                     ViewModel.Game.UserSelection.CreateSelection(ViewModel.Game.Map);
 
                     if (e.Key == Key.X || e.Key == Key.Delete)
-                        ViewModel.Game.DeleteSelection(ViewModel.Game.UserSelection.MapRegion);
+                        ViewModel.Game.DeleteBlocks(ViewModel.Game.UserSelection.MapRegion);
 
                     ViewModel.Game.CleanUserMode(e.Key == Key.Delete, true);
                 }
