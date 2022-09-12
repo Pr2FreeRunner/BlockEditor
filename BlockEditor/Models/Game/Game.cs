@@ -107,10 +107,10 @@ namespace BlockEditor.Models
                     var normalBlock = Map.Blocks.GetBlock(x, y, false);
                     var startBlock = Map.Blocks.StartBlocks.GetBlock(x, y);
 
-                    if (normalBlock.IsEmpty())
+                    if (!normalBlock.IsEmpty())
                         result.Add(normalBlock);
 
-                    if (startBlock.IsEmpty())
+                    if (!startBlock.IsEmpty())
                         result.Add(startBlock);
                 }
             }
