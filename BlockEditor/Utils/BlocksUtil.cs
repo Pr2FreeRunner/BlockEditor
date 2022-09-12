@@ -14,30 +14,20 @@ namespace BlockEditor.Helpers
         public static List<SimpleBlock> ReplaceBlock(Blocks blocks, List<int> replace, List<int> add, MyRegion region)
         {
             var result = new List<SimpleBlock>();
+            var notFound = -1;
 
             if (blocks == null || replace == null || add == null || replace.Count != add.Count)
                 return result;
 
-            var lowerLimit = new MyPoint(0, 0);
-            var upperLimit = new MyPoint(Blocks.SIZE, Blocks.SIZE);
-            var notFound = -1;
-
-            if (region != null && region.IsComplete())
+            foreach(var b in GetBlocks(blocks, region))
             {
-                lowerLimit = region.Start.Value;
-                upperLimit = region.End.Value;
-            }
+                if(b.IsEmpty())
+                    continue;
 
-            for (int x = lowerLimit.X; x < upperLimit.X; x++)
-            {
-                for (int y = lowerLimit.Y; y < upperLimit.Y; y++)
-                {
-                    var b = blocks.GetBlock(x, y, false);
-                    var index = replace.IndexOf(b.ID);
+                var index = replace.IndexOf(b.ID);
 
-                    if (index != notFound)
-                        result.Add(new SimpleBlock(add[index], x, y));
-                }
+                if (index != notFound)
+                    result.Add(new SimpleBlock(add[index], b.Position.Value.X, b.Position.Value.Y));
             }
 
             return result;
@@ -79,24 +69,13 @@ namespace BlockEditor.Helpers
             if (blocks == null || ids == null)
                 return result;
 
-            var lowerLimit = new MyPoint(0, 0);
-            var upperLimit = new MyPoint(Blocks.SIZE, Blocks.SIZE);
-
-            if (region != null && region.IsComplete())
+            foreach(var b in GetBlocks(blocks, region))
             {
-                lowerLimit = region.Start.Value;
-                upperLimit = region.End.Value;
-            }
+                if(b.IsEmpty())
+                    continue;
 
-            for (int x = lowerLimit.X; x < upperLimit.X; x++)
-            {
-                for (int y = lowerLimit.Y; y < upperLimit.Y; y++)
-                {
-                    var b = blocks.GetBlock(x, y);
-
-                    if (ids.Contains(b.ID))
-                        result.Add(b);
-                }
+                if (ids.Contains(b.ID))
+                    result.Add(b);
             }
 
             return result;
