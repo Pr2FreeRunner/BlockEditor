@@ -8,12 +8,14 @@ namespace BlockEditor.Models
     public class UserSelection
     {
 
-        public MyRegion MapRegion { get; }
-        public MyRegion ImageRegion { get; }
+        private readonly Func<MyPoint?, MyPoint?> _getMapIndex;
 
-        public UserSelection()
+        public MyRegion ImageRegion { get; }
+        public MyRegion MapRegion => CreateMapIndex();
+
+        public UserSelection(Func<MyPoint?, MyPoint?> getMapIndex)
         {
-            MapRegion = new MyRegion();
+            _getMapIndex = getMapIndex;
             ImageRegion = new MyRegion();
         }
 
@@ -25,14 +27,23 @@ namespace BlockEditor.Models
 
         public bool HasSelectedRegion => MapRegion.IsComplete() && ImageRegion.IsComplete();
 
+        private MyRegion CreateMapIndex()
+        {
+            var point1 = _getMapIndex?.Invoke(ImageRegion.Point1);
+            var point2 = _getMapIndex?.Invoke(ImageRegion.Point2);
+
+            return new MyRegion() { Point1 = point1, Point2 = point2 };
+        }
+
         private List<SimpleBlock> GetSelection(Map map)
         {
+            var region = MapRegion;
 
-            if (map == null || MapRegion == null || !MapRegion.IsComplete())
+            if (map == null || region == null || !region.IsComplete())
                 return null;
 
-            var start  = MapRegion.Start.Value;
-            var end    = MapRegion.End.Value;
+            var start  = region.Start.Value;
+            var end    = region.End.Value;
             var result = new List<SimpleBlock>();
 
 
@@ -54,16 +65,14 @@ namespace BlockEditor.Models
             return result;
         }
 
-        public void OnMouseDown(MyPoint? image, MyPoint? map)
+        public void OnMouseDown(MyPoint? image)
         {
             Reset();
-            MapRegion.Point1   = map;
             ImageRegion.Point1 = image;
         }
 
-        public void OnMouseUp(MyPoint? image, MyPoint? map)
+        public void OnMouseUp(MyPoint? image)
         {
-            MapRegion.Point2 = map;
             ImageRegion.Point2 = image;
         }
 

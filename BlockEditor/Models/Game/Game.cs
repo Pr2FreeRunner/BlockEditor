@@ -37,7 +37,6 @@ namespace BlockEditor.Models
 
         public Game()
         {
-            UserSelection = new UserSelection();
             Mode = new UserMode();
             Map = new Map();
             Engine = new GameEngine();
@@ -45,6 +44,7 @@ namespace BlockEditor.Models
             GameImage = new GameImage(0, 0);
             UserOperations = new UserOperations();
             MeasureDistance = new MeasureDistance();
+            UserSelection = new UserSelection(GetMapIndex);
         }
 
 

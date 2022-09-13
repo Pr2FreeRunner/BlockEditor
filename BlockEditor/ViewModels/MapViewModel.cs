@@ -89,7 +89,7 @@ namespace BlockEditor.ViewModels
 
                     if (e.LeftButton == MouseButtonState.Pressed)
                     {
-                        Game.UserSelection.OnMouseDown(p, index);
+                        Game.UserSelection.OnMouseDown(p);
                     }
                     else if (e.RightButton == MouseButtonState.Pressed)
                     {
@@ -263,7 +263,7 @@ namespace BlockEditor.ViewModels
                     if (e.ChangedButton != MouseButton.Left)
                         break;
 
-                    Game.UserSelection.OnMouseUp(p, index);
+                    Game.UserSelection.OnMouseUp(p);
 
                     if (MySettings.FirstUserSelection
                         && Game.UserSelection.HasSelectedRegion
