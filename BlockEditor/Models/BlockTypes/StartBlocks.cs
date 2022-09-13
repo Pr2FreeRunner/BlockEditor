@@ -4,20 +4,22 @@ using System.Collections.Generic;
 namespace BlockEditor.Models
 {
 
-    public class UniqueBlocks
+    public class StartBlocks
     {
         public SimpleBlock Player1 { get; set; }
         public SimpleBlock Player2 { get; set; }
         public SimpleBlock Player3 { get; set; }
         public SimpleBlock Player4 { get; set; }
 
-        public UniqueBlocks()
+
+        public StartBlocks()
         {
             Player1 = new SimpleBlock(Block.START_BLOCK_P1); 
             Player2 = new SimpleBlock(Block.START_BLOCK_P2);
             Player3 = new SimpleBlock(Block.START_BLOCK_P3);
             Player4 = new SimpleBlock(Block.START_BLOCK_P4);
         }
+
 
         public IEnumerable<SimpleBlock> GetBlocks()
         {
@@ -44,12 +46,7 @@ namespace BlockEditor.Models
         {
             return GetBlock(new MyPoint(x, y));
         }
-
-        public List<SimpleBlock> GetBlocks(int x, int y)
-        {
-            return GetBlocks(new MyPoint(x, y));
-        }
-
+      
         public SimpleBlock GetBlock(MyPoint? p)
         {
             if(p == null)
@@ -67,6 +64,11 @@ namespace BlockEditor.Models
             }
 
             return SimpleBlock.None;
+        }
+
+        public List<SimpleBlock> GetBlocks(int x, int y)
+        {
+            return GetBlocks(new MyPoint(x, y));
         }
 
         public List<SimpleBlock> GetBlocks(MyPoint? p)
