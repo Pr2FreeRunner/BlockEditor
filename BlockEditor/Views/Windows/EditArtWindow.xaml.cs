@@ -249,8 +249,8 @@ namespace BlockEditor.Views.Windows
             var textArt0 = _map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
             var textArt1 = _map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
 
-            var drawArt0 = _map.Level.DrawArt0.Where(a => region.IsInside(a));
-            var drawArt1 = _map.Level.DrawArt1.Where(a => region.IsInside(a));
+            var drawArt0 = _map.Level.DrawArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+            var drawArt1 = _map.Level.DrawArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
 
             if (cbTextArt0.IsChecked == true)
                 _map.Level.TextArt0.RemoveAll(a => textArt0.Contains(a));
