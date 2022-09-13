@@ -4,6 +4,7 @@ using BlockEditor.Views.Windows;
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Input;
 
@@ -13,6 +14,17 @@ namespace BlockEditor.Utils
     class MyUtil
     {
 
+        public static bool HasInternet()
+        {
+            try
+            {
+                return NetworkInterface.GetIsNetworkAvailable();
+            }
+            catch
+            {
+                return false;
+            }
+        }
         public static MyPoint? GetPosition(IInputElement src, MouseEventArgs e)
         {
             if (src == null || e == null)

@@ -234,7 +234,7 @@ namespace BlockEditor.Views.Windows
                 }
                 catch (Exception ex)
                 {
-                    if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+                    if (!MyUtil.HasInternet())
                         MessageUtil.ShowError("Failed to load levels, check ur internet connection...");
                     else
                         MessageUtil.ShowError(ex.Message);

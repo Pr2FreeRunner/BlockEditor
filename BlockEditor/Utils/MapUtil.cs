@@ -219,7 +219,7 @@ namespace BlockEditor.Helpers
                 }
                 catch (Exception ex)
                 {
-                    if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+                    if (!MyUtil.HasInternet())
                         MessageUtil.ShowError("Failed to save level, check ur internet connection...");
                     else
                         MessageUtil.ShowError(ex.Message);
