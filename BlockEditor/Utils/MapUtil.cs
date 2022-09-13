@@ -76,36 +76,27 @@ namespace BlockEditor.Helpers
             proc.Start();
         }
 
-        public static Pen GetGridPen(Color mapBackground)
+        public static SKPaint GetSelectionFillPaint()
         {
-            int r = 0;
-            int g = 0;
-            int b = 0;
-
-            if (mapBackground.R < 128)
-                r = 255;
-            if (mapBackground.G < 128)
-                g = 255;
-            if (mapBackground.B < 128)
-                b = 255;
-
-            return new Pen(Color.FromArgb(77, r, g, b), 1);
+            return new SKPaint
+            {
+                Color = new SKColor(100, 200, 255, 50),
+                Style = SKPaintStyle.Fill,
+            };
         }
 
-        public static Brush GetSelectionBrush(Color c)
+        public static SKPaint GetSelectionStrokePaint()
         {
-            var brush = new SolidBrush(Color.FromArgb(50, c));
-
-            return brush;
+            return new SKPaint
+            {
+                Color = new SKColor(100, 200, 255),
+                Style = SKPaintStyle.Stroke,
+            };
         }
 
-        public static Pen GetSelectionPen()
+        public static SKPaint GetTranslucentPaint()
         {
-            int r = 100;
-            int g = 200;
-            int b = 255;
-
-            return new Pen(Color.FromArgb(80, r, g, b), 1);
+            return new SKPaint { Color = SKColors.White.WithAlpha(127) };
         }
 
         public static void MoveRelativeArt(IEnumerable<Art> art, int x, int y)

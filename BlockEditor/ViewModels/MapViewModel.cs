@@ -9,6 +9,8 @@ using BlockEditor.Views.Controls;
 using BlockEditor.Views.Windows;
 using LevelModel.Models.Components;
 
+using SkiaSharp;
+
 using static BlockEditor.Models.BlockImages;
 using static BlockEditor.Models.UserMode;
 
@@ -18,10 +20,6 @@ namespace BlockEditor.ViewModels
     public class MapViewModel : NotificationObject
     {
 
-        public BitmapImage MapContent
-        {
-            get => Game.GameImage?.GetImage();
-        }
         public bool IsOverwrite
         {
             get { return Game.Map?.Blocks.Overwrite ?? false; }
@@ -36,17 +34,13 @@ namespace BlockEditor.ViewModels
         {
             Game = new Game();
             Commands = new MenuCommands(Game);
-
-            Game.Engine.OnFrame += OnFrameUpdate;
         }
 
 
 
-        public void OnFrameUpdate()
+        public void OnFrameUpdate(SKSurface surface)
         {
-            new FrameUpdate(Game);
-
-            RaisePropertyChanged(nameof(MapContent));
+            new FrameUpdate(Game, surface);
         }
 
         public void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -281,11 +275,7 @@ namespace BlockEditor.ViewModels
 
         public void OnSizeChanged(int width, int height)
         {
-            if (Game.GameImage != null)
-                Game.GameImage.Dispose();
-
             Game.Camera.ScreenSize = new MyPoint(width, height);
-            Game.GameImage = new GameImage(width, height);  // thread safe?
         }
 
         public void OnLoadMap(Map map)
@@ -311,8 +301,8 @@ namespace BlockEditor.ViewModels
 
         public void OnZoomChanged(BlockSize size)
         {
-            var halfScreenX = Game.GameImage.Width / 2;
-            var halfScreenY = Game.GameImage.Height / 2;
+            var halfScreenX = Game.Camera.ScreenSize.X / 2;
+            var halfScreenY = Game.Camera.ScreenSize.Y / 2;
 
             var cameraPosition = new MyPoint(Game.Camera.Position.X, Game.Camera.Position.Y);
             var middleOfScreen = new MyPoint(cameraPosition.X + halfScreenX, cameraPosition.Y + halfScreenY);

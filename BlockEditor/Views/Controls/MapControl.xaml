@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:myControls="clr-namespace:BlockEditor.Views.Controls"
+             xmlns:skia="clr-namespace:SkiaSharp.Views.WPF;assembly=SkiaSharp.Views.WPF"
              mc:Ignorable="d" 
              Loaded="OnLoaded">
 
@@ -58,10 +59,7 @@
             Name="GamePanel"
             Focusable="False">
 
-            <Image 
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Source="{Binding MapContent, Mode=OneWay}" />
+            <skia:SKElement x:Name="SKControl" PaintSurface="SKControl_PaintSurface"/>
 
             <StackPanel x:Name="SidePanel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70" />
 

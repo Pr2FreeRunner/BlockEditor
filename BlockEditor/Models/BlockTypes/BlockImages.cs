@@ -14,6 +14,8 @@ using LevelModel.Models.Components;
 
 using static System.Net.WebRequestMethods;
 using static BlockEditor.Models.BlockImages;
+using SkiaSharp;
+using SkiaSharp.Views.WPF;
 
 namespace BlockEditor.Models
 {
@@ -29,13 +31,14 @@ namespace BlockEditor.Models
         private static Dictionary<BlockSize, BlockImage> _unknownBlocks;
         public const int _unknownID = 99;
         private static Dictionary<BlockSize, Dictionary<string, BlockImage>> _teleportImages;
-
+        private static SKBitmap _teleportMask;
 
         public static void Init()
         {
             _images = new Dictionary<BlockSize, Dictionary<int, BlockImage>>();
             _unknownBlocks = new Dictionary<BlockSize, BlockImage>();
             _teleportImages = new Dictionary<BlockSize, Dictionary<string, BlockImage>>();
+            _teleportMask = SKBitmap.Decode(Path.Combine(Directory.GetCurrentDirectory(), "Resources", "132mask.png"));
 
             foreach (var size in BlockSizeUtil.GetAll())
             {
@@ -76,30 +79,10 @@ namespace BlockEditor.Models
             }
         }
 
-        private static Bitmap ToSemiTransparentBitmap(Bitmap image, float opacity)
+        public static BitmapSource GetBlockBitmapSourceFromId(int id)
         {
-            var colorMatrix      = new ColorMatrix();
-            colorMatrix.Matrix33 = opacity;
-            var imageAttributes  = new ImageAttributes();
-
-            imageAttributes.SetColorMatrix(colorMatrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-            var output = new Bitmap(image.Width, image.Height);
-
-            using (var gfx = Graphics.FromImage(output))
-            {
-                gfx.SmoothingMode = SmoothingMode.AntiAlias;
-                gfx.DrawImage(
-                    image,
-                    new Rectangle(0, 0, image.Width, image.Height),
-                    0,
-                    0,
-                    image.Width,
-                    image.Height,
-                    GraphicsUnit.Pixel,
-                    imageAttributes);
-            }
-
-            return output;
+            var filepath = Path.Combine(Directory.GetCurrentDirectory(), "Resources", "Blocks", id+".bmp");
+            return new BitmapImage(new Uri(filepath));
         }
 
         private static List<Tuple<BlockSize, BlockImage>> GetImages(string filepath)
@@ -123,9 +106,8 @@ namespace BlockEditor.Models
             foreach (var e in BlockSizeUtil.GetAll())
             {
                 var image = Resize(e.GetPixelSize(), src);
-                var bitmap = ToBitmap(image);
-                var semi = ToSemiTransparentBitmap(bitmap, 0.5f);
-                var block = new BlockImage { ID = id, Image = image, Bitmap = bitmap, SemiTransparentBitmap = semi };
+                var skBitmap = image.ToSKBitmap();
+                var block = new BlockImage { ID = id, Image = image, SKBitmap = skBitmap };
 
                 yield return new Tuple<BlockSize, BlockImage>(e, block);
             }
@@ -141,22 +123,6 @@ namespace BlockEditor.Models
             var image = new TransformedBitmap(src, new ScaleTransform(scaleX, scaleY));
 
             return image;
-        }
-
-        private static Bitmap ToBitmap(BitmapSource bitmapImage)
-        {
-            if (bitmapImage == null)
-                return null;
-
-            using (MemoryStream outStream = new MemoryStream())
-            {
-                BitmapEncoder enc = new BmpBitmapEncoder();
-                enc.Frames.Add(BitmapFrame.Create(bitmapImage));
-                enc.Save(outStream);
-                Bitmap bitmap = new Bitmap(outStream);
-
-                return new Bitmap(bitmap);
-            }
         }
 
         public static BlockImage GetImageBlock(BlockSize size, int? id)
@@ -241,11 +207,12 @@ namespace BlockEditor.Models
             return GetImageBlock(size, Block.TELEPORT);
         }
 
-        private static BitmapImage ToBitmapImage(Bitmap bitmap)
+        private static BitmapImage ToBitmapImage(SKBitmap bitmap)
         {
             using (var memory = new MemoryStream())
             {
-                bitmap.Save(memory, ImageFormat.Png);
+
+                bitmap.Encode(memory, SKEncodedImageFormat.Png, 100);
                 memory.Position = 0;
 
                 var bitmapImage = new BitmapImage();
@@ -282,44 +249,19 @@ namespace BlockEditor.Models
             if(TeleportBlockExist(option))
                 return;
 
-            var teleport = GetImageBlock(BlockSize.Zoom100, Block.TELEPORT);
-
-            if(teleport == null)
+            if (_teleportMask == null)
                 return;
 
-            var image    = (Bitmap) teleport.Bitmap.Clone();
             var color    = ColorUtil.GetColorFromBlockOption(option);
-            var graphics = Graphics.FromImage(image);
-            
-            if (color == null || graphics == null)
-                return;
+            var teleBmp = new SKBitmap(_teleportMask.Width, _teleportMask.Height);
+            using (var canvas = new SKCanvas(teleBmp))
+            {
+                var skcolor = ColorUtil.ToSkColor(color);
+                canvas.DrawColor(skcolor);
+                canvas.DrawBitmap(_teleportMask, new SKPoint());
+            }
 
-            // fill
-            var pen  = new System.Drawing.Pen(color.Value, 6);
-            var size = new Size((int) (image.Width * 0.5) + 1, (int)(image.Height * 0.5));
-            var loc  = new System.Drawing.Point((int) (image.Width * 0.2 + 1), (int) (image.Height * 0.2));
-            var rec  = new Rectangle(loc, size);
-            graphics.DrawEllipse(pen, rec);
-
-            var outlineColor = System.Drawing.Color.Black;
-            if (color.Value.R * 0.30 + color.Value.G * 0.50 + color.Value.B * 0.2 < 35)
-                outlineColor = System.Drawing.Color.White;
-
-            // outter
-            var pen2 = new System.Drawing.Pen(outlineColor, 2);
-            var size2 = new Size((int)(image.Width * 0.5 + 7), (int)(image.Height * 0.5) + 7);
-            var loc2 = new System.Drawing.Point((int)(image.Width * 0.2 - 2), (int)(image.Height * 0.2 - 3));
-            var rec2 = new Rectangle(loc2, size2);
-            graphics.DrawEllipse(pen2, rec2);
-
-            // inner
-            var pen3 = new System.Drawing.Pen(outlineColor, 2);
-            var size3 = new Size((int)(image.Width * 0.5 - 6), (int)(image.Height * 0.5) - 6);
-            var loc3 = new System.Drawing.Point((int)(image.Width * 0.2 + 5), (int)(image.Height * 0.2 + 4));
-            var rec3 = new Rectangle(loc3, size3);
-            graphics.DrawEllipse(pen3, rec3);
-
-            foreach (var item in GetImages(ToBitmapImage(image), Block.TELEPORT))
+            foreach (var item in GetImages(ToBitmapImage(teleBmp), Block.TELEPORT))
             {
                 if (item == null)
                     continue;
@@ -332,8 +274,8 @@ namespace BlockEditor.Models
 
                 var white = GetImageBlock(blockSize, Block.BASIC_WHITE);
 
-                if(white != null && white.Bitmap.Width != block.Bitmap.Width && block.Bitmap.Width != 0)
-                    block.Bitmap = new Bitmap(block.Bitmap, new Size(white.Bitmap.Width, white.Bitmap.Height));
+                if (white != null && white.SKBitmap.Width != block.SKBitmap.Width && block.SKBitmap.Width != 0)
+                    block.SKBitmap = teleBmp;
 
                 if (_teleportImages.TryGetValue(blockSize, out var dic))
                     dic.Add(option, item.Item2);
