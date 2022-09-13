@@ -145,7 +145,7 @@ namespace BlockEditor.Models
                 if (b.IsEmpty())
                     continue;
 
-                    var block = BlockImages.GetImageBlock(_game.Map.BlockSize, id)?.SKBitmap;
+                var block = BlockImages.GetImageBlock(_game.Map.BlockSize, b.ID)?.SKBitmap;
 
                 if (block == null)
                     continue;
@@ -153,8 +153,7 @@ namespace BlockEditor.Models
                 var blockX = arrayX - width  * _game.Map.BlockPixelSize + b.Position.Value.X * _game.Map.BlockPixelSize - _game.Map.BlockPixelSize;
                 var blockY = arrayY - height * _game.Map.BlockPixelSize + b.Position.Value.Y * _game.Map.BlockPixelSize - _game.Map.BlockPixelSize;
 
-                    _surface.Canvas.DrawBitmap(block, blockX, blockY);
-                }
+                _surface.Canvas.DrawBitmap(block, blockX, blockY);
             }
         }
 
