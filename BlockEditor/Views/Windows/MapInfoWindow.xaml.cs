@@ -343,7 +343,10 @@ namespace BlockEditor.Views.Windows
             }
             catch(Exception ex)
             {
-                MessageUtil.ShowError(ex.Message);
+                if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+                    MessageUtil.ShowError("Failed to get username, check ur internet connection...");
+                else
+                    MessageUtil.ShowError(ex.Message);
             }
         }
     }

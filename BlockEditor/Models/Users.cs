@@ -176,7 +176,7 @@ namespace BlockEditor.Models
             catch (Exception ex)
             {
                 if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
-                    MessageUtil.ShowError("Failed login, check ur internet connection...");
+                    MessageUtil.ShowError("Failed to login, check ur internet connection...");
                 else
                     MessageUtil.ShowError(ex.Message);
 
