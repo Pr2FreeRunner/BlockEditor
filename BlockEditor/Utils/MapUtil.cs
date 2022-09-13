@@ -217,16 +217,12 @@ namespace BlockEditor.Helpers
 
                     MessageUtil.ShowInfo(msg);
                 }
-                catch (WebException ex)
+                catch (Exception ex)
                 {
                     if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
                         MessageUtil.ShowError("Failed to save level, check ur internet connection...");
                     else
                         MessageUtil.ShowError(ex.Message);
-                }
-                catch (Exception ex)
-                {
-                    MessageUtil.ShowError(ex.Message);
                 }
             }
         }

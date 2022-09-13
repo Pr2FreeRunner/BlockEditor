@@ -232,16 +232,12 @@ namespace BlockEditor.Views.Windows
                         default: throw new Exception("Unknown search config....");
                     }
                 }
-                catch(WebException ex)
+                catch (Exception ex)
                 {
-                    if(!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+                    if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
                         MessageUtil.ShowError("Failed to load levels, check ur internet connection...");
                     else
                         MessageUtil.ShowError(ex.Message);
-                }
-                catch (Exception ex)
-                {
-                    MessageUtil.ShowError(ex.Message);
                 }
             }
 
