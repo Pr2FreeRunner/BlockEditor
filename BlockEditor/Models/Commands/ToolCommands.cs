@@ -153,9 +153,6 @@ namespace BlockEditor.Models
             if (game.UserSelection.HasSelectedRegion)
                 return true;
 
-            if (game.UserSelection.MapRegion.Point1 != null)
-                return true;
-
             if (game.MeasureDistance.MapPoint1 != null)
                 return true;
 

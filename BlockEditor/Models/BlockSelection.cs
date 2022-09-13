@@ -27,7 +27,7 @@ namespace BlockEditor.Models
                 lock (_lock)
                 {
                     PreviouselectedBlocks = _selectedBlocks;
-                    _selectedBlocks = value;
+                    _selectedBlocks = value.AnyBlocks() ? value : null;
                 }
             }
         }
