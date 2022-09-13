@@ -38,7 +38,7 @@ namespace BlockEditor.Models
             }
 
             _operations = added;
-            return true;
+            return _operations.Count != 0;
         }
 
         public bool Undo()
