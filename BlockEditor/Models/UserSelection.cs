@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BlockEditor.Models
 {
@@ -6,66 +8,76 @@ namespace BlockEditor.Models
     public class UserSelection
     {
 
-        public MyRegion MapRegion { get; }
-        public MyRegion ImageRegion { get; }
+        private readonly Func<MyPoint?, MyPoint?> _getMapIndex;
 
-        public UserSelection()
+        public MyRegion ImageRegion { get; }
+        public MyRegion MapRegion => CreateMapIndex();
+
+        public UserSelection(Func<MyPoint?, MyPoint?> getMapIndex)
         {
-            MapRegion = new MyRegion();
+            _getMapIndex = getMapIndex;
             ImageRegion = new MyRegion();
         }
 
         public void Reset()
         {
-            MapRegion.Reset();
             ImageRegion.Reset();
         }
 
-        public bool HasSelectedRegion => MapRegion.IsComplete() && ImageRegion.IsComplete();
+        public bool HasSelectedRegion => ImageRegion.IsComplete();
 
-        private int?[,] GetSelection(Map map)
+        private MyRegion CreateMapIndex()
         {
-            if (map == null || MapRegion == null || !MapRegion.IsComplete())
+            var point1 = _getMapIndex?.Invoke(ImageRegion.Point1);
+            var point2 = _getMapIndex?.Invoke(ImageRegion.Point2);
+
+            return new MyRegion() { Point1 = point1, Point2 = point2 };
+        }
+
+        private List<SimpleBlock> GetSelection(Map map)
+        {
+            var region = MapRegion;
+
+            if (map == null || !region.IsComplete())
                 return null;
 
-            var start = MapRegion.Start.Value;
-            var end   = MapRegion.End.Value;
+            var start  = region.Start.Value;
+            var end    = region.End.Value;
+            var result = new List<SimpleBlock>();
 
-            var selection = new int?[end.X - start.X, end.Y - start.Y];
 
             for (int y = start.Y; y < end.Y; y++)
             {
                 for (int x = start.X; x < end.X; x++)
                 {
-                    var b = map.Blocks.GetBlock(x, y);
+                    var normalBlock = map.Blocks.GetBlock(x, y, false);
+                    var startBlocks = map.Blocks.StartBlocks.GetBlocks(x, y);
 
-                    if(b.IsEmpty())
-                        continue;
+                    if(!normalBlock.IsEmpty())
+                        result.Add(normalBlock.Move(x - start.X, y - start.Y));
 
-                    selection[x - start.X, y - start.Y] = b.ID;
+                    if (startBlocks != null)
+                        result.AddRange(startBlocks.RemoveEmpty().Select(b => b.Move(x - start.X, y - start.Y)));
                 }
             }
 
-            return selection;
+            return result;
         }
 
-        public void OnMouseDown(MyPoint? image, MyPoint? map)
+        public void OnMouseDown(MyPoint? image)
         {
             Reset();
-            MapRegion.Point1   = map;
             ImageRegion.Point1 = image;
         }
 
-        public void OnMouseUp(MyPoint? image, MyPoint? map)
+        public void OnMouseUp(MyPoint? image)
         {
-            MapRegion.Point2 = map;
             ImageRegion.Point2 = image;
         }
 
         public void CreateSelection(Map map)
         {
-            var selection = GetSelection(map);
-            BlockSelection.OnNewSelection(selection);
+            BlockSelection.OnNewSelection(GetSelection(map));
         }
 
         public bool SelectedRegionContainsBlocks(Map map)
@@ -75,22 +87,7 @@ namespace BlockEditor.Models
 
             var selection = GetSelection(map);
 
-            if(selection == null)
-                return false;
-
-            var length0 = selection.GetLength(0);
-            var length1 = selection.GetLength(1);
-
-            for (int i = 0; i < length0; i++)
-            {
-                for (int j = 0; j < length1; j++)
-                {
-                    if (selection[i, j] != null)
-                        return true;
-                }
-            }
-
-            return false;
+            return selection.AnyBlocks();
         }
 
 

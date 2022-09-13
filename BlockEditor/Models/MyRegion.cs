@@ -47,7 +47,7 @@ namespace BlockEditor.Models
         {
             get
             {
-                if(!IsComplete())
+                if(!this.IsComplete())
                     return null;
 
                 return End.Value.X - Start.Value.X;
@@ -58,7 +58,7 @@ namespace BlockEditor.Models
         {
             get
             {
-                if (!IsComplete())
+                if (!this.IsComplete())
                     return null;
 
                 return End.Value.Y - Start.Value.Y;
@@ -70,59 +70,13 @@ namespace BlockEditor.Models
             if(p == null)
                 return false;
 
-            if (IsComplete() == false)
+            if (this.IsComplete() == false)
                 return false;
 
             if (p.Value.X < Start.Value.X || p.Value.X >= End.Value.X)
                 return false;
 
             if (p.Value.Y < Start.Value.Y || p.Value.Y >= End.Value.Y)
-                return false;
-
-            return true;
-        }
-
-        public bool IsInside(DrawArt a)
-        {
-            if (a == null)
-                return false;
-
-            if (IsComplete() == false)
-                return false;
-
-            var myPoint = new MyPoint(a.X / 30, a.Y / 30);
-
-            if(IsInside(myPoint))
-                return true;
-
-            if(a.Movement == null)
-                return false;
-
-            var x = a.X;
-            var y = a.Y;
-            var count = 0;
-
-            foreach(var m in a.Movement)
-            {
-                if(count % 2 == 0)
-                    x += m;
-                else
-                    y += m;
-
-                count++;
-                if (IsInside(new MyPoint(x / 30, y / 30)))
-                    return true;
-            }
-
-            return false;
-        }
-
-        public bool IsComplete()
-        {
-            if(Point1 == null)
-                return false;
-
-            if(Point2 == null)
                 return false;
 
             return true;

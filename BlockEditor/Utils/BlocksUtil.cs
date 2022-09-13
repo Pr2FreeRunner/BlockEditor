@@ -1,4 +1,5 @@
 ﻿using BlockEditor.Models;
+using BlockEditor.Utils;
 using BlockEditor.Views.Windows;
 using LevelModel.Models.Components;
 using System;
@@ -13,36 +14,26 @@ namespace BlockEditor.Helpers
         public static List<SimpleBlock> ReplaceBlock(Blocks blocks, List<int> replace, List<int> add, MyRegion region)
         {
             var result = new List<SimpleBlock>();
+            var notFound = -1;
 
             if (blocks == null || replace == null || add == null || replace.Count != add.Count)
                 return result;
 
-            var lowerLimit = new MyPoint(0, 0);
-            var upperLimit = new MyPoint(Blocks.SIZE, Blocks.SIZE);
-            var notFound = -1;
-
-            if (region != null && region.IsComplete())
+            foreach(var b in GetBlocks(blocks, region))
             {
-                lowerLimit = region.Start.Value;
-                upperLimit = region.End.Value;
-            }
+                if(b.IsEmpty())
+                    continue;
 
-            for (int x = lowerLimit.X; x < upperLimit.X; x++)
-            {
-                for (int y = lowerLimit.Y; y < upperLimit.Y; y++)
-                {
-                    var b = blocks.GetBlock(x, y, false);
-                    var index = replace.IndexOf(b.ID);
+                var index = replace.IndexOf(b.ID);
 
-                    if (index != notFound)
-                        result.Add(new SimpleBlock(add[index], x, y));
-                }
+                if (index != notFound)
+                    result.Add(new SimpleBlock(add[index], b.Position.Value.X, b.Position.Value.Y));
             }
 
             return result;
         }
 
-        public static List<SimpleBlock> GetBlocks(Blocks blocks, MyRegion region, bool startBlocks = true)
+        public static List<SimpleBlock> GetBlocks(Blocks blocks, MyRegion region)
         {
             var result = new List<SimpleBlock>();
 
@@ -52,15 +43,21 @@ namespace BlockEditor.Helpers
             var lowerLimit = new MyPoint(0, 0);
             var upperLimit = new MyPoint(Blocks.SIZE, Blocks.SIZE);
 
-            if (region != null && region.IsComplete())
+            if (region.IsComplete())
             {
                 lowerLimit = region.Start.Value;
                 upperLimit = region.End.Value;
             }
 
             for (int x = lowerLimit.X; x < upperLimit.X; x++)
+            {
                 for (int y = lowerLimit.Y; y < upperLimit.Y; y++)
-                    result.Add(blocks.GetBlock(x, y, startBlocks));
+                {
+                    result.Add(blocks.GetBlock(x, y, false));
+                    result.AddRange(blocks.StartBlocks.GetBlocks(x, y));
+                }
+            }
+
 
             return result;
         }
@@ -72,24 +69,13 @@ namespace BlockEditor.Helpers
             if (blocks == null || ids == null)
                 return result;
 
-            var lowerLimit = new MyPoint(0, 0);
-            var upperLimit = new MyPoint(Blocks.SIZE, Blocks.SIZE);
-
-            if (region != null && region.IsComplete())
+            foreach(var b in GetBlocks(blocks, region))
             {
-                lowerLimit = region.Start.Value;
-                upperLimit = region.End.Value;
-            }
+                if(b.IsEmpty())
+                    continue;
 
-            for (int x = lowerLimit.X; x < upperLimit.X; x++)
-            {
-                for (int y = lowerLimit.Y; y < upperLimit.Y; y++)
-                {
-                    var b = blocks.GetBlock(x, y);
-
-                    if (ids.Contains(b.ID))
-                        result.Add(b);
-                }
+                if (ids.Contains(b.ID))
+                    result.Add(b);
             }
 
             return result;
@@ -151,7 +137,7 @@ namespace BlockEditor.Helpers
             var maxBlocks = Math.Min(Blocks.LIMIT - blocks.BlockCount, 5_001);
             var shownWarning = false;
 
-            if (region != null && region.IsComplete())
+            if (region.IsComplete())
             {
                 lowerLimit = region.Start.Value;
                 upperLimit = region.End.Value;
@@ -278,6 +264,21 @@ namespace BlockEditor.Helpers
             game.RemoveBlocks(blocks);
             game.AddBlocks(result);
         }
-    
+
+        internal static IEnumerable<SimpleBlock> MoveSelection(List<SimpleBlock> blocks, MyPoint? index)
+        {
+            var result = new List<SimpleBlock>();
+
+            if (blocks == null || !blocks.Any() || index == null)
+                return result;
+
+            var width  = ArrayUtil.GetMaxWidth(blocks);
+            var height = ArrayUtil.GetMaxHeight(blocks);
+
+            return blocks
+                .RemoveEmpty()
+                .Select(b => b.Move(index.Value.X + b.Position.Value.X - width, index.Value.Y + b.Position.Value.Y - height))
+                .ToList();
+        }
     }
 }

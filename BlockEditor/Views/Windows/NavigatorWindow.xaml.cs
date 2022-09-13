@@ -45,7 +45,7 @@ namespace BlockEditor.Views.Windows
 
             using (new TempCursor(Cursors.Wait))
             {
-                blocks = game.Map.Blocks.GetBlocks().Where(b => !b.IsEmpty() && filter(b)).ToList();
+                blocks = game.Map.Blocks.GetBlocks().RemoveEmpty().Where(b => filter(b)).ToList();
                 positions = blocks.Select(b => b.Position.Value).ToList();
             }
 
@@ -62,7 +62,7 @@ namespace BlockEditor.Views.Windows
 
         private void Init(MyPoint? p)
         {
-            BlockImage.Source = BlockImages.GetImageBlock(BlockImages.BlockSize.Zoom150, _blockId).Image;
+            BlockImage.Source = BlockImages.GetImageBlock(BlockImages.BlockSize.Zoom150, _blockId)?.Image;
 
             if(p != null)
             {

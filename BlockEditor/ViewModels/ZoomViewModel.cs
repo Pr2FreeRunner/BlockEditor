@@ -3,6 +3,7 @@ using BlockEditor.Models;
 using BlockEditor.Utils;
 using System;
 using System.Globalization;
+
 using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.ViewModels

@@ -32,15 +32,16 @@ namespace BlockEditor.Models
 
         public MyPoint? MousePosition { get; set; }
 
+
         public Game()
         {
-            UserSelection = new UserSelection();
             Mode = new UserMode();
             Map = new Map();
             Engine = new GameEngine();
             Camera = new Camera();
             UserOperations = new UserOperations();
             MeasureDistance = new MeasureDistance();
+            UserSelection = new UserSelection(GetMapIndex);
         }
 
 
@@ -70,7 +71,7 @@ namespace BlockEditor.Models
             if (blocks == null || Map == null)
                 return;
 
-            if (!blocks.Any())
+            if (!blocks.AnyBlocks())
                 return;
 
             var op = new AddBlocksOperation(Map, blocks);
@@ -79,70 +80,42 @@ namespace BlockEditor.Models
 
         public void RemoveBlocks(IEnumerable<SimpleBlock> blocks)
         {
-            if (blocks == null || Map == null)
+            if (Map == null)
                 return;
 
-            if (!blocks.Any())
+            if (!blocks.AnyBlocks())
                 return;
 
             var op = new DeleteBlocksOperation(Map, blocks);
             UserOperations.Execute(op);
         }
 
-        public void AddSelection(MyPoint? index, int?[,] selectedBlocks)
+        public void DeleteBlocks(MyRegion region)
         {
-            if (index == null || selectedBlocks == null || Map == null)
+            if (!region.IsComplete() || Map == null)
                 return;
 
-            var width = selectedBlocks.GetLength(0);
-            var height  = selectedBlocks.GetLength(1);
-            var blocks  = new List<SimpleBlock>();
-
-            for (int x = 0; x < width; x++)
-            {
-                for (int y = 0; y < height; y++)
-                {
-                    var id = selectedBlocks[x, y];
-                    var blockIndex = new MyPoint(index.Value.X + x - width  + 1, index.Value.Y + y - height + 1);
-                    var currentBlock = Map.Blocks.GetBlock(blockIndex.X, blockIndex.Y);
-                     
-                    if(!currentBlock.IsEmpty() && currentBlock.ID == id)
-                        continue;
-
-                    if(id == null)
-                        continue;
-
-                    blocks.Add(new SimpleBlock(id.Value, blockIndex));
-                }
-            }
-
-            AddBlocks(blocks);
-        }
-
-        public void DeleteSelection(MyRegion region)
-        {
-            if (region == null || !region.IsComplete() || Map == null)
-                return;
-
-            var blocks = new List<SimpleBlock>();
+            var result = new List<SimpleBlock>();
 
             for (int x = region.Start.Value.X; x < region.End.Value.X; x++)
             {
                 for (int y = region.Start.Value.Y; y < region.End.Value.Y; y++)
                 {
-                    var block = Map.Blocks.GetBlock(x, y);
+                    var normalBlock = Map.Blocks.GetBlock(x, y, false);
+                    var startBlocks = Map.Blocks.StartBlocks.GetBlocks(x, y);
 
-                    if (block.IsEmpty())
-                        continue;
+                    if (!normalBlock.IsEmpty())
+                        result.Add(normalBlock);
 
-                    blocks.Add(block);
+                    if (startBlocks != null)
+                        result.AddRange(startBlocks.RemoveEmpty());
                 }
             }
 
-            if (!blocks.Any())
+            if (!result.AnyBlocks())
                 return;
 
-            var op = new DeleteBlocksOperation(Map, blocks);
+            var op = new DeleteBlocksOperation(Map, result);
             UserOperations.Execute(op);
         }
 

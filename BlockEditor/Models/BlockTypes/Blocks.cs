@@ -21,13 +21,13 @@ namespace BlockEditor.Models
 
         public int BlockCount;
 
-        public UniqueBlocks StartBlocks { get; }
+        public StartBlocks StartBlocks { get; }
 
 
         public Blocks()
         {
             _blocks = new SimpleBlock[SIZE, SIZE];
-            StartBlocks = new UniqueBlocks();
+            StartBlocks = new StartBlocks();
         }
 
 

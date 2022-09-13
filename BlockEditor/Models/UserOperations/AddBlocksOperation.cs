@@ -20,7 +20,7 @@ namespace BlockEditor.Models
 
         public bool Execute(bool redo = false)
         {
-            if (_blocks == null || !_blocks.Any())
+            if (!_blocks.AnyBlocks())
                 return false;
 
             var added = new List<AddBlockOperation>();
@@ -38,7 +38,7 @@ namespace BlockEditor.Models
             }
 
             _operations = added;
-            return true;
+            return _operations.Count != 0;
         }
 
         public bool Undo()

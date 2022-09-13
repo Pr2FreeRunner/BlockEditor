@@ -1,4 +1,5 @@
 ﻿using BlockEditor.Helpers;
+using BlockEditor.Utils;
 using LevelModel.Models.Components;
 
 using SkiaSharp;
@@ -136,27 +137,25 @@ namespace BlockEditor.Models
             var arrayX = (int)(_mousePosition.Value.X + _game.Map.BlockPixelSize / 2.0);
             var arrayY = (int)(_mousePosition.Value.Y + _game.Map.BlockPixelSize / 2.0);
 
-            var width = blocks.GetLength(0);
-            var height = blocks.GetLength(1);
+            var width  = ArrayUtil.GetMaxWidth(blocks);
+            var height = ArrayUtil.GetMaxHeight(blocks);
 
-            for (int x = 0; x < width; x++)
+            foreach(var b in blocks)
             {
-                for (int y = 0; y < height; y++)
-                {
-                    var id = blocks[x, y];
+                if (b.IsEmpty())
+                    continue;
 
                     var block = BlockImages.GetImageBlock(_game.Map.BlockSize, id)?.SKBitmap;
 
-                    if (block == null)
-                        continue;
+                if (block == null)
+                    continue;
 
-                    var blockX = arrayX - width * _game.Map.BlockPixelSize + x * _game.Map.BlockPixelSize;
-                    var blockY = arrayY - height * _game.Map.BlockPixelSize + y * _game.Map.BlockPixelSize;
+                var blockX = arrayX - width  * _game.Map.BlockPixelSize + b.Position.Value.X * _game.Map.BlockPixelSize - _game.Map.BlockPixelSize;
+                var blockY = arrayY - height * _game.Map.BlockPixelSize + b.Position.Value.Y * _game.Map.BlockPixelSize - _game.Map.BlockPixelSize;
 
                     _surface.Canvas.DrawBitmap(block, blockX, blockY);
                 }
             }
-
         }
 
         private void DrawSelectedRectangle()

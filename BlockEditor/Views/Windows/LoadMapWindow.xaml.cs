@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -233,7 +234,10 @@ namespace BlockEditor.Views.Windows
                 }
                 catch (Exception ex)
                 {
-                    MessageUtil.ShowError(ex.Message);
+                    if (!MyUtil.HasInternet())
+                        MessageUtil.ShowError("Failed to load levels, check ur internet connection...");
+                    else
+                        MessageUtil.ShowError(ex.Message);
                 }
             }
 
@@ -247,6 +251,7 @@ namespace BlockEditor.Views.Windows
                 _page = 1;
                 _searchBy = (SearchBy)SearchByComboBox.SelectedIndex;
                 Clean();
+                searchTextbox.Focus();
             }
             catch (Exception ex)
             {
@@ -320,6 +325,14 @@ namespace BlockEditor.Views.Windows
                 Search_Click(null, null);
                 e.Handled = true;
             }
+            else if (ctrl && e.Key == Key.Left && btnLeftPage.IsEnabled)
+            {
+                OnPreviousPage(null, null);
+            }
+            else if (ctrl && e.Key == Key.Right && btnRightPage.IsEnabled)
+            {
+                OnNextPage(null, null);
+            }
 
 
             UpdateButtons();
@@ -382,6 +395,7 @@ namespace BlockEditor.Views.Windows
 
         private void Combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            searchTextbox.Focus();
             Search_Click(null, null);
         }
 
