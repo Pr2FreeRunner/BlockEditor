@@ -14,6 +14,7 @@ using LevelModel.Models.Components.Art;
 using SkiaSharp;
 using BlockEditor.Utils;
 using static Builders.DataStructures.DTO.ImageDTO;
+using System.Net;
 
 namespace BlockEditor.Helpers
 {
@@ -215,6 +216,13 @@ namespace BlockEditor.Helpers
                         msg = msg.Replace("message=", "");
 
                     MessageUtil.ShowInfo(msg);
+                }
+                catch (WebException ex)
+                {
+                    if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+                        MessageUtil.ShowError("Failed to save level, check ur internet connection...");
+                    else
+                        MessageUtil.ShowError(ex.Message);
                 }
                 catch (Exception ex)
                 {

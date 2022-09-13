@@ -1,5 +1,7 @@
-﻿using BlockEditor.Models;
+﻿using BlockEditor.Helpers;
+using BlockEditor.Models;
 using DataAccess;
+using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -95,23 +97,30 @@ namespace BlockEditor.Views.Windows
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
-            using(new TempCursor(Cursors.Wait))
+            try
             {
-                Mouse.OverrideCursor = Cursors.Wait;
-
-                var success = Users.Login(UserName, Password, out var errorMsg);
-
-                UpdateButtons();
-
-                if (success)
+                using (new TempCursor(Cursors.Wait))
                 {
-                    DialogResult = true;
-                    Close();
+                    Mouse.OverrideCursor = Cursors.Wait;
+
+                    var success = Users.Login(UserName, Password, out var errorMsg);
+
+                    UpdateButtons();
+
+                    if (success)
+                    {
+                        DialogResult = true;
+                        Close();
+                    }
+                    else
+                    {
+                        ErrorTextbox.Text = errorMsg;
+                    }
                 }
-                else
-                {
-                    ErrorTextbox.Text = errorMsg;
-                }
+            }
+            catch(Exception ex)
+            {
+                MessageUtil.ShowError(ex.Message);
             }
         }
 

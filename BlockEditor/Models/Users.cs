@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Xml.Linq;
+using System.Net;
 
 namespace BlockEditor.Models
 {
@@ -174,7 +175,11 @@ namespace BlockEditor.Models
             }
             catch (Exception ex)
             {
-                MessageUtil.ShowError(ex.Message);
+                if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+                    MessageUtil.ShowError("Failed login, check ur internet connection...");
+                else
+                    MessageUtil.ShowError(ex.Message);
+
                 errorMsg = fallbackError;
                 return false;
             }

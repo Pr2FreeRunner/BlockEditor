@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -230,6 +231,13 @@ namespace BlockEditor.Views.Windows
 
                         default: throw new Exception("Unknown search config....");
                     }
+                }
+                catch(WebException ex)
+                {
+                    if(!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+                        MessageUtil.ShowError("Failed to load levels, check ur internet connection...");
+                    else
+                        MessageUtil.ShowError(ex.Message);
                 }
                 catch (Exception ex)
                 {
