@@ -21,11 +21,10 @@ namespace BlockEditor.Models
 
         public void Reset()
         {
-            MapRegion.Reset();
             ImageRegion.Reset();
         }
 
-        public bool HasSelectedRegion => MapRegion.IsComplete() && ImageRegion.IsComplete();
+        public bool HasSelectedRegion => ImageRegion.IsComplete();
 
         private MyRegion CreateMapIndex()
         {
@@ -39,7 +38,7 @@ namespace BlockEditor.Models
         {
             var region = MapRegion;
 
-            if (map == null || region == null || !region.IsComplete())
+            if (map == null || !region.IsComplete())
                 return null;
 
             var start  = region.Start.Value;
@@ -58,7 +57,7 @@ namespace BlockEditor.Models
                         result.Add(normalBlock.Move(x - start.X, y - start.Y));
 
                     if (startBlocks != null)
-                        result.AddRange(startBlocks.Where(b => !b.IsEmpty()).Select(b => b.Move(x - start.X, y - start.Y)));
+                        result.AddRange(startBlocks.RemoveEmpty().Select(b => b.Move(x - start.X, y - start.Y)));
                 }
             }
 
@@ -88,10 +87,7 @@ namespace BlockEditor.Models
 
             var selection = GetSelection(map);
 
-            if(selection == null)
-                return false;
-
-            return selection.Any(b => !b.IsEmpty());
+            return selection.AnyBlocks();
         }
 
 

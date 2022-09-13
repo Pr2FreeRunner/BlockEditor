@@ -10,7 +10,7 @@ namespace BlockEditor.Utils
 
         public static int GetMaxSize(List<SimpleBlock> blocks)
         {
-            if(blocks == null || !blocks.Any())
+            if(!blocks.AnyBlocks())
                 return 0;
 
             var height = GetMaxHeight(blocks);
@@ -21,7 +21,7 @@ namespace BlockEditor.Utils
 
         public static int GetMaxWidth(List<SimpleBlock> blocks)
         {
-            if (blocks == null || !blocks.Any())
+            if (!blocks.AnyBlocks())
                 return 0;
 
             return blocks.Max(b => b.Position?.X ?? 0);
@@ -29,7 +29,7 @@ namespace BlockEditor.Utils
 
         public static int GetMaxHeight(List<SimpleBlock> blocks)
         {
-            if (blocks == null || !blocks.Any())
+            if (!blocks.AnyBlocks())
                 return 0;
 
             return blocks.Max(b => b.Position?.Y ?? 0);
@@ -37,33 +37,33 @@ namespace BlockEditor.Utils
 
         public static List<SimpleBlock> RotateRight(List<SimpleBlock> blocks)
         {
-            if (blocks == null || !blocks.Any())
+            if (!blocks.AnyBlocks())
                 return blocks;
 
             var size = GetMaxSize(blocks);
 
-            return blocks.Where(b => !b.IsEmpty()).Select(b => b.Move(size - b.Position.Value.Y - 1, b.Position.Value.X)).ToList();
+            return blocks.RemoveEmpty().Select(b => b.Move(size - b.Position.Value.Y - 1, b.Position.Value.X)).ToList();
         }
 
 
         public static List<SimpleBlock> VerticalFlip(List<SimpleBlock> blocks)
         {
-            if (blocks == null || !blocks.Any())
+            if (!blocks.AnyBlocks())
                 return blocks;
 
             var size = GetMaxSize(blocks);
 
-            return blocks.Where(b => !b.IsEmpty()).Select(b => b.Move(b.Position.Value.X, size - b.Position.Value.Y - 1)).ToList();
+            return blocks.RemoveEmpty().Select(b => b.Move(b.Position.Value.X, size - b.Position.Value.Y - 1)).ToList();
         }
 
         public static List<SimpleBlock> HorizontalFlip(List<SimpleBlock> blocks)
         {
-            if (blocks == null || !blocks.Any())
+            if (!blocks.AnyBlocks())
                 return blocks;
 
             var size = GetMaxSize(blocks);
 
-            return blocks.Where(b => !b.IsEmpty()).Select(b => b.Move(size - b.Position.Value.X - 1,b.Position.Value.Y)).ToList();
+            return blocks.RemoveEmpty().Select(b => b.Move(size - b.Position.Value.X - 1,b.Position.Value.Y)).ToList();
         }
     }
 }

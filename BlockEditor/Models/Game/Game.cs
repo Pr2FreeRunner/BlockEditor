@@ -74,7 +74,7 @@ namespace BlockEditor.Models
             if (blocks == null || Map == null)
                 return;
 
-            if (!blocks.Any())
+            if (!blocks.AnyBlocks())
                 return;
 
             var op = new AddBlocksOperation(Map, blocks);
@@ -83,10 +83,10 @@ namespace BlockEditor.Models
 
         public void RemoveBlocks(IEnumerable<SimpleBlock> blocks)
         {
-            if (blocks == null || Map == null)
+            if (Map == null)
                 return;
 
-            if (!blocks.Any())
+            if (!blocks.AnyBlocks())
                 return;
 
             var op = new DeleteBlocksOperation(Map, blocks);
@@ -95,7 +95,7 @@ namespace BlockEditor.Models
 
         public void DeleteBlocks(MyRegion region)
         {
-            if (region == null || !region.IsComplete() || Map == null)
+            if (!region.IsComplete() || Map == null)
                 return;
 
             var result = new List<SimpleBlock>();
@@ -111,11 +111,11 @@ namespace BlockEditor.Models
                         result.Add(normalBlock);
 
                     if (startBlocks != null)
-                        result.AddRange(startBlocks.Where(b => !b.IsEmpty()));
+                        result.AddRange(startBlocks.RemoveEmpty());
                 }
             }
 
-            if (!result.Any())
+            if (!result.AnyBlocks())
                 return;
 
             var op = new DeleteBlocksOperation(Map, result);

@@ -388,10 +388,10 @@ namespace BlockEditor.Models
 
             using (new TempCursor(Cursors.Wait))
             {
-                if (w.BlocksToRemove != null && w.BlocksToRemove.Any())
+                if (w.BlocksToRemove.AnyBlocks())
                     game.RemoveBlocks(w.BlocksToRemove);
 
-                if (w.BlocksToAdd != null && w.BlocksToAdd.Any())
+                if (w.BlocksToAdd.AnyBlocks())
                     game.AddBlocks(w.BlocksToAdd);
             }
         }
@@ -438,7 +438,7 @@ namespace BlockEditor.Models
 
             var blocks = ShapeBuilderUtil.Build(game.Map, selectedId.Value, region);
 
-            if (blocks != null && !blocks.Any() && region != null && region.IsComplete() && !game.Map.Blocks.Overwrite && ShapeBuilderUtil.Probablity != 100)
+            if (!blocks.AnyBlocks() && region.IsComplete() && !game.Map.Blocks.Overwrite && ShapeBuilderUtil.Probablity != 100)
                 throw new OverwriteException();
 
             game.AddBlocks(blocks);

@@ -20,7 +20,7 @@ namespace BlockEditor.Utils
         {
             var fallback = new List<SimpleBlock>();
 
-            if (map == null || region == null || !region.IsComplete())
+            if (map == null || !region.IsComplete())
                 return fallback;
 
             switch (Type)

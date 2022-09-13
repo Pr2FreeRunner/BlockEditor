@@ -43,7 +43,7 @@ namespace BlockEditor.Helpers
             var lowerLimit = new MyPoint(0, 0);
             var upperLimit = new MyPoint(Blocks.SIZE, Blocks.SIZE);
 
-            if (region != null && region.IsComplete())
+            if (region.IsComplete())
             {
                 lowerLimit = region.Start.Value;
                 upperLimit = region.End.Value;
@@ -137,7 +137,7 @@ namespace BlockEditor.Helpers
             var maxBlocks = Math.Min(Blocks.LIMIT - blocks.BlockCount, 5_001);
             var shownWarning = false;
 
-            if (region != null && region.IsComplete())
+            if (region.IsComplete())
             {
                 lowerLimit = region.Start.Value;
                 upperLimit = region.End.Value;
@@ -276,7 +276,7 @@ namespace BlockEditor.Helpers
             var height = ArrayUtil.GetMaxHeight(blocks);
 
             return blocks
-                .Where(b => !b.IsEmpty())
+                .RemoveEmpty()
                 .Select(b => b.Move(index.Value.X + b.Position.Value.X - width, index.Value.Y + b.Position.Value.Y - height))
                 .ToList();
         }

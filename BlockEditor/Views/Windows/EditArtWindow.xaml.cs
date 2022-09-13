@@ -110,7 +110,7 @@ namespace BlockEditor.Views.Windows
 
         private bool HasSelectedRegion()
         {
-            return _region != null && _region.IsComplete();
+            return _region.IsComplete();
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
