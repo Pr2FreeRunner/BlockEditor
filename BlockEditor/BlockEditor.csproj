@@ -314,7 +314,7 @@
     <Page Update="Views\Controls\CustomStatsControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
-    <Page Update="Views\Windows\MoveLastPasteWindow.xaml">
+    <Page Update="Views\Windows\MovePastedBlocksWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\Windows\MenuWindow.xaml">

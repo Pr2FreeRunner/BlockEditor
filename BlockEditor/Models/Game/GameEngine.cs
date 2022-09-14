@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Threading;
@@ -55,9 +56,7 @@ namespace BlockEditor.Models
             if(!Pause)
                 return;
 
-            Pause = false;
-            Thread.Sleep((int)(MsPerFrame * 4));
-            Pause = true;
+            OnFrame?.Invoke();
         }
 
         public void Stop()
