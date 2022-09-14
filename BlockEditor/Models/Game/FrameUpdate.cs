@@ -1,7 +1,12 @@
-﻿using BlockEditor.Helpers;
+using BlockEditor.Helpers;
 using BlockEditor.Utils;
 using LevelModel.Models.Components;
+using LevelModel.Models.Components.Art;
+
+using SkiaSharp;
+
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -32,7 +37,7 @@ namespace BlockEditor.Models
         {
             _game.GameImage.Clear(_game.Map.Background);
 
-            //DrawGrids();
+            DrawArt(_game.Map.Art1);
             DrawBlocks();
             _game.Camera.Move(_game.Map.BlockSize);
             DrawSelectedBlock();
@@ -41,32 +46,22 @@ namespace BlockEditor.Models
             DrawMeasureDistanceLine();
         }
 
-        private Graphics CreateGraphics()
+        private void DrawArt(ArtGraphics art)
         {
-            var bmp = _game.GameImage?.GetBitmap();
-            var ex = new Exception("Failed to generate graphics for the game");
+            var canvas = _surface.Canvas;
 
-            if (bmp == null)
-                throw ex;
+            var width = _game.Camera.ScreenSize.X;
+            var height = _game.Camera.ScreenSize.Y;
 
-            return Graphics.FromImage(bmp) ?? throw ex;
-        }
-
-        private void DrawGrids()
-        {
-            var width = _game.GameImage.Width;
-            var height = _game.GameImage.Height;
-            var startX = _game.Camera.Position.X / _game.Map.BlockPixelSize / 30;
-            var startY = _game.Camera.Position.X / _game.Map.BlockPixelSize / 30;
-            var pencil = MapUtil.GetGridPen(_game.Map.Background);
-
-            for (int i = startX; i < width; i += _game.Map.BlockPixelSize)
-                _graphics.DrawLine(pencil, i, 0, i, height);
+            var minBlockX = _game.Camera.Position.X / _game.Map.BlockPixelSize;
+            var minBlockY = _game.Camera.Position.Y / _game.Map.BlockPixelSize;
 
 
-            for (int i = startY; i < height; i += _game.Map.BlockPixelSize)
-                _graphics.DrawLine(pencil, 0, i, width, i);
-
+            foreach (var stroke in art.Strokes)
+            {
+                //stroke.Path.Tr
+                //canvas.DrawPath(stroke.Path, stroke.Paint);
+            }
         }
 
         private void DrawBlocks()
@@ -120,6 +115,7 @@ namespace BlockEditor.Models
             var posX = b.Position.Value.X * _game.Map.BlockPixelSize - _game.Camera.Position.X;
             var posY = b.Position.Value.Y * _game.Map.BlockPixelSize - _game.Camera.Position.Y;
 
+            // TODO: better performance via DrawAtlas ?
             if (semiTrans)
                 _game.GameImage.DrawTransperentImage(_graphics, image.SemiTransparentBitmap, posX, posY);
             else
