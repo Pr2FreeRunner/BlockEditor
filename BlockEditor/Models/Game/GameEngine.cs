@@ -11,6 +11,7 @@ namespace BlockEditor.Models
 
         private System.Timers.Timer _timer;
         public const int FPS = 27;
+        public const double MsPerFrame = 1000 / FPS;
         private bool _updating;
 
         private bool _pause;
@@ -34,13 +35,13 @@ namespace BlockEditor.Models
         public void PauseConfirmed()
         {
             Pause = false;
-            Thread.Sleep(GameEngine.FPS * 5); // wait for engine to pause
+            Thread.Sleep((int)(MsPerFrame * 5)); // wait for engine to pause
         }
 
         public GameEngine()
         {
             _timer = new System.Timers.Timer();
-            _timer.Interval = FPS;
+            _timer.Interval = MsPerFrame;
             _timer.Elapsed += OnElapsed;
         }
 
@@ -55,7 +56,7 @@ namespace BlockEditor.Models
                 return;
 
             Pause = false;
-            Thread.Sleep(FPS * 4);
+            Thread.Sleep((int)(MsPerFrame * 4));
             Pause = true;
         }
 

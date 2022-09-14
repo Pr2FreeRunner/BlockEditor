@@ -59,7 +59,7 @@
             Name="GamePanel"
             Focusable="False">
 
-            <skia:SKElement x:Name="SKControl" PaintSurface="SKControl_PaintSurface"/>
+            <skia:SKElement x:Name="SKControl" PaintSurface="SKControl_PaintSurface" IgnorePixelScaling="True"/>
 
             <StackPanel x:Name="SidePanel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70" />
 
