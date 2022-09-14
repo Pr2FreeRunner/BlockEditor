@@ -28,14 +28,8 @@ namespace BlockEditor.Models
             }
         }
 
-
         public event Action OnFrame;
 
-        public void PauseConfirmed()
-        {
-            Pause = false;
-            Thread.Sleep((int)(MsPerFrame * 5)); // wait for engine to pause
-        }
 
         public GameEngine()
         {
@@ -45,6 +39,11 @@ namespace BlockEditor.Models
         }
 
         
+        public void PauseConfirmed()
+        {
+            Pause = false;
+            Thread.Sleep((int)(MsPerFrame * 5)); // wait for engine to pause
+        }
 
         public void Start()
         {
@@ -58,12 +57,6 @@ namespace BlockEditor.Models
 
             OnFrame?.Invoke();
         }
-
-        public void Stop()
-        {
-            _timer.Stop();
-        }
-
 
         private void OnTick(object sender, EventArgs e)
         {
