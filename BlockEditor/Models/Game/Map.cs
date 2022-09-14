@@ -3,6 +3,9 @@ using BlockEditor.Utils;
 using Converters;
 using Converters.DataStructures.DTO;
 using LevelModel.Models;
+
+using SkiaSharp;
+
 using System;
 using System.Drawing;
 
@@ -20,20 +23,20 @@ namespace BlockEditor.Models
 
         public readonly int BlocksOutsideBoundries;
 
-        public Color Background
+        public SKColor Background
         {
             get
             {
                 try
                 {
                     if (Level.BackgroundColor != null)
-                        return ColorTranslator.FromHtml("#" + Level.BackgroundColor);
+                        return SKColor.Parse("FF"+Level.BackgroundColor.PadLeft(6, '0'));// ColorTranslator.FromHtml("#" + Level.BackgroundColor);
                     else
-                        return Color.Black;
+                        return SKColors.Black;
                 }
                 catch
                 {
-                    return Color.Black;
+                    return SKColors.Black;
                 }
             }
         }

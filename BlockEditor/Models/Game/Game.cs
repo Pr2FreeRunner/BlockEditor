@@ -14,8 +14,6 @@ namespace BlockEditor.Models
     public class Game
     {
 
-        public GameImage GameImage { get; set; }
-
         public GameEngine Engine { get; }
 
         public Camera Camera { get; set; }
@@ -41,7 +39,6 @@ namespace BlockEditor.Models
             Map = new Map();
             Engine = new GameEngine();
             Camera = new Camera();
-            GameImage = new GameImage(0, 0);
             UserOperations = new UserOperations();
             MeasureDistance = new MeasureDistance();
             UserSelection = new UserSelection(GetMapIndex);
@@ -165,8 +162,8 @@ namespace BlockEditor.Models
                 return;
 
             var size = Map.BlockSize.GetPixelSize();
-            var x = p.Value.X * size - (GameImage.Width / 2);
-            var y = p.Value.Y * size - (GameImage.Height / 2);
+            var x = p.Value.X * size - (Camera.ScreenSize.X / 2);
+            var y = p.Value.Y * size - (Camera.ScreenSize.Y / 2);
 
             Camera.Position = new MyPoint(x, y);
         }

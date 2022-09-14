@@ -17,25 +17,25 @@ namespace BlockEditor.Models
 
         private MyPoint? _mousePosition;
         private UserSelection _userSelection;
-        private Graphics _graphics;
         private Game _game;
+        private SKSurface _surface;
 
-        public FrameUpdate(Game game)
+        public FrameUpdate(Game game, SKSurface surface)
         {
-            if (game?.GameImage == null || game?.Map == null || game?.Camera == null)
+            if (game?.Map == null || game?.Camera == null)
                 return;
 
             _game = game;
+            _surface = surface;
             _mousePosition = game.MousePosition;
             _userSelection = game.UserSelection;
-            _graphics = CreateGraphics();
 
             Update();
         }
 
         private void Update()
         {
-            _game.GameImage.Clear(_game.Map.Background);
+            _surface.Canvas.Clear(_game.Map.Background);
 
             DrawArt(_game.Map.Art1);
             DrawBlocks();
@@ -66,8 +66,8 @@ namespace BlockEditor.Models
 
         private void DrawBlocks()
         {
-            var width = _game.GameImage.Width;
-            var height = _game.GameImage.Height;
+            var width = _game.Camera.ScreenSize.X;
+            var height = _game.Camera.ScreenSize.Y;
 
             var minBlockX = _game.Camera.Position.X / _game.Map.BlockPixelSize;
             var minBlockY = _game.Camera.Position.Y / _game.Map.BlockPixelSize;
@@ -75,11 +75,13 @@ namespace BlockEditor.Models
             var blockCountX = width / _game.Map.BlockPixelSize;
             var blockCountY = height / _game.Map.BlockPixelSize;
 
+            var blocks = _game.Map.Blocks;
+
             for (int y = minBlockY; y < minBlockY + blockCountY; y++)
             {
                 for (int x = minBlockX; x < minBlockX + blockCountX; x++)
                 {
-                    var block = _game.Map.Blocks.GetBlock(x, y, false);
+                    var block = blocks.GetBlock(x, y, false);
 
                     if (block.IsEmpty())
                         continue;
@@ -117,9 +119,9 @@ namespace BlockEditor.Models
 
             // TODO: better performance via DrawAtlas ?
             if (semiTrans)
-                _game.GameImage.DrawTransperentImage(_graphics, image.SemiTransparentBitmap, posX, posY);
+                _surface.Canvas.DrawBitmap(image.SKBitmap, posX, posY, MapUtil.GetTranslucentPaint());
             else
-                _game.GameImage.DrawImage(ref image.Bitmap, posX, posY);
+                _surface.Canvas.DrawBitmap(image.SKBitmap, posX, posY);
         }
 
         private void DrawSelectedBlock()
@@ -132,7 +134,7 @@ namespace BlockEditor.Models
 
             var id = BlockSelection.SelectedBlock;
 
-            var block = BlockImages.GetImageBlock(_game.Map.BlockSize, id)?.SemiTransparentBitmap;
+            var block = BlockImages.GetImageBlock(_game.Map.BlockSize, id)?.SKBitmap;
 
             if (block == null)
                 return;
@@ -140,7 +142,7 @@ namespace BlockEditor.Models
             var positionX = (int)(_mousePosition.Value.X - _game.Map.BlockPixelSize / 2.0);
             var positionY = (int)(_mousePosition.Value.Y - _game.Map.BlockPixelSize / 2.0);
 
-            _game.GameImage.DrawTransperentImage(_graphics, block, positionX, positionY);
+            _surface.Canvas.DrawBitmap(block, positionX, positionY, MapUtil.GetTranslucentPaint());
         }
 
         private void DrawSelectedBlocks()
@@ -167,7 +169,7 @@ namespace BlockEditor.Models
                 if (b.IsEmpty())
                     continue;
 
-                var block = BlockImages.GetImageBlock(_game.Map.BlockSize, b.ID)?.SemiTransparentBitmap;
+                var block = BlockImages.GetImageBlock(_game.Map.BlockSize, b.ID)?.SKBitmap;
 
                 if (block == null)
                     continue;
@@ -175,7 +177,7 @@ namespace BlockEditor.Models
                 var blockX = arrayX - width  * _game.Map.BlockPixelSize + b.Position.Value.X * _game.Map.BlockPixelSize - _game.Map.BlockPixelSize;
                 var blockY = arrayY - height * _game.Map.BlockPixelSize + b.Position.Value.Y * _game.Map.BlockPixelSize - _game.Map.BlockPixelSize;
 
-                _game.GameImage.DrawTransperentImage(_graphics, block, blockX, blockY);
+                _surface.Canvas.DrawBitmap(block, blockX, blockY);
             }
         }
 
@@ -193,10 +195,12 @@ namespace BlockEditor.Models
             var minX = Math.Min(start.Value.X, end.Value.X);
             var minY = Math.Min(start.Value.Y, end.Value.Y);
             var maxX = Math.Max(start.Value.X, end.Value.X);
-            var maxy = Math.Max(start.Value.Y, end.Value.Y);
+            var maxY = Math.Max(start.Value.Y, end.Value.Y);
 
-            var rec = new Rectangle(minX, minY, maxX - minX, maxy - minY);
-            _game.GameImage.DrawSelectionRectangle(_graphics, rec);
+            var rec = new SKRect(minX, minY, maxX, maxY);
+
+            _surface.Canvas.DrawRect(rec, MapUtil.GetSelectionFillPaint());
+            _surface.Canvas.DrawRect(rec, MapUtil.GetSelectionStrokePaint());
         }
 
         private void DrawMeasureDistanceLine()
@@ -213,10 +217,10 @@ namespace BlockEditor.Models
             if (start == null || end == null)
                 return;
 
-            var p1 = new System.Drawing.Point(start.Value.X, start.Value.Y);
-            var p2 = new System.Drawing.Point(end.Value.X, end.Value.Y);
+            var p1 = new SKPoint(start.Value.X, start.Value.Y);
+            var p2 = new SKPoint(end.Value.X, end.Value.Y);
 
-            _game.GameImage.DrawLine(_graphics, p1, p2);
+            _surface.Canvas.DrawLine(p1, p2, MapUtil.GetSelectionStrokePaint());
         }
 
     }

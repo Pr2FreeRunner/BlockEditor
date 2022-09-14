@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using SkiaSharp;
+
+using System.Drawing;
 using System.Windows.Media.Imaging;
 
 namespace BlockEditor.Models
@@ -8,10 +10,7 @@ namespace BlockEditor.Models
 
         public int ID { get; set; }
 
-        public Bitmap Bitmap;
-
-        public Bitmap SemiTransparentBitmap { get; set; }
-
+        public SKBitmap SKBitmap;
         public BitmapSource Image { get; set; }
 
     }

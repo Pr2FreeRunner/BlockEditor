@@ -78,7 +78,7 @@ namespace BlockEditor.Views.Windows
 
             ItemBlockOptionsControl.SetItems(_map.Level.Items);
             HatsControl.SetBadHats(_map.Level.BadHats);
-            MyColorPicker.SetColor(_map.Background);
+            MyColorPicker.SetColor(_map.Background.ToString());
 
             ItemBlockOptionsControl.OnItemChanged += OnItemBlockOptionChanged;
             HatsControl.OnHatChanged += OnHatChanged;

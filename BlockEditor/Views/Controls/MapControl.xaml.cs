@@ -6,8 +6,6 @@ using BlockEditor.Helpers;
 using BlockEditor.ViewModels;
 using BlockEditor.Models;
 
-using static BlockEditor.Models.UserMode;
-
 namespace BlockEditor.Views.Controls
 {
 
@@ -74,6 +72,7 @@ namespace BlockEditor.Views.Controls
                 if(!_firstload)
                 {
                     ViewModel.Game.GoToStartPosition();
+                    ViewModel.Game.Engine.OnFrame += SKControl.InvalidateVisual;
                     _firstload = true;
                 }
 
@@ -319,5 +318,9 @@ namespace BlockEditor.Views.Controls
             return isSelectionMode && (isCopy || isDelete);
         }
 
+        private void SKControl_PaintSurface(object sender, SkiaSharp.Views.Desktop.SKPaintSurfaceEventArgs e)
+        {
+            ViewModel.OnFrameUpdate(e.Surface);
+        }
     }
 }
