@@ -84,7 +84,7 @@ namespace BlockEditor.Models
 
             var blocksToRemove = game.UserOperations.LastAddBlocksOperation.GetBlocks().ToList();
 
-            var w = new MoveLastPasteWindow(blocksToRemove);
+            var w = new MovePastedBlocksWindow(blocksToRemove);
 
             w.ShowDialog();
 

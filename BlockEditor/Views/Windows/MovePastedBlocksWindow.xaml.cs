@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace BlockEditor.Views.Windows
 {
-    public partial class MoveLastPasteWindow : Window
+    public partial class MovePastedBlocksWindow : Window
     {
         public int? MoveX;
         public int? MoveY;
@@ -19,7 +19,7 @@ namespace BlockEditor.Views.Windows
         private readonly List<SimpleBlock> _blocksToRemove;
 
 
-        public MoveLastPasteWindow(List<SimpleBlock> blocksToRemove)
+        public MovePastedBlocksWindow(List<SimpleBlock> blocksToRemove)
         {
             BlocksToAdd = new List<SimpleBlock>();
             _blocksToRemove = blocksToRemove;
