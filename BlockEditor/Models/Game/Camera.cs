@@ -37,22 +37,28 @@ namespace BlockEditor.Models
 
         public void Move(BlockSize size)
         {
-            var currentX = Position.X;
-            var currentY = Position.Y;
+            var currentX  = Position.X;
+            var currentY  = Position.Y;
             var blockSize = size.GetPixelSize();
+            var moveStrength = MOVE_STRENGTH;
+
             var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+            var alt  = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
+
+            if(alt)
+                moveStrength *= 3;
 
             if (Keyboard.IsKeyDown(Key.Up) || !ctrl && Keyboard.IsKeyDown(Key.W))
-                currentY -= MOVE_STRENGTH;
+                currentY -= moveStrength;
 
             if (Keyboard.IsKeyDown(Key.Down) || !ctrl && Keyboard.IsKeyDown(Key.S))
-                currentY += MOVE_STRENGTH;
+                currentY += moveStrength;
 
             if (Keyboard.IsKeyDown(Key.Right) || !ctrl && Keyboard.IsKeyDown(Key.D))
-                currentX += MOVE_STRENGTH;
+                currentX += moveStrength;
 
             if (Keyboard.IsKeyDown(Key.Left) || !ctrl && Keyboard.IsKeyDown(Key.A))
-                currentX -= MOVE_STRENGTH;
+                currentX -= moveStrength;
 
             if (currentX < 0)
                 currentX = 0;
