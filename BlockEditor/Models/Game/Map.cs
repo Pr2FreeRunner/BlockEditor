@@ -16,6 +16,7 @@ namespace BlockEditor.Models
         public Level Level { get; }
 
         public Blocks Blocks { get; }
+        public ArtGraphics Art1 { get; }
 
         public readonly int BlocksOutsideBoundries;
 
@@ -59,12 +60,14 @@ namespace BlockEditor.Models
             Level.Title = string.Empty;
             Blocks = BlocksUtil.ToBlocks(Level.Blocks, out BlocksOutsideBoundries);
             BlockSize = DEFAULT_BLOCK_SIZE;
+            Art1 = new ArtGraphics(Level.DrawArt1);
         }
 
         public Map(Level level)
         {
             Level = level ?? GetDefaultLevel();
             Blocks = BlocksUtil.ToBlocks(Level.Blocks, out BlocksOutsideBoundries);
+            Art1 = new ArtGraphics(Level.DrawArt1);
         }
 
 
