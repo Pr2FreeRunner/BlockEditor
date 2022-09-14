@@ -58,10 +58,13 @@ namespace BlockEditor.Models
             if (x >= SIZE || y >= SIZE)
                 return SimpleBlock.None;
 
-            var block = StartBlocks.GetBlock(new MyPoint(x, y));
+            if (startBlocks)
+            {
+                var block = StartBlocks.GetBlock(new MyPoint(x, y));
 
-            if (!block.IsEmpty() && startBlocks)
-                return block;
+                if (!block.IsEmpty())
+                    return block;
+            }
 
             return _blocks[x, y];
         }

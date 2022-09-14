@@ -8,10 +8,9 @@ namespace BlockEditor.Models
 {
     public class GameEngine
     {
-
-        private System.Timers.Timer _timer;
+        private DispatcherTimer _timer;
         public const int FPS = 27;
-        private bool _updating;
+        public const double MsPerFrame = 1000 / FPS;
 
         private bool _pause;
         private readonly object _pauseLock = new object();
@@ -34,19 +33,21 @@ namespace BlockEditor.Models
         public void PauseConfirmed()
         {
             Pause = false;
-            Thread.Sleep(GameEngine.FPS * 5); // wait for engine to pause
+            Thread.Sleep((int)(MsPerFrame * 5)); // wait for engine to pause
         }
 
         public GameEngine()
         {
-            _timer = new System.Timers.Timer();
-            _timer.Interval = FPS;
-            _timer.Elapsed += OnElapsed;
+            _timer = new DispatcherTimer(DispatcherPriority.Normal);
+            _timer.Interval = TimeSpan.FromMilliseconds(MsPerFrame);
+            _timer.Tick += OnTick;
         }
+
+        
 
         public void Start()
         {
-            _timer.Enabled = true;
+            _timer.Start();
         }
 
         public void RefreshGui()
@@ -55,31 +56,24 @@ namespace BlockEditor.Models
                 return;
 
             Pause = false;
-            Thread.Sleep(FPS * 4);
+            Thread.Sleep((int)(MsPerFrame * 4));
             Pause = true;
         }
 
         public void Stop()
         {
             _timer.Stop();
-            _timer.Enabled = false;
         }
 
-        private void OnElapsed(object sender, ElapsedEventArgs e)
+
+        private void OnTick(object sender, EventArgs e)
         {
-            if (_updating || Pause)
+            if (Pause)
             {
                 return;
             }
 
-            _updating = true;
-
-            Application.Current?.Dispatcher?.Invoke(DispatcherPriority.Render, new ThreadStart(delegate
-            {
-                OnFrame?.Invoke();
-            }));
-
-            _updating = false;
+            OnFrame?.Invoke();
         }
     }
 
