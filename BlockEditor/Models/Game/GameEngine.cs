@@ -11,7 +11,6 @@ namespace BlockEditor.Models
         private DispatcherTimer _timer;
         public const int FPS = 27;
         public const double MsPerFrame = 1000 / FPS;
-        private bool _updating;
 
         private bool _pause;
         private readonly object _pauseLock = new object();
@@ -69,16 +68,12 @@ namespace BlockEditor.Models
 
         private void OnTick(object sender, EventArgs e)
         {
-            if (_updating || Pause)
+            if (Pause)
             {
                 return;
             }
 
-            _updating = true;
-
             OnFrame?.Invoke();
-
-            _updating = false;
         }
     }
 
