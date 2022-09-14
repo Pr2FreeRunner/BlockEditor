@@ -8,8 +8,7 @@ namespace BlockEditor.Models
 {
     public class GameEngine
     {
-
-        private System.Timers.Timer _timer;
+        private DispatcherTimer _timer;
         public const int FPS = 27;
         public const double MsPerFrame = 1000 / FPS;
         private bool _updating;
@@ -40,14 +39,16 @@ namespace BlockEditor.Models
 
         public GameEngine()
         {
-            _timer = new System.Timers.Timer();
-            _timer.Interval = MsPerFrame;
-            _timer.Elapsed += OnElapsed;
+            _timer = new DispatcherTimer(DispatcherPriority.Normal);
+            _timer.Interval = TimeSpan.FromMilliseconds(MsPerFrame);
+            _timer.Tick += OnTick;
         }
+
+        
 
         public void Start()
         {
-            _timer.Enabled = true;
+            _timer.Start();
         }
 
         public void RefreshGui()
@@ -63,10 +64,10 @@ namespace BlockEditor.Models
         public void Stop()
         {
             _timer.Stop();
-            _timer.Enabled = false;
         }
 
-        private void OnElapsed(object sender, ElapsedEventArgs e)
+
+        private void OnTick(object sender, EventArgs e)
         {
             if (_updating || Pause)
             {
@@ -75,10 +76,7 @@ namespace BlockEditor.Models
 
             _updating = true;
 
-            Application.Current?.Dispatcher?.Invoke(DispatcherPriority.Render, new ThreadStart(delegate
-            {
-                OnFrame?.Invoke();
-            }));
+            OnFrame?.Invoke();
 
             _updating = false;
         }
