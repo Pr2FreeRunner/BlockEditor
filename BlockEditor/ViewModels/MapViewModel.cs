@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 using BlockEditor.Helpers;
 using BlockEditor.Models;
 using BlockEditor.Utils;
 using BlockEditor.Views.Controls;
 using BlockEditor.Views.Windows;
 using LevelModel.Models.Components;
-
 using SkiaSharp;
 
 using static BlockEditor.Models.BlockImages;

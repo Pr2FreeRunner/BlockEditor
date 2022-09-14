@@ -6,9 +6,6 @@ using BlockEditor.Helpers;
 using BlockEditor.ViewModels;
 using BlockEditor.Models;
 
-using static BlockEditor.Models.UserMode;
-using SkiaSharp;
-
 namespace BlockEditor.Views.Controls
 {
 
