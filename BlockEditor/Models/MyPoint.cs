@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 
 namespace BlockEditor.Models
 {
@@ -29,7 +30,7 @@ namespace BlockEditor.Models
 
         public override int GetHashCode() => (X, Y).GetHashCode();
 
-        public override string ToString() => $"({X}, {Y})";
+        public override string ToString() => "{X=" + X.ToString(CultureInfo.CurrentCulture) + ",Y=" + Y.ToString(CultureInfo.CurrentCulture) + "}";
 
         public static bool operator ==(MyPoint p1, MyPoint p2)
         {
