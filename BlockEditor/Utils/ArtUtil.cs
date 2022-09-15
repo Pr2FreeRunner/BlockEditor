@@ -38,5 +38,44 @@ namespace BlockEditor.Utils
 
             return result;
         }
+
+        public static void CreateRelativePosition(List<TextArt> arts)
+        {
+            if (arts == null)
+                return;
+
+            var previousX = 0;
+            var previousY = 0;
+
+            foreach (var a in arts)
+            {
+                var tempX = a.X;
+                var tempY = a.Y;
+
+                a.X -= previousX;
+                a.Y -= previousY;
+
+                previousX = tempX;
+                previousY = tempY;
+            }
+        }
+
+        public static void CreateAbsolutePosition(List<TextArt> arts)
+        {
+            if (arts == null)
+                return;
+
+            var x = 0;
+            var y = 0;
+
+            foreach (var a in arts)
+            {
+                x += a.X;
+                y += a.Y;
+
+                a.X = x;
+                a.Y = y;
+            }
+        }
     }
 }

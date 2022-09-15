@@ -65,6 +65,10 @@ namespace BlockEditor.Models
             Art2 = new GameArt("Art 2");
             Art3 = new GameArt("Art 3");
 
+            ArtUtil.CreateAbsolutePosition(Level.TextArt1);
+            ArtUtil.CreateAbsolutePosition(Level.TextArt2);
+            ArtUtil.CreateAbsolutePosition(Level.TextArt3);
+
             LoadArt();
         }
 
@@ -78,22 +82,35 @@ namespace BlockEditor.Models
 
         public string ToPr2String(string username, string token, bool publish, bool overwrite, bool newest)
         {
-            Level.Blocks = BlocksUtil.ToPr2Blocks(Blocks);
-            Level.Published = publish;
+            ArtUtil.CreateRelativePosition(Level.TextArt1);
+            ArtUtil.CreateRelativePosition(Level.TextArt2);
+            ArtUtil.CreateRelativePosition(Level.TextArt3);
 
-            if (username == null || token == null)
-                throw new ArgumentNullException("user");
+            try 
+            { 
+                Level.Blocks = BlocksUtil.ToPr2Blocks(Blocks);
+                Level.Published = publish;
 
-            var dto = new ToPr2DTO()
+                if (username == null || token == null)
+                    throw new ArgumentNullException("user");
+
+                var dto = new ToPr2DTO()
+                {
+                    Level = Level,
+                    Username = username,
+                    Token = token,
+                    OverWrite = overwrite,
+                    Newest = newest
+                };
+
+                return PR2Converter.LevelToPr2(dto);
+            }
+            finally
             {
-                Level = Level,
-                Username = username,
-                Token = token,
-                OverWrite = overwrite,
-                Newest = newest
-            };
-
-            return PR2Converter.LevelToPr2(dto);
+                ArtUtil.CreateAbsolutePosition(Level.TextArt1);
+                ArtUtil.CreateAbsolutePosition(Level.TextArt2);
+                ArtUtil.CreateAbsolutePosition(Level.TextArt3);
+            }
         }
 
         private Level GetDefaultLevel()

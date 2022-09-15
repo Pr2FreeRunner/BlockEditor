@@ -202,50 +202,8 @@ namespace BlockEditor.Views.Windows
                 _map.Level.DrawArt1.Clear();
         }
 
-        private void CreateAbsolutePosition(List<TextArt> arts)
-        {
-            if (arts == null)
-                return;
-
-            var x = 0;
-            var y = 0;
-
-            foreach (var a in arts)
-            {
-                x += a.X;
-                y += a.Y;
-
-                a.X = x;
-                a.Y = y;
-            }
-        }
-
-        private void CreateRelativePosition(List<TextArt> arts)
-        {
-            if (arts == null)
-                return;
-
-            var previousX = 0;
-            var previousY = 0;
-
-            foreach (var a in arts)
-            {
-                var tempX = a.X;
-                var tempY = a.Y;
-
-                a.X -= previousX;
-                a.Y -= previousY;
-
-                previousX = tempX;
-                previousY = tempY;
-            }
-        }
-
         private void RemoveArt(MyRegion region)
         {
-            CreateAbsolutePosition(_map.Level.TextArt0);
-            CreateAbsolutePosition(_map.Level.TextArt1);
-
             var textArt0 = _map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
             var textArt1 = _map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
 
@@ -261,18 +219,12 @@ namespace BlockEditor.Views.Windows
                 _map.Level.DrawArt0.RemoveAll(a => drawArt0.Contains(a));
             if (cbDrawArt1.IsChecked == true)
                 _map.Level.DrawArt1.RemoveAll(a => drawArt1.Contains(a));
-
-            CreateRelativePosition(_map.Level.TextArt0);
-            CreateRelativePosition(_map.Level.TextArt1);
         }
 
         private void MoveArt(MyRegion region)
         {
             var x = (int)(_moveX * 30);
             var y = (int)(_moveY * 30);
-
-            CreateAbsolutePosition(_map.Level.TextArt0);
-            CreateAbsolutePosition(_map.Level.TextArt1);
 
             var textArt0 = _map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
             var textArt1 = _map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
@@ -289,9 +241,6 @@ namespace BlockEditor.Views.Windows
                 MapUtil.MoveAbsoluteArt(drawArt0, x, y);
             if (cbDrawArt1.IsChecked == true)
                 MapUtil.MoveAbsoluteArt(drawArt1, x, y);
-
-            CreateRelativePosition(_map.Level.TextArt0);
-            CreateRelativePosition(_map.Level.TextArt1);
         }
 
         private void MoveArt()
@@ -353,9 +302,6 @@ namespace BlockEditor.Views.Windows
             var replace = ColorUtil.ToSkColor(ColorUtil.GetColorFromHex(_colorReplace));
             var add     = ColorUtil.ToSkColor(ColorUtil.GetColorFromHex(_colorAdd));
 
-            CreateAbsolutePosition(_map.Level.TextArt0);
-            CreateAbsolutePosition(_map.Level.TextArt1);
-
             var textArt0 = _map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
             var textArt1 = _map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
 
@@ -371,18 +317,12 @@ namespace BlockEditor.Views.Windows
                 MapUtil.ChangeArtColor(drawArt0, replace, add, _sensitivity.Value, true);
             if (cbDrawArt1.IsChecked == true)
                 MapUtil.ChangeArtColor(drawArt1, replace, add, _sensitivity.Value, true);
-
-            CreateRelativePosition(_map.Level.TextArt0);
-            CreateRelativePosition(_map.Level.TextArt1);
         }
 
         private void ReplaceArtColor()
         {
             var replace = ColorUtil.ToSkColor(ColorUtil.GetColorFromHex(_colorReplace));
             var add = ColorUtil.ToSkColor(ColorUtil.GetColorFromHex(_colorAdd));
-
-            CreateAbsolutePosition(_map.Level.TextArt0);
-            CreateAbsolutePosition(_map.Level.TextArt1);
 
             if (cbTextArt0.IsChecked == true)
                 MapUtil.ChangeArtColor(_map.Level.TextArt0, replace, add, _sensitivity.Value, false);
@@ -393,9 +333,6 @@ namespace BlockEditor.Views.Windows
                 MapUtil.ChangeArtColor(_map.Level.DrawArt0, replace, add, _sensitivity.Value, true);
             if (cbDrawArt1.IsChecked == true)
                 MapUtil.ChangeArtColor(_map.Level.DrawArt1, replace, add, _sensitivity.Value, true);
-
-            CreateRelativePosition(_map.Level.TextArt0);
-            CreateRelativePosition(_map.Level.TextArt1);
         }
 
         public bool IsRegionSelected()
