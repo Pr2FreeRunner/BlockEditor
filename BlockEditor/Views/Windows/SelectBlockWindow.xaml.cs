@@ -15,7 +15,7 @@ namespace BlockEditor.Views.Windows
         private SelectBlockWindow(string title)
         {
             InitializeComponent();
-            MyBlockControl.Init(BlockSize.Zoom75, 11, whiteSelection: false);
+            MyBlockControl.Init(BlockSize.Zoom100, 11, whiteSelection: false);
 
             tbTitle.Text = title;
             this.Title = "Select Block";

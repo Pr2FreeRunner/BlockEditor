@@ -62,7 +62,7 @@ namespace BlockEditor.Views.Windows
 
         private void Init(MyPoint? p)
         {
-            BlockImage.Source = BlockImages.GetImageBlock(BlockImages.BlockSize.Zoom150, _blockId)?.Image;
+            BlockImage.Source = BlockImages.GetImageBlock(BlockImages.BlockSize.Zoom160, _blockId)?.Image;
 
             if(p != null)
             {

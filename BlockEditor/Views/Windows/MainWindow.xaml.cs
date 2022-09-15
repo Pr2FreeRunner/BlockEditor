@@ -67,20 +67,20 @@ namespace BlockEditor.Views.Windows
                 height = SystemParameters.WorkArea.Size.Height;
 
             if (double.IsNaN(height))
-                return BlockSize.Zoom110;
+                return BlockSize.Zoom120;
 
-            if (height < 800)
-                return BlockSize.Zoom75;
-            if(height < 900)
-                return BlockSize.Zoom90;
-            if(height < 930)
+            if (height < 740)
+                return BlockSize.Zoom80;
+            if(height < 820)
                 return BlockSize.Zoom100;
-            if (height < 1000)
-                return BlockSize.Zoom110;
+            if(height < 890)
+                return BlockSize.Zoom120;
+            if (height < 990)
+                return BlockSize.Zoom140;
             if (height < 1200)
-                return BlockSize.Zoom125;
+                return BlockSize.Zoom160;
 
-            return BlockSize.Zoom150;
+            return BlockSize.Zoom180;
         }
 
 

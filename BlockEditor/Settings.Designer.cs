@@ -262,5 +262,17 @@ namespace BlockEditor {
                 this["FirstBlockInfo"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowArt {
+            get {
+                return ((bool)(this["ShowArt"]));
+            }
+            set {
+                this["ShowArt"] = value;
+            }
+        }
     }
 }

@@ -61,7 +61,7 @@ namespace BlockEditor.Views.Windows
             }
             else
             {
-                BlockImage.Source = BlockImages.GetImageBlock(BlockImages.BlockSize.Zoom150, _block.ID)?.Image;
+                BlockImage.Source = BlockImages.GetImageBlock(BlockImages.BlockSize.Zoom160, _block.ID)?.Image;
                 lblPosX.Text = _block.Position.Value.X.ToString(_culture);
                 lblPosY.Text = _block.Position.Value.Y.ToString(_culture);
 

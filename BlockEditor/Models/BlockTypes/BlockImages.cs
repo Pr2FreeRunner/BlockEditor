@@ -23,9 +23,10 @@ namespace BlockEditor.Models
 
     public static class BlockImages
     {
-        public enum BlockSize { Zoom5, Zoom10, Zoom25, Zoom50, Zoom75, Zoom90, Zoom100, Zoom110, Zoom125, Zoom150, Zoom175, Zoom200, Zoom250 };
+        public enum BlockSize { Zoom5, Zoom10, Zoom20, Zoom40, Zoom60, Zoom80, Zoom100, 
+                    Zoom120, Zoom140, Zoom160, Zoom180, Zoom200, Zoom220, Zoom240, Zoom260, Zoom280, Zoom300 };
 
-        public const BlockSize DEFAULT_BLOCK_SIZE = BlockSize.Zoom125;
+        public const BlockSize DEFAULT_BLOCK_SIZE = BlockSize.Zoom140;
 
         private static Dictionary<BlockSize, Dictionary<int, BlockImage>> _images;
         private static Dictionary<BlockSize, BlockImage> _unknownBlocks;

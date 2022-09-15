@@ -32,6 +32,11 @@ namespace BlockEditor.Models
 
         public MyPoint? MousePosition { get; set; }
 
+        public bool ShowArt 
+        { 
+            get { return MySettings.ShowArt && ShowArtIsEnabled(); }
+            set { MySettings.ShowArt = value; }
+        }
 
         public Game()
         {
@@ -44,6 +49,11 @@ namespace BlockEditor.Models
             UserSelection = new UserSelection(GetMapIndex);
         }
 
+
+        public bool ShowArtIsEnabled()
+        {
+            return Map.BlockSize > BlockImages.BlockSize.Zoom40;
+        }
 
         public MyPoint? GetMapIndex(MyPoint? p)
         {

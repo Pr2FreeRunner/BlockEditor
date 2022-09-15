@@ -64,8 +64,10 @@ namespace BlockEditor.Models
             // - the size of the objects on this layer
 
             var canvas = _surface.Canvas;
+            var zoom = (float)_game.Map.BlockSize.GetScale();
 
-            float zoom = (float)_game.Map.BlockSize.GetScale();
+            if(!_game.ShowArt)
+                return;
 
             SKMatrix cam = SKMatrix.CreateIdentity();
             cam.TransX = -_game.Camera.Position.X;

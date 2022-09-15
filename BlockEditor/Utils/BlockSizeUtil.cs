@@ -20,31 +20,39 @@ namespace BlockEditor.Utils
         {
             switch (size)
             {
-                case BlockSize.Zoom5: return 0.05;
+                case BlockSize.Zoom5:  return 0.05;
 
-                case BlockSize.Zoom10: return 0.10;
+                case BlockSize.Zoom10: return 0.1;
 
-                case BlockSize.Zoom25: return 0.25;
+                case BlockSize.Zoom20: return 0.2;
 
-                case BlockSize.Zoom50: return 0.5;
+                case BlockSize.Zoom40: return 0.4;
 
-                case BlockSize.Zoom75: return 0.75;
+                case BlockSize.Zoom60: return 0.6;
 
-                case BlockSize.Zoom90: return 0.90;
+                case BlockSize.Zoom80: return 0.8;
 
-                case BlockSize.Zoom100: return 1.00;
+                case BlockSize.Zoom100: return 1.0;
                 
-                case BlockSize.Zoom110: return 1.10;
+                case BlockSize.Zoom120: return 1.2;
 
-                case BlockSize.Zoom125: return 1.25;
+                case BlockSize.Zoom140: return 1.4;
 
-                case BlockSize.Zoom150: return 1.50;
+                case BlockSize.Zoom160: return 1.6;
 
-                case BlockSize.Zoom175: return 1.75;
+                case BlockSize.Zoom180: return 1.8;
 
-                case BlockSize.Zoom200: return 2.00;
+                case BlockSize.Zoom200: return 2.0;
 
-                case BlockSize.Zoom250: return 2.50;
+                case BlockSize.Zoom220: return 2.2;
+
+                case BlockSize.Zoom240: return 2.4;
+
+                case BlockSize.Zoom260: return 2.6;
+
+                case BlockSize.Zoom280: return 2.8;
+
+                case BlockSize.Zoom300: return 3.0;
 
                 default: return 1.0;
             }

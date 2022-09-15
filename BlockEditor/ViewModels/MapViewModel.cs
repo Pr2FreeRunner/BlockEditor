@@ -23,6 +23,18 @@ namespace BlockEditor.ViewModels
             get { return Game.Map?.Blocks.Overwrite ?? false; }
             set { Game.Map.Blocks.Overwrite = value; RaisePropertyChanged(); }
         }
+
+        public bool ShowArt
+        {
+            get { return Game.ShowArt; }
+            set { Game.ShowArt = value; RaisePropertyChanged(); }
+        }
+
+        public bool ShowArtIsEnabled
+        {
+            get { return Game.ShowArtIsEnabled(); }
+        }
+
         public Game Game { get; }
         public MenuCommands Commands { get; }
 
@@ -312,6 +324,8 @@ namespace BlockEditor.ViewModels
             var y = currentIndex.Y * Game.Map.BlockPixelSize - halfScreenY;
 
             Game.Camera.Position = new MyPoint(x, y);
+            RaisePropertyChanged(nameof(ShowArtIsEnabled));
+            RaisePropertyChanged(nameof(ShowArt));
         }
 
     }
