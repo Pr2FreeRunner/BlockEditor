@@ -37,9 +37,9 @@ namespace BlockEditor.Models
         {
             _surface.Canvas.Clear(_game.Map.Background);
 
-            DrawArt(_game.Map.Art1, 1.0f);
-            DrawArt(_game.Map.Art2, 0.5f);
             DrawArt(_game.Map.Art3, 0.25f);
+            DrawArt(_game.Map.Art2, 0.5f);
+            DrawArt(_game.Map.Art1, 1.0f);
             DrawBlocks();
             _game.Camera.Move(_game.Map.BlockSize);
             DrawSelectedBlock();
