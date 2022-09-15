@@ -77,19 +77,19 @@ namespace BlockEditor.Helpers
             proc.Start();
         }
 
-        public static SKPaint SelectionFillPaint = new SKPaint
+        public static readonly SKPaint SelectionFillPaint = new SKPaint
         {
             Color = new SKColor(100, 200, 255, 50),
             Style = SKPaintStyle.Fill,
         };
 
-        public static SKPaint SelectionStrokePaint = new SKPaint
+        public static readonly SKPaint SelectionStrokePaint = new SKPaint
         {
             Color = new SKColor(100, 200, 255),
             Style = SKPaintStyle.Stroke,
         };
 
-        public static SKPaint TranslucentPaint = new SKPaint 
+        public static readonly SKPaint TranslucentPaint = new SKPaint 
         { 
             Color = SKColors.White.WithAlpha(127) 
         };
