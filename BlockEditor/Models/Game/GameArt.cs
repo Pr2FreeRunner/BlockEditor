@@ -114,10 +114,8 @@ namespace BlockEditor.Models
             var lines = text.Split('\r');
             var builder = new SKTextBlobBuilder();
 
-            // there's some unknown offset flash uses at the text y origin... this isn't right but it's kinda close
-            var bounds = new SKRect();
-            paint.MeasureText(lines[0], ref bounds);
-            origin.Offset(0, lineSpace - bounds.Height);
+            // unknown offset that flash has
+            origin.Offset(0, 20);
 
             foreach (var line in lines)
             {
