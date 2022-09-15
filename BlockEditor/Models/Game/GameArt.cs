@@ -1,4 +1,5 @@
-﻿using BlockEditor.Utils;
+﻿using BlockEditor.Helpers;
+using BlockEditor.Utils;
 
 using LevelModel.Models.Components.Art;
 
@@ -10,26 +11,26 @@ using System.Text;
 
 namespace BlockEditor.Models
 {
-    public class ArtStroke
+    public class MyStrokeArt
     {
         public SKPath Path { get; private set; }
         public SKPaint Paint { get; private set; }
 
-        public ArtStroke(SKPath path, SKPaint paint)
+        public MyStrokeArt(SKPath path, SKPaint paint)
         {
             Path = path;
             Paint = paint;
         }
     }
 
-    public class ArtText
+    public class MyTextArt
     {
         public SKTextBlob TextBlob { get; private set; }
         public SKPaint Paint { get; private set; }
         public SKPoint Position { get; private set; }
         public SKPoint Scale { get; private set; }
 
-        public ArtText(SKTextBlob blob, SKPaint paint, SKPoint position, SKPoint scale)
+        public MyTextArt(SKTextBlob blob, SKPaint paint, SKPoint position, SKPoint scale)
         {
             TextBlob = blob;
             Paint = paint;
@@ -43,13 +44,14 @@ namespace BlockEditor.Models
         private const string FontFamily = "Verdana";
         private const int FontSize = 18;
 
-        public List<ArtStroke> Strokes { get; }
-        public List<ArtText> Texts { get; }
+        public List<MyStrokeArt> Strokes { get; }
+        public List<MyTextArt> Texts { get; }
 
         private static SKFont Font;
         private static SKTypeface Typeface;
+        private readonly string _name;
 
-        public GameArt(List<DrawArt> drawArts, List<TextArt> textArts)
+        public GameArt(string name)
         {
             if (Font == null)
             {
@@ -57,13 +59,30 @@ namespace BlockEditor.Models
                 Font = Typeface.ToFont(FontSize);
             }
 
-            Strokes = CreateStrokes(drawArts);
-            Texts = CreateTexts(textArts);
+            _name = name ?? "art";
+            Strokes = new List<MyStrokeArt>();
+            Texts = new List<MyTextArt>();
         }
 
-        private static List<ArtText> CreateTexts(List<TextArt> textArts)
+
+        public void LoadArt(List<DrawArt> drawArts, List<TextArt> textArts)
         {
-            var texts = new List<ArtText>();
+            try
+            {
+                Strokes.Clear();
+                Texts.Clear();
+
+                LoadStrokes(drawArts);
+                LoadTexts(textArts);
+            }
+            catch
+            {
+                MessageUtil.ShowError($"Failed to load the {_name}" + Environment.NewLine + Environment.NewLine +"The art inside the map will be ignored.");
+            }
+        }
+
+        private void LoadTexts(List<TextArt> textArts)
+        {
             foreach (var ta in textArts)
             {
                 if (!ta.IsText)
@@ -84,11 +103,9 @@ namespace BlockEditor.Models
                 var position = new SKPoint(ta.X, ta.Y);
                 var blob = CreateTextBlob(ta.Text, new SKPoint(), Font, paint);
                 var scale = new SKPoint(ta.Width/100f, ta.Height/100f);
-                
-                texts.Add(new ArtText(blob, paint, position, scale));
-                
+
+                Texts.Add(new MyTextArt(blob, paint, position, scale));
             }
-            return texts;
         }
 
         private static SKTextBlob CreateTextBlob(string text, SKPoint origin, SKFont font, SKPaint paint)
@@ -112,9 +129,8 @@ namespace BlockEditor.Models
             return builder.Build();
         }
 
-        private static List<ArtStroke> CreateStrokes(List<DrawArt> drawArts)
+        private void LoadStrokes(List<DrawArt> drawArts)
         {
-            var strokes = new List<ArtStroke>();
             foreach (var da in drawArts)
             {
                 var paint = new SKPaint
@@ -133,9 +149,8 @@ namespace BlockEditor.Models
                     path.RLineTo(da.Movement[i], da.Movement[i + 1]);
                 }
                 
-                strokes.Add(new ArtStroke(path, paint));
+                Strokes.Add(new MyStrokeArt(path, paint));
             }
-            return strokes;
         }
 
 
