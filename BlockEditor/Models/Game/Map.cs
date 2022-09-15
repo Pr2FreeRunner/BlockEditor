@@ -3,11 +3,8 @@ using BlockEditor.Utils;
 using Converters;
 using Converters.DataStructures.DTO;
 using LevelModel.Models;
-
 using SkiaSharp;
-
 using System;
-using System.Drawing;
 
 using static BlockEditor.Models.BlockImages;
 
