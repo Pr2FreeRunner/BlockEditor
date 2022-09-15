@@ -166,6 +166,12 @@ namespace BlockEditor.Models
                         stroke.Paint.Dispose();
                         stroke.Path.Dispose();
                     }
+
+                    foreach (var text in Texts)
+                    {
+                        text.Paint.Dispose();
+                        text.TextBlob.Dispose();
+                    }
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
