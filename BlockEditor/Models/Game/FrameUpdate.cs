@@ -60,15 +60,17 @@ namespace BlockEditor.Models
         private void DrawArt(GameArt art, float scale)
         {
             // scale is for parallax scrolling, it applies to:
-            // - the draw position of objects on this layer
+            // - the draw position of objects on this layer (their speed upon moving the camera)
             // - the size of the objects on this layer
 
             var canvas = _surface.Canvas;
 
-            var cam = SKMatrix.CreateIdentity();
+            float zoom = (float)_game.Map.BlockSize.GetScale();
+
+            SKMatrix cam = SKMatrix.CreateIdentity();
             cam.TransX = -_game.Camera.Position.X;
             cam.TransY = -_game.Camera.Position.Y;
-            cam.ScaleX = cam.ScaleY = (float)_game.Map.BlockSize.GetScale() * scale;
+            cam.ScaleX = cam.ScaleY = zoom;
             canvas.Concat(ref cam);
             
             // draw strokes
@@ -82,12 +84,12 @@ namespace BlockEditor.Models
             // draw texts
             foreach (var text in art.Texts)
             {
-                var textMatrix = SKMatrix.CreateIdentity();
-                var projectedPosition = cam.MapPoint(text.Position);
-                textMatrix.TransX = projectedPosition.X * scale;
-                textMatrix.TransY = projectedPosition.Y * scale;
-                textMatrix.ScaleX = text.Scale.X * (float)_game.Map.BlockSize.GetScale() * scale;
-                textMatrix.ScaleY = text.Scale.Y * (float)_game.Map.BlockSize.GetScale() * scale;
+                SKMatrix textMatrix = SKMatrix.CreateIdentity();
+                SKPoint projectedPosition = cam.MapPoint(text.Position);
+                textMatrix.TransX = projectedPosition.X;
+                textMatrix.TransY = projectedPosition.Y;
+                textMatrix.ScaleX = text.Scale.X * zoom;
+                textMatrix.ScaleY = text.Scale.Y * zoom;
 
                 canvas.SetMatrix(textMatrix);
 
@@ -96,7 +98,7 @@ namespace BlockEditor.Models
                 canvas.SetMatrix(cam);
             }
 
-            var inverted = cam.Invert();
+            SKMatrix inverted = cam.Invert();
             canvas.Concat(ref inverted);
 
         }
