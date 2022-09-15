@@ -294,6 +294,7 @@ namespace BlockEditor.ViewModels
             Game.Engine.PauseConfirmed();
 
             var size = Game.Map.BlockSize;
+            Game.Map.Dispose();
             Game.Map = map;
             Game.Map.BlockSize = size;
 

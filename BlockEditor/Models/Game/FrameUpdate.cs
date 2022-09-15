@@ -37,9 +37,9 @@ namespace BlockEditor.Models
         {
             _surface.Canvas.Clear(_game.Map.Background);
 
-            DrawArt(_game.Map.Art1, 1.0f);
-            DrawArt(_game.Map.Art2, 0.5f);
             DrawArt(_game.Map.Art3, 0.25f);
+            DrawArt(_game.Map.Art2, 0.5f);
+            DrawArt(_game.Map.Art1, 1.0f);
             DrawBlocks();
             _game.Camera.Move(_game.Map.BlockSize);
             DrawSelectedBlock();
@@ -54,7 +54,7 @@ namespace BlockEditor.Models
         {
             var canvas = _surface.Canvas;
 
-            canvas.DrawText($"Camera({_game.Camera.Position.X}, {_game.Camera.Position.Y})", 0, 10, MapUtil.GetSelectionStrokePaint());
+            canvas.DrawText($"Camera {_game.Camera.Position}", 0, 10, MapUtil.SelectionStrokePaint);
         }
 
         private void DrawArt(GameArt art, float scale)
@@ -160,7 +160,7 @@ namespace BlockEditor.Models
 
             // TODO: better performance via DrawAtlas ?
             if (semiTrans)
-                _surface.Canvas.DrawBitmap(image.SKBitmap, posX, posY, MapUtil.GetTranslucentPaint());
+                _surface.Canvas.DrawBitmap(image.SKBitmap, posX, posY, MapUtil.TranslucentPaint);
             else
                 _surface.Canvas.DrawBitmap(image.SKBitmap, posX, posY);
         }
@@ -183,7 +183,7 @@ namespace BlockEditor.Models
             var positionX = (int)(_mousePosition.Value.X - _game.Map.BlockPixelSize / 2.0);
             var positionY = (int)(_mousePosition.Value.Y - _game.Map.BlockPixelSize / 2.0);
 
-            _surface.Canvas.DrawBitmap(block, positionX, positionY, MapUtil.GetTranslucentPaint());
+            _surface.Canvas.DrawBitmap(block, positionX, positionY, MapUtil.TranslucentPaint);
         }
 
         private void DrawSelectedBlocks()
@@ -240,8 +240,8 @@ namespace BlockEditor.Models
 
             var rec = new SKRect(minX, minY, maxX, maxY);
 
-            _surface.Canvas.DrawRect(rec, MapUtil.GetSelectionFillPaint());
-            _surface.Canvas.DrawRect(rec, MapUtil.GetSelectionStrokePaint());
+            _surface.Canvas.DrawRect(rec, MapUtil.SelectionFillPaint);
+            _surface.Canvas.DrawRect(rec, MapUtil.SelectionStrokePaint);
         }
 
         private void DrawMeasureDistanceLine()
@@ -261,7 +261,7 @@ namespace BlockEditor.Models
             var p1 = new SKPoint(start.Value.X, start.Value.Y);
             var p2 = new SKPoint(end.Value.X, end.Value.Y);
 
-            _surface.Canvas.DrawLine(p1, p2, MapUtil.GetSelectionStrokePaint());
+            _surface.Canvas.DrawLine(p1, p2, MapUtil.SelectionStrokePaint);
         }
 
     }

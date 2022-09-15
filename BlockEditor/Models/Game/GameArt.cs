@@ -88,14 +88,13 @@ namespace BlockEditor.Models
                 if (!ta.IsText)
                     continue;
 
-                // text color comes as decimal for some reason, gotta convert to hex
-                string hexcolor = "0";
-                if (int.TryParse(ta.Color, out int col))
-                    hexcolor = col.ToString("X");
+                var color = SKColors.Black;
+                if (uint.TryParse(ta.Color, out uint rgb))
+                    color = new SKColor(rgb).WithAlpha(255);
                     
                 var paint = new SKPaint
                 {
-                    Color = ColorUtil.GetSKColorFromRGBHex(hexcolor),
+                    Color = color,
                     Typeface = Typeface,
                     TextSize = FontSize,
                 };
@@ -165,6 +164,12 @@ namespace BlockEditor.Models
                     {
                         stroke.Paint.Dispose();
                         stroke.Path.Dispose();
+                    }
+
+                    foreach (var text in Texts)
+                    {
+                        text.Paint.Dispose();
+                        text.TextBlob.Dispose();
                     }
                 }
 

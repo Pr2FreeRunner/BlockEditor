@@ -29,6 +29,8 @@ namespace BlockEditor.Models
 
         public override int GetHashCode() => (X, Y).GetHashCode();
 
+        public override string ToString() => $"({X}, {Y})";
+
         public static bool operator ==(MyPoint p1, MyPoint p2)
         {
             return p1.X == p2.X && p1.Y == p2.Y;
