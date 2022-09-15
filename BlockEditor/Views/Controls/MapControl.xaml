@@ -43,7 +43,7 @@
 
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="0,2,0,2">
                     <CheckBox Focusable="False" IsTabStop="False" IsChecked="{Binding IsOverwrite, Mode=TwoWay}" Margin="30,0,7,0" Height="25" VerticalContentAlignment="Center" Content="Overwrite"  FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI" ToolTip="Overwrite Block&#x0a;Hotkey:  O"/>
-                    <CheckBox Focusable="False" IsTabStop="False" IsChecked="{Binding ShowArt, Mode=TwoWay}"     Margin="30,0,7,0" Height="25" VerticalContentAlignment="Center" Content="Show Art"   FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI" ToolTip="Show Art"  IsEnabled="{Binding ShowArtIsEnabled, Mode=OneWay}"/>
+                    <CheckBox Focusable="False" IsTabStop="False" IsChecked="{Binding ShowArt, Mode=TwoWay}"     Margin="30,-1,7,0" Height="25" VerticalContentAlignment="Center" Content="Show Art"   FontSize="14" FontWeight="SemiBold" FontFamily="Segoe UI" ToolTip="Show Art"  IsEnabled="{Binding ShowArtIsEnabled, Mode=OneWay}"/>
                 </StackPanel>
 
             </StackPanel>
