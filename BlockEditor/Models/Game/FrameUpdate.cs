@@ -1,10 +1,12 @@
-﻿using BlockEditor.Helpers;
+using BlockEditor.Helpers;
 using BlockEditor.Utils;
 using LevelModel.Models.Components;
+using LevelModel.Models.Components.Art;
 
 using SkiaSharp;
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -35,12 +37,70 @@ namespace BlockEditor.Models
         {
             _surface.Canvas.Clear(_game.Map.Background);
 
+            DrawArt(_game.Map.Art1, 1.0f);
+            DrawArt(_game.Map.Art2, 0.5f);
+            DrawArt(_game.Map.Art3, 0.25f);
             DrawBlocks();
             _game.Camera.Move(_game.Map.BlockSize);
             DrawSelectedBlock();
             DrawSelectedBlocks();
             DrawSelectedRectangle();
             DrawMeasureDistanceLine();
+            DrawDebug();
+        }
+
+        [System.Diagnostics.Conditional("DEBUG")]
+        private void DrawDebug()
+        {
+            var canvas = _surface.Canvas;
+
+            canvas.DrawText($"Camera({_game.Camera.Position.X}, {_game.Camera.Position.Y})", 0, 10, MapUtil.GetSelectionStrokePaint());
+        }
+
+        private void DrawArt(GameArt art, float scale)
+        {
+            // scale is for parallax scrolling, it applies to:
+            // - the draw position of objects on this layer (their speed upon moving the camera)
+            // - the size of the objects on this layer
+
+            var canvas = _surface.Canvas;
+
+            float zoom = (float)_game.Map.BlockSize.GetScale();
+
+            SKMatrix cam = SKMatrix.CreateIdentity();
+            cam.TransX = -_game.Camera.Position.X;
+            cam.TransY = -_game.Camera.Position.Y;
+            cam.ScaleX = cam.ScaleY = zoom;
+            canvas.Concat(ref cam);
+            
+            // draw strokes
+            canvas.SaveLayer();
+            foreach (var stroke in art.Strokes)
+            {
+                canvas.DrawPath(stroke.Path, stroke.Paint);
+            }
+            canvas.Restore();
+
+            // draw texts
+            foreach (var text in art.Texts)
+            {
+                SKMatrix textMatrix = SKMatrix.CreateIdentity();
+                SKPoint projectedPosition = cam.MapPoint(text.Position);
+                textMatrix.TransX = projectedPosition.X;
+                textMatrix.TransY = projectedPosition.Y;
+                textMatrix.ScaleX = text.Scale.X * zoom;
+                textMatrix.ScaleY = text.Scale.Y * zoom;
+
+                canvas.SetMatrix(textMatrix);
+
+                canvas.DrawText(text.TextBlob, 0, 0, text.Paint);
+
+                canvas.SetMatrix(cam);
+            }
+
+            SKMatrix inverted = cam.Invert();
+            canvas.Concat(ref inverted);
+
         }
 
         private void DrawBlocks()
@@ -96,6 +156,7 @@ namespace BlockEditor.Models
             var posX = b.Position.Value.X * _game.Map.BlockPixelSize - _game.Camera.Position.X;
             var posY = b.Position.Value.Y * _game.Map.BlockPixelSize - _game.Camera.Position.Y;
 
+            // TODO: better performance via DrawAtlas ?
             if (semiTrans)
                 _surface.Canvas.DrawBitmap(image.SKBitmap, posX, posY, MapUtil.GetTranslucentPaint());
             else

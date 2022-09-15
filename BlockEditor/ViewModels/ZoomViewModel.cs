@@ -47,9 +47,10 @@ namespace BlockEditor.ViewModels
 
         private string CreateZoomText(BlockSize size)
         {
-            var current = size.GetPixelSize();
+            //var current = size.GetPixelSize();
+            var current = size.GetScale();
             var normal  = BlockSize.Zoom100.GetPixelSize();
-            var zoom    = (double) current * 100 / normal;
+            var zoom = (double)current * 100;// / normal;
             var zoomInt = (int) zoom;
 
             return zoomInt.ToString(CultureInfo.InvariantCulture);

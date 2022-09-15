@@ -19,6 +19,9 @@ namespace BlockEditor.Models
         public Level Level { get; }
 
         public Blocks Blocks { get; }
+        public GameArt Art1 { get; }
+        public GameArt Art2 { get; }
+        public GameArt Art3 { get; }
 
         public readonly int BlocksOutsideBoundries;
 
@@ -29,7 +32,7 @@ namespace BlockEditor.Models
                 try
                 {
                     if (Level.BackgroundColor != null)
-                        return SKColor.Parse("FF"+Level.BackgroundColor.PadLeft(6, '0'));// ColorTranslator.FromHtml("#" + Level.BackgroundColor);
+                        return ColorUtil.GetSKColorFromRGBHex(Level.BackgroundColor);
                     else
                         return SKColors.Black;
                 }
@@ -62,12 +65,18 @@ namespace BlockEditor.Models
             Level.Title = string.Empty;
             Blocks = BlocksUtil.ToBlocks(Level.Blocks, out BlocksOutsideBoundries);
             BlockSize = DEFAULT_BLOCK_SIZE;
+            Art1 = new GameArt(Level.DrawArt1, Level.TextArt1);
+            Art2 = new GameArt(Level.DrawArt2, Level.TextArt2);
+            Art3 = new GameArt(Level.DrawArt3, Level.TextArt3);
         }
 
         public Map(Level level)
         {
             Level = level ?? GetDefaultLevel();
             Blocks = BlocksUtil.ToBlocks(Level.Blocks, out BlocksOutsideBoundries);
+            Art1 = new GameArt(Level.DrawArt1, Level.TextArt1);
+            Art2 = new GameArt(Level.DrawArt2, Level.TextArt2);
+            Art3 = new GameArt(Level.DrawArt3, Level.TextArt3);
         }
 
 

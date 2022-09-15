@@ -50,6 +50,19 @@ namespace BlockEditor.Utils
 
         }
 
+        public static SKColor GetSKColorFromRGBHex(string input)
+        {
+            try
+            {
+                input = input.Trim('#');
+                return SKColor.Parse("FF" + input.PadLeft(6, '0'));
+            }
+            catch
+            {
+                return SKColors.White;
+            }
+        }
+
         public static bool IsColorEqual(SKColor? c1, SKColor? c2, ColorSensitivty sensitivty)
         {
             if (c1 == null || c2 == null)
