@@ -251,7 +251,6 @@ namespace BlockEditor.Views.Windows
                 _page = 1;
                 _searchBy = (SearchBy)SearchByComboBox.SelectedIndex;
                 Clean();
-                searchTextbox.Focus();
             }
             catch (Exception ex)
             {
@@ -259,6 +258,8 @@ namespace BlockEditor.Views.Windows
             }
 
             UpdateButtons();
+            searchTextbox.Focus();
+
 
             if (_searchBy == SearchBy.MyLevels 
                          || _searchBy == SearchBy.LocalFile
