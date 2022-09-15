@@ -54,7 +54,7 @@ namespace BlockEditor.Models
         {
             var canvas = _surface.Canvas;
 
-            canvas.DrawText($"Camera{_game.Camera.Position}", 0, 10, MapUtil.GetSelectionStrokePaint());
+            canvas.DrawText($"Camera {_game.Camera.Position}", 0, 10, MapUtil.GetSelectionStrokePaint());
         }
 
         private void DrawArt(GameArt art, float scale)
