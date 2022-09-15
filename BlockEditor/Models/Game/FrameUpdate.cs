@@ -37,31 +37,68 @@ namespace BlockEditor.Models
         {
             _surface.Canvas.Clear(_game.Map.Background);
 
-            DrawArt(_game.Map.Art1);
+            DrawArt(_game.Map.Art1, 1.0f);
+            DrawArt(_game.Map.Art2, 0.5f);
+            DrawArt(_game.Map.Art3, 0.25f);
             DrawBlocks();
             _game.Camera.Move(_game.Map.BlockSize);
             DrawSelectedBlock();
             DrawSelectedBlocks();
             DrawSelectedRectangle();
             DrawMeasureDistanceLine();
+            DrawDebug();
         }
 
-        private void DrawArt(ArtGraphics art)
+        [System.Diagnostics.Conditional("DEBUG")]
+        private void DrawDebug()
         {
             var canvas = _surface.Canvas;
 
-            var width = _game.Camera.ScreenSize.X;
-            var height = _game.Camera.ScreenSize.Y;
+            canvas.DrawText($"Camera({_game.Camera.Position.X}, {_game.Camera.Position.Y})", 0, 10, MapUtil.GetSelectionStrokePaint());
+        }
 
-            var minBlockX = _game.Camera.Position.X / _game.Map.BlockPixelSize;
-            var minBlockY = _game.Camera.Position.Y / _game.Map.BlockPixelSize;
+        private void DrawArt(GameArt art, float scale)
+        {
+            // scale is for parallax scrolling, it applies to:
+            // - the draw position of objects on this layer
+            // - the size of the objects on this layer
 
+            var canvas = _surface.Canvas;
 
+            var cam = SKMatrix.CreateIdentity();
+            cam.TransX = -_game.Camera.Position.X;
+            cam.TransY = -_game.Camera.Position.Y;
+            cam.ScaleX = cam.ScaleY = (float)_game.Map.BlockSize.GetScale() * scale;
+            canvas.Concat(ref cam);
+            
+            // draw strokes
+            canvas.SaveLayer();
             foreach (var stroke in art.Strokes)
             {
-                //stroke.Path.Tr
-                //canvas.DrawPath(stroke.Path, stroke.Paint);
+                canvas.DrawPath(stroke.Path, stroke.Paint);
             }
+            canvas.Restore();
+
+            // draw texts
+            foreach (var text in art.Texts)
+            {
+                var textMatrix = SKMatrix.CreateIdentity();
+                var projectedPosition = cam.MapPoint(text.Position);
+                textMatrix.TransX = projectedPosition.X * scale;
+                textMatrix.TransY = projectedPosition.Y * scale;
+                textMatrix.ScaleX = text.Scale.X * (float)_game.Map.BlockSize.GetScale() * scale;
+                textMatrix.ScaleY = text.Scale.Y * (float)_game.Map.BlockSize.GetScale() * scale;
+
+                canvas.SetMatrix(textMatrix);
+
+                canvas.DrawText(text.TextBlob, 0, 0, text.Paint);
+
+                canvas.SetMatrix(cam);
+            }
+
+            var inverted = cam.Invert();
+            canvas.Concat(ref inverted);
+
         }
 
         private void DrawBlocks()
