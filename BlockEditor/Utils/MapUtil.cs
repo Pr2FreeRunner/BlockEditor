@@ -77,28 +77,22 @@ namespace BlockEditor.Helpers
             proc.Start();
         }
 
-        public static SKPaint GetSelectionFillPaint()
+        public static SKPaint SelectionFillPaint = new SKPaint
         {
-            return new SKPaint
-            {
-                Color = new SKColor(100, 200, 255, 50),
-                Style = SKPaintStyle.Fill,
-            };
-        }
+            Color = new SKColor(100, 200, 255, 50),
+            Style = SKPaintStyle.Fill,
+        };
 
-        public static SKPaint GetSelectionStrokePaint()
+        public static SKPaint SelectionStrokePaint = new SKPaint
         {
-            return new SKPaint
-            {
-                Color = new SKColor(100, 200, 255),
-                Style = SKPaintStyle.Stroke,
-            };
-        }
+            Color = new SKColor(100, 200, 255),
+            Style = SKPaintStyle.Stroke,
+        };
 
-        public static SKPaint GetTranslucentPaint()
-        {
-            return new SKPaint { Color = SKColors.White.WithAlpha(127) };
-        }
+        public static SKPaint TranslucentPaint = new SKPaint 
+        { 
+            Color = SKColors.White.WithAlpha(127) 
+        };
 
         public static void MoveRelativeArt(IEnumerable<Art> art, int x, int y)
         {
