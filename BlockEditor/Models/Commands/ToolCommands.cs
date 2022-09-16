@@ -458,42 +458,34 @@ namespace BlockEditor.Models
             if (r != true || w.BuildInfo == null)
                 return;
 
-            try
-            {
-                game.Engine.PauseConfirmed();
 
-                using (new TempCursor(Cursors.Wait))
+            using (new TempCursor(Cursors.Wait))
+            {
+                var level = Builders.PR2Builder.BuildLevel(w.BuildInfo);
+
+                if (level == null)
+                    throw new Exception("Something went wrong....");
+
+                if (w.BuildInfo.ImageInfo.Type == ImageDTO.ImageType.Blocks)
                 {
-                    var level = Builders.PR2Builder.BuildLevel(w.BuildInfo);
+                    var pr2Blocks = level.Blocks.Skip(8).ToList();
+                    w.ShiftPosition(pr2Blocks);
+                    var blocks = BlocksUtil.ToBlocks(pr2Blocks, out var blocksOutsideBoundries).GetBlocks();
+                    var position = blocks.First().Position;
 
-                    if (level == null)
-                        throw new Exception("Something went wrong....");
-
-                    if (w.BuildInfo.ImageInfo.Type == ImageDTO.ImageType.Blocks)
-                    {
-                        var pr2Blocks = level.Blocks.Skip(8).ToList();
-                        w.ShiftPosition(pr2Blocks);
-                        var blocks = BlocksUtil.ToBlocks(pr2Blocks, out var blocksOutsideBoundries).GetBlocks();
-                        var position = blocks.First().Position;
-
-                        MyUtil.BlocksOutsideBoundries(blocksOutsideBoundries);
-                        game.AddBlocks(blocks);
-                        game.GoToPosition(position);
-                    }
-                    else
-                    {
-                        w.ShiftPosition(level.DrawArt0);
-                        w.ShiftPosition(level.DrawArt1);
-
-                        game.Map.Level.DrawArt1.AddRange(level.DrawArt1);
-                        game.Map.Level.DrawArt0.AddRange(level.DrawArt0);
-                        game.Map.LoadArt();
-                    }
+                    MyUtil.BlocksOutsideBoundries(blocksOutsideBoundries);
+                    game.AddBlocks(blocks);
+                    game.GoToPosition(position);
                 }
-            }
-            finally
-            {
-                game.Engine.Pause = false;
+                else
+                {
+                    w.ShiftPosition(level.DrawArt0);
+                    w.ShiftPosition(level.DrawArt1);
+
+                    game.Map.Level.DrawArt1.AddRange(level.DrawArt1);
+                    game.Map.Level.DrawArt0.AddRange(level.DrawArt0);
+                    game.Map.LoadArt();
+                }
             }
         }
 
