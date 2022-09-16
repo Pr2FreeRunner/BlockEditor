@@ -175,7 +175,7 @@ namespace BlockEditor.Views.Controls
             }
         }
 
-        public void UserControl_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        public void OnPreviewMouseWheel(MouseWheelEventArgs e)
         {
             var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 
@@ -194,12 +194,10 @@ namespace BlockEditor.Views.Controls
             }
         }
 
-        public void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
+        public void OnPreviewKeyDown(KeyEventArgs e, bool ctrl)
         {
             try
             {
-                var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-
                 if (e.Key == Key.Escape)
                 {
                     if (ViewModel.Commands.DeselectCommand.CanExecute(null))
@@ -251,47 +249,47 @@ namespace BlockEditor.Views.Controls
                 {
                     BlockSelection.ActivatePreviousSelection();
                 }        
-                else if (e.Key == Key.I)
+                else if (!ctrl && e.Key == Key.I)
                 {
                     if (ViewModel.Commands.InfoCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.InfoCommand.Execute(null);
                 }
-                else if (e.Key == Key.T)
+                else if (!ctrl && e.Key == Key.T)
                 {
                     if (ViewModel.Commands.TransformCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.TransformCommand.Execute(null);
                 }
-                else if (e.Key == Key.R)
+                else if (!ctrl && e.Key == Key.R)
                 {
                     if (ViewModel.Commands.DeleteCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.DeleteCommand.Execute(null);
                 }
-                else if (e.Key == Key.E)
+                else if (!ctrl && e.Key == Key.E)
                 {
                     if (ViewModel.Commands.EditCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.EditCommand.Execute(null);
                 }
-                else if (e.Key == Key.N)
+                else if (!ctrl && e.Key == Key.N)
                 {
                     if (ViewModel.Commands.NavigatorCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.NavigatorCommand.Execute(null);
                 }
-                else if (e.Key == Key.Q)
+                else if (!ctrl && e.Key == Key.Q)
                 {
                     if (ViewModel.Commands.AdvancedCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.AdvancedCommand.Execute(null);
                 }
-                else if (e.Key == Key.B)
+                else if (!ctrl && e.Key == Key.B)
                 {
                     if (ViewModel.Commands.BuildCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.BuildCommand.Execute(null);
                 }
-                else if (e.Key == Key.O)
+                else if (!ctrl && e.Key == Key.O)
                 {
                     if(!App.IsSidePanelActive())
                         ViewModel.IsOverwrite = !ViewModel.IsOverwrite;
                 }
-                else if (e.Key == Key.LeftShift || e.Key == Key.RightShift)
+                else if (!ctrl && e.Key == Key.LeftShift || e.Key == Key.RightShift)
                 {
                     if (ViewModel.Commands.SelectCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.SelectCommand.Execute(null);

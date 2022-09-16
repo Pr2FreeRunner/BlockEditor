@@ -4,12 +4,11 @@ using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-using static BlockEditor.Models.BlockImages;
-
 namespace BlockEditor.Views.Controls
 {
     public partial class MyTabControl : UserControl
     {
+        public Guid TabID { get;  }
 
         public MapControl MapControl { get; }
 
@@ -21,6 +20,7 @@ namespace BlockEditor.Views.Controls
         public MyTabControl(int nr)
         {
             _nr = nr;
+            TabID = Guid.NewGuid();
             InitializeComponent();
             MapControl = new MapControl();
             tbTitle.Text = GetDefaultTitle();
