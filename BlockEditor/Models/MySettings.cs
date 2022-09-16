@@ -163,6 +163,13 @@ namespace BlockEditor.Models
             set { _showArt = value; Save(); }
         }
 
+        private static bool _firstShowArt;
+        public static bool FirstShowArt
+        {
+            get { return _firstShowArt; }
+            set { _firstShowArt = value; Save(); }
+        }
+
         public static void Init()
         {
             //Reset();
@@ -184,6 +191,7 @@ namespace BlockEditor.Models
                 Settings.Default["FirstTimeLoad"] = FirstTimeLoad;
                 Settings.Default["FirstConnectTeleports"] = FirstConnectTeleports;  
                 Settings.Default["ShowArt"] = ShowArt;
+                Settings.Default["FirstShowArt"] = FirstShowArt;
                 Settings.Default["Overwrite"] = Overwrite;
                 Settings.Default["FirstUserSelection"] = FirstUserSelection;
                 Settings.Default["FirstBlockInfo"] = FirstBlockInfo;
@@ -230,6 +238,7 @@ namespace BlockEditor.Models
                 _fillShape = (bool)Settings.Default["FillShape"];
                 _overwrite = (bool)Settings.Default["Overwrite"];
                 _showArt = (bool)Settings.Default["ShowArt"];
+                _firstShowArt = (bool)Settings.Default["FirstShowArt"];
                 _firstBlockInfo = (bool)Settings.Default["FirstBlockInfo"];
                 _zoom = (BlockSize)(Settings.Default["Zoom"] ?? BlockImages.DEFAULT_BLOCK_SIZE);
                 _pr2BuildVersion = HandleBuildVersion(Settings.Default["Pr2BuildVersion"] as string);
