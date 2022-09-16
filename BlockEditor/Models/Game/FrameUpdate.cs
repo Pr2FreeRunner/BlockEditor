@@ -65,6 +65,9 @@ namespace BlockEditor.Models
             if(!_game.ShowArt)
                 return;
 
+            if (art.Strokes.Count == 0 && art.Texts.Count == 0)
+                return;
+
             SKMatrix cam = SKMatrix.CreateIdentity();
             cam.TransX = -_game.Camera.Position.X;
             cam.TransY = -_game.Camera.Position.Y;
