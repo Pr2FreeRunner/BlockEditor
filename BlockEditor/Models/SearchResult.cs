@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Globalization;
+using System.Security.Policy;
 using System.Text;
+using static DataAccess.DataStructures.SearchLevelInfo;
 
 namespace BlockEditor.Models
 {
@@ -65,5 +67,43 @@ namespace BlockEditor.Models
             return builder.ToString();
 
         }
+    }
+
+
+    public class MySearch
+    {
+        public enum SearchBy { Username, Title, ID, LocalFile, Newest, BestWeek, MyLevels, GetLastSearch }
+
+        public SearchBy SearchType { get; set; }
+
+        public string SearchValue { get; set; }
+        public int Page { get; set; }
+        public SearchOrderEnum Order { get; set; }
+        public SearchDirectionEnum Direction { get; set; }
+
+        public bool IsValid()
+        {
+            switch(SearchType)
+            {
+                case SearchBy.Username:
+                case SearchBy.Title:
+                case SearchBy.ID:
+                    return !string.IsNullOrWhiteSpace(SearchValue) && Page > 0;
+
+                case SearchBy.Newest:
+                case SearchBy.BestWeek:
+                    return Page > 0;
+
+                case SearchBy.MyLevels:
+                    return true;
+
+                case SearchBy.LocalFile:
+                    return false;
+            }
+
+            return false;
+        }
+
+
     }
 }

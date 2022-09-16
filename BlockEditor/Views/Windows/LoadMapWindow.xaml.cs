@@ -15,24 +15,28 @@ using System.Windows.Input;
 
 using static BlockEditor.Utils.SearchLevelUtil;
 using static DataAccess.DataStructures.SearchLevelInfo;
+using static BlockEditor.Models.MySearch;
+using System.Windows.Documents;
 
 namespace BlockEditor.Views.Windows
 {
 
     public partial class LoadMapWindow : Window
     {
-        private enum SearchBy { Username, Title, ID, LocalFile, Newest, BestWeek, MyLevels } 
 
         private SearchBy _searchBy;
+        private bool _initDone;
+        private bool _disableSearch;
         private int _page = 1;
-        private string NOT_FOUND = "404 Not Found";
-
+        private const string NOT_FOUND = "404 Not Found";
+        private static readonly MySearch _lastSearch = new MySearch();
         public int SelectedLevelID { get; private set; }
         public Level SelectedLevel { get; private set; }
 
 
         public LoadMapWindow() 
         {
+            _initDone = false;
             InitializeComponent();
             AddSearchByItems();
             AddSearchModeItems();
@@ -41,6 +45,8 @@ namespace BlockEditor.Views.Windows
             Clean();
 
             OpenWindows.Add(this);
+            _disableSearch = false;
+            _initDone = true;
         }
 
         private void AddSearchModeItems()
@@ -74,6 +80,9 @@ namespace BlockEditor.Views.Windows
             foreach (SearchBy type in Enum.GetValues(typeof(SearchBy)))
             {
                 if(type == SearchBy.MyLevels && !Users.IsLoggedIn())
+                    continue;
+
+                if (type == SearchBy.GetLastSearch && !_lastSearch.IsValid())
                     continue;
 
                 var item = new ComboBoxItem();
@@ -179,13 +188,25 @@ namespace BlockEditor.Views.Windows
                     break;
             }
 
+            if(_searchBy != SearchBy.GetLastSearch && _initDone)
+            {
+                _lastSearch.Page = _page;
+                _lastSearch.Order = info.Order;
+                _lastSearch.Direction = info.Direction;
+                _lastSearch.SearchValue = value;
+                _lastSearch.SearchType = _searchBy;
+            }
+
             return info;
         }
 
-        #region Events
+    #region Events
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
+            if (_disableSearch)
+                return;
+
             using (new TempCursor(Cursors.Wait))
             {
                 try
@@ -229,6 +250,20 @@ namespace BlockEditor.Views.Windows
                             AddSearchResults(SearchBestWeek(_page));
                             break;
 
+                        case SearchBy.GetLastSearch:
+                            if (!_lastSearch.IsValid())
+                                break;
+
+                            _disableSearch = true;
+                            OrderComboBox.SelectedIndex = (int)_lastSearch.Order;
+                            SearchDirectionComobBox.SelectedIndex = (int)_lastSearch.Direction;
+                            searchTextbox.Text = _lastSearch.SearchValue;
+                            SearchByComboBox.SelectedIndex = (int)_lastSearch.SearchType;
+                            _page = _lastSearch.Page;
+                            _disableSearch = false;
+                            Search_Click(null, null);
+                            break;
+
                         default: throw new Exception("Unknown search config....");
                     }
                 }
@@ -264,7 +299,8 @@ namespace BlockEditor.Views.Windows
             if (_searchBy == SearchBy.MyLevels 
                          || _searchBy == SearchBy.LocalFile
                          || _searchBy == SearchBy.Newest
-                         || _searchBy == SearchBy.BestWeek)
+                         || _searchBy == SearchBy.BestWeek
+                         || _searchBy == SearchBy.GetLastSearch)
             {
                 searchTextbox.Text = string.Empty;
                 Search_Click(null, null);
@@ -307,6 +343,10 @@ namespace BlockEditor.Views.Windows
             else if (ctrl && e.Key == Key.I)
             {
                 SearchByComboBox.SelectedIndex = (int)SearchBy.ID;
+            }
+            else if (ctrl && e.Key == Key.G)
+            {
+                SearchByComboBox.SelectedIndex = (int)SearchBy.GetLastSearch;
             }
             else if (ctrl && e.Key == Key.L)
             {
