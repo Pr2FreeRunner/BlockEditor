@@ -95,8 +95,6 @@ namespace BlockEditor.Models
                     return Page > 0;
 
                 case SearchBy.MyLevels:
-                    return true;
-
                 case SearchBy.LocalFile:
                     return false;
             }
