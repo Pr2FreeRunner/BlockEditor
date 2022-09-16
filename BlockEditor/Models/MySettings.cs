@@ -170,6 +170,13 @@ namespace BlockEditor.Models
             set { _firstShowArt = value; Save(); }
         }
 
+        private static string _lastSearch;
+        public static string LastSearch
+        {
+            get { return _lastSearch; }
+            set { _lastSearch = value; Save(); }
+        }
+
         public static void Init()
         {
             //Reset();
@@ -188,6 +195,7 @@ namespace BlockEditor.Models
             {
                 Settings.Default["Users"] = Users.SaveUser();
                 Settings.Default["Pr2BuildVersion"] = Pr2BuildVersion;
+                Settings.Default["LastSearch"] = LastSearch;
                 Settings.Default["FirstTimeLoad"] = FirstTimeLoad;
                 Settings.Default["FirstConnectTeleports"] = FirstConnectTeleports;  
                 Settings.Default["ShowArt"] = ShowArt;
@@ -242,6 +250,7 @@ namespace BlockEditor.Models
                 _firstBlockInfo = (bool)Settings.Default["FirstBlockInfo"];
                 _zoom = (BlockSize)(Settings.Default["Zoom"] ?? BlockImages.DEFAULT_BLOCK_SIZE);
                 _pr2BuildVersion = HandleBuildVersion(Settings.Default["Pr2BuildVersion"] as string);
+                _lastSearch = HandleBuildVersion(Settings.Default["LastSearch"] as string);
                 _playTime = (int)(Settings.Default["PlayTime"] ?? 0);
 
                 _hotkey0 = (int)(Settings.Default["Hotkey0"] ?? Block.BASIC_WHITE);

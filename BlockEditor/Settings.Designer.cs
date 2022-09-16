@@ -286,5 +286,17 @@ namespace BlockEditor {
                 this["FirstShowArt"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastSearch {
+            get {
+                return ((string)(this["LastSearch"]));
+            }
+            set {
+                this["LastSearch"] = value;
+            }
+        }
     }
 }

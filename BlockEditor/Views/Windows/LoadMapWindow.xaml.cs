@@ -194,6 +194,7 @@ namespace BlockEditor.Views.Windows
                 _lastSearch.Direction = info.Direction;
                 _lastSearch.SearchValue = value;
                 _lastSearch.SearchType = _searchBy;
+                _lastSearch.Save();
             }
 
             return info;

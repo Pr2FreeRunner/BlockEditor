@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlockEditor.Utils;
+using System;
 using System.Globalization;
 using System.Security.Policy;
 using System.Text;
@@ -20,10 +21,10 @@ namespace BlockEditor.Models
         {
             get
             {
-                if(_rating == null)
+                if (_rating == null)
                     return null;
 
-                if(_rating.Value >= 100)
+                if (_rating.Value >= 100)
                     return _rating.Value / 100.0;
 
                 if (_rating.Value >= 10)
@@ -82,9 +83,50 @@ namespace BlockEditor.Models
         public SearchOrderEnum Order { get; set; }
         public SearchDirectionEnum Direction { get; set; }
 
+        private const string _separator = "#9872379712#";
+
+
+
+        public MySearch()
+        {
+            Load();
+        }
+
+        private void Load()
+        {
+
+            try
+            {
+                var data = MySettings.LastSearch;
+
+                if (string.IsNullOrWhiteSpace(data))
+                    return;
+
+                var split = data.Split(_separator);
+
+                if (split.Length != 5)
+                    return;
+
+                if (MyUtil.TryParse(split[0], out var r0))
+                    SearchType = (SearchBy)r0;
+
+                SearchValue = split[1];
+
+                if (MyUtil.TryParse(split[2], out var r2))
+                    Page = r2;
+
+                if (MyUtil.TryParse(split[3], out var r3))
+                    Order = (SearchOrderEnum)r3;
+
+                if (MyUtil.TryParse(split[4], out var r4))
+                    Direction = (SearchDirectionEnum)r4;
+            }
+            catch { } 
+        }
+
         public bool IsValid()
         {
-            switch(SearchType)
+            switch (SearchType)
             {
                 case SearchBy.Username:
                 case SearchBy.Title:
@@ -103,6 +145,27 @@ namespace BlockEditor.Models
             return false;
         }
 
+        public void Save()
+        {
+
+            try
+            {
+                var builder = new StringBuilder();
+
+                builder.Append((int)SearchType);
+                builder.Append(_separator);
+                builder.Append(SearchValue ?? string.Empty);
+                builder.Append(_separator);
+                builder.Append(Page);
+                builder.Append(_separator);
+                builder.Append((int)Order);
+                builder.Append(_separator);
+                builder.Append((int)Direction);
+
+                MySettings.LastSearch = builder.ToString();
+            }
+            catch { }
+        }
 
     }
 }
