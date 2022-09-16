@@ -189,7 +189,9 @@ namespace BlockEditor.Views.Windows
             if (CurrentMap == null)
                 return;
 
-            BlocksControl.OnKeyDown(e.Key);
+            if(!App.IsSidePanelActive())
+                BlocksControl.OnKeyDown(e.Key);
+
             CurrentMap.UserControl_PreviewKeyDown(sender, e);
         }
 
