@@ -150,7 +150,7 @@ namespace BlockEditor.Models
 
             w.AddOption("Block Type", Tools.DeleteBlockTypeCommand);
             w.AddOption("Block Option", Tools.DeleteBlockOptionCommand);
-            w.AddOption("Remove Blocks", Tools.DeleteModeCommand);
+            w.AddOption("Eraser", Tools.DeleteModeCommand);
             w.AddOption("Remove Region", Tools.DeleteRegionCommand);
 
 
