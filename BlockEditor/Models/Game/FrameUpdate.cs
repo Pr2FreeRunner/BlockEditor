@@ -62,7 +62,7 @@ namespace BlockEditor.Models
             var canvas = _surface.Canvas;
             var zoom = (float)_game.Map.BlockSize.GetScale();
 
-            if(!_game.ShowArt)
+            if(art == null || !_game.ShowArt)
                 return;
 
             if (art.Strokes.Count == 0 && art.Texts.Count == 0)
