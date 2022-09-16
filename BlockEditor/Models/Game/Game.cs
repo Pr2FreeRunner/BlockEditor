@@ -4,10 +4,9 @@ using BlockEditor.ViewModels;
 using LevelModel.Models.Components;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using static BlockEditor.Models.UserMode;
-
 using System.Windows.Input;
+
+using static BlockEditor.Models.UserMode;
 
 namespace BlockEditor.Models
 {

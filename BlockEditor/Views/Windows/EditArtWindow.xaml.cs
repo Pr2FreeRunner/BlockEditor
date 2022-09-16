@@ -129,6 +129,8 @@ namespace BlockEditor.Views.Windows
                     MovePanel.Visibility = Visibility.Visible;
                     ReplaceColorPanel.Visibility = Visibility.Collapsed;
                     cbBlocks.Visibility = Visibility.Visible;
+                    cbTextArt00.Visibility = cbTextArt2.Visibility = cbTextArt2.Visibility = cbTextArt3.Visibility = Visibility.Collapsed;
+                    cbDrawArt00.Visibility = cbDrawArt2.Visibility = cbDrawArt2.Visibility = cbDrawArt3.Visibility = Visibility.Collapsed;
                     break;
                 case EditArtModes.Delete:
                     btnOk.IsEnabled = true;
@@ -136,6 +138,8 @@ namespace BlockEditor.Views.Windows
                     MovePanel.Visibility = Visibility.Collapsed;
                     ReplaceColorPanel.Visibility = Visibility.Collapsed;
                     cbBlocks.Visibility = Visibility.Visible;
+                    cbTextArt00.Visibility = cbTextArt2.Visibility = cbTextArt2.Visibility = cbTextArt3.Visibility = IsRegionSelected() ? Visibility.Collapsed : Visibility.Visible;
+                    cbDrawArt00.Visibility = cbDrawArt2.Visibility = cbDrawArt2.Visibility = cbDrawArt3.Visibility = IsRegionSelected() ? Visibility.Collapsed : Visibility.Visible;
                     break;
                 case EditArtModes.ReplaceColor:
                     btnOk.IsEnabled = _colorAdd != null && _colorReplace != null && _sensitivity != null;
@@ -143,6 +147,8 @@ namespace BlockEditor.Views.Windows
                     MovePanel.Visibility = Visibility.Collapsed;
                     ReplaceColorPanel.Visibility = Visibility.Visible;
                     cbBlocks.Visibility = Visibility.Collapsed;
+                                        cbTextArt00.Visibility = cbTextArt2.Visibility = cbTextArt2.Visibility = cbTextArt3.Visibility = Visibility.Collapsed;
+                    cbDrawArt00.Visibility = cbDrawArt2.Visibility = cbDrawArt2.Visibility = cbDrawArt3.Visibility = Visibility.Collapsed;
                     break;
             }
         }
@@ -187,19 +193,36 @@ namespace BlockEditor.Views.Windows
 
         private void RemoveArt()
         {
+            if (cbTextArt00.IsChecked == true)
+                _map.Level.TextArt00.Clear();
+
             if (cbTextArt0.IsChecked == true)
                 _map.Level.TextArt0.Clear();
 
             if (cbTextArt1.IsChecked == true)
                 _map.Level.TextArt1.Clear();
 
+            if (cbTextArt2.IsChecked == true)
+                _map.Level.TextArt2.Clear();
 
+            if (cbTextArt3.IsChecked == true)
+                _map.Level.TextArt3.Clear();
+
+
+            if (cbDrawArt00.IsChecked == true)
+                _map.Level.DrawArt00.Clear();
 
             if (cbDrawArt0.IsChecked == true)
                 _map.Level.DrawArt0.Clear();
 
             if (cbDrawArt1.IsChecked == true)
                 _map.Level.DrawArt1.Clear();
+
+            if (cbDrawArt2.IsChecked == true)
+                _map.Level.DrawArt2.Clear();
+
+            if (cbDrawArt3.IsChecked == true)
+                _map.Level.DrawArt3.Clear();
         }
 
         private void RemoveArt(MyRegion region)
@@ -415,6 +438,11 @@ namespace BlockEditor.Views.Windows
             {
                 MessageUtil.ShowError(ex.Message);
             }
+        }
+
+        private void cbSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateButtons();
         }
     }
 }

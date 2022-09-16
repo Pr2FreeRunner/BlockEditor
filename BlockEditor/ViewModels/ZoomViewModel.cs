@@ -45,6 +45,7 @@ namespace BlockEditor.ViewModels
             ZoomOutCommand = new RelayCommand(ZoomOutExecute, ZoomOutCanExecute);
         }
 
+
         private string CreateZoomText(BlockSize size)
         {
             //var current = size.GetPixelSize();

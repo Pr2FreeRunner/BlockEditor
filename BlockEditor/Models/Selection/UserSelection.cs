@@ -41,8 +41,8 @@ namespace BlockEditor.Models
             if (map == null || !region.IsComplete())
                 return null;
 
-            var start  = region.Start.Value;
-            var end    = region.End.Value;
+            var start = region.Start.Value;
+            var end = region.End.Value;
             var result = new List<SimpleBlock>();
 
 
@@ -53,7 +53,7 @@ namespace BlockEditor.Models
                     var normalBlock = map.Blocks.GetBlock(x, y, false);
                     var startBlocks = map.Blocks.StartBlocks.GetBlocks(x, y);
 
-                    if(!normalBlock.IsEmpty())
+                    if (!normalBlock.IsEmpty())
                         result.Add(normalBlock.Move(x - start.X, y - start.Y));
 
                     if (startBlocks != null)
@@ -82,7 +82,7 @@ namespace BlockEditor.Models
 
         public bool SelectedRegionContainsBlocks(Map map)
         {
-            if(map == null)
+            if (map == null)
                 return false;
 
             var selection = GetSelection(map);

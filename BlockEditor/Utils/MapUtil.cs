@@ -91,7 +91,7 @@ namespace BlockEditor.Helpers
 
         public static readonly SKPaint TranslucentPaint = new SKPaint 
         { 
-            Color = SKColors.White.WithAlpha(127) 
+            Color = SKColors.White.WithAlpha(150) 
         };
 
         public static void MoveRelativeArt(IEnumerable<Art> art, int x, int y)

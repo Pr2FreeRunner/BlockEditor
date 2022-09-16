@@ -24,7 +24,6 @@ namespace BlockEditor.Views.Controls
             MapButtons.ViewModel.OnLoadMap += ViewModel.OnLoadMap;
             MapButtons.ViewModel.OnSaveMap += () => SaveMapUtil.Save(ViewModel.Game.Map);
             MapButtons.ViewModel.OnTestMap += () => MapUtil.TestInTasTool(ViewModel.Game.Map);
-            ZoomControl.ViewModel.OnZoomChanged += (zoom) => ViewModel.OnZoomChanged(zoom);
             this.Loaded += windowLoaded;
             ZoomControl.ViewModel.Zoom = MySettings.Zoom;
         }
@@ -64,7 +63,6 @@ namespace BlockEditor.Views.Controls
             SidePanel.Visibility = Visibility.Visible;
         }
 
-
         private void windowLoaded(object sender, RoutedEventArgs e)
         {
             try
@@ -88,7 +86,11 @@ namespace BlockEditor.Views.Controls
         {
             try
             {
-                ViewModel.IsOverwrite = MySettings.Overwrite; //updates GUI
+                //refresh GUI
+                ViewModel.IsOverwrite = MySettings.Overwrite; 
+                ViewModel.ShowArt = MySettings.ShowArt;
+                ZoomControl.ViewModel.Zoom = ZoomControl.ViewModel.Zoom;
+
                 ViewModel.Game.Engine.Start();
             }
             catch (Exception ex)
@@ -129,14 +131,6 @@ namespace BlockEditor.Views.Controls
                     return;
 
                 ViewModel.OnPreviewMouseDown(sender, e);
-
-                if (MySettings.FirstTimeLoad)
-                {
-                    var hint1 = "Hint 1:  You can delete a block by right-clicking it.";
-                    var hint2 = "Hint 2:  You can deselect anything with the Escape key.";
-                    MessageUtil.ShowInfo(hint1 + Environment.NewLine + Environment.NewLine + hint2);
-                    MySettings.FirstTimeLoad = false;
-                }
             }
             catch (Exception ex)
             {
@@ -181,7 +175,7 @@ namespace BlockEditor.Views.Controls
             }
         }
 
-        public void UserControl_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        public void OnPreviewMouseWheel(MouseWheelEventArgs e)
         {
             var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 
@@ -200,12 +194,10 @@ namespace BlockEditor.Views.Controls
             }
         }
 
-        public void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
+        public void OnPreviewKeyDown(KeyEventArgs e, bool ctrl)
         {
             try
             {
-                var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-
                 if (e.Key == Key.Escape)
                 {
                     if (ViewModel.Commands.DeselectCommand.CanExecute(null))
@@ -257,47 +249,47 @@ namespace BlockEditor.Views.Controls
                 {
                     BlockSelection.ActivatePreviousSelection();
                 }        
-                else if (e.Key == Key.I)
+                else if (!ctrl && e.Key == Key.I)
                 {
                     if (ViewModel.Commands.InfoCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.InfoCommand.Execute(null);
                 }
-                else if (e.Key == Key.T)
+                else if (!ctrl && e.Key == Key.T)
                 {
                     if (ViewModel.Commands.TransformCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.TransformCommand.Execute(null);
                 }
-                else if (e.Key == Key.R)
+                else if (!ctrl && e.Key == Key.R)
                 {
                     if (ViewModel.Commands.DeleteCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.DeleteCommand.Execute(null);
                 }
-                else if (e.Key == Key.E)
+                else if (!ctrl && e.Key == Key.E)
                 {
                     if (ViewModel.Commands.EditCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.EditCommand.Execute(null);
                 }
-                else if (e.Key == Key.N)
+                else if (!ctrl && e.Key == Key.N)
                 {
                     if (ViewModel.Commands.NavigatorCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.NavigatorCommand.Execute(null);
                 }
-                else if (e.Key == Key.Q)
+                else if (!ctrl && e.Key == Key.Q)
                 {
                     if (ViewModel.Commands.AdvancedCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.AdvancedCommand.Execute(null);
                 }
-                else if (e.Key == Key.B)
+                else if (!ctrl && e.Key == Key.B)
                 {
                     if (ViewModel.Commands.BuildCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.BuildCommand.Execute(null);
                 }
-                else if (e.Key == Key.O)
+                else if (!ctrl && e.Key == Key.O)
                 {
                     if(!App.IsSidePanelActive())
                         ViewModel.IsOverwrite = !ViewModel.IsOverwrite;
                 }
-                else if (e.Key == Key.LeftShift || e.Key == Key.RightShift)
+                else if (!ctrl && e.Key == Key.LeftShift || e.Key == Key.RightShift)
                 {
                     if (ViewModel.Commands.SelectCommand.CanExecute(null) && !App.IsSidePanelActive())
                         ViewModel.Commands.SelectCommand.Execute(null);

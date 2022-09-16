@@ -1,13 +1,8 @@
 using BlockEditor.Helpers;
 using BlockEditor.Utils;
 using LevelModel.Models.Components;
-using LevelModel.Models.Components.Art;
-
 using SkiaSharp;
-
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace BlockEditor.Models
@@ -37,8 +32,8 @@ namespace BlockEditor.Models
         {
             _surface.Canvas.Clear(_game.Map.Background);
 
-            DrawArt(_game.Map.Art3, 0.25f);
-            DrawArt(_game.Map.Art2, 0.5f);
+            //DrawArt(_game.Map.Art3, 0.25f);
+            //DrawArt(_game.Map.Art2, 0.5f);
             DrawArt(_game.Map.Art1, 1.0f);
             DrawBlocks();
             DrawArt(_game.Map.Art0, 1.0f);
@@ -65,9 +60,12 @@ namespace BlockEditor.Models
             // - the size of the objects on this layer
 
             var canvas = _surface.Canvas;
-            var zoom = (float)_game.Map.BlockSize.GetScale();
+            var zoom   = (float)_game.Map.BlockSize.GetScale();
 
-            if(!_game.ShowArt)
+            if(art == null || !_game.ShowArt)
+                return;
+
+            if (art.Strokes.Count == 0 && art.Texts.Count == 0)
                 return;
 
             SKMatrix cam = SKMatrix.CreateIdentity();
@@ -103,7 +101,6 @@ namespace BlockEditor.Models
 
             SKMatrix inverted = cam.Invert();
             canvas.Concat(ref inverted);
-
         }
 
         private void DrawBlocks()
@@ -219,7 +216,7 @@ namespace BlockEditor.Models
                 var blockX = arrayX - width  * _game.Map.BlockPixelSize + b.Position.Value.X * _game.Map.BlockPixelSize - _game.Map.BlockPixelSize;
                 var blockY = arrayY - height * _game.Map.BlockPixelSize + b.Position.Value.Y * _game.Map.BlockPixelSize - _game.Map.BlockPixelSize;
 
-                _surface.Canvas.DrawBitmap(block, blockX, blockY);
+                _surface.Canvas.DrawBitmap(block, blockX, blockY, MapUtil.TranslucentPaint);
             }
         }
 

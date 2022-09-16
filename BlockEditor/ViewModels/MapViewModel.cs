@@ -27,7 +27,18 @@ namespace BlockEditor.ViewModels
         public bool ShowArt
         {
             get { return Game.ShowArt; }
-            set { Game.ShowArt = value; RaisePropertyChanged(); }
+            set 
+            { 
+                Game.ShowArt = value; 
+                RaisePropertyChanged(); 
+
+                if(value && MySettings.FirstShowArt)
+                {
+                    MessageUtil.ShowInfo("If you notice any lag on maps with much art," 
+                        + Environment.NewLine + "I recommend that you turn art off.");
+                    MySettings.FirstShowArt = false;
+                }
+            }
         }
 
         public bool ShowArtIsEnabled

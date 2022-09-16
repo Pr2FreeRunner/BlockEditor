@@ -265,13 +265,37 @@ namespace BlockEditor {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool ShowArt {
             get {
                 return ((bool)(this["ShowArt"]));
             }
             set {
                 this["ShowArt"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FirstShowArt {
+            get {
+                return ((bool)(this["FirstShowArt"]));
+            }
+            set {
+                this["FirstShowArt"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastSearch {
+            get {
+                return ((string)(this["LastSearch"]));
+            }
+            set {
+                this["LastSearch"] = value;
             }
         }
     }

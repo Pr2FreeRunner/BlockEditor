@@ -138,12 +138,21 @@ namespace BlockEditor.Models
 
         public void DeleteMenu()
         {
+            if (MySettings.FirstTimeLoad)
+            {
+                var hint1 = "Hint 1:  You can delete a block by right-clicking it.";
+                var hint2 = "Hint 2:  You can deselect anything with the Escape key.";
+                MessageUtil.ShowInfo(hint1 + Environment.NewLine + Environment.NewLine + hint2);
+                MySettings.FirstTimeLoad = false;
+            }
+
             var w = new MenuWindow("Remove Tools");
 
-            w.AddOption("Block Type", Tools.DeleteBlockTypeCommand);
-            w.AddOption("Block Option", Tools.DeleteBlockOptionCommand);
-            w.AddOption("Remove Blocks", Tools.DeleteModeCommand);
+            w.AddOption("Remove Block Type", Tools.DeleteBlockTypeCommand);
+            w.AddOption("Remove Block Option", Tools.DeleteBlockOptionCommand);
+            w.AddOption("Eraser", Tools.DeleteModeCommand);
             w.AddOption("Remove Region", Tools.DeleteRegionCommand);
+
 
             w.ShowDialog();
             w.Execute();

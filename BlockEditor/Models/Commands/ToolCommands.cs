@@ -458,6 +458,7 @@ namespace BlockEditor.Models
             if (r != true || w.BuildInfo == null)
                 return;
 
+
             using (new TempCursor(Cursors.Wait))
             {
                 var level = Builders.PR2Builder.BuildLevel(w.BuildInfo);
@@ -483,8 +484,7 @@ namespace BlockEditor.Models
 
                     game.Map.Level.DrawArt1.AddRange(level.DrawArt1);
                     game.Map.Level.DrawArt0.AddRange(level.DrawArt0);
-
-                    MessageUtil.ShowInfo("The image has been added to the map." + Environment.NewLine + Environment.NewLine + "Note:  Art is not visible inside the Block Editor.");
+                    game.Map.LoadArt();
                 }
             }
         }

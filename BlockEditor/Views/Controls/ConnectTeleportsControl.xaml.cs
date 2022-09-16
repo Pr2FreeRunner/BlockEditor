@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using BlockEditor.Helpers;
 using BlockEditor.Models;
-
+using LevelModel.Models.Components;
 using static BlockEditor.Models.UserMode;
 
 namespace BlockEditor.Views.Controls
@@ -13,12 +15,10 @@ namespace BlockEditor.Views.Controls
     public partial class ConnectTeleportsControl : UserControl
     {
 
-
         private readonly ConnectTeleports _data;
-
         private readonly Game _game;
         private readonly Cursor _connectCursor;
-
+        private readonly List<SimpleBlock> _allTeleports;
 
         public ConnectTeleportsControl(Game game)
         {
@@ -26,10 +26,14 @@ namespace BlockEditor.Views.Controls
             _game = game;
             _data = new ConnectTeleports();
             _connectCursor = Mouse.OverrideCursor;
+            _allTeleports = GetAllTeleportBlocks();
             Init(99);
         }
 
-
+        private List<SimpleBlock> GetAllTeleportBlocks()
+        {
+            return _game.Map.Blocks.GetBlocks(false).Where(b => !b.IsEmpty() && b.ID == Block.TELEPORT).ToList();
+        }
 
         private void Init(int count)
         {
@@ -47,6 +51,7 @@ namespace BlockEditor.Views.Controls
             tbCount.Content = "Selected Block Count:  " + _data.Count;
             btnOK.IsEnabled = _data.Count > 0;
             btnReset.IsEnabled = _data.Count > 0 || !string.IsNullOrEmpty(_data.Options);
+            tbUnique.Content = "Is Color Unique:  " + (IsColorUnique() ? "Yes" : "No");
         }
 
         public void Add(SimpleBlock point)
@@ -132,5 +137,17 @@ namespace BlockEditor.Views.Controls
             }
             catch {}
         }
+
+        private bool IsColorUnique()
+        {
+            foreach (var b in _allTeleports)
+            {
+                if (string.Equals(_data.Options, b.Options, StringComparison.InvariantCultureIgnoreCase))
+                    return false;
+            }
+
+            return true;
+        }
+      
     }
 }

@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using BlockEditor.Models;
 using BlockEditor.Views.Controls;
+
 using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Views.Windows
@@ -16,14 +17,15 @@ namespace BlockEditor.Views.Windows
         public static readonly DateTime StartTime;
 
         public MapControl CurrentMap { get; set; }
-        public MyTabControl CurrentTab { 
-            get 
-            { 
+        public MyTabControl CurrentTab
+        {
+            get
+            {
                 return _currentTab;
             }
-            set 
-            { 
-                if(_currentTab != null)
+            set
+            {
+                if (_currentTab != null)
                     _currentTab.OnSelection(false);
 
                 _currentTab = value;
@@ -58,6 +60,16 @@ namespace BlockEditor.Views.Windows
             CreateNewTab();
         }
 
+
+        private void OnZoomChanged(BlockSize zoom)
+        {
+            foreach (var child in TabPanel.Children)
+            {
+                if (child is MyTabControl tab && tab != null)
+                    tab.MapControl.ViewModel.OnZoomChanged(zoom);
+            }
+        }
+
         private BlockSize GetBlockSize(double height = double.NaN)
         {
             if (double.IsNaN(height))
@@ -71,9 +83,9 @@ namespace BlockEditor.Views.Windows
 
             if (height < 740)
                 return BlockSize.Zoom80;
-            if(height < 820)
+            if (height < 820)
                 return BlockSize.Zoom100;
-            if(height < 890)
+            if (height < 890)
                 return BlockSize.Zoom120;
             if (height < 990)
                 return BlockSize.Zoom140;
@@ -83,7 +95,6 @@ namespace BlockEditor.Views.Windows
             return BlockSize.Zoom180;
         }
 
-
         private void SetBlockImageSize(double height = double.NaN)
         {
             var blockSize = GetBlockSize(height);
@@ -92,7 +103,7 @@ namespace BlockEditor.Views.Windows
 
         private void OnSelectedBlockId(int? id)
         {
-            if(CurrentMap == null)
+            if (CurrentMap == null)
                 return;
 
             BlockSelection.SelectedBlocks = null;
@@ -100,7 +111,7 @@ namespace BlockEditor.Views.Windows
 
             foreach (var child in TabPanel.Children)
             {
-                if(child is MyTabControl tab && tab != null)
+                if (child is MyTabControl tab && tab != null)
                     tab.MapControl.ViewModel.Game.Mode.Value = UserMode.UserModes.None;
             }
         }
@@ -109,7 +120,7 @@ namespace BlockEditor.Views.Windows
         {
             BlockSelection.Reset();
 
-            if(CurrentMap == null)
+            if (CurrentMap == null)
                 return;
 
             CurrentMap.ViewModel.Game.Mode.Value = UserMode.UserModes.None;
@@ -117,10 +128,10 @@ namespace BlockEditor.Views.Windows
 
         public void TitleChanged(string title)
         {
-            if(CurrentTab == null)
+            if (CurrentTab == null)
                 return;
 
-            if(string.IsNullOrEmpty(title))
+            if (string.IsNullOrEmpty(title))
                 return;
 
             CurrentTab.tbTitle.Text = title;
@@ -132,7 +143,9 @@ namespace BlockEditor.Views.Windows
 
             tab.OnClick += Tab_OnClick;
             tab.OnClose += Tab_OnClose;
-            CurrentTab   = tab;
+            tab.MapControl.ZoomControl.ViewModel.OnZoomChanged += OnZoomChanged;
+
+            CurrentTab = tab;
 
             TabPanel.Children.Insert(TabPanel.Children.Count - 1, tab);
             tabNumber++;
@@ -140,7 +153,7 @@ namespace BlockEditor.Views.Windows
 
         private void Tab_OnClick(MyTabControl tab)
         {
-            if(tab == null)
+            if (tab == null)
                 return;
 
             CurrentTab = tab;
@@ -148,7 +161,7 @@ namespace BlockEditor.Views.Windows
 
         private void Tab_OnClose(MyTabControl tab)
         {
-            if(tab == null)
+            if (tab == null)
                 return;
 
             TabPanel.Children.Remove(tab);
@@ -160,9 +173,41 @@ namespace BlockEditor.Views.Windows
                 Close();
         }
 
+        private void SwitchTab(int dir)
+        {
+            // note new-tab button is a child of tab control
+            var index = 0;
+            var count = TabPanel.Children.Count;
+
+            if(count == 1 || CurrentTab == null)
+                return;
+
+            foreach (var child in TabPanel.Children)
+            {
+                if (child is MyTabControl tab && tab != null && tab.TabID == CurrentTab.TabID)
+                    break;
+
+                index++;
+            }
+
+            index += dir;
+
+            if (index < 0)
+                index = count - 2;
+
+            if (index >= count - 1) 
+                index = 0;
+
+            if(index < 0)
+                index = 0;
+
+            Tab_OnClick(TabPanel.Children[index] as MyTabControl);
+        }
+
+
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
-            if(CurrentMap == null)
+            if (CurrentMap == null)
                 return;
 
             CurrentMap.ViewModel.Game.Engine.Pause = false;
@@ -188,8 +233,35 @@ namespace BlockEditor.Views.Windows
             if (CurrentMap == null)
                 return;
 
-            BlocksControl.OnKeyDown(e.Key);
-            CurrentMap.UserControl_PreviewKeyDown(sender, e);
+            if (!App.IsSidePanelActive())
+                BlocksControl.OnKeyDown(e.Key);
+
+            var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+            var shift = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+
+            if (ctrl && e.Key == Key.T)
+            {
+                NewTab_Click(null, null);
+            }
+            else if (ctrl && shift && e.Key == Key.Tab)
+            {
+                SwitchTab(-1);
+            }
+            else if (ctrl && e.Key == Key.Tab)
+            {
+                SwitchTab(1);
+            }
+            else if (ctrl && e.Key == Key.W)
+            {
+                var r = UserQuestionWindow.Show("Do you wish to close the current tab?", "Close", false);
+
+                if (r == UserQuestionWindow.QuestionResult.Yes)
+                    Tab_OnClose(CurrentTab);
+            }
+            else
+            {
+                CurrentMap.OnPreviewKeyDown(e, ctrl);
+            }
         }
 
         private void Window_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -197,7 +269,7 @@ namespace BlockEditor.Views.Windows
             if (CurrentMap == null)
                 return;
 
-            CurrentMap.UserControl_PreviewMouseWheel(sender, e);
+            CurrentMap.OnPreviewMouseWheel(e);
         }
 
         private void NewTab_Click(object sender, RoutedEventArgs e)

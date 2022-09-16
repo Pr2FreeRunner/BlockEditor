@@ -41,7 +41,7 @@ namespace BlockEditor.Models
             }
             set
             {
-                if(value == null)
+                if (value == null)
                     return;
 
                 _previousSelectedBlocks = value;
@@ -49,8 +49,8 @@ namespace BlockEditor.Models
         }
 
         private static int? _selectedBlock;
-        public static int? SelectedBlock 
-        { 
+        public static int? SelectedBlock
+        {
             get { return _selectedBlock; }
             set { _selectedBlock = value; }
         }
@@ -111,7 +111,7 @@ namespace BlockEditor.Models
 
         internal static void ActivatePreviousSelection()
         {
-            if(SelectedBlocks != null)
+            if (SelectedBlocks != null)
                 return;
 
             Reset();
