@@ -129,14 +129,6 @@ namespace BlockEditor.Views.Controls
                     return;
 
                 ViewModel.OnPreviewMouseDown(sender, e);
-
-                if (MySettings.FirstTimeLoad)
-                {
-                    var hint1 = "Hint 1:  You can delete a block by right-clicking it.";
-                    var hint2 = "Hint 2:  You can deselect anything with the Escape key.";
-                    MessageUtil.ShowInfo(hint1 + Environment.NewLine + Environment.NewLine + hint2);
-                    MySettings.FirstTimeLoad = false;
-                }
             }
             catch (Exception ex)
             {
