@@ -253,7 +253,6 @@ namespace BlockEditor.Views.Windows
                  + GetSize(_map.Level.TextArt3.ToPr2String());
         }
 
-
         private void OnPreviousPage(object sender, RoutedEventArgs e)
         {
             try
@@ -295,6 +294,8 @@ namespace BlockEditor.Views.Windows
             _map.Level.DrawArt1?.Clear();
             _map.Level.DrawArt2?.Clear();
             _map.Level.DrawArt3?.Clear();
+            _map.LoadArt();
+            _refreshGui();
 
             tbDrawArt.Text = GetDrawArtSize().ToString(CultureInfo.InvariantCulture);
             UpdateButtons();
@@ -312,6 +313,8 @@ namespace BlockEditor.Views.Windows
             _map.Level.TextArt1?.Clear();
             _map.Level.TextArt2?.Clear();
             _map.Level.TextArt3?.Clear();
+            _map.LoadArt();
+            _refreshGui();
 
             tbTextArt.Text = GetTextArtSize().ToString(CultureInfo.InvariantCulture);
             UpdateButtons();
