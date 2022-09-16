@@ -1,8 +1,10 @@
 ﻿using System;
-using System.Globalization;
 using System.Windows;
+using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Media;
+
+using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Views.Controls
 {
@@ -23,6 +25,7 @@ namespace BlockEditor.Views.Controls
             MapControl = new MapControl();
             tbTitle.Text = GetDefaultTitle();
         }
+
 
         private string GetDefaultTitle()
         {
@@ -70,10 +73,10 @@ namespace BlockEditor.Views.Controls
             OnClose?.Invoke(this);
         }
 
-
         private void UserControl_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             OnClick?.Invoke(this);
         }
+
     }
 }

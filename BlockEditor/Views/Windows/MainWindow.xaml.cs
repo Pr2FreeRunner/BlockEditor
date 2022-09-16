@@ -59,6 +59,16 @@ namespace BlockEditor.Views.Windows
             CreateNewTab();
         }
 
+
+        private void OnZoomChanged(BlockSize zoom)
+        {
+            foreach (var child in TabPanel.Children)
+            {
+                if (child is MyTabControl tab && tab != null)
+                    tab.MapControl.ViewModel.OnZoomChanged(zoom);
+            }
+        }
+
         private BlockSize GetBlockSize(double height = double.NaN)
         {
             if (double.IsNaN(height))
@@ -83,7 +93,6 @@ namespace BlockEditor.Views.Windows
 
             return BlockSize.Zoom180;
         }
-
 
         private void SetBlockImageSize(double height = double.NaN)
         {
@@ -133,7 +142,9 @@ namespace BlockEditor.Views.Windows
 
             tab.OnClick += Tab_OnClick;
             tab.OnClose += Tab_OnClose;
-            CurrentTab   = tab;
+            tab.MapControl.ZoomControl.ViewModel.OnZoomChanged += OnZoomChanged;
+
+            CurrentTab = tab;
 
             TabPanel.Children.Insert(TabPanel.Children.Count - 1, tab);
             tabNumber++;

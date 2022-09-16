@@ -24,7 +24,6 @@ namespace BlockEditor.Views.Controls
             MapButtons.ViewModel.OnLoadMap += ViewModel.OnLoadMap;
             MapButtons.ViewModel.OnSaveMap += () => SaveMapUtil.Save(ViewModel.Game.Map);
             MapButtons.ViewModel.OnTestMap += () => MapUtil.TestInTasTool(ViewModel.Game.Map);
-            ZoomControl.ViewModel.OnZoomChanged += (zoom) => ViewModel.OnZoomChanged(zoom);
             this.Loaded += windowLoaded;
             ZoomControl.ViewModel.Zoom = MySettings.Zoom;
         }
@@ -64,7 +63,6 @@ namespace BlockEditor.Views.Controls
             SidePanel.Visibility = Visibility.Visible;
         }
 
-
         private void windowLoaded(object sender, RoutedEventArgs e)
         {
             try
@@ -88,7 +86,11 @@ namespace BlockEditor.Views.Controls
         {
             try
             {
-                ViewModel.IsOverwrite = MySettings.Overwrite; //updates GUI
+                //refresh GUI
+                ViewModel.IsOverwrite = MySettings.Overwrite; 
+                ViewModel.ShowArt = MySettings.ShowArt;
+                ZoomControl.ViewModel.Zoom = ZoomControl.ViewModel.Zoom;
+
                 ViewModel.Game.Engine.Start();
             }
             catch (Exception ex)
