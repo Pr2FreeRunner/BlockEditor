@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,7 +15,6 @@ using System.Windows.Input;
 using static BlockEditor.Utils.SearchLevelUtil;
 using static DataAccess.DataStructures.SearchLevelInfo;
 using static BlockEditor.Models.MySearch;
-using System.Windows.Documents;
 
 namespace BlockEditor.Views.Windows
 {
@@ -48,6 +46,7 @@ namespace BlockEditor.Views.Windows
             _disableSearch = false;
             _initDone = true;
         }
+
 
         private void AddSearchModeItems()
         {
@@ -97,7 +96,6 @@ namespace BlockEditor.Views.Windows
             if (SearchByComboBox.Items != null && SearchByComboBox.Items.Count > 0)
                 SearchByComboBox.SelectedIndex = 0;
         }
-
 
         private void AddSearchResults(IEnumerable<SearchResult> results)
         {
@@ -200,7 +198,8 @@ namespace BlockEditor.Views.Windows
             return info;
         }
 
-    #region Events
+
+        #region Events
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
