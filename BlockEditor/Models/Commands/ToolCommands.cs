@@ -458,34 +458,42 @@ namespace BlockEditor.Models
             if (r != true || w.BuildInfo == null)
                 return;
 
-            using (new TempCursor(Cursors.Wait))
+            try
             {
-                var level = Builders.PR2Builder.BuildLevel(w.BuildInfo);
+                game.Engine.PauseConfirmed();
 
-                if (level == null)
-                    throw new Exception("Something went wrong....");
-
-                if (w.BuildInfo.ImageInfo.Type == ImageDTO.ImageType.Blocks)
+                using (new TempCursor(Cursors.Wait))
                 {
-                    var pr2Blocks = level.Blocks.Skip(8).ToList();
-                    w.ShiftPosition(pr2Blocks);
-                    var blocks = BlocksUtil.ToBlocks(pr2Blocks, out var blocksOutsideBoundries).GetBlocks();
-                    var position = blocks.First().Position;
+                    var level = Builders.PR2Builder.BuildLevel(w.BuildInfo);
 
-                    MyUtil.BlocksOutsideBoundries(blocksOutsideBoundries);
-                    game.AddBlocks(blocks);
-                    game.GoToPosition(position);
+                    if (level == null)
+                        throw new Exception("Something went wrong....");
+
+                    if (w.BuildInfo.ImageInfo.Type == ImageDTO.ImageType.Blocks)
+                    {
+                        var pr2Blocks = level.Blocks.Skip(8).ToList();
+                        w.ShiftPosition(pr2Blocks);
+                        var blocks = BlocksUtil.ToBlocks(pr2Blocks, out var blocksOutsideBoundries).GetBlocks();
+                        var position = blocks.First().Position;
+
+                        MyUtil.BlocksOutsideBoundries(blocksOutsideBoundries);
+                        game.AddBlocks(blocks);
+                        game.GoToPosition(position);
+                    }
+                    else
+                    {
+                        w.ShiftPosition(level.DrawArt0);
+                        w.ShiftPosition(level.DrawArt1);
+
+                        game.Map.Level.DrawArt1.AddRange(level.DrawArt1);
+                        game.Map.Level.DrawArt0.AddRange(level.DrawArt0);
+                        game.Map.LoadArt();
+                    }
                 }
-                else
-                {
-                    w.ShiftPosition(level.DrawArt0);
-                    w.ShiftPosition(level.DrawArt1);
-
-                    game.Map.Level.DrawArt1.AddRange(level.DrawArt1);
-                    game.Map.Level.DrawArt0.AddRange(level.DrawArt0);
-
-                    MessageUtil.ShowInfo("The image has been added to the map." + Environment.NewLine + Environment.NewLine + "Note:  Art is not visible inside the Block Editor.");
-                }
+            }
+            finally
+            {
+                game.Engine.Pause = false;
             }
         }
 
