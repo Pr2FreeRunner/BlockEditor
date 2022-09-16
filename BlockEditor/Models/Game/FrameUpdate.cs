@@ -60,7 +60,7 @@ namespace BlockEditor.Models
             // - the size of the objects on this layer
 
             var canvas = _surface.Canvas;
-            var zoom = (float)_game.Map.BlockSize.GetScale();
+            var zoom   = (float)_game.Map.BlockSize.GetScale();
 
             if(art == null || !_game.ShowArt)
                 return;
