@@ -34,18 +34,24 @@
             </Grid>
 
             <StackPanel Grid.Row="1" Orientation="Vertical" x:Name="Page2" Visibility="Visible">
-                <Label Content="Move Art" x:Name="Page2Title" FontWeight="SemiBold" Margin="0,-10,0,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Label Content="Move Art" x:Name="Page2Title" FontWeight="SemiBold" Margin="0,-15,0,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                 <StackPanel  Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
                     <StackPanel Orientation="Vertical">
+                        <CheckBox Margin="0,5,0,0" Content="Text Art 00" VerticalContentAlignment="Center" FontSize="{StaticResource DefaultFontSize}" IsChecked="True" x:Name="cbTextArt00"  />
                         <CheckBox Margin="0,10,0,0" Content="Text Art 0" VerticalContentAlignment="Center" FontSize="{StaticResource DefaultFontSize}" IsChecked="True" x:Name="cbTextArt0"  />
                         <CheckBox Margin="0,10,0,0" Content="Text Art 1" VerticalContentAlignment="Center" FontSize="{StaticResource DefaultFontSize}" IsChecked="True" x:Name="cbTextArt1"  />
+                        <CheckBox Margin="0,10,0,0" Content="Text Art 2" VerticalContentAlignment="Center" FontSize="{StaticResource DefaultFontSize}" IsChecked="True" x:Name="cbTextArt2"  />
+                        <CheckBox Margin="0,10,0,0" Content="Text Art 3" VerticalContentAlignment="Center" FontSize="{StaticResource DefaultFontSize}" IsChecked="True" x:Name="cbTextArt3"  />
                         <CheckBox Margin="0,10,0,0" Content="Blocks"     VerticalContentAlignment="Center" FontSize="{StaticResource DefaultFontSize}" IsChecked="True" x:Name="cbBlocks"  />
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical" Margin="50,0,0,0">
+                        <CheckBox Margin="0,5,0,0" Content="Draw Art 00" VerticalContentAlignment="Center" FontSize="{StaticResource DefaultFontSize}" IsChecked="True" x:Name="cbDrawArt00"  />
                         <CheckBox Margin="0,10,0,0" Content="Draw Art 0" VerticalContentAlignment="Center" FontSize="{StaticResource DefaultFontSize}" IsChecked="True" x:Name="cbDrawArt0"  />
                         <CheckBox Margin="0,10,0,0" Content="Draw Art 1" VerticalContentAlignment="Center" FontSize="{StaticResource DefaultFontSize}" IsChecked="True" x:Name="cbDrawArt1"  />
+                        <CheckBox Margin="0,10,0,0" Content="Draw Art 2" VerticalContentAlignment="Center" FontSize="{StaticResource DefaultFontSize}" IsChecked="True" x:Name="cbDrawArt2"  />
+                        <CheckBox Margin="0,10,0,0" Content="Draw Art 3" VerticalContentAlignment="Center" FontSize="{StaticResource DefaultFontSize}" IsChecked="True" x:Name="cbDrawArt3"  />
                     </StackPanel>
 
 
@@ -53,7 +59,7 @@
 
 
                 <Label Margin="0,7,0,0" FontWeight="SemiBold" Content="Region:"/>
-                <ComboBox Margin="4,0,0,0" x:Name="cbSelection" FontSize="{StaticResource DefaultFontSize}"/>
+                <ComboBox Margin="4,0,0,0" x:Name="cbSelection" FontSize="{StaticResource DefaultFontSize}" SelectionChanged="cbSelection_SelectionChanged"/>
 
                 <StackPanel x:Name="MovePanel">
                     <StackPanel Orientation="Horizontal">
