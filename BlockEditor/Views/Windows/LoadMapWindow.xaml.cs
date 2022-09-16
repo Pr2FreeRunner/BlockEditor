@@ -86,8 +86,9 @@ namespace BlockEditor.Views.Windows
 
                 var item = new ComboBoxItem();
                 var name = type == SearchBy.BestWeek ? "Week's Best" : type.ToString();
+                var hotkey = type == SearchBy.GetLastSearch ? 'S' : name.First();
 
-                item.ToolTip = "HotKey:  Ctrl + " + name.First();
+                item.ToolTip = "HotKey:  Ctrl + " + hotkey;
                 item.Content = MyUtil.InsertSpaceBeforeCapitalLetter(name);
 
                 SearchByComboBox.Items.Add(item);
@@ -343,7 +344,7 @@ namespace BlockEditor.Views.Windows
             {
                 SearchByComboBox.SelectedIndex = (int)SearchBy.ID;
             }
-            else if (ctrl && e.Key == Key.G)
+            else if (ctrl && e.Key == Key.S)
             {
                 SearchByComboBox.SelectedIndex = (int)SearchBy.GetLastSearch;
             }
