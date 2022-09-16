@@ -1,13 +1,8 @@
 using BlockEditor.Helpers;
 using BlockEditor.Utils;
 using LevelModel.Models.Components;
-using LevelModel.Models.Components.Art;
-
 using SkiaSharp;
-
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace BlockEditor.Models
@@ -103,7 +98,6 @@ namespace BlockEditor.Models
 
             SKMatrix inverted = cam.Invert();
             canvas.Concat(ref inverted);
-
         }
 
         private void DrawBlocks()
