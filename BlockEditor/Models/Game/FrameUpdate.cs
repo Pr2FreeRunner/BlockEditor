@@ -41,6 +41,7 @@ namespace BlockEditor.Models
             DrawArt(_game.Map.Art2, 0.5f);
             DrawArt(_game.Map.Art1, 1.0f);
             DrawBlocks();
+            DrawArt(_game.Map.Art0, 1.0f);
             _game.Camera.Move(_game.Map.BlockSize);
             DrawSelectedBlock();
             DrawSelectedBlocks();

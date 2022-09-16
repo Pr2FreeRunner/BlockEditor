@@ -16,6 +16,8 @@ namespace BlockEditor.Models
         public Level Level { get; }
 
         public Blocks Blocks { get; }
+
+        public GameArt Art0 { get; }
         public GameArt Art1 { get; }
         public GameArt Art2 { get; }
         public GameArt Art3 { get; }
@@ -61,6 +63,8 @@ namespace BlockEditor.Models
             Level = level ?? GetDefaultLevel();
             Blocks = BlocksUtil.ToBlocks(Level.Blocks, out BlocksOutsideBoundries);
             BlockSize = DEFAULT_BLOCK_SIZE;
+
+            Art0 = new GameArt("Art 0");
             Art1 = new GameArt("Art 1");
             Art2 = new GameArt("Art 2");
             Art3 = new GameArt("Art 3");
@@ -74,6 +78,7 @@ namespace BlockEditor.Models
 
         public void LoadArt()
         {
+            Art0.LoadArt(Level.DrawArt0, Level.TextArt0);
             Art1.LoadArt(Level.DrawArt1, Level.TextArt1);
             Art2.LoadArt(Level.DrawArt2, Level.TextArt2);
             Art3.LoadArt(Level.DrawArt3, Level.TextArt3);
