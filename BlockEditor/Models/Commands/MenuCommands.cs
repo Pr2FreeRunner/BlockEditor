@@ -148,8 +148,8 @@ namespace BlockEditor.Models
 
             var w = new MenuWindow("Remove Tools");
 
-            w.AddOption("Block Type", Tools.DeleteBlockTypeCommand);
-            w.AddOption("Block Option", Tools.DeleteBlockOptionCommand);
+            w.AddOption("Remove Block Type", Tools.DeleteBlockTypeCommand);
+            w.AddOption("Remove Block Option", Tools.DeleteBlockOptionCommand);
             w.AddOption("Eraser", Tools.DeleteModeCommand);
             w.AddOption("Remove Region", Tools.DeleteRegionCommand);
 
