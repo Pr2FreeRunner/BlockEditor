@@ -1,13 +1,9 @@
 ﻿using BlockEditor.Helpers;
 using BlockEditor.Utils;
-
-using LevelModel.Models.Components.Art;
-
 using SkiaSharp;
-
+using LevelModel.Models.Components.Art;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace BlockEditor.Models
 {
