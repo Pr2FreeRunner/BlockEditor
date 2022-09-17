@@ -379,7 +379,7 @@ namespace BlockEditor.Models
         {
             game.CleanUserMode(true, false);
 
-            var w = new EditArtWindow(game.Map, game.UserSelection.MapRegion, EditArtWindow.EditArtModes.Move);
+            var w = new EditRegionWindow(game.Map, game.UserSelection.MapRegion, EditRegionWindow.EditArtModes.Move);
 
             w.ShowDialog();
 
@@ -397,7 +397,7 @@ namespace BlockEditor.Models
         {
             game.CleanUserMode(true, false);
 
-            var w = new EditArtWindow(game.Map, game.UserSelection.MapRegion, EditArtWindow.EditArtModes.Delete);
+            var w = new EditRegionWindow(game.Map, game.UserSelection.MapRegion, EditRegionWindow.EditArtModes.Delete);
 
             w.ShowDialog();
 
@@ -415,7 +415,7 @@ namespace BlockEditor.Models
         {
             game.CleanUserMode(true, false);
 
-            var w = new EditArtWindow(game.Map, game.UserSelection.MapRegion, EditArtWindow.EditArtModes.ReplaceColor);
+            var w = new EditRegionWindow(game.Map, game.UserSelection.MapRegion, EditRegionWindow.EditArtModes.ReplaceColor);
 
             w.ShowDialog();
         }

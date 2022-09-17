@@ -15,7 +15,7 @@ using static Builders.DataStructures.DTO.ImageDTO;
 
 namespace BlockEditor.Views.Windows
 {
-    public partial class EditArtWindow : ToolWindow
+    public partial class EditRegionWindow : ToolWindow
     {
         private Map _map;
         private MyRegion _region;
@@ -35,7 +35,7 @@ namespace BlockEditor.Views.Windows
 
 
 
-        public EditArtWindow(Map map, MyRegion region, EditArtModes mode)
+        public EditRegionWindow(Map map, MyRegion region, EditArtModes mode)
         {
             _map = map;
             _region = region;

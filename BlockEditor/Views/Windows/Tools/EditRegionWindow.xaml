@@ -1,4 +1,4 @@
-﻿<models:ToolWindow  x:Class="BlockEditor.Views.Windows.EditArtWindow"
+﻿<models:ToolWindow  x:Class="BlockEditor.Views.Windows.EditRegionWindow"
         xmlns:models="clr-namespace:BlockEditor.Models"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
