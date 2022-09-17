@@ -73,7 +73,6 @@ namespace BlockEditor.Models
 
     public class MySearch
     {
-        // note, the ones that requires to be logged in, needs to be last
         public enum SearchBy { Username, Title, ID, LocalFile, Newest, BestWeek, GetLastSearch, MyLevels }
 
         public SearchBy SearchType { get; set; }

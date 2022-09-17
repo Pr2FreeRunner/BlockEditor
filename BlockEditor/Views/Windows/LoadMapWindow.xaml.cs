@@ -90,6 +90,7 @@ namespace BlockEditor.Views.Windows
 
                 item.ToolTip = "HotKey:  Ctrl + " + hotkey;
                 item.Content = MyUtil.InsertSpaceBeforeCapitalLetter(name);
+                item.Tag = type;
 
                 SearchByComboBox.Items.Add(item);
             }
@@ -187,7 +188,10 @@ namespace BlockEditor.Views.Windows
                     break;
             }
 
-            if(_searchBy != SearchBy.GetLastSearch && _initDone)
+            if(_searchBy != SearchBy.GetLastSearch 
+                && _searchBy != SearchBy.MyLevels 
+                && _searchBy != SearchBy.LocalFile 
+                && _initDone)
             {
                 _lastSearch.Page = _page;
                 _lastSearch.Order = info.Order;
@@ -259,7 +263,7 @@ namespace BlockEditor.Views.Windows
                             OrderComboBox.SelectedIndex = (int)_lastSearch.Order;
                             SearchDirectionComobBox.SelectedIndex = (int)_lastSearch.Direction;
                             searchTextbox.Text = _lastSearch.SearchValue;
-                            SearchByComboBox.SelectedIndex = (int)_lastSearch.SearchType;
+                            SearchByComboBox.SelectedItem = GetSearchByItem(_lastSearch.SearchType);
                             _page = _lastSearch.Page;
                             _disableSearch = false;
                             Search_Click(null, null);
@@ -284,8 +288,13 @@ namespace BlockEditor.Views.Windows
         {
             try
             {
+                var item = SearchByComboBox.SelectedItem as ComboBoxItem;
+
+                if(item == null)
+                    return;
+
                 _page = 1;
-                _searchBy = (SearchBy)SearchByComboBox.SelectedIndex;
+                _searchBy = (SearchBy)item.Tag;
                 Clean();
             }
             catch (Exception ex)
@@ -314,6 +323,25 @@ namespace BlockEditor.Views.Windows
             UpdateButtons();
         }
 
+        private ComboBoxItem GetSearchByItem(SearchBy type)
+        {
+            if(SearchByComboBox?.Items == null)
+                return null;
+
+            foreach(var child in SearchByComboBox?.Items)
+            {
+                var item = child as ComboBoxItem;
+
+                if(item?.Tag == null)
+                    continue;
+
+                if(((SearchBy) item.Tag) == type)
+                    return item;
+            }
+
+            return null;
+        }
+
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Escape)
@@ -323,35 +351,35 @@ namespace BlockEditor.Views.Windows
             
             if(ctrl && e.Key == Key.M)
             {
-                SearchByComboBox.SelectedIndex = (int)SearchBy.MyLevels;
+                SearchByComboBox.SelectedItem = GetSearchByItem(SearchBy.MyLevels);
             }
             else if (ctrl && e.Key == Key.N)
             {
-                SearchByComboBox.SelectedIndex = (int)SearchBy.Newest;
+                SearchByComboBox.SelectedItem = GetSearchByItem(SearchBy.Newest);
             }
             else if (ctrl && e.Key == Key.T)
             {
-                SearchByComboBox.SelectedIndex = (int)SearchBy.Title;
+                SearchByComboBox.SelectedItem = GetSearchByItem(SearchBy.Title);
             }
             else if (ctrl && e.Key == Key.W)
             {
-                SearchByComboBox.SelectedIndex = (int)SearchBy.BestWeek;
+                SearchByComboBox.SelectedItem = GetSearchByItem(SearchBy.BestWeek);
             }
             else if (ctrl && e.Key == Key.U)
             {
-                SearchByComboBox.SelectedIndex = (int)SearchBy.Username;
+                SearchByComboBox.SelectedItem = GetSearchByItem(SearchBy.Username);
             }
             else if (ctrl && e.Key == Key.I)
             {
-                SearchByComboBox.SelectedIndex = (int)SearchBy.ID;
+                SearchByComboBox.SelectedItem = GetSearchByItem(SearchBy.ID);
             }
             else if (ctrl && e.Key == Key.S)
             {
-                SearchByComboBox.SelectedIndex = (int)SearchBy.GetLastSearch;
+                SearchByComboBox.SelectedItem = GetSearchByItem(SearchBy.GetLastSearch);
             }
             else if (ctrl && e.Key == Key.L)
             {
-                SearchByComboBox.SelectedIndex = (int)SearchBy.LocalFile;
+                SearchByComboBox.SelectedItem = GetSearchByItem(SearchBy.LocalFile);
             }
             else if (ctrl && e.Key == Key.Enter && SearchResultPanel.Children != null  && SearchResultPanel.Children.Count > 0)
             {
