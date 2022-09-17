@@ -64,7 +64,7 @@ namespace BlockEditor.ViewModels
             OnLoadMap?.Invoke(map);
         }
 
-        private void LoadLevel(int id)
+        private void LoadLevel(int id, bool unpublished)
         {
             using(new TempCursor(Cursors.Wait))
             {
@@ -92,6 +92,9 @@ namespace BlockEditor.ViewModels
                         return;
                     }
 
+                    if(unpublished)
+                        levelInfo.Level.Published = false;
+
                     LoadLevel(levelInfo.Level);
                 }
                 catch (WebException ex)
@@ -117,9 +120,14 @@ namespace BlockEditor.ViewModels
                 return;
 
             if(window.SelectedLevel == null)
-                LoadLevel(window.SelectedLevelID);
+                LoadLevel(window.SelectedLevelID, window.Unpublish);
             else
+            {
+                if(window.Unpublish)
+                    window.SelectedLevel.Published = false;
+
                 LoadLevel(window.SelectedLevel);
+            }
         }
 
         private void NewExecute(object obj)

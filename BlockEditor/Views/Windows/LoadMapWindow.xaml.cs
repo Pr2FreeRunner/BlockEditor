@@ -30,11 +30,12 @@ namespace BlockEditor.Views.Windows
         private static readonly MySearch _lastSearch = new MySearch();
         public int SelectedLevelID { get; private set; }
         public Level SelectedLevel { get; private set; }
-
+        public bool Unpublish { get; private set; }
 
         public LoadMapWindow() 
         {
             _initDone = false;
+            Unpublish = true;
             InitializeComponent();
             AddSearchByItems();
             AddSearchModeItems();
@@ -449,6 +450,8 @@ namespace BlockEditor.Views.Windows
         private void OnSelectedLevel(int id)
         {
             SelectedLevelID = id;
+            Unpublish = _searchBy != SearchBy.MyLevels;
+
             Close(true);
         }
 

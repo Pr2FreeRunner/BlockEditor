@@ -121,7 +121,7 @@ namespace BlockEditor.Models
 
         private Level GetDefaultLevel()
         {
-            var data = "version=1&credits=&cowboyChance=0&title=&time=1658836801&note=&min_level=0&song=&gravity=1.0&max_time=0&has_pass=0&live=1"
+            var data = "version=1&credits=&cowboyChance=0&title=&time=1658836801&note=&min_level=0&song=&gravity=1.0&max_time=0&has_pass=0&live=0"
                      + "&items=1&gameMode=race&badHats=&data=m4`0`444;335;111,1;0;112,1;0;113,1;0;114```````-1````4fde8f5661b3bc371330feb1b59eeb33";
 
             var levelInfo = Parsers.PR2Parser.Level(data);

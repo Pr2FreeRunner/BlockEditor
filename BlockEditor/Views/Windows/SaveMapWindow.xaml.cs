@@ -25,6 +25,7 @@ namespace BlockEditor.Views.Windows
             InitializeComponent();
             txtResponse.Text = MapTitle = map.Level.Title;
             btnPr2.IsEnabled = Users.IsLoggedIn();
+            publishCheckBox.IsChecked = map.Level.Published;
 
             if (btnPr2.IsEnabled)
                 btnPr2.Focus();
