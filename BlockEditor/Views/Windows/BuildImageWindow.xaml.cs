@@ -255,6 +255,9 @@ namespace BlockEditor.Views.Windows
             BuildInfo.ImageInfo.Image           = LoadImage(tbPath.Text);
             BuildInfo.ImageInfo.Position        = ImagePosition.Custom;
             BuildInfo.ImageInfo.CreateDrawImage = true;
+
+            if(BuildInfo.ImageInfo.Image == null)
+                throw new Exception("Failed to load the image.");
         }
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
@@ -305,7 +308,7 @@ namespace BlockEditor.Views.Windows
         private SKBitmap LoadImage(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
-                return null;
+                throw new Exception("Filepath to image is invalid.");
 
             try
             {
@@ -314,12 +317,12 @@ namespace BlockEditor.Views.Windows
             }
             catch (FileNotFoundException)
             {
-                MessageBox.Show("Image file not found...");
+                MessageBox.Show("Image file not found.");
                 return null;
             }
             catch(Exception ex)
             {
-                throw new Exception("Failed to load Image..." + Environment.NewLine + Environment.NewLine + ex.Message);
+                throw new Exception("Failed to load the image." + Environment.NewLine + Environment.NewLine + ex.Message);
             }
         }
 
