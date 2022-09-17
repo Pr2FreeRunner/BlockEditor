@@ -10,7 +10,6 @@
         WindowStyle="None"
         Width="435"
         SizeToContent="Height"
-        Closing="Window_Closing"
         WindowStartupLocation="CenterScreen"
         PreviewKeyDown="Window_PreviewKeyDown">
 

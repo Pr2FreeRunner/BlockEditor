@@ -13,8 +13,7 @@
         AllowsTransparency="True" 
         Background="Transparent"
         ResizeMode="NoResize"
-        PreviewKeyDown="Window_PreviewKeyDown"
-        Closing="Window_Closing">
+        PreviewKeyDown="Window_PreviewKeyDown">
 
     <Border Background="{StaticResource LightBackground}" 
             BorderBrush="{StaticResource StandardBorderColor}"
