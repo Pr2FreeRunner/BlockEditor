@@ -320,7 +320,7 @@
     <Page Update="Views\Windows\Tools\MenuWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
-    <Page Update="Views\Windows\Tools\EditArtWindow.xaml">
+    <Page Update="Views\Windows\Tools\EditRegionWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\Windows\Tools\NavigatorWindow.xaml">
