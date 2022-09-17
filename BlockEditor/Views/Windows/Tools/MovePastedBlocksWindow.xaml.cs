@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace BlockEditor.Views.Windows
 {
-    public partial class MovePastedBlocksWindow : Window
+    public partial class MovePastedBlocksWindow : ToolWindow
     {
         public int? MoveX;
         public int? MoveY;
@@ -27,17 +27,11 @@ namespace BlockEditor.Views.Windows
             InitializeComponent();
             tbCount.Text = blocksToRemove?.Count.ToString() ?? "";
             UpdateButtons();
-            OpenWindows.Add(this);
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            OpenWindows.Remove(this);
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)

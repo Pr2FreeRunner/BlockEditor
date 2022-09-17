@@ -20,7 +20,7 @@ using static Builders.DataStructures.DTO.BuildDTO;
 
 namespace BlockEditor.Views.Windows
 {
-    public partial class BuildImageWindow : Window
+    public partial class BuildImageWindow : ToolWindow
     {
         private static double? _posX;
         private static double? _posY;
@@ -41,9 +41,6 @@ namespace BlockEditor.Views.Windows
         public BuildImageWindow(MyPoint? p)
         {
             InitializeComponent();
-
-            OpenWindows.Add(this);
-
             Init(p);
             UpdateButtons();
         }
@@ -198,7 +195,6 @@ namespace BlockEditor.Views.Windows
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             SaveInputs();
-            OpenWindows.Remove(this);
         }
 
         private void tbPosX_TextChanged(object sender, TextChangedEventArgs e)
@@ -406,5 +402,6 @@ namespace BlockEditor.Views.Windows
             AddSizes(GetTarget());
             UpdateButtons();
         }
+
     }
 }

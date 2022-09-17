@@ -7,7 +7,7 @@ using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Views.Windows
 {
-    public partial class SelectBlockWindow : Window
+    public partial class SelectBlockWindow : ToolWindow
     {
 
         private int? _selectedBlock { get; set; }
@@ -20,7 +20,6 @@ namespace BlockEditor.Views.Windows
             tbTitle.Text = title;
             this.Title = "Select Block";
             MyBlockControl.OnSelectedBlockID += OnBlockSelected;
-            OpenWindows.Add(this);
         }
 
         private void OnBlockSelected(int? b)
@@ -53,11 +52,6 @@ namespace BlockEditor.Views.Windows
             {
                 Mouse.OverrideCursor = current;
             }
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            OpenWindows.Remove(this);
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

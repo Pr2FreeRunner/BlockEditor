@@ -12,7 +12,7 @@ using System.Windows.Input;
 namespace BlockEditor.Views.Windows
 {
 
-    public partial class BlockCountWindow : Window
+    public partial class BlockCountWindow : ToolWindow
     {
         public BlockCountWindow(Map map)
         {
@@ -21,11 +21,8 @@ namespace BlockEditor.Views.Windows
             if(map == null)
                 throw new ArgumentException("map");
 
-
             using (new TempCursor(Cursors.Wait))
                 Init(map);
-
-            OpenWindows.Add(this);
         }
 
         private void Init(Map map)
@@ -81,10 +78,6 @@ namespace BlockEditor.Views.Windows
 
                 yield return new Tuple<int, string>(count, name);
             }
-        }
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            OpenWindows.Remove(this);
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)

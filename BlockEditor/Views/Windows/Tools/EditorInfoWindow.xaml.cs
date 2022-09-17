@@ -1,30 +1,19 @@
-﻿using BlockEditor.Helpers;
-using BlockEditor.Models;
-using BlockEditor.Utils;
-using BlockEditor.Views.Controls;
-using LevelModel.Models;
-using LevelModel.Models.Components;
-using LevelModel.Models.Components.Art;
+﻿using BlockEditor.Models;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace BlockEditor.Views.Windows
 {
-    public partial class EditorInfoWindow : Window
+    public partial class EditorInfoWindow : ToolWindow
     {
         public EditorInfoWindow()
         {
             InitializeComponent();
 
             Init();
-            OpenWindows.Add(this);
         }
 
         private void Init()
@@ -83,11 +72,6 @@ namespace BlockEditor.Views.Windows
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            OpenWindows.Remove(this);
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)

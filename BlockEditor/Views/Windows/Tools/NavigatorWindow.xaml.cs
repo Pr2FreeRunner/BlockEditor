@@ -11,7 +11,7 @@ using BlockEditor.Helpers;
 
 namespace BlockEditor.Views.Windows
 {
-    public partial class NavigatorWindow : Window
+    public partial class NavigatorWindow : ToolWindow
     {
 
         private readonly  Game _game;
@@ -31,7 +31,6 @@ namespace BlockEditor.Views.Windows
 
             Init(p);
             MyUtil.SetPopUpWindowPosition(this);
-            OpenWindows.Add(this);
         }
 
 
@@ -113,11 +112,6 @@ namespace BlockEditor.Views.Windows
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            OpenWindows.Remove(this);
         }
 
         private void OnPrevious(object sender, RoutedEventArgs e)

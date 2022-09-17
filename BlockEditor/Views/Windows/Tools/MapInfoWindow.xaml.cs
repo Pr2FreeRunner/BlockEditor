@@ -16,7 +16,7 @@ using System.Windows.Input;
 
 namespace BlockEditor.Views.Windows
 {
-    public partial class MapInfoWindow : Window
+    public partial class MapInfoWindow : ToolWindow
     {
         private Map _map;
         private Action _refreshGui;
@@ -33,7 +33,6 @@ namespace BlockEditor.Views.Windows
 
             Init();
             UpdateButtons();
-            OpenWindows.Add(this);
         }
 
         private void OnNewColor(string color)
@@ -211,11 +210,6 @@ namespace BlockEditor.Views.Windows
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            OpenWindows.Remove(this);
         }
 
         private void UpdateButtons()

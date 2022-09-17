@@ -13,7 +13,7 @@ using System.Windows.Media;
 
 namespace BlockEditor.Views.Windows
 {
-    public partial class BlockOptionWindow : Window
+    public partial class BlockOptionWindow : ToolWindow
     {
 
         private readonly CultureInfo _culture = CultureInfo.InvariantCulture;
@@ -38,7 +38,6 @@ namespace BlockEditor.Views.Windows
 
             Init(index.Value);
             MyUtil.SetPopUpWindowPosition(this);
-            OpenWindows.Add(this);
         }
 
         private SimpleBlock GetBlock(MyPoint index)
@@ -218,9 +217,5 @@ namespace BlockEditor.Views.Windows
             Close();
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            OpenWindows.Remove(this);
-        }
     }
 }

@@ -15,7 +15,7 @@ using static Builders.DataStructures.DTO.ImageDTO;
 
 namespace BlockEditor.Views.Windows
 {
-    public partial class EditArtWindow : Window
+    public partial class EditArtWindow : ToolWindow
     {
         private Map _map;
         private MyRegion _region;
@@ -50,7 +50,6 @@ namespace BlockEditor.Views.Windows
 
             Init();
             UpdateButtons();
-            OpenWindows.Add(this);
         }
 
 
@@ -101,11 +100,6 @@ namespace BlockEditor.Views.Windows
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            OpenWindows.Remove(this);
         }
 
         private bool HasSelectedRegion()

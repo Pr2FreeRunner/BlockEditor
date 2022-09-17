@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 namespace BlockEditor.Views.Windows
 {
-    public partial class MenuWindow : Window
+    public partial class MenuWindow : ToolWindow
     {
         public RelayCommand Option { get; set; }
 
@@ -15,7 +15,6 @@ namespace BlockEditor.Views.Windows
         {
             InitializeComponent();
             tbTitle.Content = title;
-            OpenWindows.Add(this);
         }
 
         private bool IsValid(RelayCommand c)
@@ -57,11 +56,6 @@ namespace BlockEditor.Views.Windows
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            OpenWindows.Remove(this);
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)

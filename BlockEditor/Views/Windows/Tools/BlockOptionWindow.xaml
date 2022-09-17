@@ -1,4 +1,5 @@
-﻿<Window x:Class="BlockEditor.Views.Windows.BlockOptionWindow"
+﻿<models:ToolWindow  x:Class="BlockEditor.Views.Windows.BlockOptionWindow"
+        xmlns:models="clr-namespace:BlockEditor.Models"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,8 +11,7 @@
         WindowStartupLocation="Manual"
         AllowsTransparency="True" 
         Background="Transparent"
-        PreviewKeyDown="Window_PreviewKeyDown"
-        Closing="Window_Closing">
+        PreviewKeyDown="Window_PreviewKeyDown">
 
     <Border CornerRadius="15" BorderThickness="2" VerticalAlignment="Top" BorderBrush="{StaticResource StandardBorderBrush}" Background="{StaticResource StandardBackground}">
         <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="10">
@@ -52,4 +52,4 @@
 
         </StackPanel>
     </Border>
-</Window>
+</models:ToolWindow>

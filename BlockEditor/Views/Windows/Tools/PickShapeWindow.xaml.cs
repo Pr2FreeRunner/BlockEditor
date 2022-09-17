@@ -9,7 +9,7 @@ using static BlockEditor.Utils.ShapeBuilderUtil;
 namespace BlockEditor.Views.Windows
 {
 
-    public partial class PickShapeWindow : Window
+    public partial class PickShapeWindow : ToolWindow
     {
         public ShapeType Result { get; private set; }
         public bool Fill => MySettings.FillShape;
@@ -22,7 +22,6 @@ namespace BlockEditor.Views.Windows
             Probability = 100;
             Result = fallback;
             FillCheckbox.IsChecked = Fill;
-            OpenWindows.Add(this);
         }
 
         private void btnRectangle_Click(object sender, RoutedEventArgs e)
@@ -70,11 +69,6 @@ namespace BlockEditor.Views.Windows
         private void FillCheckbox_UnChecked(object sender, RoutedEventArgs e)
         {
             MySettings.FillShape = false;
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            OpenWindows.Remove(this);
         }
 
         private void tb_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)

@@ -314,22 +314,22 @@
     <Page Update="Views\Controls\CustomStatsControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
-    <Page Update="Views\Windows\MovePastedBlocksWindow.xaml">
+    <Page Update="Views\Windows\Tools\MovePastedBlocksWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
-    <Page Update="Views\Windows\MenuWindow.xaml">
+    <Page Update="Views\Windows\Tools\MenuWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
-    <Page Update="Views\Windows\EditArtWindow.xaml">
+    <Page Update="Views\Windows\Tools\EditArtWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
-    <Page Update="Views\Windows\NavigatorWindow.xaml">
+    <Page Update="Views\Windows\Tools\NavigatorWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
-    <Page Update="Views\Windows\BuildImageWindow.xaml">
+    <Page Update="Views\Windows\Tools\BuildImageWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
-    <Page Update="Views\Windows\MapInfoWindow.xaml">
+    <Page Update="Views\Windows\Tools\MapInfoWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
   </ItemGroup>
