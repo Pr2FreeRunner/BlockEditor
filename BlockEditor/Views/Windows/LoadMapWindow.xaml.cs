@@ -349,7 +349,7 @@ namespace BlockEditor.Views.Windows
 
             var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
             
-            if(ctrl && e.Key == Key.M)
+            if(ctrl && e.Key == Key.M && Users.IsLoggedIn())
             {
                 SearchByComboBox.SelectedItem = GetSearchByItem(SearchBy.MyLevels);
             }
@@ -373,7 +373,7 @@ namespace BlockEditor.Views.Windows
             {
                 SearchByComboBox.SelectedItem = GetSearchByItem(SearchBy.ID);
             }
-            else if (ctrl && e.Key == Key.S)
+            else if (ctrl && e.Key == Key.S && _lastSearch.IsValid())
             {
                 SearchByComboBox.SelectedItem = GetSearchByItem(SearchBy.GetLastSearch);
             }
