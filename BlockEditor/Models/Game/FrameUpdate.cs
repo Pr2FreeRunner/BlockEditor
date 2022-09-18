@@ -32,15 +32,15 @@ namespace BlockEditor.Models
         {
             _surface.Canvas.Clear(_game.Map.Background);
 
-            DrawArt(_game.Map.Art1, 1.0f);
+            DrawArt(_game.Map.Art1);
             DrawBlocks();
-            DrawArt(_game.Map.Art0, 1.0f);
+            DrawArt(_game.Map.Art0);
             _game.Camera.Move(_game.Map.BlockSize);
             DrawSelectedBlock();
             DrawSelectedBlocks();
             DrawSelectedRectangle();
             DrawMeasureDistanceLine();
-            DrawDebug();
+            //DrawDebug();
         }
 
         [System.Diagnostics.Conditional("DEBUG")]
@@ -51,12 +51,8 @@ namespace BlockEditor.Models
             canvas.DrawText($"Camera {_game.Camera.Position}", 0, 10, MapUtil.SelectionStrokePaint);
         }
 
-        private void DrawArt(GameArt art, float scale)
+        private void DrawArt(GameArt art)
         {
-            // scale is for parallax scrolling, it applies to:
-            // - the draw position of objects on this layer (their speed upon moving the camera)
-            // - the size of the objects on this layer
-
             var canvas = _surface.Canvas;
             var zoom   = (float)_game.Map.BlockSize.GetScale();
 

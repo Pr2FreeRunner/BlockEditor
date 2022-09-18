@@ -204,7 +204,6 @@ namespace BlockEditor.Views.Windows
             Tab_OnClick(TabPanel.Children[index] as MyTabControl);
         }
 
-
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
             if (CurrentMap == null)
