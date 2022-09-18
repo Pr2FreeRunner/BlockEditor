@@ -88,12 +88,7 @@ namespace BlockEditor.Views.Windows
 
         private void Integer_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            var textBox = sender as TextBox;
-            var fullText = textBox.Text.Insert(textBox.SelectionStart, e.Text);
-            var culture = CultureInfo.InvariantCulture;
-            bool isDouble = int.TryParse(fullText, NumberStyles.Any, culture, out var result);
-
-            e.Handled = !isDouble || result < 0 || result > 100;
+            Integer_PreviewTextInput(sender, e, 0, 100);
         }
 
     }

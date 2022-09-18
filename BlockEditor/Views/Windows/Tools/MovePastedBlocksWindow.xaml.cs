@@ -47,15 +47,7 @@ namespace BlockEditor.Views.Windows
 
         private void Integer_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            var textBox = sender as TextBox;
-            var fullText = textBox.Text.Insert(textBox.SelectionStart, e.Text);
-            var culture = CultureInfo.InvariantCulture;
-            bool isNotInteger = !int.TryParse(fullText, NumberStyles.Any, culture, out var result);
-
-            if (string.Equals(fullText, "-", StringComparison.InvariantCultureIgnoreCase))
-                return;
-
-            e.Handled = isNotInteger && result >= 0;
+            Integer_PreviewTextInput(sender, e, null, null);
         }
 
         private void tbY_TextChanged(object sender, TextChangedEventArgs e)

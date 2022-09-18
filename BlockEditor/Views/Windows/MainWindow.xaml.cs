@@ -260,7 +260,7 @@ namespace BlockEditor.Views.Windows
             }
             else
             {
-                CurrentMap.OnPreviewKeyDown(e, ctrl);
+                CurrentMap.Map_OnPreviewKeyDown(e, ctrl);
             }
         }
 
@@ -269,7 +269,7 @@ namespace BlockEditor.Views.Windows
             if (CurrentMap == null)
                 return;
 
-            CurrentMap.OnPreviewMouseWheel(e);
+            CurrentMap.Map_OnPreviewMouseWheel(e);
         }
 
         private void NewTab_Click(object sender, RoutedEventArgs e)

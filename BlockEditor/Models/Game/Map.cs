@@ -18,8 +18,6 @@ namespace BlockEditor.Models
         public Blocks Blocks { get; }
         public GameArt Art0 { get; }
         public GameArt Art1 { get; }
-        public GameArt Art2 { get; }
-        public GameArt Art3 { get; }
 
         public readonly int BlocksOutsideBoundries;
 
@@ -64,13 +62,9 @@ namespace BlockEditor.Models
             BlockSize = DEFAULT_BLOCK_SIZE;
             Art0 = new GameArt("Art 0");
             Art1 = new GameArt("Art 1");
-            Art2 = new GameArt("Art 2");
-            Art3 = new GameArt("Art 3");
 
             ArtUtil.CreateAbsolutePosition(Level.TextArt0);
             ArtUtil.CreateAbsolutePosition(Level.TextArt1);
-            ArtUtil.CreateAbsolutePosition(Level.TextArt2);
-            ArtUtil.CreateAbsolutePosition(Level.TextArt3);
 
             LoadArt();
         }
@@ -79,8 +73,6 @@ namespace BlockEditor.Models
         {
             Art0.LoadArt(Level.DrawArt0, Level.TextArt0);
             Art1.LoadArt(Level.DrawArt1, Level.TextArt1);
-            Art2.LoadArt(Level.DrawArt2, Level.TextArt2);
-            Art3.LoadArt(Level.DrawArt3, Level.TextArt3);
         }
 
 
@@ -88,8 +80,6 @@ namespace BlockEditor.Models
         {
             ArtUtil.CreateRelativePosition(Level.TextArt0);
             ArtUtil.CreateRelativePosition(Level.TextArt1);
-            ArtUtil.CreateRelativePosition(Level.TextArt2);
-            ArtUtil.CreateRelativePosition(Level.TextArt3);
 
             try 
             { 
@@ -114,8 +104,6 @@ namespace BlockEditor.Models
             {
                 ArtUtil.CreateAbsolutePosition(Level.TextArt0);
                 ArtUtil.CreateAbsolutePosition(Level.TextArt1);
-                ArtUtil.CreateAbsolutePosition(Level.TextArt2);
-                ArtUtil.CreateAbsolutePosition(Level.TextArt3);
             }
         }
 
@@ -148,8 +136,6 @@ namespace BlockEditor.Models
                 {
                     Art0.Dispose();
                     Art1.Dispose();
-                    Art2.Dispose();
-                    Art3.Dispose();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer

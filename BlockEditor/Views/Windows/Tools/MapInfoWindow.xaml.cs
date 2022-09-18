@@ -94,12 +94,7 @@ namespace BlockEditor.Views.Windows
 
         private void Integer_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            var textBox    = sender as TextBox;
-            var fullText   = textBox.Text.Insert(textBox.SelectionStart, e.Text);
-            var culture    = CultureInfo.InvariantCulture;
-            bool isInteger = int.TryParse(fullText, NumberStyles.Integer, culture, out var result);
-
-            e.Handled = !isInteger || result < 0;
+            Integer_PreviewTextInput(sender, e, 0, null);
         }
 
         private void IntegerMax100_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -112,15 +107,9 @@ namespace BlockEditor.Views.Windows
             e.Handled = !isInteger || result < 0 || result > 100;
         }
 
-
         private void Double_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            var textBox = sender as TextBox;
-            var fullText = textBox.Text.Insert(textBox.SelectionStart, e.Text);
-            var culture = CultureInfo.InvariantCulture;
-            bool isInteger = !double.TryParse(fullText, NumberStyles.Any, culture, out var result);
-
-            e.Handled = isInteger && result >= 0;
+            Double_PreviewTextInput(sender, e, 0, null);
         }
 
         private void Time_TextChanged(object sender, TextChangedEventArgs e)

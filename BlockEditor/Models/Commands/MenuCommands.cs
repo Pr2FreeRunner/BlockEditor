@@ -15,7 +15,6 @@ namespace BlockEditor.Models
         public RelayCommand AdvancedCommand { get; }
         public RelayCommand SelectCommand { get; }
         public RelayCommand NavigatorCommand { get; }
-        public RelayCommand NavigateCommand { get; }
         public RelayCommand DeselectCommand { get; }
         public RelayCommand ReverseArrowsCommand { get; }
 
@@ -35,7 +34,6 @@ namespace BlockEditor.Models
 
             SelectCommand = Tools.SelectCommand;
             NavigatorCommand = Tools.NavigatorCommand;
-            NavigateCommand = Tools.NavigateCommand;
             DeselectCommand = Tools.DeselectCommand;
 
             BuildCommand = MenuCommand(BuildMenu);
@@ -87,6 +85,7 @@ namespace BlockEditor.Models
             w.ShowDialog();
             w.Execute();
         }
+
 
         public void ReverseArrowsMenu()
         {

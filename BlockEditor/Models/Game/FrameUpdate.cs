@@ -32,8 +32,6 @@ namespace BlockEditor.Models
         {
             _surface.Canvas.Clear(_game.Map.Background);
 
-            //DrawArt(_game.Map.Art3, 0.25f);
-            //DrawArt(_game.Map.Art2, 0.5f);
             DrawArt(_game.Map.Art1, 1.0f);
             DrawBlocks();
             DrawArt(_game.Map.Art0, 1.0f);

@@ -99,9 +99,6 @@ namespace BlockEditor.Models
 
                     case UserModes.GetPosition:
                     case UserModes.BlockInfo:
-                        Mouse.OverrideCursor = Cursors.Cross;
-                        break;
-
                     case UserModes.ConnectTeleports:
                         Mouse.OverrideCursor = Cursors.Cross;
                         break;

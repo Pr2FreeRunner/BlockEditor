@@ -149,15 +149,7 @@ namespace BlockEditor.Views.Windows
 
         private void Double_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            var textBox = sender as TextBox;
-            var fullText = textBox.Text.Insert(textBox.SelectionStart, e.Text);
-            var culture = CultureInfo.InvariantCulture;
-            bool isNotInteger = !double.TryParse(fullText, NumberStyles.Any, culture, out var result);
-
-            if (string.Equals(fullText, "-", StringComparison.InvariantCultureIgnoreCase))
-                return;
-
-            e.Handled = isNotInteger && result >= 0;
+            Double_PreviewTextInput(sender, e, 0, null);
         }
 
         private void tbY_TextChanged(object sender, TextChangedEventArgs e)

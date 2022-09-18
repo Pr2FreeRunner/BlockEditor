@@ -6,7 +6,7 @@
              xmlns:myControls="clr-namespace:BlockEditor.Views.Controls"
              xmlns:skia="clr-namespace:SkiaSharp.Views.WPF;assembly=SkiaSharp.Views.WPF"
              mc:Ignorable="d" 
-             Loaded="OnLoaded">
+             Loaded="Map_OnLoaded">
 
     <Grid Focusable="False">
         <Grid.ColumnDefinitions>

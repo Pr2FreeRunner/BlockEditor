@@ -81,24 +81,6 @@ namespace BlockEditor.Views.Controls
                 MessageUtil.ShowError(ex.Message);
             }
         }
-
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                //refresh GUI
-                ViewModel.IsOverwrite = MySettings.Overwrite; 
-                ViewModel.ShowArt = MySettings.ShowArt;
-                ZoomControl.ViewModel.Zoom = ZoomControl.ViewModel.Zoom;
-
-                ViewModel.Game.Engine.Start();
-            }
-            catch (Exception ex)
-            {
-                MessageUtil.ShowError(ex.Message);
-            }
-        }
-
         private bool IsClickInsideSidePanel(MouseButtonEventArgs e)
         {
             var panel = GetSidePanel();
@@ -121,6 +103,23 @@ namespace BlockEditor.Views.Controls
                 return false;
 
             return true;
+        }
+
+        private void Map_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //refresh GUI
+                ViewModel.IsOverwrite = MySettings.Overwrite; 
+                ViewModel.ShowArt = MySettings.ShowArt;
+                ZoomControl.ViewModel.Zoom = ZoomControl.ViewModel.Zoom;
+
+                ViewModel.Game.Engine.Start();
+            }
+            catch (Exception ex)
+            {
+                MessageUtil.ShowError(ex.Message);
+            }
         }
 
         private void Map_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -175,7 +174,7 @@ namespace BlockEditor.Views.Controls
             }
         }
 
-        public void OnPreviewMouseWheel(MouseWheelEventArgs e)
+        public void Map_OnPreviewMouseWheel(MouseWheelEventArgs e)
         {
             var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 
@@ -194,7 +193,7 @@ namespace BlockEditor.Views.Controls
             }
         }
 
-        public void OnPreviewKeyDown(KeyEventArgs e, bool ctrl)
+        public void Map_OnPreviewKeyDown(KeyEventArgs e, bool ctrl)
         {
             try
             {

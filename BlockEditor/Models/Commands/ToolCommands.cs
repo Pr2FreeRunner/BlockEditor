@@ -10,6 +10,8 @@ using System.Windows.Input;
 using LevelModel.Models.Components;
 
 using static BlockEditor.Models.UserMode;
+using System.ComponentModel.Design;
+using LevelModel.Models.Components.Art;
 
 namespace BlockEditor.Models
 {
@@ -42,7 +44,6 @@ namespace BlockEditor.Models
         public RelayCommand DeleteModeCommand { get; }
         public RelayCommand DeselectCommand { get; }
         public RelayCommand MovePastedBlocksCommand { get; }
-
 
         public ToolCommands(Game game)
         {
@@ -593,6 +594,52 @@ namespace BlockEditor.Models
             w.ShowDialog();
         }
 
+        internal void StartBlockInfo(Game game, MyPoint? index)
+        {
+            if(index == null)
+                return;
 
+            bool navigate = false;
+            using (new TempCursor(null))
+            {
+                var w = new BlockOptionWindow(game.Map, index, game.Engine.RefreshGui);
+                w.ShowDialog();
+
+                navigate = w.StartNavigation;
+            }
+
+            if (navigate)
+            {
+                game.Mode.Value = UserModes.None;
+
+                if (NavigateCommand.CanExecute(null))
+                    NavigateCommand.Execute(game.Map.Blocks.GetBlock(index));
+            }
+        }
+
+        internal void StartFloodFill(Game game, MyPoint? index)
+        {
+            if(index == null)
+                return;
+
+            var selectedId = SelectBlockWindow.Show("Flood Fill", false);
+
+            if (selectedId == null)
+                return;
+
+            if (Block.IsStartBlock(selectedId))
+                throw new Exception("Flood fill with start block is not allowed.");
+
+            using (new TempCursor(Cursors.Wait))
+            {
+                var b = game.Map.Blocks.GetBlock(index);
+
+                if (!b.IsEmpty() && !game.Map.Blocks.Overwrite)
+                    throw new OverwriteException();
+
+                var region = game.UserSelection.HasSelectedRegion ? game.UserSelection.MapRegion : null;
+                game.AddBlocks(BlocksUtil.GetFloodFill(game.Map?.Blocks, index, selectedId.Value, region));
+            }
+        }
     }
 }

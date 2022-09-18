@@ -5,8 +5,6 @@ using BlockEditor.Helpers;
 using BlockEditor.Models;
 using BlockEditor.Utils;
 using BlockEditor.Views.Controls;
-using BlockEditor.Views.Windows;
-using LevelModel.Models.Components;
 using SkiaSharp;
 
 using static BlockEditor.Models.BlockImages;
@@ -125,22 +123,7 @@ namespace BlockEditor.ViewModels
                     if (p == null)
                         break;
 
-                    bool navigate = false;
-                    using (new TempCursor(null))
-                    {
-                        var w = new BlockOptionWindow(Game.Map, index, Game.Engine.RefreshGui);
-                        w.ShowDialog();
-
-                        navigate = w.StartNavigation;
-                    }
-
-                    if (navigate)
-                    {
-                        Game.Mode.Value = UserModes.None;
-
-                        if(Commands.NavigateCommand.CanExecute(null))
-                            Commands.NavigateCommand.Execute(Game.Map.Blocks.GetBlock(index));
-                    }
+                    Commands.Tools.StartBlockInfo(Game, index);
                     break;
 
                 case UserModes.Fill:
@@ -157,24 +140,7 @@ namespace BlockEditor.ViewModels
                         return;
                     }
 
-                    var selectedId = SelectBlockWindow.Show("Flood Fill", false);
-
-                    if (selectedId == null)
-                        return;
-
-                    if (Block.IsStartBlock(selectedId))
-                        throw new Exception("Flood fill with start block is not allowed.");
-
-                    using (new TempCursor(Cursors.Wait))
-                    {
-                        var b = Game.Map.Blocks.GetBlock(index);
-
-                        if (!b.IsEmpty() && !Game.Map.Blocks.Overwrite)
-                            throw new OverwriteException();
-
-                        var region = Game.UserSelection.HasSelectedRegion ? Game.UserSelection.MapRegion : null;
-                        Game.AddBlocks(BlocksUtil.GetFloodFill(Game.Map?.Blocks, index, selectedId.Value, region));
-                    }
+                    Commands.Tools.StartFloodFill(Game, index);
                     break;
 
                 default:
