@@ -142,6 +142,9 @@ namespace BlockEditor.Views.Controls
         {
             foreach (var b in _allTeleports)
             {
+                if(_data.IsSelected(b.Position))
+                    continue;
+
                 if (string.Equals(_data.Options, b.Options, StringComparison.InvariantCultureIgnoreCase))
                     return false;
             }

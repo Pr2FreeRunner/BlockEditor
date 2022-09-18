@@ -46,6 +46,14 @@ namespace BlockEditor.Models
             _blocks.Add(b);
         }
 
+        public bool IsSelected(MyPoint? p)
+        {
+            if(p == null)
+                return false;
+
+            return _blocks.RemoveEmpty().Any(b => b.Position == p.Value);
+        }
+
         public List<SimpleBlock> GetAddedBlocks()
         {
             var result = new List<SimpleBlock>();
