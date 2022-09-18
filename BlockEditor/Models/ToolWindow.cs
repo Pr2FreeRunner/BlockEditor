@@ -50,7 +50,7 @@ namespace BlockEditor.Models
             var textBox = sender as TextBox;
             var fullText = textBox.Text.Insert(textBox.SelectionStart, e.Text);
             var culture = CultureInfo.InvariantCulture;
-            bool isDouble = double.TryParse(fullText, NumberStyles.Integer, culture, out var result);
+            bool isDouble = double.TryParse(fullText, NumberStyles.Any, culture, out var result);
             var minValid = min != null ? result >= min : true;
             var maxValid = max != null ? result <= max : true;
             var allowNegative = min == null || (min != null && min < 0);

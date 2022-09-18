@@ -149,7 +149,7 @@ namespace BlockEditor.Views.Windows
 
         private void Double_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Double_PreviewTextInput(sender, e, 0, null);
+            Double_PreviewTextInput(sender, e, null, null);
         }
 
         private void tbY_TextChanged(object sender, TextChangedEventArgs e)
