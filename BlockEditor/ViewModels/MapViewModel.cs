@@ -214,7 +214,7 @@ namespace BlockEditor.ViewModels
             }
         }
 
-        internal void OnPreviewMouseUp(object sender, MouseButtonEventArgs e)
+        public void OnPreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             var p = MyUtil.GetPosition(sender as IInputElement, e);
             var index = Game.GetMapIndex(p);

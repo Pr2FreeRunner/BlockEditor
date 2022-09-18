@@ -10,8 +10,6 @@ using System.Windows.Input;
 using LevelModel.Models.Components;
 
 using static BlockEditor.Models.UserMode;
-using System.ComponentModel.Design;
-using LevelModel.Models.Components.Art;
 
 namespace BlockEditor.Models
 {
