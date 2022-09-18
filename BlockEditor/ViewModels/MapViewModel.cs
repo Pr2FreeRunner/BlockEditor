@@ -32,8 +32,8 @@ namespace BlockEditor.ViewModels
 
                 if(value && MySettings.FirstShowArt)
                 {
-                    MessageUtil.ShowInfo("If you notice any lag on maps with much art," 
-                        + Environment.NewLine + "I recommend that you turn art off.");
+                    MessageUtil.ShowInfo("Art can cause lag, especially on lower zoom levels."
+                        + Environment.NewLine + "I recommend that you turn art off if you notice any lag.");
                     MySettings.FirstShowArt = false;
                 }
             }
