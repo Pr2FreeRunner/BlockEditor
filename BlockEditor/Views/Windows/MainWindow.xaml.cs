@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+
 using BlockEditor.Models;
 using BlockEditor.Views.Controls;
 
@@ -15,6 +17,7 @@ namespace BlockEditor.Views.Windows
         private MyTabControl _currentTab;
         private int tabNumber = 1;
         public static readonly DateTime StartTime;
+        public readonly Point DpiScale;
 
         public MapControl CurrentMap { get; set; }
         public MyTabControl CurrentTab
@@ -54,6 +57,10 @@ namespace BlockEditor.Views.Windows
         public MainWindow()
         {
             InitializeComponent();
+
+            var dpi = VisualTreeHelper.GetDpi(this);
+            DpiScale = new Point(dpi.DpiScaleX, dpi.DpiScaleY);
+
             SetBlockImageSize();
             BlocksControl.OnSelectedBlockID += OnSelectedBlockId;
             BlockSelection.CleanUserBlockControl = BlocksControl.RemoveSelection;

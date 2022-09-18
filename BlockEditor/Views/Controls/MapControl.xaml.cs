@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using BlockEditor.Helpers;
 using BlockEditor.ViewModels;
 using BlockEditor.Models;
+using BlockEditor.Utils;
 
 namespace BlockEditor.Views.Controls
 {
@@ -166,7 +167,8 @@ namespace BlockEditor.Views.Controls
         {
             try
             {
-                ViewModel.OnSizeChanged((int)GamePanel.ActualWidth, (int)GamePanel.ActualHeight);
+                var p = MyUtil.DipToPixels(new Point(GamePanel.ActualWidth, GamePanel.ActualHeight));
+                ViewModel.OnSizeChanged(p.X, p.Y);
             }
             catch (Exception ex)
             {

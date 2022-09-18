@@ -25,6 +25,13 @@ namespace BlockEditor.Utils
                 return false;
             }
         }
+
+        public static MyPoint DipToPixels(Point pt)
+        {
+            var dpiScale = App.MyMainWindow.DpiScale;
+            return new MyPoint((int)(pt.X * dpiScale.X), (int)(pt.Y * dpiScale.Y));
+        }
+
         public static MyPoint? GetPosition(IInputElement src, MouseEventArgs e)
         {
             if (src == null || e == null)
@@ -32,10 +39,7 @@ namespace BlockEditor.Utils
 
             var point = e.GetPosition(src);
 
-            var x = (int) point.X;
-            var y =  (int) point.Y;
-
-            return new MyPoint(x, y);
+            return DipToPixels(point);
         }
 
         public static bool TryParse(string input, out int result)
