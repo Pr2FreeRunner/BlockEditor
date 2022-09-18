@@ -83,7 +83,7 @@ namespace BlockEditor.Views.Windows
 
             if (height < 740)
                 return BlockSize.Zoom80;
-            if (height < 820)
+            if (height < 810)
                 return BlockSize.Zoom100;
             if (height < 890)
                 return BlockSize.Zoom120;
