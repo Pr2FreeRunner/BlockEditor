@@ -564,8 +564,8 @@ namespace BlockEditor.Models
             {
                 if(MySettings.FirstBlockInfo)
                 {
-                    MessageUtil.ShowInfo("Hint:  To directly open the Block Info window," 
-                        + Environment.NewLine +"you can press Ctrl and click a block.");
+                    MessageUtil.ShowInfo("Hint: To directly open the Block-Info window," 
+                        + Environment.NewLine +"you can hold down Ctrl while clicking a block.");
                     MySettings.FirstBlockInfo = false;
                 }
                 game.CleanUserMode(true, true);
