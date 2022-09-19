@@ -150,7 +150,8 @@ namespace BlockEditor.ViewModels
                     }
                     else if (e.ChangedButton == MouseButton.Left)
                     {
-                        if (e.ClickCount > 1 && Commands.Tools.BlockInfoCommand.CanExecute(null))
+                        var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+                        if (ctrl && Commands.Tools.BlockInfoCommand.CanExecute(null))
                         {
                             Commands.Tools.BlockInfoCommand.Execute(null);
                             OnPreviewMouseDown(sender, e);

@@ -564,7 +564,8 @@ namespace BlockEditor.Models
             {
                 if(MySettings.FirstBlockInfo)
                 {
-                    MessageUtil.ShowInfo("Hint:  You can double click a block to directly open the Block Info.");
+                    MessageUtil.ShowInfo("Hint:  To directly open the Block Info window," 
+                        + Environment.NewLine +"you can press Ctrl and click a block.");
                     MySettings.FirstBlockInfo = false;
                 }
                 game.CleanUserMode(true, true);
