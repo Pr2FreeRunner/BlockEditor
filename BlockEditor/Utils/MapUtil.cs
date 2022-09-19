@@ -94,19 +94,7 @@ namespace BlockEditor.Helpers
             Color = SKColors.White.WithAlpha(150) 
         };
 
-        public static void MoveRelativeArt(IEnumerable<Art> art, int x, int y)
-        {
-            if (art == null)
-                return;
-
-            if (art.Count() > 0)
-            {
-                art.First().X += x;
-                art.First().Y += y;
-            }
-        }
-
-        public static void MoveAbsoluteArt(IEnumerable<Art> art, int x, int y)
+        public static void MoveArt(IEnumerable<Art> art, int x, int y)
         {
             if (art == null)
                 return;

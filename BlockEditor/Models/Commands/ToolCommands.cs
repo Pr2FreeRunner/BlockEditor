@@ -377,46 +377,19 @@ namespace BlockEditor.Models
         private void MoveRegion(Game game)
         {
             game.CleanUserMode(true, false);
-
-            var w = new EditRegionWindow(game.Map, game.UserSelection.MapRegion, EditRegionWindow.EditArtModes.Move);
-
-            w.ShowDialog();
-
-            using (new TempCursor(Cursors.Wait))
-            {
-                if (w.BlocksToRemove.AnyBlocks())
-                    game.RemoveBlocks(w.BlocksToRemove);
-
-                if (w.BlocksToAdd.AnyBlocks())
-                    game.AddBlocks(w.BlocksToAdd);
-            }
+            new EditRegionWindow(game, game.UserSelection.MapRegion, EditRegionWindow.EditArtModes.Move).ShowDialog();
         }
 
         private void DeleteRegion(Game game)
         {
             game.CleanUserMode(true, false);
-
-            var w = new EditRegionWindow(game.Map, game.UserSelection.MapRegion, EditRegionWindow.EditArtModes.Delete);
-
-            w.ShowDialog();
-
-            using (new TempCursor(Cursors.Wait))
-            {
-                if (w.BlocksToRemove != null && w.BlocksToRemove.Any())
-                    game.RemoveBlocks(w.BlocksToRemove);
-
-                if (w.BlocksToAdd != null && w.BlocksToAdd.Any())
-                    game.AddBlocks(w.BlocksToAdd);
-            }
+            new EditRegionWindow(game, game.UserSelection.MapRegion, EditRegionWindow.EditArtModes.Delete).ShowDialog();
         }
 
         private void ReplaceArtColor(Game game)
         {
             game.CleanUserMode(true, false);
-
-            var w = new EditRegionWindow(game.Map, game.UserSelection.MapRegion, EditRegionWindow.EditArtModes.ReplaceColor);
-
-            w.ShowDialog();
+            new EditRegionWindow(game, game.UserSelection.MapRegion, EditRegionWindow.EditArtModes.ReplaceColor).ShowDialog();
         }
 
         private void BuildShape(Game game)

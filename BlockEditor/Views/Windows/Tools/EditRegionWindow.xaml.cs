@@ -2,22 +2,20 @@
 using BlockEditor.Models;
 using BlockEditor.Utils;
 using LevelModel.Models.Components.Art;
-using SkiaSharp;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using static Builders.DataStructures.DTO.ImageDTO;
+using static LevelModel.Models.Level;
 
 namespace BlockEditor.Views.Windows
 {
     public partial class EditRegionWindow : ToolWindow
     {
-        private Map _map;
+        private Game _game;
         private MyRegion _region;
 
         private double? _moveX;
@@ -28,31 +26,28 @@ namespace BlockEditor.Views.Windows
         private const int _regionIndex = 1;
         private EditArtModes _mode;
 
-        public List<SimpleBlock> BlocksToAdd { get; }
-        public List<SimpleBlock> BlocksToRemove { get; }
+        private readonly List<SimpleBlock> _blocksToAdd;
+        private readonly List<SimpleBlock> _blocksToRemove;
 
         public enum EditArtModes { Move, Delete, ReplaceColor }
 
 
-
-        public EditRegionWindow(Map map, MyRegion region, EditArtModes mode)
+        public EditRegionWindow(Game game, MyRegion region, EditArtModes mode)
         {
-            _map = map;
+            _game = game;
             _region = region;
-            BlocksToAdd = new List<SimpleBlock>();
-            BlocksToRemove = new List<SimpleBlock>();
+            _blocksToAdd = new List<SimpleBlock>();
+            _blocksToRemove = new List<SimpleBlock>();
             _mode = mode;
 
             InitializeComponent();
 
-            if (map == null)
+            if (game?.Map == null)
                 throw new ArgumentException("map");
 
             Init();
             UpdateButtons();
         }
-
-
 
         private void MyColorPickerReplace_OnNewColor(string obj)
         {
@@ -177,57 +172,75 @@ namespace BlockEditor.Views.Windows
 
         }
 
+        private void RemoveDrawArt(List<DrawArt> art)
+        {
+            if(art == null)
+                return;
+
+            art.Clear();
+        }
+
+        private void RemoveTextArt(List<TextArt> art)
+        {
+            if (art == null)
+                return;
+
+            art.Clear();
+        }
+
         private void RemoveArt()
         {
             if (cbTextArt00.IsChecked == true)
-                _map.Level.TextArt00.Clear();
+                _game.EditTextArt(RemoveTextArt, ArtType.TextArt00);
 
             if (cbTextArt0.IsChecked == true)
-                _map.Level.TextArt0.Clear();
+                _game.EditTextArt(RemoveTextArt, ArtType.TextArt0);
 
             if (cbTextArt1.IsChecked == true)
-                _map.Level.TextArt1.Clear();
+                _game.EditTextArt(RemoveTextArt, ArtType.TextArt1);
 
             if (cbTextArt2.IsChecked == true)
-                _map.Level.TextArt2.Clear();
+                _game.EditTextArt(RemoveTextArt, ArtType.TextArt2);
 
             if (cbTextArt3.IsChecked == true)
-                _map.Level.TextArt3.Clear();
+                _game.EditTextArt(RemoveTextArt, ArtType.TextArt3);
 
 
             if (cbDrawArt00.IsChecked == true)
-                _map.Level.DrawArt00.Clear();
+                _game.EditDrawArt(RemoveDrawArt, ArtType.DrawArt00);
 
             if (cbDrawArt0.IsChecked == true)
-                _map.Level.DrawArt0.Clear();
+                _game.EditDrawArt(RemoveDrawArt, ArtType.DrawArt0);
 
             if (cbDrawArt1.IsChecked == true)
-                _map.Level.DrawArt1.Clear();
+                _game.EditDrawArt(RemoveDrawArt, ArtType.DrawArt1);
 
             if (cbDrawArt2.IsChecked == true)
-                _map.Level.DrawArt2.Clear();
+                _game.EditDrawArt(RemoveDrawArt, ArtType.DrawArt2);
 
             if (cbDrawArt3.IsChecked == true)
-                _map.Level.DrawArt3.Clear();
+                _game.EditDrawArt(RemoveDrawArt, ArtType.DrawArt3);
         }
 
         private void RemoveArt(MyRegion region)
         {
-            var textArt0 = _map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
-            var textArt1 = _map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+            var textArt0 = _game.Map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+            var textArt1 = _game.Map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
 
-            var drawArt0 = ArtUtil.GetArtInside(_map.Level.DrawArt0, region); 
-            var drawArt1 = ArtUtil.GetArtInside(_map.Level.DrawArt1, region);
+            var drawArt0 = ArtUtil.GetArtInside(_game.Map.Level.DrawArt0, region); 
+            var drawArt1 = ArtUtil.GetArtInside(_game.Map.Level.DrawArt1, region);
 
             if (cbTextArt0.IsChecked == true)
-                _map.Level.TextArt0.RemoveAll(a => textArt0.Contains(a));
+                _game.EditTextArt((a) => a.RemoveAll(a => textArt0.Contains(a)), ArtType.TextArt0);
+
             if (cbTextArt1.IsChecked == true)
-                _map.Level.TextArt1.RemoveAll(a => textArt1.Contains(a));
+                _game.EditTextArt((a) => a.RemoveAll(a => textArt1.Contains(a)), ArtType.TextArt1);
 
             if (cbDrawArt0.IsChecked == true)
-                _map.Level.DrawArt0.RemoveAll(a => drawArt0.Contains(a));
+                _game.EditDrawArt((a) => a.RemoveAll(a => drawArt0.Contains(a)), ArtType.DrawArt0);
+
             if (cbDrawArt1.IsChecked == true)
-                _map.Level.DrawArt1.RemoveAll(a => drawArt1.Contains(a));
+                _game.EditDrawArt((a) => a.RemoveAll(a => drawArt1.Contains(a)), ArtType.DrawArt1);
         }
 
         private void MoveArt(MyRegion region)
@@ -235,21 +248,21 @@ namespace BlockEditor.Views.Windows
             var x = (int)(_moveX * 30);
             var y = (int)(_moveY * 30);
 
-            var textArt0 = _map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
-            var textArt1 = _map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+            var textArt0 = _game.Map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+            var textArt1 = _game.Map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
 
-            var drawArt0 = ArtUtil.GetArtInside(_map.Level.DrawArt0, region);
-            var drawArt1 = ArtUtil.GetArtInside(_map.Level.DrawArt1, region);
+            var drawArt0 = ArtUtil.GetArtInside(_game.Map.Level.DrawArt0, region);
+            var drawArt1 = ArtUtil.GetArtInside(_game.Map.Level.DrawArt1, region);
 
             if (cbTextArt0.IsChecked == true)
-                MapUtil.MoveAbsoluteArt(textArt0, x, y);
+                MapUtil.MoveArt(textArt0, x, y);
             if (cbTextArt1.IsChecked == true)
-                MapUtil.MoveAbsoluteArt(textArt1, x, y);
+                MapUtil.MoveArt(textArt1, x, y);
 
             if (cbDrawArt0.IsChecked == true)
-                MapUtil.MoveAbsoluteArt(drawArt0, x, y);
+                MapUtil.MoveArt(drawArt0, x, y);
             if (cbDrawArt1.IsChecked == true)
-                MapUtil.MoveAbsoluteArt(drawArt1, x, y);
+                MapUtil.MoveArt(drawArt1, x, y);
         }
 
         private void MoveArt()
@@ -258,14 +271,14 @@ namespace BlockEditor.Views.Windows
             var y = (int)(_moveY * 30);
 
             if (cbTextArt0.IsChecked == true)
-                MapUtil.MoveRelativeArt(_map.Level.TextArt0, x, y);
+                MapUtil.MoveArt(_game.Map.Level.TextArt0, x, y);
             if (cbTextArt1.IsChecked == true)
-                MapUtil.MoveRelativeArt(_map.Level.TextArt1, x, y);
+                MapUtil.MoveArt(_game.Map.Level.TextArt1, x, y);
 
             if (cbDrawArt0.IsChecked == true)
-                MapUtil.MoveAbsoluteArt(_map.Level.DrawArt0, x, y);
+                MapUtil.MoveArt(_game.Map.Level.DrawArt0, x, y);
             if (cbDrawArt1.IsChecked == true)
-                MapUtil.MoveAbsoluteArt(_map.Level.DrawArt1, x, y);
+                MapUtil.MoveArt(_game.Map.Level.DrawArt1, x, y);
         }
 
         private void MoveBlocks(MyRegion region = null)
@@ -279,7 +292,7 @@ namespace BlockEditor.Views.Windows
             if (_moveY == null)
                 return;
 
-            foreach(var b in BlocksUtil.GetBlocks(_map?.Blocks, region))
+            foreach(var b in BlocksUtil.GetBlocks(_game.Map?.Blocks, region))
             {
                 if(b.IsEmpty())
                     continue;
@@ -287,8 +300,8 @@ namespace BlockEditor.Views.Windows
                 var point = new MyPoint(b.Position.Value.X + (int)_moveX, b.Position.Value.Y + (int)_moveY);
                 var block = new SimpleBlock(b.ID, point, b.Options);
 
-                BlocksToRemove.Add(b);
-                BlocksToAdd.Add(block);
+                _blocksToRemove.Add(b);
+                _blocksToAdd.Add(block);
             }
         }
 
@@ -297,12 +310,12 @@ namespace BlockEditor.Views.Windows
             if (cbBlocks.IsChecked != true)
                 return;
 
-            foreach (var b in BlocksUtil.GetBlocks(_map?.Blocks, region))
+            foreach (var b in BlocksUtil.GetBlocks(_game.Map?.Blocks, region))
             {
                 if (b.IsEmpty())
                     continue;
 
-                BlocksToRemove.Add(b);
+                _blocksToRemove.Add(b);
             }
         }
 
@@ -311,11 +324,11 @@ namespace BlockEditor.Views.Windows
             var replace = ColorUtil.ToSkColor(ColorUtil.GetColorFromHex(_colorReplace));
             var add     = ColorUtil.ToSkColor(ColorUtil.GetColorFromHex(_colorAdd));
 
-            var textArt0 = _map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
-            var textArt1 = _map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+            var textArt0 = _game.Map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+            var textArt1 = _game.Map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
 
-            var drawArt0 = ArtUtil.GetArtInside(_map.Level.DrawArt0, region);
-            var drawArt1 = ArtUtil.GetArtInside(_map.Level.DrawArt1, region);
+            var drawArt0 = ArtUtil.GetArtInside(_game.Map.Level.DrawArt0, region);
+            var drawArt1 = ArtUtil.GetArtInside(_game.Map.Level.DrawArt1, region);
 
             if (cbTextArt0.IsChecked == true)
                 MapUtil.ChangeArtColor(textArt0, replace, add, _sensitivity.Value, false);
@@ -334,14 +347,14 @@ namespace BlockEditor.Views.Windows
             var add = ColorUtil.ToSkColor(ColorUtil.GetColorFromHex(_colorAdd));
 
             if (cbTextArt0.IsChecked == true)
-                MapUtil.ChangeArtColor(_map.Level.TextArt0, replace, add, _sensitivity.Value, false);
+                MapUtil.ChangeArtColor(_game.Map.Level.TextArt0, replace, add, _sensitivity.Value, false);
             if (cbTextArt1.IsChecked == true)
-                MapUtil.ChangeArtColor(_map.Level.TextArt1, replace, add, _sensitivity.Value, false);
+                MapUtil.ChangeArtColor(_game.Map.Level.TextArt1, replace, add, _sensitivity.Value, false);
 
             if (cbDrawArt0.IsChecked == true)
-                MapUtil.ChangeArtColor(_map.Level.DrawArt0, replace, add, _sensitivity.Value, true);
+                MapUtil.ChangeArtColor(_game.Map.Level.DrawArt0, replace, add, _sensitivity.Value, true);
             if (cbDrawArt1.IsChecked == true)
-                MapUtil.ChangeArtColor(_map.Level.DrawArt1, replace, add, _sensitivity.Value, true);
+                MapUtil.ChangeArtColor(_game.Map.Level.DrawArt1, replace, add, _sensitivity.Value, true);
         }
 
         public bool IsRegionSelected()
@@ -393,7 +406,13 @@ namespace BlockEditor.Views.Windows
                             break;
                     }
 
-                    _map.LoadArt();
+                    if (_blocksToRemove.AnyBlocks())
+                        _game.RemoveBlocks(_blocksToRemove);
+
+                    if (_blocksToAdd.AnyBlocks())
+                        _game.AddBlocks(_blocksToAdd);
+
+                    _game.Map.LoadArt();
                 }
 
                 DialogResult = true;
