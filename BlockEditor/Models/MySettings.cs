@@ -106,7 +106,7 @@ namespace BlockEditor.Models
 
         public static string BlockEditorVersion
         {
-            get { return "5.1"; }
+            get { return "5.2"; }
         }
 
 
