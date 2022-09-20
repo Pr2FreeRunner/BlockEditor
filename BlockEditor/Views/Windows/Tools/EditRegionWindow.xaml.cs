@@ -224,22 +224,22 @@ namespace BlockEditor.Views.Windows
 
         private void RemoveArt(MyRegion region)
         {
-            var textArt0 = _game.Map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30))).ToList();
-            var textArt1 = _game.Map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30))).ToList();
+            var textArt0 = _game.Map.Level.TextArt0.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
+            var textArt1 = _game.Map.Level.TextArt1.Where(a => region.IsInside(new MyPoint(a.X / 30, a.Y / 30)));
 
             var drawArt0 = ArtUtil.GetArtInside(_game.Map.Level.DrawArt0, region); 
             var drawArt1 = ArtUtil.GetArtInside(_game.Map.Level.DrawArt1, region);
 
-            if (cbTextArt0.IsChecked == true && textArt0.Any())
+            if (cbTextArt0.IsChecked == true)
                 _game.EditTextArt((a) => a.RemoveAll(a => textArt0.Contains(a)), ArtType.TextArt0);
 
-            if (cbTextArt1.IsChecked == true && textArt1.Any())
+            if (cbTextArt1.IsChecked == true)
                 _game.EditTextArt((a) => a.RemoveAll(a => textArt1.Contains(a)), ArtType.TextArt1);
 
-            if (cbDrawArt0.IsChecked == true && drawArt0.Any())
+            if (cbDrawArt0.IsChecked == true)
                 _game.EditDrawArt((a) => a.RemoveAll(a => drawArt0.Contains(a)), ArtType.DrawArt0);
 
-            if (cbDrawArt1.IsChecked == true&& drawArt1.Any())
+            if (cbDrawArt1.IsChecked == true)
                 _game.EditDrawArt((a) => a.RemoveAll(a => drawArt1.Contains(a)), ArtType.DrawArt1);
         }
 
