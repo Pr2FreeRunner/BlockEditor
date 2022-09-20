@@ -2,13 +2,11 @@
 using BlockEditor.Utils;
 using BlockEditor.ViewModels;
 using LevelModel.Models.Components;
-using LevelModel.Models.Components.Art;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 
 using static BlockEditor.Models.UserMode;
-using static LevelModel.Models.Level;
 
 namespace BlockEditor.Models
 {
@@ -315,22 +313,5 @@ namespace BlockEditor.Models
             AddBlocks(blocksToAdd);
         }
 
-        public void EditDrawArt(Action<List<DrawArt>> edit, ArtType type)
-        {
-            if (edit == null || Map == null)
-                return;
-
-            var op = new EditDrawArt(Map, type, edit);
-            UserOperations.Execute(op);
-        }
-
-        public void EditTextArt(Action<List<TextArt>> edit, ArtType type)
-        {
-            if (edit == null || Map == null)
-                return;
-
-            var op = new EditTextArt(Map, type, edit);
-            UserOperations.Execute(op);
-        }
     }
 }
