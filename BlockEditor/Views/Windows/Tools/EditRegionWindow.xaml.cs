@@ -242,14 +242,14 @@ namespace BlockEditor.Views.Windows
             var drawArt1 = ArtUtil.GetArtInside(_map.Level.DrawArt1, region);
 
             if (cbTextArt0.IsChecked == true)
-                MapUtil.MoveAbsoluteArt(textArt0, x, y);
+                ArtUtil.MoveArt(textArt0, x, y);
             if (cbTextArt1.IsChecked == true)
-                MapUtil.MoveAbsoluteArt(textArt1, x, y);
+                ArtUtil.MoveArt(textArt1, x, y);
 
             if (cbDrawArt0.IsChecked == true)
-                MapUtil.MoveAbsoluteArt(drawArt0, x, y);
+                ArtUtil.MoveArt(drawArt0, x, y);
             if (cbDrawArt1.IsChecked == true)
-                MapUtil.MoveAbsoluteArt(drawArt1, x, y);
+                ArtUtil.MoveArt(drawArt1, x, y);
         }
 
         private void MoveArt()
@@ -258,14 +258,14 @@ namespace BlockEditor.Views.Windows
             var y = (int)(_moveY * 30);
 
             if (cbTextArt0.IsChecked == true)
-                MapUtil.MoveRelativeArt(_map.Level.TextArt0, x, y);
+                ArtUtil.MoveArt(_map.Level.TextArt0, x, y);
             if (cbTextArt1.IsChecked == true)
-                MapUtil.MoveRelativeArt(_map.Level.TextArt1, x, y);
+                ArtUtil.MoveArt(_map.Level.TextArt1, x, y);
 
             if (cbDrawArt0.IsChecked == true)
-                MapUtil.MoveAbsoluteArt(_map.Level.DrawArt0, x, y);
+                ArtUtil.MoveArt(_map.Level.DrawArt0, x, y);
             if (cbDrawArt1.IsChecked == true)
-                MapUtil.MoveAbsoluteArt(_map.Level.DrawArt1, x, y);
+                ArtUtil.MoveArt(_map.Level.DrawArt1, x, y);
         }
 
         private void MoveBlocks(MyRegion region = null)
@@ -318,14 +318,14 @@ namespace BlockEditor.Views.Windows
             var drawArt1 = ArtUtil.GetArtInside(_map.Level.DrawArt1, region);
 
             if (cbTextArt0.IsChecked == true)
-                MapUtil.ChangeArtColor(textArt0, replace, add, _sensitivity.Value, false);
+                ArtUtil.ChangeArtColor(textArt0, replace, add, _sensitivity.Value, false);
             if (cbTextArt1.IsChecked == true)
-                MapUtil.ChangeArtColor(textArt1, replace, add, _sensitivity.Value, false);
+                ArtUtil.ChangeArtColor(textArt1, replace, add, _sensitivity.Value, false);
 
             if (cbDrawArt0.IsChecked == true)
-                MapUtil.ChangeArtColor(drawArt0, replace, add, _sensitivity.Value, true);
+                ArtUtil.ChangeArtColor(drawArt0, replace, add, _sensitivity.Value, true);
             if (cbDrawArt1.IsChecked == true)
-                MapUtil.ChangeArtColor(drawArt1, replace, add, _sensitivity.Value, true);
+                ArtUtil.ChangeArtColor(drawArt1, replace, add, _sensitivity.Value, true);
         }
 
         private void ReplaceArtColor()
@@ -334,14 +334,14 @@ namespace BlockEditor.Views.Windows
             var add = ColorUtil.ToSkColor(ColorUtil.GetColorFromHex(_colorAdd));
 
             if (cbTextArt0.IsChecked == true)
-                MapUtil.ChangeArtColor(_map.Level.TextArt0, replace, add, _sensitivity.Value, false);
+                ArtUtil.ChangeArtColor(_map.Level.TextArt0, replace, add, _sensitivity.Value, false);
             if (cbTextArt1.IsChecked == true)
-                MapUtil.ChangeArtColor(_map.Level.TextArt1, replace, add, _sensitivity.Value, false);
+                ArtUtil.ChangeArtColor(_map.Level.TextArt1, replace, add, _sensitivity.Value, false);
 
             if (cbDrawArt0.IsChecked == true)
-                MapUtil.ChangeArtColor(_map.Level.DrawArt0, replace, add, _sensitivity.Value, true);
+                ArtUtil.ChangeArtColor(_map.Level.DrawArt0, replace, add, _sensitivity.Value, true);
             if (cbDrawArt1.IsChecked == true)
-                MapUtil.ChangeArtColor(_map.Level.DrawArt1, replace, add, _sensitivity.Value, true);
+                ArtUtil.ChangeArtColor(_map.Level.DrawArt1, replace, add, _sensitivity.Value, true);
         }
 
         public bool IsRegionSelected()

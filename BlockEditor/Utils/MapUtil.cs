@@ -94,46 +94,6 @@ namespace BlockEditor.Helpers
             Color = SKColors.White.WithAlpha(150) 
         };
 
-        public static void MoveRelativeArt(IEnumerable<Art> art, int x, int y)
-        {
-            if (art == null)
-                return;
-
-            if (art.Count() > 0)
-            {
-                art.First().X += x;
-                art.First().Y += y;
-            }
-        }
-
-        public static void MoveAbsoluteArt(IEnumerable<Art> art, int x, int y)
-        {
-            if (art == null)
-                return;
-
-            foreach (Art a in art)
-            {
-                a.X += x;
-                a.Y += y;
-            }
-        }
-
-        public static void ChangeArtColor(IEnumerable<Art> art, SKColor? replace, SKColor? add, ColorSensitivty sensitivity, bool hex)
-        {
-            if (art == null)
-                return;
-
-            foreach (Art a in art)
-            {
-                var color  = ColorUtil.ToSkColor(hex ? ColorUtil.GetColorFromHex(a.Color) : ColorUtil.GetColorFromBlockOption(a.Color));
-
-                if (!ColorUtil.IsColorEqual(color, replace, sensitivity))
-                    continue;
-
-                a.Color = hex ? ColorUtil.ToHexString(add.Value) : ColorUtil.ToIntString(add.Value);
-            }
-        }
-
     }
 
 
@@ -161,7 +121,6 @@ namespace BlockEditor.Helpers
                 Upload(map, save.Publish, save.Newest);
             }
         }
-
 
         private static void Upload(Map map, bool publish, bool newest)
         {

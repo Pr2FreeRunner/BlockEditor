@@ -1,8 +1,11 @@
 ﻿using BlockEditor.Models;
 using LevelModel.Models.Components.Art;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using static Builders.DataStructures.DTO.ImageDTO;
 
 namespace BlockEditor.Utils
 {
@@ -75,6 +78,34 @@ namespace BlockEditor.Utils
 
                 a.X = x;
                 a.Y = y;
+            }
+        }
+
+        public static void MoveArt(IEnumerable<Art> art, int x, int y)
+        {
+            if (art == null)
+                return;
+
+            foreach (Art a in art)
+            {
+                a.X += x;
+                a.Y += y;
+            }
+        }
+
+        public static void ChangeArtColor(IEnumerable<Art> art, SKColor? replace, SKColor? add, ColorSensitivty sensitivity, bool hex)
+        {
+            if (art == null)
+                return;
+
+            foreach (Art a in art)
+            {
+                var color = ColorUtil.ToSkColor(hex ? ColorUtil.GetColorFromHex(a.Color) : ColorUtil.GetColorFromBlockOption(a.Color));
+
+                if (!ColorUtil.IsColorEqual(color, replace, sensitivity))
+                    continue;
+
+                a.Color = hex ? ColorUtil.ToHexString(add.Value) : ColorUtil.ToIntString(add.Value);
             }
         }
     }
