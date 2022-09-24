@@ -103,7 +103,7 @@ namespace BlockEditor.Utils
         {
             if(Probablity < 100)
             {
-                if(RandomUtil.GetRandom(0, 100) > Probablity)
+                if(!(RandomUtil.GetRandom(1, 99) < Probablity))
                     return;
             }
 
