@@ -1,7 +1,8 @@
-﻿using BlockEditor.Helpers;
-using LevelModel.Models.Components;
-using System;
+﻿using System;
 using System.Windows.Input;
+using BlockEditor.Helpers;
+using LevelModel.Models.Components;
+
 using static BlockEditor.Models.BlockImages;
 
 namespace BlockEditor.Models
