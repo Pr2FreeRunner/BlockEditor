@@ -195,14 +195,19 @@ namespace BlockEditor.Views.Controls
             }
         }
 
+        public void Deselect()
+        {
+            if (ViewModel.Commands.DeselectCommand.CanExecute(null))
+                ViewModel.Commands.DeselectCommand.Execute(null);
+        }
+
         public void Map_OnPreviewKeyDown(KeyEventArgs e, bool ctrl)
         {
             try
             {
                 if (e.Key == Key.Escape)
                 {
-                    if (ViewModel.Commands.DeselectCommand.CanExecute(null))
-                        ViewModel.Commands.DeselectCommand.Execute(null);
+                   Deselect();
                 }
                 else if (ctrl && e.Key == Key.Z)
                 {

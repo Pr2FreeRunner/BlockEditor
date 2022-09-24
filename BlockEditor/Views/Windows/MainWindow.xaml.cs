@@ -239,11 +239,18 @@ namespace BlockEditor.Views.Windows
             if (CurrentMap == null)
                 return;
 
-            if (!App.IsSidePanelActive())
-                BlocksControl.OnKeyDown(e.Key);
+            if (App.IsSidePanelActive())
+            {
+                if (e.Key == Key.Escape)
+                    CurrentMap.Deselect();
 
-            var ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+                return;
+            }
+
+            var ctrl  = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
             var shift = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+
+            BlocksControl.OnKeyDown(e.Key);
 
             if (ctrl && e.Key == Key.T)
             {
