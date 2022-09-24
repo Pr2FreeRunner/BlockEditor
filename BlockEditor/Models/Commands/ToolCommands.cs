@@ -552,7 +552,12 @@ namespace BlockEditor.Models
                 var input = UserInputWindow.Show("Replace Probability: ", "Replace", "100");
 
                 if(!MyUtil.TryParse(input, out var probability))
-                    throw new Exception("Invalid input");
+                {
+                    if(!string.IsNullOrEmpty(input))
+                        throw new Exception("Invalid input");
+                    
+                    return;
+                }
 
                 using (new TempCursor(Cursors.Wait))
                 {
