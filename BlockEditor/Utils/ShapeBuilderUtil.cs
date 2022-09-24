@@ -14,8 +14,6 @@ namespace BlockEditor.Utils
         public static bool Fill { get; set; }
         public static int Probablity { get; set; }
 
-        private static Random _rng = new Random();
-
         public static List<SimpleBlock> Build(Map map, int id, MyRegion region)
         {
             var fallback = new List<SimpleBlock>();
@@ -105,9 +103,7 @@ namespace BlockEditor.Utils
         {
             if(Probablity < 100)
             {
-                var r = _rng.Next(1, 101);
-
-                if(r > Probablity)
+                if(RandomUtil.GetRandom(0, 100) > Probablity)
                     return;
             }
 

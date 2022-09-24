@@ -549,11 +549,16 @@ namespace BlockEditor.Models
                 if (id2 == null)
                     return;
 
+                var input = UserInputWindow.Show("Replace Probability: ", "Replace", "100");
+
+                if(!MyUtil.TryParse(input, out var probability))
+                    throw new Exception("Invalid input");
+
                 using (new TempCursor(Cursors.Wait))
                 {
                     var blocks = BlocksUtil.ReplaceBlock(game.Map?.Blocks, new List<int>() { id1.Value }, new List<int>() { id2.Value }, region);
 
-                    game.AddBlocks(blocks);
+                    game.AddBlocks(blocks.Where(b => RandomUtil.GetRandom(1, 99) < probability));
                 }
             }
         }
