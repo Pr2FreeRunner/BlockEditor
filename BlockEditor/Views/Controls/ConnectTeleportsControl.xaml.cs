@@ -54,7 +54,7 @@ namespace BlockEditor.Views.Controls
             tbCount.Content = "Selected Block Count:  " + _data.Count;
             btnOK.IsEnabled = _data.Count > 0;
             btnReset.IsEnabled = _data.Count > 0 || !string.IsNullOrEmpty(_data.Options);
-            tbUnique.Content = "Is Color Unique:  " + (IsColorUnique() ? "Yes" : "No");
+            tbUnique.Content = "Is Color Unique:  " + (AutoPairCheckbox.IsChecked == true ? "Auto" : IsColorUnique() ? "Yes" : "No");
             AutoPairCheckbox.IsEnabled = AutoPairCheckbox.IsChecked == true || _data.Count == 0;
         }
 
