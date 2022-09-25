@@ -45,7 +45,7 @@
                 
                 <Label Content="Is Color Unique: " x:Name="tbUnique"  FontSize="{StaticResource DefaultFontSize}"   FontWeight="SemiBold" VerticalContentAlignment="Center" />
 
-                <CheckBox Focusable="False" VerticalContentAlignment="Center" Checked="AutoPairCheckbox_Checked" Unchecked="AutoPairCheckbox_Checked"  Margin="5,10,0,5" x:Name="AutoPairCheckbox" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold"  Content="Auto Assign Pair" />
+                <CheckBox Focusable="False" VerticalContentAlignment="Center" Checked="AutoPairCheckbox_Checked" Unchecked="AutoPairCheckbox_Checked"  Margin="5,10,0,5" x:Name="AutoPairCheckbox" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold"  Content="Auto Connect Pair" />
 
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center"> 
                     <Button Style="{StaticResource WhiteBtn}" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold"  Margin="10,20,10,10"  Name="btnReset" Width="150" Height="26" Content="Reset" Click="btnReset_Click"/>
