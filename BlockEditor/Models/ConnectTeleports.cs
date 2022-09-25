@@ -71,5 +71,10 @@ namespace BlockEditor.Models
 
             return result;
         }
+
+        public void ClearSelectedBlocks()
+        {
+            _blocks?.Clear();
+        }
     }
 }

@@ -30,7 +30,7 @@
 
             <StackPanel Grid.Row="0" Margin="5,10,5,15" Orientation="Vertical" HorizontalAlignment="Center">
                 <TextBlock Text="Pick Shape" FontSize="25"  Margin="0,0,0,20" HorizontalAlignment="Center"/>
-                <CheckBox Checked="FillCheckbox_Checked" Unchecked="FillCheckbox_UnChecked"  Margin="5,10,0,5" x:Name="FillCheckbox" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold"  Content="Fill Shape" />
+                <CheckBox VerticalContentAlignment="Center" Checked="FillCheckbox_Checked" Unchecked="FillCheckbox_UnChecked"  Margin="5,10,0,5" x:Name="FillCheckbox" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold"  Content="Fill Shape" />
 
                 <Label Content="Add Block Probability:" Margin="0,3,0,0" FontWeight="SemiBold" HorizontalAlignment="Left"/>
                 <TextBox x:Name="tbProb" Margin="4,0,0,30" Text="100" TextChanged="tb_TextChanged" PreviewTextInput="Integer_PreviewTextInput" FontSize="12" />

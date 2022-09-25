@@ -298,5 +298,17 @@ namespace BlockEditor {
                 this["LastSearch"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoConnectPair {
+            get {
+                return ((bool)(this["AutoConnectPair"]));
+            }
+            set {
+                this["AutoConnectPair"] = value;
+            }
+        }
     }
 }

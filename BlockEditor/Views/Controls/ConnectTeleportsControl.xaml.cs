@@ -7,7 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using BlockEditor.Helpers;
 using BlockEditor.Models;
+using BlockEditor.Utils;
 using LevelModel.Models.Components;
+using Microsoft.VisualBasic;
 using static BlockEditor.Models.UserMode;
 
 namespace BlockEditor.Views.Controls
@@ -27,7 +29,8 @@ namespace BlockEditor.Views.Controls
             _data = new ConnectTeleports();
             _connectCursor = Mouse.OverrideCursor;
             _allTeleports = GetAllTeleportBlocks();
-            Init(99);
+            AutoPairCheckbox.IsChecked = MySettings.AutoConnectPair;
+            Init();
         }
 
         private List<SimpleBlock> GetAllTeleportBlocks()
@@ -35,7 +38,7 @@ namespace BlockEditor.Views.Controls
             return _game.Map.Blocks.GetBlocks(false).Where(b => !b.IsEmpty() && b.ID == Block.TELEPORT).ToList();
         }
 
-        private void Init(int count)
+        private void Init()
         {
             var culture = CultureInfo.InvariantCulture;
 
@@ -52,15 +55,55 @@ namespace BlockEditor.Views.Controls
             btnOK.IsEnabled = _data.Count > 0;
             btnReset.IsEnabled = _data.Count > 0 || !string.IsNullOrEmpty(_data.Options);
             tbUnique.Content = "Is Color Unique:  " + (IsColorUnique() ? "Yes" : "No");
+            AutoPairCheckbox.IsEnabled = AutoPairCheckbox.IsChecked == true || _data.Count == 0;
         }
 
         public void Add(SimpleBlock point)
         {
             _data.Add(point);
 
+            if(_data.Count == 2 && AutoPairCheckbox.IsChecked == true)
+            {
+                while(!IsColorUnique() || string.IsNullOrWhiteSpace(_data.Options))
+                    AssignNextColor();
+
+                AssignTeleports();
+                _data.ClearSelectedBlocks();
+            }
+
             UpdateGui(); 
         }
 
+        public void AssignNextColor()
+        {
+            var option = _data.Options;
+            var fallback = "0";
+
+            if (string.IsNullOrWhiteSpace(option))
+            {
+                MyColorPicker.SetColor(fallback);
+                return;
+            }
+
+            if(!MyUtil.TryParse(option, out var value))
+            {
+                MyColorPicker.SetColor(fallback);
+                return;
+            }
+
+            value++;
+            MyColorPicker.SetColor("#" + value.ToString("X6"));
+        }
+
+        private void AssignTeleports()
+        {
+            using (new TempCursor(Cursors.Wait))
+            {
+                var blocks = _data.GetAddedBlocks();
+                _allTeleports.AddRange(blocks);
+                _game.AddBlocks(blocks);
+            }
+        }
 
         private void Close(bool addBlocks)
         {
@@ -71,12 +114,8 @@ namespace BlockEditor.Views.Controls
 
             _game.Mode.Value = UserModes.None;
 
-            if(!addBlocks)
-                return;
-
-            using (new TempCursor(Cursors.Wait))
-                _game.AddBlocks(_data.GetAddedBlocks());
-
+            if(addBlocks)
+                AssignTeleports();
         }
 
 
@@ -151,6 +190,11 @@ namespace BlockEditor.Views.Controls
 
             return true;
         }
-      
+
+        private void AutoPairCheckbox_Checked(object sender, RoutedEventArgs e)
+        {
+            MySettings.AutoConnectPair = AutoPairCheckbox.IsChecked ?? false;
+            UpdateGui();
+        }
     }
 }

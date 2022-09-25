@@ -45,10 +45,11 @@
                 
                 <Label Content="Is Color Unique: " x:Name="tbUnique"  FontSize="{StaticResource DefaultFontSize}"   FontWeight="SemiBold" VerticalContentAlignment="Center" />
 
+                <CheckBox Focusable="False" VerticalContentAlignment="Center" Checked="AutoPairCheckbox_Checked" Unchecked="AutoPairCheckbox_Checked"  Margin="5,10,0,5" x:Name="AutoPairCheckbox" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold"  Content="Auto Assign Pair" />
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"> 
-                    <Button Style="{StaticResource WhiteBtn}" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold"  Margin="10,30,10,12"  Name="btnReset" Width="100" Height="26" Content="Reset" Click="btnReset_Click"/>
-                    <Button Style="{StaticResource WhiteBtn}" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold"  Margin="10,30,10,12"  Name="btnOK" Width="100" Height="26" Content="OK" Click="btnOk_Click"/>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center"> 
+                    <Button Style="{StaticResource WhiteBtn}" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold"  Margin="10,20,10,10"  Name="btnReset" Width="150" Height="26" Content="Reset" Click="btnReset_Click"/>
+                    <Button Style="{StaticResource WhiteBtn}" FontSize="{StaticResource DefaultFontSize}" FontWeight="SemiBold"  Margin="10,5,10,5"  Name="btnOK" Width="150" Height="26" Content="OK" Click="btnOk_Click"/>
                 </StackPanel>
 
             </StackPanel>

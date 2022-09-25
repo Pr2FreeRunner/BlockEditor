@@ -10,6 +10,14 @@ namespace BlockEditor.Models
     public static class MySettings
     {
 
+
+        private static bool _autoConnectPair;
+        public static bool AutoConnectPair
+        {
+            get { return _autoConnectPair; }
+            set { _autoConnectPair = value; Save(); }
+        }
+
         private static bool _firstTimeLoad;
         public static bool FirstTimeLoad
         {
@@ -200,6 +208,7 @@ namespace BlockEditor.Models
                 Settings.Default["FirstTimeLoad"] = FirstTimeLoad;
                 Settings.Default["FirstConnectTeleports"] = FirstConnectTeleports;  
                 Settings.Default["ShowArt"] = ShowArt;
+                Settings.Default["AutoConnectPair"] = AutoConnectPair;
                 Settings.Default["FirstShowArt"] = FirstShowArt;
                 Settings.Default["Overwrite"] = Overwrite;
                 Settings.Default["FirstUserSelection"] = FirstUserSelection;
@@ -246,6 +255,7 @@ namespace BlockEditor.Models
                 _firstConnectTeleports = (bool)Settings.Default["FirstConnectTeleports"];
                 _fillShape = (bool)Settings.Default["FillShape"];
                 _overwrite = (bool)Settings.Default["Overwrite"];
+                _autoConnectPair = (bool)Settings.Default["AutoConnectPair"];
                 _showArt = (bool)Settings.Default["ShowArt"];
                 _firstShowArt = (bool)Settings.Default["FirstShowArt"];
                 _firstBlockInfo = (bool)Settings.Default["FirstBlockInfo"];
@@ -264,8 +274,6 @@ namespace BlockEditor.Models
                 _hotkey7 = (int)(Settings.Default["Hotkey7"] ?? Block.BASIC_WHITE);
                 _hotkey8 = (int)(Settings.Default["Hotkey8"] ?? Block.BASIC_WHITE);
                 _hotkey9 = (int)(Settings.Default["Hotkey9"] ?? Block.BASIC_WHITE);
-
-
             }
             catch (Exception ex)
             {
