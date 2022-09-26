@@ -46,7 +46,7 @@ namespace BlockEditor.ViewModels
 
         public Game Game { get; }
         public MenuCommands Commands { get; }
-
+        public bool DisableAddBlockOnMouseMove { get; set; }
 
         public MapViewModel()
         {
@@ -63,6 +63,7 @@ namespace BlockEditor.ViewModels
 
         public void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            DisableAddBlockOnMouseMove = false;
             var p = MyUtil.GetPosition(sender as IInputElement, e);
             var index = Game.GetMapIndex(p);
 
@@ -206,6 +207,9 @@ namespace BlockEditor.ViewModels
                     }
                     else if (e.LeftButton == MouseButtonState.Pressed)
                     {
+                        if(DisableAddBlockOnMouseMove)
+                            break;
+
                         if (BlockSelection.SelectedBlocks != null)
                             Game.AddBlocks(BlocksUtil.MoveSelection(BlockSelection.SelectedBlocks, index));
                         else

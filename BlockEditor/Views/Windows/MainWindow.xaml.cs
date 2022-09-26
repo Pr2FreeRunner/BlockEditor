@@ -113,6 +113,7 @@ namespace BlockEditor.Views.Windows
             if (CurrentMap == null)
                 return;
 
+            CurrentMap.ViewModel.DisableAddBlockOnMouseMove = true;
             BlockSelection.SelectedBlocks = null;
             BlockSelection.SelectedBlock = id;
 
