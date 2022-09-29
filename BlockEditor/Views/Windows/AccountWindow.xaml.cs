@@ -92,7 +92,7 @@ namespace BlockEditor.Views.Windows
         private bool IsOK()
         {
             return !string.IsNullOrWhiteSpace(UserName)
-               && !string.IsNullOrWhiteSpace(Password);
+               && !string.IsNullOrEmpty(Password);
         }
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
