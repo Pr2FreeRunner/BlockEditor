@@ -135,13 +135,21 @@ namespace BlockEditor.Models
 
         private static string GetBuildVersion()
         {
-            var buildVersion = MySettings.Pr2BuildVersion;
-            var text = "What is the current build version for PR2?" 
-                + Environment.NewLine 
-                + Environment.NewLine 
-                + "Note: This can be found on the bottom right of the Credit page.";
-            
-            return UserInputWindow.Show(text, "Input", buildVersion);
+            var errorMsg = "Failed to fetch the PR2 Build version";
+
+            try
+            {
+                var version = PR2Accessor.Pr2Version().BuildVersion;
+
+                if (version != null)
+                    return version;
+
+                throw new Exception(errorMsg);
+            }
+            catch
+            {
+                throw new Exception(errorMsg);
+            }
         }
 
         public static bool Login(string username, string password, out string errorMsg)
@@ -151,21 +159,12 @@ namespace BlockEditor.Models
 
             try
             {
-                var version = GetBuildVersion();
-
-                if(string.IsNullOrWhiteSpace(version))
-                {
-                    errorMsg = string.Empty;
-                    return false;
-                }
-
-                var tokenInfo = PR2Accessor.GetToken(username, password, version);
+                var tokenInfo = PR2Accessor.GetToken(username, password, GetBuildVersion());
 
                 if (tokenInfo.Success)
                 {
                     errorMsg = string.Empty;
                     Add(username, tokenInfo.Token);
-                    MySettings.Pr2BuildVersion = version;
                 }
                 else
                 {

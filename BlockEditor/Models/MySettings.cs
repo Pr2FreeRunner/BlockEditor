@@ -126,15 +126,6 @@ namespace BlockEditor.Models
             set { _zoom = value; Save(); }
         }
 
-
-        private static string _pr2BuildVersion;
-        public static string Pr2BuildVersion
-        {
-            get { return _pr2BuildVersion; }
-            set { _pr2BuildVersion = value; Save(); }
-        }
-
-
         private static bool _firstUserSelection;
         public static bool FirstUserSelection
         {
@@ -203,7 +194,6 @@ namespace BlockEditor.Models
             try
             {
                 Settings.Default["Users"] = Users.SaveUser();
-                Settings.Default["Pr2BuildVersion"] = Pr2BuildVersion;
                 Settings.Default["LastSearch"] = LastSearch;
                 Settings.Default["FirstTimeLoad"] = FirstTimeLoad;
                 Settings.Default["FirstConnectTeleports"] = FirstConnectTeleports;  
@@ -260,7 +250,6 @@ namespace BlockEditor.Models
                 _firstShowArt = (bool)Settings.Default["FirstShowArt"];
                 _firstBlockInfo = (bool)Settings.Default["FirstBlockInfo"];
                 _zoom = (BlockSize)(Settings.Default["Zoom"] ?? BlockImages.DEFAULT_BLOCK_SIZE);
-                _pr2BuildVersion = HandleBuildVersion(Settings.Default["Pr2BuildVersion"] as string);
                 _lastSearch = HandleBuildVersion(Settings.Default["LastSearch"] as string);
                 _playTime = (int)(Settings.Default["PlayTime"] ?? 0);
 
