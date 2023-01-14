@@ -46,6 +46,7 @@ namespace BlockEditor.Models
         private static SKFont Font;
         private static SKTypeface Typeface;
         private readonly string _name;
+        private bool _disposedValue;
 
         public GameArt(string name)
         {
@@ -59,7 +60,6 @@ namespace BlockEditor.Models
             Strokes = new List<MyStrokeArt>();
             Texts = new List<MyTextArt>();
         }
-
 
         public void LoadArt(List<DrawArt> drawArts, List<TextArt> textArts)
         {
@@ -105,7 +105,6 @@ namespace BlockEditor.Models
 
         private static SKTextBlob CreateTextBlob(string text, SKPoint origin, SKFont font, SKPaint paint)
         {
-            paint.GetFontMetrics(out SKFontMetrics metrics);
             var lineSpace = paint.FontSpacing + 2;
             var lines = text.Split('\r');
             var builder = new SKTextBlobBuilder();
@@ -147,10 +146,9 @@ namespace BlockEditor.Models
         }
 
 
-        private bool disposedValue;
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
@@ -167,18 +165,9 @@ namespace BlockEditor.Models
                     }
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
-
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~Art()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
 
         public void Dispose()
         {

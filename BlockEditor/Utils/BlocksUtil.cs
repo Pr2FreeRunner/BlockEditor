@@ -1,16 +1,29 @@
 ﻿using BlockEditor.Models;
 using BlockEditor.Utils;
 using BlockEditor.Views.Windows;
+
 using LevelModel.Models.Components;
+
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace BlockEditor.Helpers
 {
     public static class BlocksUtil
     {
+        public static uint GetTeleportColor(SimpleBlock block)
+        {
+            try
+            {
+                return 0xff000000 + (block.Options == "" ? 0 : uint.Parse(block.Options));
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
         public static List<SimpleBlock> ReplaceBlock(Blocks blocks, List<int> replace, List<int> add, MyRegion region)
         {
             var result = new List<SimpleBlock>();

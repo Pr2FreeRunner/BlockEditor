@@ -1,19 +1,22 @@
 using BlockEditor.Helpers;
 using BlockEditor.Utils;
+
 using LevelModel.Models.Components;
+
 using SkiaSharp;
+
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BlockEditor.Models
 {
     class FrameUpdate
     {
-
         private MyPoint? _mousePosition;
         private UserSelection _userSelection;
-        private Game _game;
-        private SKSurface _surface;
+        private readonly Game _game;
+        private readonly SKSurface _surface;
 
         public FrameUpdate(Game game, SKSurface surface)
         {
@@ -44,12 +47,7 @@ namespace BlockEditor.Models
         }
 
         [System.Diagnostics.Conditional("DEBUG")]
-        private void DrawDebug()
-        {
-            var canvas = _surface.Canvas;
-
-            canvas.DrawText($"Camera {_game.Camera.Position}", 0, 10, MapUtil.SelectionStrokePaint);
-        }
+        private void DrawDebug() => _surface.Canvas.DrawText($"Camera {_game.Camera.Position}", 0, 10, MapUtil.SelectionStrokePaint);
 
         private void DrawArt(GameArt art)
         {
@@ -67,14 +65,9 @@ namespace BlockEditor.Models
             cam.TransY = -_game.Camera.Position.Y;
             cam.ScaleX = cam.ScaleY = zoom;
             canvas.Concat(ref cam);
-            
+
             // draw strokes
-            canvas.SaveLayer();
-            foreach (var stroke in art.Strokes)
-            {
-                canvas.DrawPath(stroke.Path, stroke.Paint);
-            }
-            canvas.Restore();
+            _game.Renderer.RenderArt(canvas, art);
 
             // draw texts
             foreach (var text in art.Texts)
@@ -108,53 +101,24 @@ namespace BlockEditor.Models
             var blockCountX = width / _game.Map.BlockPixelSize;
             var blockCountY = height / _game.Map.BlockPixelSize;
 
-            var blocks = _game.Map.Blocks;
-
+            var blocksInViewport = new List<SimpleBlock>();
             for (int y = minBlockY; y < minBlockY + blockCountY; y++)
             {
                 for (int x = minBlockX; x < minBlockX + blockCountX; x++)
                 {
-                    var block = blocks.GetBlock(x, y, false);
+                    var block = _game.Map.Blocks.GetBlock(x, y, false);
 
                     if (block.IsEmpty())
                         continue;
 
-                    DrawBlock(block, false);
+                    blocksInViewport.Add(block);
                 }
             }
+            _game.Renderer.RenderBlocks(_surface.Canvas, _game, blocksInViewport);
 
-            foreach (var startBlock in _game.Map.Blocks.StartBlocks.GetBlocks().Reverse())
-            {
-                if (startBlock.IsEmpty())
-                    continue;
-
-                DrawBlock(startBlock, true);
-            }
-        }
-
-        private void DrawBlock(SimpleBlock b, bool semiTrans)
-        {
-            if (b.IsEmpty())
-                return;
-
-            BlockImage image = null;
-
-            if (b.ID == Block.TELEPORT)
-                image = BlockImages.GetTeleportImageBlock(_game.Map.BlockSize, b.Options);
-            else
-                image = BlockImages.GetImageBlock(_game.Map.BlockSize, b.ID);
-
-            if (image == null)
-                return;
-
-            var posX = b.Position.Value.X * _game.Map.BlockPixelSize - _game.Camera.Position.X;
-            var posY = b.Position.Value.Y * _game.Map.BlockPixelSize - _game.Camera.Position.Y;
-
-            // TODO: better performance via DrawAtlas ?
-            if (semiTrans)
-                _surface.Canvas.DrawBitmap(image.SKBitmap, posX, posY, MapUtil.TranslucentPaint);
-            else
-                _surface.Canvas.DrawBitmap(image.SKBitmap, posX, posY);
+            // draw start blocks on top
+            var startBlocks = _game.Map.Blocks.StartBlocks.GetBlocks().Reverse().Where(b => !b.IsEmpty());
+            _game.Renderer.RenderBlocks(_surface.Canvas, _game, startBlocks);
         }
 
         private void DrawSelectedBlock()

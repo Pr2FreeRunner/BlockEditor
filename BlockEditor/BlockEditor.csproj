@@ -115,6 +115,9 @@
     <None Update="Resources\132mask.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\BlocksSheet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\Blocks\100.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
