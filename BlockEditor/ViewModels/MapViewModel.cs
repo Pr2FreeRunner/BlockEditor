@@ -29,13 +29,6 @@ namespace BlockEditor.ViewModels
             { 
                 Game.ShowArt = value; 
                 RaisePropertyChanged(); 
-
-                if(value && MySettings.FirstShowArt)
-                {
-                    MessageUtil.ShowInfo("Art can cause lag, especially on lower zoom levels."
-                        + Environment.NewLine + "I recommend that you turn art off if you notice any lag.");
-                    MySettings.FirstShowArt = false;
-                }
             }
         }
 

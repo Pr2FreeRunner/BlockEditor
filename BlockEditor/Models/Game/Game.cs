@@ -56,7 +56,7 @@ namespace BlockEditor.Models
 
         public bool ShowArtIsEnabled()
         {
-            return Map.BlockSize > BlockImages.BlockSize.Zoom40;
+            return Map.BlockSize >= BlockImages.BlockSize.Zoom10;
         }
 
         public MyPoint? GetMapIndex(MyPoint? p)

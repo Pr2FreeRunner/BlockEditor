@@ -163,13 +163,6 @@ namespace BlockEditor.Models
             set { _showArt = value; Save(); }
         }
 
-        private static bool _firstShowArt;
-        public static bool FirstShowArt
-        {
-            get { return _firstShowArt; }
-            set { _firstShowArt = value; Save(); }
-        }
-
         private static string _lastSearch;
         public static string LastSearch
         {
@@ -199,7 +192,6 @@ namespace BlockEditor.Models
                 Settings.Default["FirstConnectTeleports"] = FirstConnectTeleports;  
                 Settings.Default["ShowArt"] = ShowArt;
                 Settings.Default["AutoConnectPair"] = AutoConnectPair;
-                Settings.Default["FirstShowArt"] = FirstShowArt;
                 Settings.Default["Overwrite"] = Overwrite;
                 Settings.Default["FirstUserSelection"] = FirstUserSelection;
                 Settings.Default["FirstBlockInfo"] = FirstBlockInfo;
@@ -247,7 +239,6 @@ namespace BlockEditor.Models
                 _overwrite = (bool)Settings.Default["Overwrite"];
                 _autoConnectPair = (bool)Settings.Default["AutoConnectPair"];
                 _showArt = (bool)Settings.Default["ShowArt"];
-                _firstShowArt = (bool)Settings.Default["FirstShowArt"];
                 _firstBlockInfo = (bool)Settings.Default["FirstBlockInfo"];
                 _zoom = (BlockSize)(Settings.Default["Zoom"] ?? BlockImages.DEFAULT_BLOCK_SIZE);
                 _lastSearch = HandleBuildVersion(Settings.Default["LastSearch"] as string);
