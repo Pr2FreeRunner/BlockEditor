@@ -25,8 +25,15 @@ namespace BlockEditor.Models
 
         public void ToolWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            base.OnMouseLeftButtonDown(e);
-            this.DragMove();
+            if(e.ButtonState == MouseButtonState.Released)
+                return;
+
+            try 
+            { 
+                base.OnMouseLeftButtonDown(e);
+                this.DragMove();
+            }
+            catch { } 
         }
 
         public void Integer_PreviewTextInput(object sender, TextCompositionEventArgs e, int? min, int? max)
