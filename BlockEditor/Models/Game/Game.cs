@@ -10,11 +10,13 @@ using static BlockEditor.Models.UserMode;
 
 namespace BlockEditor.Models
 {
-    public class Game
+    public class Game : IDisposable
     {
 
         public GameEngine Engine { get; }
 
+        public GameRenderer Renderer { get; }
+        
         public Camera Camera { get; set; }
 
         public Map Map { get; set; }
@@ -31,6 +33,8 @@ namespace BlockEditor.Models
 
         public MyPoint? MousePosition { get; set; }
 
+        private bool _disposedValue;
+
         public bool ShowArt 
         { 
             get { return MySettings.ShowArt && ShowArtIsEnabled(); }
@@ -42,6 +46,7 @@ namespace BlockEditor.Models
             Mode = new UserMode();
             Map = new Map();
             Engine = new GameEngine();
+            Renderer = new GameRenderer();
             Camera = new Camera();
             UserOperations = new UserOperations();
             MeasureDistance = new MeasureDistance();
@@ -313,5 +318,24 @@ namespace BlockEditor.Models
             AddBlocks(blocksToAdd);
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    Renderer.Dispose();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

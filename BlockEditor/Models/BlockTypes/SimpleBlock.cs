@@ -1,4 +1,6 @@
-﻿using LevelModel.Models.Components;
+﻿using BlockEditor.Utils;
+
+using LevelModel.Models.Components;
 
 namespace BlockEditor.Models
 {
@@ -12,7 +14,6 @@ namespace BlockEditor.Models
         public int ID { get; set; }
 
         public string Options { get; set; }
-
 
         public SimpleBlock(int id)
         {
@@ -49,8 +50,6 @@ namespace BlockEditor.Models
             Position = p;
             Options = options ?? string.Empty;
         }
-
-
 
         public SimpleBlock Move(int x, int y)
         {

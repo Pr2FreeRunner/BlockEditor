@@ -34,12 +34,15 @@ namespace BlockEditor.Models
         private static Dictionary<BlockSize, Dictionary<string, BlockImage>> _teleportImages;
         private static SKBitmap _teleportMask;
 
+        public static SKImage BlocksSheet { get; private set; }
+
         public static void Init()
         {
             _images = new Dictionary<BlockSize, Dictionary<int, BlockImage>>();
             _unknownBlocks = new Dictionary<BlockSize, BlockImage>();
             _teleportImages = new Dictionary<BlockSize, Dictionary<string, BlockImage>>();
             _teleportMask = SKBitmap.Decode(Path.Combine(Directory.GetCurrentDirectory(), "Resources", "132mask.png"));
+            BlocksSheet = SKImage.FromEncodedData(Path.Combine(Directory.GetCurrentDirectory(), "Resources", "BlocksSheet.png"));
 
             foreach (var size in BlockSizeUtil.GetAll())
             {
@@ -48,6 +51,20 @@ namespace BlockEditor.Models
             }
 
             LoadImages();
+        }
+
+        public static SKRect GetSpriteFromId(int id)
+        {
+            const int SheetColumns = 10;
+            const int BlockSize = 30;
+
+            if (id >= 100)
+                id -= 100;
+
+            var y = (id / SheetColumns) * BlockSize;
+            var x = (id % SheetColumns) * BlockSize;
+
+            return new SKRect(x, y, x + BlockSize, y + BlockSize);
         }
 
         private static string[] GetFiles()
