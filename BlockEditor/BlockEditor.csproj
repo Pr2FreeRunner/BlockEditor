@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Dependencies\Multi-Tool\" />
-    <Folder Include="Dependencies\TAS\" />
     <Folder Include="Resources\Blocks\" />
   </ItemGroup>
 
@@ -80,36 +79,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Dependencies\Multi-Tool\Parsers.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\Newtonsoft.Json.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\Newtonsoft.Json.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\Resources\MyIcon.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\System.Numerics.Vectors.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\System.Numerics.Vectors.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\System.ValueTuple.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\System.ValueTuple.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\TAS.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\TAS.exe.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dependencies\TAS\TAS.pdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\132mask.png">
