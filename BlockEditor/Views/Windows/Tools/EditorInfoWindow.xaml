@@ -49,17 +49,17 @@
                     <Label Content="Map Size:" Margin="0,4,0,0" FontWeight="SemiBold"/>
                     <TextBox IsReadOnly="True" x:Name="tbSize" Margin="4,0,0,0" FontSize="12" />
 
-                    <Label Margin="0,7,0,0" FontWeight="SemiBold" Content="Block Limit:"/>
+                    <Label Margin="0,4,0,0" FontWeight="SemiBold" Content="Block Limit:"/>
                     <TextBox IsReadOnly="True" x:Name="tbLimit" Margin="4,0,0,0" FontSize="{StaticResource DefaultFontSize}"  />
 
-                    <Label Margin="0,7,0,0" FontWeight="SemiBold" Content="Frames per Second:"/>
+                    <Label Margin="0,4,0,0" FontWeight="SemiBold" Content="Frames per Second:"/>
                     <TextBox IsReadOnly="True" Margin="4,0,0,0" x:Name="tbFps" FontSize="{StaticResource DefaultFontSize}"  />
 
-                    <CheckBox Margin="4,15,0,0" Content="Close old TAS windows when testing" x:Name="cbTas" Checked="cbTas_Checked" Unchecked="cbTas_Checked" FontSize="{StaticResource DefaultFontSize}"  />
+                    <CheckBox Margin="4,12,0,0" Content="Close old TAS windows when testing" x:Name="cbTas" Checked="cbTas_Checked" Unchecked="cbTas_Checked" FontSize="{StaticResource DefaultFontSize}"  />
 
-                    <Label Margin="0,7,0,0" FontWeight="SemiBold" Content="Block Hotkeys:"/>
+                    <Label Margin="0,4,0,0" FontWeight="SemiBold" Content="Block Hotkeys:"/>
 
-                    <Grid Margin="0,0,0,4">
+                    <Grid Margin="0,0,0,2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"/>
                             <ColumnDefinition Width="2*"/>
