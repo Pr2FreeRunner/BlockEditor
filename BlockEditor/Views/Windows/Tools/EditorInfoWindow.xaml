@@ -40,7 +40,7 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel x:Name="Page1" Grid.Row="0" Visibility="Visible" Orientation="Vertical" VerticalAlignment="Top">
-                    <Label Content="Version:" Margin="0,-4,0,0" FontWeight="SemiBold"/>
+                    <Label Content="Version:" Margin="0,-7,0,0" FontWeight="SemiBold"/>
                     <TextBox IsReadOnly="True" x:Name="tbVersion" Margin="4,0,0,0" FontSize="12" />
                     
                     <Label Content="Play Time:" Margin="0,4,0,0" FontWeight="SemiBold"/>
@@ -55,9 +55,11 @@
                     <Label Margin="0,7,0,0" FontWeight="SemiBold" Content="Frames per Second:"/>
                     <TextBox IsReadOnly="True" Margin="4,0,0,0" x:Name="tbFps" FontSize="{StaticResource DefaultFontSize}"  />
 
+                    <CheckBox Margin="4,15,0,0" Content="Kill old TAS process when starting a new one." x:Name="cbTas" Checked="cbTas_Checked" Unchecked="cbTas_Checked" FontSize="{StaticResource DefaultFontSize}"  />
+
                     <Label Margin="0,7,0,0" FontWeight="SemiBold" Content="Block Hotkeys:"/>
 
-                    <Grid Margin="0,0,0,10">
+                    <Grid Margin="0,0,0,5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"/>
                             <ColumnDefinition Width="2*"/>

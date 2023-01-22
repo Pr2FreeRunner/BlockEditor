@@ -25,6 +25,7 @@ namespace BlockEditor.Views.Windows
             tbLimit.Text = Blocks.LIMIT.ToString(culture);
             tbPlayTime.Text = GetPlayTime(culture);
             tbVersion.Text = MySettings.BlockEditorVersion;
+            cbTas.IsChecked = MySettings.MaxOneTasRunning;
 
             BlockImage0.Source = GetImage(Key.D0);
             BlockImage1.Source = GetImage(Key.D1);
@@ -95,7 +96,6 @@ namespace BlockEditor.Views.Windows
         private void Block0_Click(object sender, MouseButtonEventArgs e)
         {
             AddKey(Key.D0);
-
         }
 
         private void Block1_Click(object sender, MouseButtonEventArgs e)
@@ -116,19 +116,16 @@ namespace BlockEditor.Views.Windows
         private void Block4_Click(object sender, MouseButtonEventArgs e)
         {
             AddKey(Key.D4);
-
         }
 
         private void Block5_Click(object sender, MouseButtonEventArgs e)
         {
             AddKey(Key.D5);
-
         }
 
         private void Block6_Click(object sender, MouseButtonEventArgs e)
         {
             AddKey(Key.D6);
-
         }
 
         private void Block7_Click(object sender, MouseButtonEventArgs e)
@@ -140,14 +137,19 @@ namespace BlockEditor.Views.Windows
         private void Block8_Click(object sender, MouseButtonEventArgs e)
         {
             AddKey(Key.D8);
-
         }
 
         private void Block9_Click(object sender, MouseButtonEventArgs e)
         {
             AddKey(Key.D9);
-
         }
 
+        private void cbTas_Checked(object sender, RoutedEventArgs e)
+        {
+            if(cbTas?.IsChecked == null)
+                return;
+
+            MySettings.MaxOneTasRunning = cbTas.IsChecked.Value;
+        }
     }
 }

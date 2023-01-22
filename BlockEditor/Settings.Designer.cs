@@ -310,5 +310,17 @@ namespace BlockEditor {
                 this["AutoConnectPair"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MaxOneTasRunning {
+            get {
+                return ((bool)(this["MaxOneTasRunning"]));
+            }
+            set {
+                this["MaxOneTasRunning"] = value;
+            }
+        }
     }
 }

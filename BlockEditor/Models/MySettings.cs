@@ -155,6 +155,14 @@ namespace BlockEditor.Models
             set { _firstBlockInfo = value; Save(); }
         }
 
+        private static bool _maxOneTasRunning;
+        public static bool MaxOneTasRunning
+        {
+            get { return _maxOneTasRunning; }
+            set { _maxOneTasRunning = value; Save(); }
+        }
+
+
 
         private static bool _showArt;
         public static bool ShowArt
@@ -196,6 +204,7 @@ namespace BlockEditor.Models
                 Settings.Default["FirstUserSelection"] = FirstUserSelection;
                 Settings.Default["FirstBlockInfo"] = FirstBlockInfo;
                 Settings.Default["FillShape"] = FillShape;
+                Settings.Default["MaxOneTasRunning"] = MaxOneTasRunning;
                 Settings.Default["Zoom"] = (int)Zoom;
                 Settings.Default["PlayTime"] = PlayTime;
 
@@ -239,6 +248,7 @@ namespace BlockEditor.Models
                 _overwrite = (bool)Settings.Default["Overwrite"];
                 _autoConnectPair = (bool)Settings.Default["AutoConnectPair"];
                 _showArt = (bool)Settings.Default["ShowArt"];
+                _maxOneTasRunning = (bool)Settings.Default["MaxOneTasRunning"];
                 _firstBlockInfo = (bool)Settings.Default["FirstBlockInfo"];
                 _zoom = (BlockSize)(Settings.Default["Zoom"] ?? BlockImages.DEFAULT_BLOCK_SIZE);
                 _lastSearch = HandleBuildVersion(Settings.Default["LastSearch"] as string);

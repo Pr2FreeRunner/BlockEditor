@@ -3,79 +3,18 @@ using BlockEditor.Views;
 using BlockEditor.Views.Windows;
 using DataAccess.DataStructures;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Windows.Input;
 using System.Linq;
-using LevelModel.Models.Components.Art;
 using SkiaSharp;
 using BlockEditor.Utils;
-using static Builders.DataStructures.DTO.ImageDTO;
-using System.Net;
 
 namespace BlockEditor.Helpers
 {
 
     public static class MapUtil
     {
-
-        public static void TestInTasTool(Map map)
-        {
-            if (map == null)
-                return;
-
-            var noteText  = map.Level.Note;
-            var textArt1  = map.Level.TextArt1;
-            var textArt2  = map.Level.TextArt2;
-            var textArt3  = map.Level.TextArt3;
-            var textArt0  = map.Level.TextArt0;
-            var textArt00 = map.Level.TextArt00;
-
-            try
-            {
-                map.Level.Note      = string.Empty;
-                map.Level.TextArt1  = new List<TextArt>();
-                map.Level.TextArt2  = new List<TextArt>();
-                map.Level.TextArt3  = new List<TextArt>();
-                map.Level.TextArt0  = new List<TextArt>();
-                map.Level.TextArt00 = new List<TextArt>();
-
-                var content  = map.ToPr2String(string.Empty, string.Empty, false, false, false);
-                var filepath = Path.GetTempPath() + Guid.NewGuid().ToString() + ".txt";
-
-                File.WriteAllText(filepath, content);
-
-                StartTasTool(filepath);
-            }
-            catch (Exception ex)
-            {
-                MessageUtil.ShowError(ex.Message);
-            }
-            finally
-            {
-                map.Level.Note      = noteText;
-                map.Level.TextArt1  = textArt1;
-                map.Level.TextArt2  = textArt2;
-                map.Level.TextArt3  = textArt3;
-                map.Level.TextArt0  = textArt0;
-                map.Level.TextArt00 = textArt00;
-            }
-        }
-
-        private static void StartTasTool(string levelFilepath)
-        {
-            var exePath = Path.Combine(Directory.GetCurrentDirectory(), "Dependencies", "TAS", "TAS.exe");
-            var proc    = new Process();
-
-            proc.StartInfo.FileName         =  exePath;
-            proc.StartInfo.WorkingDirectory = Path.GetDirectoryName(exePath);
-            proc.StartInfo.Arguments        = "\"" + levelFilepath+ "\"" + " " + true.ToString(CultureInfo.InvariantCulture);
-
-            proc.Start();
-        }
 
         public static readonly SKPaint SelectionFillPaint = new SKPaint
         {
@@ -89,9 +28,9 @@ namespace BlockEditor.Helpers
             Style = SKPaintStyle.Stroke,
         };
 
-        public static readonly SKPaint TranslucentPaint = new SKPaint 
-        { 
-            Color = SKColors.White.WithAlpha(150) 
+        public static readonly SKPaint TranslucentPaint = new SKPaint
+        {
+            Color = SKColors.White.WithAlpha(150)
         };
 
     }
