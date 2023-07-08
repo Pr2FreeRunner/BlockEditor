@@ -30,8 +30,8 @@
             <Button Focusable="False" IsTabStop="False" Grid.Column="0" Margin="10,6,10,6" Content="Account" FontWeight="SemiBold" FontSize="15" FontFamily="Segoe UI" ToolTip="Hotkey:  Ctrl + A" Command="{Binding AccountCommand }"/>
             <Button Focusable="False" IsTabStop="False" Grid.Column="1" Margin="10,6,10,6" Content="Save"    FontWeight="SemiBold" FontSize="15" FontFamily="Segoe UI" ToolTip="Hotkey:  Ctrl + S" Command="{Binding SaveCommand }"/>
             <Button Focusable="False" IsTabStop="False" Grid.Column="2" Margin="10,6,10,6" Content="Load"    FontWeight="SemiBold" FontSize="15" FontFamily="Segoe UI" ToolTip="Hotkey:  Ctrl + L" Command="{Binding LoadCommand }"/>
-            <Button Focusable="False" IsTabStop="False" Grid.Column="3" Margin="10,6,10,6" Content="Test"    FontWeight="SemiBold" FontSize="15" FontFamily="Segoe UI" Command="{Binding TestCommand }"/>
-            <Button Focusable="False" IsTabStop="False" Grid.Column="4" Margin="10,6,10,6" Content="New"     FontWeight="SemiBold" FontSize="15" FontFamily="Segoe UI" Command="{Binding NewCommand }"/>
+            <Button Focusable="False" IsTabStop="False" Grid.Column="3" Margin="10,6,10,6" Content="Test"    FontWeight="SemiBold" FontSize="15" FontFamily="Segoe UI" ToolTip="Hotkey:  Ctrl + Q" Command="{Binding TestCommand }"/>
+            <Button Focusable="False" IsTabStop="False" Grid.Column="4" Margin="10,6,10,6" Content="New"     FontWeight="SemiBold" FontSize="15" FontFamily="Segoe UI" ToolTip="Hotkey:  Ctrl + N" Command="{Binding NewCommand }"/>
         </Grid>
     </Border>
 

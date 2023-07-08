@@ -19,6 +19,9 @@ namespace BlockEditor.Models
         public GameArt Art0 { get; }
         public GameArt Art1 { get; }
 
+        public MapRenderer Renderer { get; }
+
+
         public readonly int BlocksOutsideBoundries;
 
         public SKColor Background
@@ -57,6 +60,7 @@ namespace BlockEditor.Models
 
         public Map(Level level = null)
         {
+            Renderer = new MapRenderer();
             Level = level ?? GetDefaultLevel();
             Blocks = BlocksUtil.ToBlocks(Level.Blocks, out BlocksOutsideBoundries);
             BlockSize = DEFAULT_BLOCK_SIZE;
@@ -71,6 +75,9 @@ namespace BlockEditor.Models
 
         public void LoadArt()
         {
+            Renderer.ClearCache(Art0);
+            Renderer.ClearCache(Art1);
+
             Art0.LoadArt(Level.DrawArt0, Level.TextArt0);
             Art1.LoadArt(Level.DrawArt1, Level.TextArt1);
         }

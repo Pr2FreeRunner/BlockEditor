@@ -125,6 +125,7 @@ namespace BlockEditor.Views.Windows
                     cbBlocks.Visibility = Visibility.Visible;
                     cbTextArt00.Visibility = cbTextArt2.Visibility = cbTextArt2.Visibility = cbTextArt3.Visibility = Visibility.Collapsed;
                     cbDrawArt00.Visibility = cbDrawArt2.Visibility = cbDrawArt2.Visibility = cbDrawArt3.Visibility = Visibility.Collapsed;
+                    cbBlocks.IsChecked     = true;
                     break;
                 case EditArtModes.Delete:
                     btnOk.IsEnabled = true;
@@ -134,6 +135,7 @@ namespace BlockEditor.Views.Windows
                     cbBlocks.Visibility = Visibility.Visible;
                     cbTextArt00.Visibility = cbTextArt2.Visibility = cbTextArt2.Visibility = cbTextArt3.Visibility = IsRegionSelected() ? Visibility.Collapsed : Visibility.Visible;
                     cbDrawArt00.Visibility = cbDrawArt2.Visibility = cbDrawArt2.Visibility = cbDrawArt3.Visibility = IsRegionSelected() ? Visibility.Collapsed : Visibility.Visible;
+                    cbBlocks.IsChecked     = false;
                     break;
                 case EditArtModes.ReplaceColor:
                     btnOk.IsEnabled = _colorAdd != null && _colorReplace != null && _sensitivity != null;

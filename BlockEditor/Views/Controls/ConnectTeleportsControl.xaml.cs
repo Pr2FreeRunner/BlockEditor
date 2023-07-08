@@ -10,6 +10,7 @@ using BlockEditor.Models;
 using BlockEditor.Utils;
 using LevelModel.Models.Components;
 using Microsoft.VisualBasic;
+using Newtonsoft.Json.Linq;
 using static BlockEditor.Models.UserMode;
 
 namespace BlockEditor.Views.Controls
@@ -41,11 +42,13 @@ namespace BlockEditor.Views.Controls
         private void Init()
         {
             var culture = CultureInfo.InvariantCulture;
+            var color   =  MySettings.LastTeleportColor ?? string.Empty;
 
-            MyColorPicker.SetColor(string.Empty);
+            MyColorPicker.SetColor(color);
             MyColorPicker.OnNewColor += MyColorPicker_OnNewColor;
 
             _data.Start();
+            _data.Options = color;
             UpdateGui();
         }
 
@@ -132,6 +135,7 @@ namespace BlockEditor.Views.Controls
             }
 
             _data.Options = text;
+            MySettings.LastTeleportColor = text;
             UpdateGui();
         }
 

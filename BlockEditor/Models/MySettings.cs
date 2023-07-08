@@ -115,7 +115,7 @@ namespace BlockEditor.Models
 
         public static string BlockEditorVersion
         {
-            get { return "5.15"; }
+            get { return "5.16"; }
         }
 
 
@@ -178,6 +178,13 @@ namespace BlockEditor.Models
             set { _lastSearch = value; Save(); }
         }
 
+        private static string _lastTeleportColor;
+        public static string LastTeleportColor
+        {
+            get { return _lastTeleportColor; }
+            set { _lastTeleportColor = value; Save(); }
+        }
+
         public static void Init()
         {
             //Reset();
@@ -196,6 +203,7 @@ namespace BlockEditor.Models
             {
                 Settings.Default["Users"] = Users.SaveUser();
                 Settings.Default["LastSearch"] = LastSearch;
+                Settings.Default["LastTeleportColor"] = LastTeleportColor;
                 Settings.Default["FirstTimeLoad"] = FirstTimeLoad;
                 Settings.Default["FirstConnectTeleports"] = FirstConnectTeleports;  
                 Settings.Default["ShowArt"] = ShowArt;
@@ -247,12 +255,13 @@ namespace BlockEditor.Models
                 _fillShape = (bool)Settings.Default["FillShape"];
                 _overwrite = (bool)Settings.Default["Overwrite"];
                 _autoConnectPair = (bool)Settings.Default["AutoConnectPair"];
-                _showArt = (bool)Settings.Default["ShowArt"];
-                _maxOneTasRunning = (bool)Settings.Default["MaxOneTasRunning"];
-                _firstBlockInfo = (bool)Settings.Default["FirstBlockInfo"];
-                _zoom = (BlockSize)(Settings.Default["Zoom"] ?? BlockImages.DEFAULT_BLOCK_SIZE);
-                _lastSearch = HandleBuildVersion(Settings.Default["LastSearch"] as string);
-                _playTime = (int)(Settings.Default["PlayTime"] ?? 0);
+                _showArt            = (bool)Settings.Default["ShowArt"];
+                _maxOneTasRunning   = (bool)Settings.Default["MaxOneTasRunning"];
+                _firstBlockInfo     = (bool)Settings.Default["FirstBlockInfo"];
+                _zoom               = (BlockSize)(Settings.Default["Zoom"] ?? BlockImages.DEFAULT_BLOCK_SIZE);
+                _lastSearch         = HandleBuildVersion(Settings.Default["LastSearch"] as string);
+                _lastTeleportColor  = Settings.Default["LastTeleportColor"] as string;
+                _playTime           = (int)(Settings.Default["PlayTime"] ?? 0);
 
                 _hotkey0 = (int)(Settings.Default["Hotkey0"] ?? Block.BASIC_WHITE);
                 _hotkey1 = (int)(Settings.Default["Hotkey1"] ?? Block.BASIC_WHITE);

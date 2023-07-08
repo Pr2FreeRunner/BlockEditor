@@ -242,6 +242,16 @@ namespace BlockEditor.Views.Controls
                     if (MapButtons.ViewModel.LoadCommand.CanExecute(null))
                         MapButtons.ViewModel.LoadCommand.Execute(null);
                 }
+                else if (ctrl && e.Key == Key.N)
+                {
+                    if (MapButtons.ViewModel.NewCommand.CanExecute(null))
+                        MapButtons.ViewModel.NewCommand.Execute(null);
+                }
+                else if (ctrl && e.Key == Key.Q)
+                {
+                    if (MapButtons.ViewModel.TestCommand.CanExecute(null))
+                        MapButtons.ViewModel.TestCommand.Execute(null);
+                }
                 else if (IsSelectionKey(e, ctrl))
                 {
                     ViewModel.Game.UserSelection.CreateSelection(ViewModel.Game.Map);

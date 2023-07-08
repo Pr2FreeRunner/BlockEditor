@@ -55,7 +55,7 @@
                     <Label Margin="0,4,0,0" FontWeight="SemiBold" Content="Frames per Second:"/>
                     <TextBox IsReadOnly="True" Margin="4,0,0,0" x:Name="tbFps" FontSize="{StaticResource DefaultFontSize}"  />
 
-                    <CheckBox Margin="4,12,0,0" Content="Close old TAS windows when testing" x:Name="cbTas" Checked="cbTas_Checked" Unchecked="cbTas_Checked" FontSize="{StaticResource DefaultFontSize}"  />
+                    <CheckBox Margin="4,14,0,2" Content="Close old TAS windows when testing" x:Name="cbTas" Checked="cbTas_Checked" Unchecked="cbTas_Checked" FontSize="{StaticResource DefaultFontSize}"  />
 
                     <Label Margin="0,4,0,0" FontWeight="SemiBold" Content="Block Hotkeys:"/>
 

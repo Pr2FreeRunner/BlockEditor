@@ -67,7 +67,7 @@ namespace BlockEditor.Models
             canvas.Concat(ref cam);
 
             // draw strokes
-            _game.Renderer.RenderArt(canvas, art);
+            _game.Map.Renderer.RenderArt(canvas, art);
 
             // draw texts
             foreach (var text in art.Texts)
@@ -114,11 +114,11 @@ namespace BlockEditor.Models
                     blocksInViewport.Add(block);
                 }
             }
-            _game.Renderer.RenderBlocks(_surface.Canvas, _game, blocksInViewport);
+            _game.Map.Renderer.RenderBlocks(_surface.Canvas, _game, blocksInViewport);
 
             // draw start blocks on top
             var startBlocks = _game.Map.Blocks.StartBlocks.GetBlocks().Reverse().Where(b => !b.IsEmpty());
-            _game.Renderer.RenderBlocks(_surface.Canvas, _game, startBlocks);
+            _game.Map.Renderer.RenderBlocks(_surface.Canvas, _game, startBlocks);
         }
 
         private void DrawSelectedBlock()

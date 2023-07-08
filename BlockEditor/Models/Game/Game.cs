@@ -14,8 +14,6 @@ namespace BlockEditor.Models
     {
 
         public GameEngine Engine { get; }
-
-        public GameRenderer Renderer { get; }
         
         public Camera Camera { get; set; }
 
@@ -46,7 +44,6 @@ namespace BlockEditor.Models
             Mode = new UserMode();
             Map = new Map();
             Engine = new GameEngine();
-            Renderer = new GameRenderer();
             Camera = new Camera();
             UserOperations = new UserOperations();
             MeasureDistance = new MeasureDistance();
@@ -324,7 +321,7 @@ namespace BlockEditor.Models
             {
                 if (disposing)
                 {
-                    Renderer.Dispose();
+                    Map.Renderer.Dispose();
                 }
 
                 _disposedValue = true;

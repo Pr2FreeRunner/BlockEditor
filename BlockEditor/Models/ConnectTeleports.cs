@@ -2,6 +2,7 @@
 using LevelModel.Models.Components;
 using System.Collections.Generic;
 using System.Linq;
+using static System.Windows.Forms.Design.AxImporter;
 
 namespace BlockEditor.Models
 {
@@ -16,6 +17,7 @@ namespace BlockEditor.Models
 
         public ConnectTeleports()
         {
+            Options = string.Empty;
             _blocks = new List<SimpleBlock>();
         }
 

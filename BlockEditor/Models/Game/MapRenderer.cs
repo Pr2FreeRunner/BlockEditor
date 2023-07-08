@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace BlockEditor.Models
 {
-    public class GameRenderer : IDisposable
+    public class MapRenderer : IDisposable
     {
         private const int ChunkPixelSize = 1024;
         private readonly Dictionary<GameArt, List<ArtChunk>> _artChunksCache = new Dictionary<GameArt, List<ArtChunk>>();
