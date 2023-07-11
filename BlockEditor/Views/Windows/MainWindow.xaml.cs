@@ -140,9 +140,9 @@ namespace BlockEditor.Views.Windows
                 return;
 
             if (string.IsNullOrEmpty(title))
-                return;
-
-            CurrentTab.tbTitle.Text = title;
+                CurrentTab.tbTitle.Text = CurrentTab.GetDefaultTitle();
+            else
+                CurrentTab.tbTitle.Text = title;
         }
 
         private void CreateNewTab()

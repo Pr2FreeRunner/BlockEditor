@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Linq;
 using SkiaSharp;
 using BlockEditor.Utils;
+using LevelModel.Models.Components;
 
 namespace BlockEditor.Helpers
 {
@@ -82,6 +83,15 @@ namespace BlockEditor.Helpers
                         return;
                     }
 
+                    if (UnsupportedTeleports(map))
+                    {
+                        MessageUtil.ShowWarning("The map contains 3 or more teleport blocks of same color, "
+                            + Environment.NewLine
+                            + "the Block Editor only supports 2 connected teleports."
+                            + Environment.NewLine
+                            + "Update the teleport connection order in PR2.");
+                    }
+
                     if (string.Equals("m3", map.Level.DataVersion, StringComparison.InvariantCultureIgnoreCase))
                         map.Level.DataVersion = "m4";
 
@@ -143,5 +153,15 @@ namespace BlockEditor.Helpers
             args.TryAgain = result == UserQuestionWindow.QuestionResult.Yes;
         }
 
+        private static bool UnsupportedTeleports(Map map)
+        {
+            if(map?.Blocks == null)
+                return false;
+
+            return map.Blocks.GetBlocks()
+                .Where(b => b.ID == Block.TELEPORT)
+                .GroupBy(k => k.Options ?? string.Empty, v => v)
+                .Any(kvp => kvp.Count() > 2);
+        }
     }
 }

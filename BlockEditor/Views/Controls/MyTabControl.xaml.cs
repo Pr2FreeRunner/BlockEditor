@@ -27,7 +27,7 @@ namespace BlockEditor.Views.Controls
         }
 
 
-        private string GetDefaultTitle()
+        public string GetDefaultTitle()
         {
             var title = "Untitled";
 
