@@ -43,7 +43,7 @@ namespace BlockEditor.Models
             DrawSelectedBlocks();
             DrawSelectedRectangle();
             DrawMeasureDistanceLine();
-            //DrawDebug();
+            DrawDebug();
         }
 
         [System.Diagnostics.Conditional("DEBUG")]
@@ -99,7 +99,7 @@ namespace BlockEditor.Models
             var minBlockY = _game.Camera.Position.Y / _game.Map.BlockPixelSize;
 
             var blockCountX = width / _game.Map.BlockPixelSize;
-            var blockCountY = height / _game.Map.BlockPixelSize;
+            var blockCountY = height / _game.Map.BlockPixelSize + 1;
 
             var blocksInViewport = new List<SimpleBlock>();
             for (int y = minBlockY; y < minBlockY + blockCountY; y++)
