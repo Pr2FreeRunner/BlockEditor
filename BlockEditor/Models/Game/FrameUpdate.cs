@@ -72,6 +72,11 @@ namespace BlockEditor.Models
             // draw texts
             foreach (var text in art.Texts)
             {
+                if (text.TextBlob is null)
+                    // SKTextBlobBuilder returns null if the text has no glyphs,
+                    // which is possible if it only consists of newlines.
+                    continue;
+
                 SKMatrix textMatrix = SKMatrix.CreateIdentity();
                 SKPoint projectedPosition = cam.MapPoint(text.Position);
                 textMatrix.TransX = projectedPosition.X;
